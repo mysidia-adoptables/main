@@ -1,0 +1,42 @@
+/* 
+    Created on : Jul 1, 2021, 1:25:31 PM
+    Author: Hall of Famer
+*/
+body,td,th {
+    color: #000000;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+body {
+    background-color: #ffff00;
+}
+a:link {
+    color: #000000;
+}
+a:visited {
+    color: #000000;
+}
+a:hover {
+    color: #000000;
+}
+a:active {
+    color: #000000;
+}
+.style1 {
+    font-size: 18px;
+    color: #FFFFFF;
+}
+.style2 {
+    font-size: 14px;
+}
+.style3 {
+    font-size: 16px;
+}
+.style4 {
+    font-size: 12px; 
+}
+

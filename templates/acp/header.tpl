@@ -1,0 +1,10 @@
+<html>
+    <head>
+        <title>{$browser_title}</title>
+        {$header->loadFavicon("{$home}favicon.ico")}
+        {$header->loadStyle("{$home}{$temp}{$theme}/media/acp-style.css")}
+        {$header->loadStyles()}
+        {$header->loadScript("//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js")}
+        {$header->loadScript("{$home}{$js}/acp.js")}
+        {$header->loadScripts()}
+    </head>
