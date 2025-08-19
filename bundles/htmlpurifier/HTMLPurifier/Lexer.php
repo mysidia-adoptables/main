@@ -112,22 +112,15 @@ class HTMLPurifier_Lexer
             } // do..while so we can break
 
             // instantiate recognized string names
-            switch ($lexer) {
-                case 'DOMLex':
-                    $inst = new HTMLPurifier_Lexer_DOMLex();
-                    break;
-                case 'DirectLex':
-                    $inst = new HTMLPurifier_Lexer_DirectLex();
-                    break;
-                case 'PH5P':
-                    $inst = new HTMLPurifier_Lexer_PH5P();
-                    break;
-                default:
-                    throw new HTMLPurifier_Exception(
-                        "Cannot instantiate unrecognized Lexer type " .
-                        htmlspecialchars($lexer)
-                    );
-            }
+            $inst = match ($lexer) {
+                'DOMLex' => new HTMLPurifier_Lexer_DOMLex(),
+                'DirectLex' => new HTMLPurifier_Lexer_DirectLex(),
+                'PH5P' => new HTMLPurifier_Lexer_PH5P(),
+                default => throw new HTMLPurifier_Exception(
+                    "Cannot instantiate unrecognized Lexer type " .
+                    htmlspecialchars((string) $lexer)
+                ),
+            };
         }
 
         if (!$inst) {
@@ -159,7 +152,7 @@ class HTMLPurifier_Lexer
      * @type array
      */
     protected $_special_entity2str =
-        array(
+        [
             '&quot;' => '"',
             '&amp;' => '&',
             '&lt;' => '<',
@@ -167,7 +160,7 @@ class HTMLPurifier_Lexer
             '&#39;' => "'",
             '&#039;' => "'",
             '&#x27;' => "'"
-        );
+        ];
 
     public function parseText($string, $config) {
         return $this->parseData($string, false, $config);
@@ -231,7 +224,7 @@ class HTMLPurifier_Lexer
      * @param HTMLPurifier_Context $context
      * @return HTMLPurifier_Token[] array representation of HTML.
      */
-    public function tokenizeHTML($string, $config, $context)
+    public function tokenizeHTML($string, $config, $context): never
     {
         trigger_error('Call to abstract class', E_USER_ERROR);
     }
@@ -245,7 +238,7 @@ class HTMLPurifier_Lexer
     {
         return preg_replace_callback(
             '/<!\[CDATA\[(.+?)\]\]>/s',
-            array('HTMLPurifier_Lexer', 'CDATACallback'),
+            ['HTMLPurifier_Lexer', 'CDATACallback'],
             $string
         );
     }
@@ -259,7 +252,7 @@ class HTMLPurifier_Lexer
     {
         return preg_replace_callback(
             '#<!--//--><!\[CDATA\[//><!--(.+?)//--><!\]\]>#s',
-            array('HTMLPurifier_Lexer', 'CDATACallback'),
+            ['HTMLPurifier_Lexer', 'CDATACallback'],
             $string
         );
     }
@@ -290,7 +283,7 @@ class HTMLPurifier_Lexer
     protected static function CDATACallback($matches)
     {
         // not exactly sure why the character set is needed, but whatever
-        return htmlspecialchars($matches[1], ENT_COMPAT, 'UTF-8');
+        return htmlspecialchars((string) $matches[1], ENT_COMPAT, 'UTF-8');
     }
 
     /**
@@ -312,13 +305,13 @@ class HTMLPurifier_Lexer
 
         if ($config->get('HTML.Trusted')) {
             // escape convoluted CDATA
-            $html = $this->escapeCommentedCDATA($html);
+            $html = static::escapeCommentedCDATA($html);
         }
 
         // escape CDATA
-        $html = $this->escapeCDATA($html);
+        $html = static::escapeCDATA($html);
 
-        $html = $this->removeIEConditional($html);
+        $html = static::removeIEConditional($html);
 
         // extract body from document if applicable
         if ($config->get('Core.ConvertDocumentToFragment')) {
@@ -352,7 +345,7 @@ class HTMLPurifier_Lexer
         if ($config->get('Core.AggressivelyRemoveScript') &&
             !($config->get('HTML.Trusted') || !$config->get('Core.RemoveScriptContents')
             || empty($hidden_elements["script"]))) {
-            $html = preg_replace('#<script[^>]*>.*?</script>#i', '', $html);
+            $html = preg_replace('#<script[^>]*>.*?</script>#i', '', (string) $html);
         }
 
         return $html;
@@ -364,8 +357,8 @@ class HTMLPurifier_Lexer
      */
     public function extractBody($html)
     {
-        $matches = array();
-        $result = preg_match('|(.*?)<body[^>]*>(.*)</body>|is', $html, $matches);
+        $matches = [];
+        $result = preg_match('|(.*?)<body[^>]*>(.*)</body>|is', (string) $html, $matches);
         if ($result) {
             // Make sure it's not in a comment
             $comment_start = strrpos($matches[1], '<!--');

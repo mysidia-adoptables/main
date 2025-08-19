@@ -7,32 +7,25 @@
  * @package    Smarty
  * @subpackage Template
  */
-class Smarty_Variable
+class Smarty_Variable implements \Stringable
 {
-    /**
-     * template variable
-     *
-     * @var mixed
-     */
-    public $value = null;
-
-    /**
-     * if true any output of this variable will be not cached
-     *
-     * @var boolean
-     */
-    public $nocache = false;
-
     /**
      * create Smarty variable object
      *
      * @param mixed   $value   the value to assign
      * @param boolean $nocache if true any output of this variable will be not cached
      */
-    public function __construct($value = null, $nocache = false)
+    public function __construct(
+        /**
+         * template variable
+         */
+        public $value = null,
+        /**
+         * if true any output of this variable will be not cached
+         */
+        public $nocache = false
+    )
     {
-        $this->value = $value;
-        $this->nocache = $nocache;
     }
 
     /**
@@ -40,7 +33,7 @@ class Smarty_Variable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->value;
     }

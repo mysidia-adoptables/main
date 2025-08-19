@@ -44,12 +44,12 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
                 throw new SmartyException("Template '{$file}' cannot be relative to template of resource type '{$_template->parent->source->type}'");
             }
             // normalize path
-            $path = $source->smarty->_realpath(dirname($_template->parent->source->filepath) . DS . $file);
+            $path = $source->smarty->_realpath(dirname((string) $_template->parent->source->filepath) . DS . $file);
             // files relative to a template only get one shot
             return is_file($path) ? $path : false;
         }
         // normalize DS
-        if (strpos($file, DS == '/' ? '\\' : '/') !== false) {
+        if (str_contains($file, DS == '/' ? '\\' : '/')) {
             $file = str_replace(DS == '/' ? '\\' : '/', DS, $file);
         }
 
@@ -58,7 +58,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
         if ($file[ 0 ] == '[' && preg_match('#^\[([^\]]+)\](.+)$#', $file, $fileMatch)) {
             $file = $fileMatch[ 2 ];
             $_indices = explode(',', $fileMatch[ 1 ]);
-            $_index_dirs = array();
+            $_index_dirs = [];
             foreach ($_indices as $index) {
                 $index = trim($index);
                 // try string indexes
@@ -90,7 +90,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
         foreach ($_directories as $_directory) {
             $path = $_directory . $file;
             if (is_file($path)) {
-                return (strpos($path, '.' . DS) !== false) ? $source->smarty->_realpath($path) : $path;
+                return (str_contains($path, '.' . DS)) ? $source->smarty->_realpath($path) : $path;
             }
         }
         if (!isset($_index_dirs)) {

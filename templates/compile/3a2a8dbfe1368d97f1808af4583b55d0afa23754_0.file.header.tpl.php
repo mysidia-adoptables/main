@@ -3,23 +3,23 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/acp/header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
   'version' => '3.1.30',
   'unifunc' => 'content_60ec7ca0d9b417_79994069',
   'has_nocache_code' => false,
   'file_dependency' => 
-  array (
+   [
     '3a2a8dbfe1368d97f1808af4583b55d0afa23754' => 
-    array (
+     [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/acp/header.tpl',
       1 => 1626111131,
       2 => 'file',
-    ),
-  ),
+    ],
+  ],
   'includes' => 
-  array (
-  ),
-),false)) {
+   [
+  ],
+],false)) {
 function content_60ec7ca0d9b417_79994069 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <html>

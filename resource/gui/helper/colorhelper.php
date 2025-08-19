@@ -159,28 +159,28 @@ class ColorHelper extends Helper{
      * @return Void
      */	
 	protected function getRGBMap(){
-	    $this->rgbMap->offsetSet("black", array(0, 0, 0));
-		$this->rgbMap->offsetSet("blue", array(0, 0, 255));
-		$this->rgbMap->offsetSet("brown", array(165,42,42));
-		$this->rgbMap->offsetSet("coral", array(255,127,80));
-        $this->rgbMap->offsetSet("cyan", array(0,255,255));
-		$this->rgbMap->offsetSet("fuchsia", array(255,0,255));
-		$this->rgbMap->offsetSet("gold", array(255,215,0));
-		$this->rgbMap->offsetSet("green", array(0,255,0));
-	    $this->rgbMap->offsetSet("grey", array(128,128,128));
-		$this->rgbMap->offsetSet("indigo", array(75,0,130));
-		$this->rgbMap->offsetSet("lavander", array(230,230,250));
-		$this->rgbMap->offsetSet("maroon", array(128,0,0));
-		$this->rgbMap->offsetSet("navy", array(0,0,128));
-		$this->rgbMap->offsetSet("orange", array(255,165,0));
-        $this->rgbMap->offsetSet("pink", array(255,192,203));
-		$this->rgbMap->offsetSet("purple", array(128,0,128));
-		$this->rgbMap->offsetSet("red", array(255,0,0));
-		$this->rgbMap->offsetSet("silver", array(192,192,192));
-		$this->rgbMap->offsetSet("turquoise", array(64,224,208));
-        $this->rgbMap->offsetSet("violet", array(238,130,238));
-		$this->rgbMap->offsetSet("white", array(255,255,255));
-		$this->rgbMap->offsetSet("yellow", array(255,255,0));
+	    $this->rgbMap->offsetSet("black", [0, 0, 0]);
+		$this->rgbMap->offsetSet("blue", [0, 0, 255]);
+		$this->rgbMap->offsetSet("brown", [165,42,42]);
+		$this->rgbMap->offsetSet("coral", [255,127,80]);
+        $this->rgbMap->offsetSet("cyan", [0,255,255]);
+		$this->rgbMap->offsetSet("fuchsia", [255,0,255]);
+		$this->rgbMap->offsetSet("gold", [255,215,0]);
+		$this->rgbMap->offsetSet("green", [0,255,0]);
+	    $this->rgbMap->offsetSet("grey", [128,128,128]);
+		$this->rgbMap->offsetSet("indigo", [75,0,130]);
+		$this->rgbMap->offsetSet("lavander", [230,230,250]);
+		$this->rgbMap->offsetSet("maroon", [128,0,0]);
+		$this->rgbMap->offsetSet("navy", [0,0,128]);
+		$this->rgbMap->offsetSet("orange", [255,165,0]);
+        $this->rgbMap->offsetSet("pink", [255,192,203]);
+		$this->rgbMap->offsetSet("purple", [128,0,128]);
+		$this->rgbMap->offsetSet("red", [255,0,0]);
+		$this->rgbMap->offsetSet("silver", [192,192,192]);
+		$this->rgbMap->offsetSet("turquoise", [64,224,208]);
+        $this->rgbMap->offsetSet("violet", [238,130,238]);
+		$this->rgbMap->offsetSet("white", [255,255,255]);
+		$this->rgbMap->offsetSet("yellow", [255,255,0]);
 	}
 	
 	/**
@@ -218,7 +218,7 @@ class ColorHelper extends Helper{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is an instance of Mysidia ColorHelper class.";
 	}    
 } 

@@ -1,6 +1,7 @@
 <?php
 
 namespace Resource\Core;
+
 use Resource\Native\MysObject;
 
 /**
@@ -8,66 +9,69 @@ use Resource\Native\MysObject;
  * It acts as a wrapper for PDO's returned objects, which cannot be used in Collections Framework.
  * @category Resource
  * @package Utility
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.4
  * @todo Not much at this moment
  */
+class DataObject extends MysObject
+{
 
-class DataObject extends MysObject{
-
-	/**
-	 * The data property, it stores the wrapped PDO object.
-	 * @access protected
-	 * @var Object
-     */
-    protected $data; 
- 
     /**
      * The constructor for DataObject Class, it creates a DataObject object and initialize the context.
-	 * @param Object  $data
+     * @param Object $data
      * @access public
      * @return void
      */
-    public function __construct($data = NULL){
-	    $this->data = $data;
+    public function __construct(
+        /**
+         * The data property, it stores the wrapped PDO object.
+         * @access protected
+         */
+        protected $data = null
+    )
+    {
     }
 
-	/**
+    /**
      * Magic method __call for DataObject class, it delegates all method calls to the inner object.
      * @access public
      * @return Mixed
      */
-    public function __call($method, $param){
+    public function __call($method, $param)
+    {
         return $this->data->$method($param);
-    }	
-	
+    }
+
     /**
      * The get method, getter method for property $object.
-	 * @access public
+     * @access public
      * @return Object
-     */		
-	public function get(){
-	    return $this->data;
-	}
-	
+     */
+    public function get()
+    {
+        return $this->data;
+    }
+
     /**
      * The set method, setter method for property $object.
-	 * @param Object  $data
-	 * @access public
+     * @param Object $data
+     * @access public
      * @return Void
-     */		
-	public function set($data = NULL){
-	    $this->data = $data;
-	}
+     */
+    public function set($data = null)
+    {
+        $this->data = $data;
+    }
 
-	/**
+    /**
      * Magic method __toString for DataObject class, it prints out the basic class information.
      * @access public
      * @return String
      */
-    public function __toString(){
-	    return "This is The DataObject Class.";
-	}	
+    public function __toString(): string
+    {
+        return "This is The DataObject Class.";
+    }
 }

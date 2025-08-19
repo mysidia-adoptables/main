@@ -9,17 +9,14 @@ class HTMLPurifier_AttrTransform_Length extends HTMLPurifier_AttrTransform
     /**
      * @type string
      */
-    protected $name;
-
-    /**
-     * @type string
-     */
     protected $cssName;
 
-    public function __construct($name, $css_name = null)
+    public function __construct(/**
+     * @type string
+     */
+    protected $name, $css_name = null)
     {
-        $this->name = $name;
-        $this->cssName = $css_name ? $css_name : $name;
+        $this->cssName = $css_name ?: $this->name;
     }
 
     /**
@@ -34,7 +31,7 @@ class HTMLPurifier_AttrTransform_Length extends HTMLPurifier_AttrTransform
             return $attr;
         }
         $length = $this->confiscateAttr($attr, $this->name);
-        if (ctype_digit($length)) {
+        if (ctype_digit((string) $length)) {
             $length .= 'px';
         }
         $this->prependCSS($attr, $this->cssName . ":$length;");

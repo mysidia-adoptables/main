@@ -23,7 +23,7 @@ class HTMLPurifier_VarParser
      * Lookup table of allowed types. Mainly for backwards compatibility, but
      * also convenient for transforming string type names to the integer constants.
      */
-    public static $types = array(
+    public static $types = [
         'string' => self::C_STRING,
         'istring' => self::ISTRING,
         'text' => self::TEXT,
@@ -35,22 +35,22 @@ class HTMLPurifier_VarParser
         'list' => self::ALIST,
         'hash' => self::HASH,
         'mixed' => self::C_MIXED
-    );
+    ];
 
     /**
      * Lookup table of types that are string, and can have aliases or
      * allowed value lists.
      */
-    public static $stringTypes = array(
+    public static $stringTypes = [
         self::C_STRING => true,
         self::ISTRING => true,
         self::TEXT => true,
         self::ITEXT => true,
-    );
+    ];
 
     /**
      * Validate a variable according to type.
-     * It may return NULL as a valid type if $allow_null is true.
+     * It may return null as a valid type if $allow_null is true.
      *
      * @param mixed $var Variable to validate
      * @param int $type Type of variable, see HTMLPurifier_VarParser->types
@@ -122,7 +122,7 @@ class HTMLPurifier_VarParser
             case (self::C_MIXED):
                 return $var;
             default:
-                $this->errorInconsistent(get_class($this), $type);
+                $this->errorInconsistent(static::class, $type);
         }
         $this->errorGeneric($var, $type);
     }
@@ -144,7 +144,7 @@ class HTMLPurifier_VarParser
      * Throws an exception.
      * @throws HTMLPurifier_VarParserException
      */
-    protected function error($msg)
+    protected function error($msg): never
     {
         throw new HTMLPurifier_VarParserException($msg);
     }
@@ -158,7 +158,7 @@ class HTMLPurifier_VarParser
      * @param int $type
      * @throws HTMLPurifier_Exception
      */
-    protected function errorInconsistent($class, $type)
+    protected function errorInconsistent($class, $type): never
     {
         throw new HTMLPurifier_Exception(
             "Inconsistency in $class: " . HTMLPurifier_VarParser::getTypeName($type) .
@@ -171,7 +171,7 @@ class HTMLPurifier_VarParser
      * @param mixed $var
      * @param int $type
      */
-    protected function errorGeneric($var, $type)
+    protected function errorGeneric($var, $type): never
     {
         $vtype = gettype($var);
         $this->error("Expected type " . HTMLPurifier_VarParser::getTypeName($type) . ", got $vtype");

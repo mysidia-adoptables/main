@@ -15,22 +15,15 @@ class HTMLPurifier_AttrDef_Enum extends HTMLPurifier_AttrDef
      * @type array
      * @todo Make protected
      */
-    public $valid_values = array();
-
-    /**
-     * Bool indicating whether or not enumeration is case sensitive.
-     * @note In general this is always case insensitive.
-     */
-    protected $case_sensitive = false; // values according to W3C spec
+    public $valid_values = []; // values according to W3C spec
 
     /**
      * @param array $valid_values List of valid values
      * @param bool $case_sensitive Whether or not case sensitive
      */
-    public function __construct($valid_values = array(), $case_sensitive = false)
+    public function __construct($valid_values = [], protected $case_sensitive = false)
     {
         $this->valid_values = array_flip($valid_values);
-        $this->case_sensitive = $case_sensitive;
     }
 
     /**

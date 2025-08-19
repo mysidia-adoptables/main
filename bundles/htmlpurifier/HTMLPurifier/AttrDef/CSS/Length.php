@@ -43,7 +43,7 @@ class HTMLPurifier_AttrDef_CSS_Length extends HTMLPurifier_AttrDef
         if ($string === '0') {
             return '0';
         }
-        if (strlen($string) === 1) {
+        if (strlen((string) $string) === 1) {
             return false;
         }
 

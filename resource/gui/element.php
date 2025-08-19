@@ -62,7 +62,7 @@ abstract class Element extends GUI implements Renderable{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is the GUI Element Class.";
 	}
 	

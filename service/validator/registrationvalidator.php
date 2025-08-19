@@ -9,20 +9,17 @@ use Service\ApplicationService\RegistrationException;
 
 class RegistrationValidator extends Validator{ 
     
-    private $form;
-    
-    public function __construct(ArrayObject $form, ArrayObject $validations){
+    public function __construct(private ArrayObject $form, ArrayObject $validations){
         parent::__construct($validations);
-        $this->form = $form;
     }
     
     protected function checkUsername(){
         $username = $this->form["username"];
         if(!$this->emptyValidate($username)) throw new RegistrationException("username_empty");
-        if(in_array(strtolower($username), ["admin", "system"])){ 
+        if(in_array(strtolower((string) $username), ["admin", "system"])){ 
             throw new RegistrationException("username_filter");
         }
-        if(is_numeric($username[0]) || ($username != ltrim($username))) throw new RegistrationException("username_invalid");
+        if(is_numeric($username[0]) || ($username != ltrim((string) $username))) throw new RegistrationException("username_invalid");
         $userExists = $this->datavalidate("users", ["username"], "username = :username", ["username" => $username]);
         if($userExists) throw new RegistrationException("username_exists");
     } 
@@ -30,7 +27,7 @@ class RegistrationValidator extends Validator{
     protected function checkPassword(){ 
         $password = $this->form["password"];
         if(!$this->emptyValidate($password)) throw new RegistrationException("password_empty");
-        if(strlen($password) < 6) throw new RegistrationException("password_length");
+        if(strlen((string) $password) < 6) throw new RegistrationException("password_length");
     }
     
     protected function checkPassword2(){ 
@@ -55,7 +52,7 @@ class RegistrationValidator extends Validator{
             $date = new Date($birthday);
             $date->format("Y-m-d");
         }
-        catch(Exception $e){ 
+        catch(Exception){ 
             throw new RegistrationException("birthday_invalid");
         }
     }
@@ -85,12 +82,12 @@ class RegistrationValidator extends Validator{
     
     protected function checkBio(){
         $bio = $this->form["bio"];
-        if($bio && strlen($bio) > 500) throw new RegistrationException("bio");  
+        if($bio && strlen((string) $bio) > 500) throw new RegistrationException("bio");  
     }
     
     protected function checkColor(){ 
         $color = $this->form["color"];
-        if($color && strlen($color) > 20) throw new RegistrationException("color");  
+        if($color && strlen((string) $color) > 20) throw new RegistrationException("color");  
     }
     
     protected function checkGender(){ 
@@ -102,6 +99,6 @@ class RegistrationValidator extends Validator{
     
     protected function checkNickname(){ 
         $nickname = $this->form["nickname"];
-        if($nickname && strlen($nickname) > 40) throw new RegistrationException("nickname");  
+        if($nickname && strlen((string) $nickname) > 40) throw new RegistrationException("nickname");  
     }
 }

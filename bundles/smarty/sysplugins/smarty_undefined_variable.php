@@ -7,12 +7,12 @@
  * @package    Smarty
  * @subpackage Template
  */
-class Smarty_Undefined_Variable
+class Smarty_Undefined_Variable implements \Stringable
 {
     /**
-     * Returns FALSE for 'nocache' and NULL otherwise.
+     * Returns false for 'nocache' and null otherwise.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return bool
      */
@@ -30,7 +30,7 @@ class Smarty_Undefined_Variable
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return "";
     }

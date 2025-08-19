@@ -6,25 +6,11 @@
 class HTMLPurifier_AttrTransform_BoolToCSS extends HTMLPurifier_AttrTransform
 {
     /**
-     * Name of boolean attribute that is trigger.
-     * @type string
-     */
-    protected $attr;
-
-    /**
-     * CSS declarations to add to style, needs trailing semicolon.
-     * @type string
-     */
-    protected $css;
-
-    /**
      * @param string $attr attribute name to convert from
      * @param string $css CSS declarations to add to style (needs semicolon)
      */
-    public function __construct($attr, $css)
+    public function __construct(protected $attr, protected $css)
     {
-        $this->attr = $attr;
-        $this->css = $css;
     }
 
     /**

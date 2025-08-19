@@ -23,7 +23,7 @@ class Smarty_Internal_Method_LoadFilter
      *
      * @var array
      */
-    private $filterTypes = array('pre' => true, 'post' => true, 'output' => true, 'variable' => true);
+    private $filterTypes = ['pre' => true, 'post' => true, 'output' => true, 'variable' => true];
 
     /**
      * load a filter of specified type and name
@@ -41,7 +41,7 @@ class Smarty_Internal_Method_LoadFilter
      */
     public function loadFilter(Smarty_Internal_TemplateBase $obj, $type, $name)
     {
-        $smarty = isset($obj->smarty) ? $obj->smarty : $obj;
+        $smarty = $obj->smarty ?? $obj;
         $this->_checkFilterType($type);
         $_plugin = "smarty_{$type}filter_{$name}";
         $_filter_name = $_plugin;
@@ -51,7 +51,7 @@ class Smarty_Internal_Method_LoadFilter
         }
         if ($smarty->loadPlugin($_plugin)) {
             if (class_exists($_plugin, false)) {
-                $_plugin = array($_plugin, 'execute');
+                $_plugin = [$_plugin, 'execute'];
             }
             if (is_callable($_plugin)) {
                 $smarty->registered_filters[ $type ][ $_filter_name ] = $_plugin;

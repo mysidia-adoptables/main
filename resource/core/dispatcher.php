@@ -20,13 +20,6 @@ use Resource\Native\MysString;
 final class Dispatcher extends Core{
 
 	/**
-	 * The router property, holds a reference to the Router Object.
-	 * @access private
-	 * @var Router
-     */	
-    private $router;
-	
-	/**
 	 * The map property, stores all get variables that will be available in Input Object.
 	 * @access private
 	 * @var Map
@@ -39,9 +32,15 @@ final class Dispatcher extends Core{
      * @access public
      * @return void
      */
-	public function __construct(Router $router){
-	    $this->router = $router;
-	}
+	public function __construct(
+        /**
+         * The router property, holds a reference to the Router Object.
+         * @access private
+         */
+        private readonly Router $router
+    )
+    {
+    }
 
 	/**
      * The getRouter method, getter method for property $getRouter. 

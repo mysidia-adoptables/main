@@ -24,7 +24,7 @@ final class DescendingSubSet extends EntrySubSet{
      * @access public
      * @return DescendingSubEntryIterator
      */			
-    public function iterator(){
+    public function iterator(): \Iterator{
 	    return new DescendingSubEntryIterator($this->map, $this->map->absHighest(), $this->map->absLow());
 	}
 }

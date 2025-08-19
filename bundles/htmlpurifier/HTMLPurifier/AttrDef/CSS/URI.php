@@ -29,10 +29,10 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         // the parent object
 
         $uri_string = $this->parseCDATA($uri_string);
-        if (strpos($uri_string, 'url(') !== 0) {
+        if (!str_starts_with((string) $uri_string, 'url(')) {
             return false;
         }
-        $uri_string = substr($uri_string, 4);
+        $uri_string = substr((string) $uri_string, 4);
         if (strlen($uri_string) == 0) {
             return false;
         }
@@ -60,11 +60,11 @@ class HTMLPurifier_AttrDef_CSS_URI extends HTMLPurifier_AttrDef_URI
         }
 
         // extra sanity check; should have been done by URI
-        $result = str_replace(array('"', "\\", "\n", "\x0c", "\r"), "", $result);
+        $result = str_replace(['"', "\\", "\n", "\x0c", "\r"], "", $result);
 
         // suspicious characters are ()'; we're going to percent encode
         // them for safety.
-        $result = str_replace(array('(', ')', "'"), array('%28', '%29', '%27'), $result);
+        $result = str_replace(['(', ')', "'"], ['%28', '%29', '%27'], $result);
 
         // there's an extra bug where ampersands lose their escaping on
         // an innerHTML cycle, so a very unlucky query parameter could

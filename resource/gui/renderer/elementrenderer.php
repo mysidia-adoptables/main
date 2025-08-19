@@ -32,7 +32,7 @@ class ElementRenderer extends Renderer{
         $this->component = $element;
         if($element instanceof Element\Font) $this->tag = "span";
         elseif($element instanceof Element\Color) $this->tag = null;		
-		else $this->tag = strtolower(get_class($element));
+		else $this->tag = strtolower($element::class);
     }
 	
 	/**
@@ -232,19 +232,12 @@ class ElementRenderer extends Renderer{
      * @return String
      */	
 	protected function getColorAttribute(Element\Color $color){
-	    switch($color->getFormat("")){
-			case "rgb":
-				$attribute = "rgb({$color->getRed()},{$color->getGreen()},{$color->getBlue()})";
-			    break;
-			case "code":
-                $attribute = $color->getCode();
-				break;
-	        case "name":
-                $attribute = $color->getName();
-			    break;
-            default:
-                throw GUIException("THhe specified color rendering format is invalid.");
-        }
+	    $attribute = match ($color->getFormat()) {
+            "rgb" => "rgb({$color->getRed()},{$color->getGreen()},{$color->getBlue()})",
+            "code" => $color->getCode(),
+            "name" => $color->getName(),
+            default => throw GUIException("THhe specified color rendering format is invalid."),
+        };
 		return $attribute;
 	}
 		

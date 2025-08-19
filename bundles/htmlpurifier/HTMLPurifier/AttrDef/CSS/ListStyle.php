@@ -40,9 +40,9 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
         }
 
         // assumes URI doesn't have spaces in it
-        $bits = explode(' ', strtolower($string)); // bits to process
+        $bits = explode(' ', strtolower((string) $string)); // bits to process
 
-        $caught = array();
+        $caught = [];
         $caught['type'] = false;
         $caught['position'] = false;
         $caught['image'] = false;
@@ -85,7 +85,7 @@ class HTMLPurifier_AttrDef_CSS_ListStyle extends HTMLPurifier_AttrDef
             return false;
         }
 
-        $ret = array();
+        $ret = [];
 
         // construct type
         if ($caught['type']) {

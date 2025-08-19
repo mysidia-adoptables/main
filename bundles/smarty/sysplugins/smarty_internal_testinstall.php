@@ -43,7 +43,7 @@ class Smarty_Internal_TestInstall
             $template_dir = realpath($template_dir);
             // resolve include_path or fail existence
             if (!$template_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_template_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_template_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $template_dir = stream_resolve_include_path($_template_dir);
@@ -156,14 +156,14 @@ class Smarty_Internal_TestInstall
 
         // test if all registered plugins_dir are accessible
         // and if core plugins directory is still registered
-        $_core_plugins_dir = realpath(dirname(__FILE__) . '/../plugins');
+        $_core_plugins_dir = realpath(__DIR__ . '/../plugins');
         $_core_plugins_available = false;
         foreach ($smarty->getPluginsDir() as $plugin_dir) {
             $_plugin_dir = $plugin_dir;
             $plugin_dir = realpath($plugin_dir);
             // resolve include_path or fail existence
             if (!$plugin_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_plugin_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_plugin_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $plugin_dir = stream_resolve_include_path($_plugin_dir);
@@ -292,7 +292,7 @@ class Smarty_Internal_TestInstall
             $_config_dir = $config_dir;
             // resolve include_path or fail existence
             if (!$config_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_config_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_config_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $config_dir = stream_resolve_include_path($_config_dir);
@@ -359,7 +359,7 @@ class Smarty_Internal_TestInstall
         // test if sysplugins are available
         $source = SMARTY_SYSPLUGINS_DIR;
         if (is_dir($source)) {
-            $expectedSysplugins = array('smartycompilerexception.php' => true, 'smartyexception.php' => true,
+            $expectedSysplugins = ['smartycompilerexception.php' => true, 'smartyexception.php' => true,
                                         'smarty_cacheresource.php' => true, 'smarty_cacheresource_custom.php' => true,
                                         'smarty_cacheresource_keyvaluestore.php' => true, 'smarty_data.php' => true,
                                         'smarty_internal_block.php' => true,
@@ -495,7 +495,7 @@ class Smarty_Internal_TestInstall
                                         'smarty_template_config.php' => true,
                                         'smarty_template_resource_base.php' => true,
                                         'smarty_template_source.php' => true, 'smarty_undefined_variable.php' => true,
-                                        'smarty_variable.php' => true,);
+                                        'smarty_variable.php' => true,];
             $iterator = new DirectoryIterator($source);
             foreach ($iterator as $file) {
                 if (!$file->isDot()) {
@@ -533,7 +533,7 @@ class Smarty_Internal_TestInstall
         $source = SMARTY_PLUGINS_DIR;
         if (is_dir($source)) {
             $expectedPlugins =
-                array('block.textformat.php' => true, 'function.counter.php' => true, 'function.cycle.php' => true,
+                ['block.textformat.php' => true, 'function.counter.php' => true, 'function.cycle.php' => true,
                       'function.fetch.php' => true, 'function.html_checkboxes.php' => true,
                       'function.html_image.php' => true, 'function.html_options.php' => true,
                       'function.html_radios.php' => true, 'function.html_select_date.php' => true,
@@ -554,7 +554,7 @@ class Smarty_Internal_TestInstall
                       'outputfilter.trimwhitespace.php' => true, 'shared.escape_special_chars.php' => true,
                       'shared.literal_compiler_param.php' => true, 'shared.make_timestamp.php' => true,
                       'shared.mb_str_replace.php' => true, 'shared.mb_unicode.php' => true,
-                      'shared.mb_wordwrap.php' => true, 'variablefilter.htmlspecialchars.php' => true,);
+                      'shared.mb_wordwrap.php' => true, 'variablefilter.htmlspecialchars.php' => true,];
             $iterator = new DirectoryIterator($source);
             foreach ($iterator as $file) {
                 if (!$file->isDot()) {

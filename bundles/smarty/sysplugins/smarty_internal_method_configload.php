@@ -57,7 +57,7 @@ class Smarty_Internal_Method_ConfigLoad
     public function _loadConfigFile(Smarty_Internal_Data $data, $config_file, $sections = null, $scope = 0)
     {
         /* @var \Smarty $smarty */
-        $smarty = isset($data->smarty) ? $data->smarty : $data;
+        $smarty = $data->smarty ?? $data;
         /* @var \Smarty_Internal_Template $confObj */
         $confObj = new Smarty_Internal_Template($config_file, $smarty, $data);
         $confObj->caching = Smarty::CACHING_OFF;
@@ -68,7 +68,7 @@ class Smarty_Internal_Method_ConfigLoad
         $confObj->compiled->render($confObj);
         if ($data->_objType == 2) {
             $data->compiled->file_dependency[ $confObj->source->uid ] =
-                array($confObj->source->filepath, $confObj->source->getTimeStamp(), $confObj->source->type);
+                [$confObj->source->filepath, $confObj->source->getTimeStamp(), $confObj->source->type];
         }
     }
 
@@ -177,7 +177,7 @@ class Smarty_Internal_Method_ConfigLoad
         }
         if ($tpl->smarty->error_unassigned && $errorEnable) {
             // force a notice
-            $x = $$varName;
+            $x = ${$varName};
         }
         return null;
     }

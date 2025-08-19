@@ -35,7 +35,7 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
     /**
      * @type array
      */
-    protected $replace = array();
+    protected $replace = [];
 
     /**
      * @param HTMLPurifier_Config $config
@@ -107,7 +107,7 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
         $this->replace['%p'] = $context->get('CurrentCSSProperty', true);
         // not always available
         if ($this->secretKey) {
-            $this->replace['%t'] = hash_hmac("sha256", $string, $this->secretKey);
+            $this->replace['%t'] = hash_hmac("sha256", $string, (string) $this->secretKey);
         }
     }
 }

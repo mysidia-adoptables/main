@@ -7,30 +7,12 @@ class HTMLPurifier_AttrDef_Switch
 {
 
     /**
-     * @type string
-     */
-    protected $tag;
-
-    /**
-     * @type HTMLPurifier_AttrDef
-     */
-    protected $withTag;
-
-    /**
-     * @type HTMLPurifier_AttrDef
-     */
-    protected $withoutTag;
-
-    /**
      * @param string $tag Tag name to switch upon
-     * @param HTMLPurifier_AttrDef $with_tag Call if token matches tag
-     * @param HTMLPurifier_AttrDef $without_tag Call if token doesn't match, or there is no token
+     * @param HTMLPurifier_AttrDef $withTag Call if token matches tag
+     * @param HTMLPurifier_AttrDef $withoutTag Call if token doesn't match, or there is no token
      */
-    public function __construct($tag, $with_tag, $without_tag)
+    public function __construct(protected $tag, protected $withTag, protected $withoutTag)
     {
-        $this->tag = $tag;
-        $this->withTag = $with_tag;
-        $this->withoutTag = $without_tag;
     }
 
     /**

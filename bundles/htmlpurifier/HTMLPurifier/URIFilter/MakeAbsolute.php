@@ -17,7 +17,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
     /**
      * @type array
      */
-    protected $basePathStack = array();
+    protected $basePathStack = [];
 
     /**
      * @param HTMLPurifier_Config $config
@@ -36,7 +36,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             return false;
         }
         $this->base->fragment = null; // fragment is invalid for base URI
-        $stack = explode('/', $this->base->path);
+        $stack = explode('/', (string) $this->base->path);
         array_pop($stack); // discard last segment
         $stack = $this->_collapseStack($stack); // do pre-parsing
         $this->basePathStack = $stack;
@@ -84,7 +84,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             $uri->path = $this->base->path;
         } elseif ($uri->path[0] !== '/') {
             // relative path, needs more complicated processing
-            $stack = explode('/', $uri->path);
+            $stack = explode('/', (string) $uri->path);
             $new_stack = array_merge($this->basePathStack, $stack);
             if ($new_stack[0] !== '' && !is_null($this->base->host)) {
                 array_unshift($new_stack, '');
@@ -93,7 +93,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             $uri->path = implode('/', $new_stack);
         } else {
             // absolute path, but still we should collapse
-            $uri->path = implode('/', $this->_collapseStack(explode('/', $uri->path)));
+            $uri->path = implode('/', $this->_collapseStack(explode('/', (string) $uri->path)));
         }
         // re-combine
         $uri->scheme = $this->base->scheme;
@@ -116,7 +116,7 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
      */
     private function _collapseStack($stack)
     {
-        $result = array();
+        $result = [];
         $is_folder = false;
         for ($i = 0; isset($stack[$i]); $i++) {
             $is_folder = false;

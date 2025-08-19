@@ -16,7 +16,7 @@ class DonateController extends AppController{
 	public function index(){
 	    $mysidia = Registry::get("mysidia");		
 	    if($mysidia->input->post("recipient") && $mysidia->input->post("amount")){
-		    $recipientName = preg_replace("/[^a-zA-Z0-9\\040]/", "", $mysidia->input->post("recipient"));
+		    $recipientName = preg_replace("/[^a-zA-Z0-9\\040]/", "", (string) $mysidia->input->post("recipient"));
             $amount = (int)$mysidia->input->post("amount");
 	        $recipient = new Member($recipientName);			
 	 	    if($amount < 0) throw new DonationException("negative");

@@ -33,7 +33,7 @@ abstract class Helper extends MysObject{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is an instance of Mysidia Helper class.";
 	}
 }

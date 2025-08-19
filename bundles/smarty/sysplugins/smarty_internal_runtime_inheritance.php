@@ -28,7 +28,7 @@ class Smarty_Internal_Runtime_Inheritance
      *
      * @var Smarty_Internal_Block[]
      */
-    public $childRoot = array();
+    public $childRoot = [];
 
     /**
      * inheritance template nesting level
@@ -50,14 +50,14 @@ class Smarty_Internal_Runtime_Inheritance
      *
      * @var Smarty_Template_Source[]
      */
-    public $sources = array();
+    public $sources = [];
 
     /**
      * Stack of source objects while executing block code
      *
      * @var Smarty_Template_Source[]
      */
-    public $sourceStack = array();
+    public $sourceStack = [];
 
     /**
      * Initialize inheritance
@@ -67,10 +67,10 @@ class Smarty_Internal_Runtime_Inheritance
      * @param array                     $blockNames outer level block name
      *
      */
-    public function init(Smarty_Internal_Template $tpl, $initChild, $blockNames = array())
+    public function init(Smarty_Internal_Template $tpl, $initChild, $blockNames = [])
     {
         // if called while executing parent template it must be a sub-template with new inheritance root
-        if ($initChild && $this->state == 3 && (strpos($tpl->template_resource, 'extendsall') === false)) {
+        if ($initChild && $this->state == 3 && (!str_contains($tpl->template_resource, 'extendsall'))) {
             $tpl->inheritance = new Smarty_Internal_Runtime_Inheritance();
             $tpl->inheritance->init($tpl, $initChild, $blockNames);
             return;
@@ -121,7 +121,7 @@ class Smarty_Internal_Runtime_Inheritance
      */
     public function instanceBlock(Smarty_Internal_Template $tpl, $className, $name, $tplIndex = null)
     {
-        $block = new $className($name, $tplIndex ? $tplIndex : $this->tplIndex);
+        $block = new $className($name, $tplIndex ?: $this->tplIndex);
         if (isset($this->childRoot[ $name ])) {
             $block->child = $this->childRoot[ $name ];
         }

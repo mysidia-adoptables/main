@@ -7,7 +7,7 @@ namespace Resource\Collection;
  * It defines a standard set to hold keys or values in a Map, but it is abstract.
  * @category Resource
  * @package Collection
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.4
@@ -15,50 +15,54 @@ namespace Resource\Collection;
  * @abstract
  *
  */
-
-abstract class MapSet extends Set{
+abstract class MapSet extends Set
+{
 
     /**
-	 * The map property, it stores a reference to the source Map object.
-	 * @access protected
-	 * @var Mappable
-    */
-	protected $map; 
-	
+     * The map property, it stores a reference to the source Map object.
+     * @access protected
+     * @var Mappable
+     */
+    protected $map;
+
     /**
      * Constructor of MapSet Class, it initializes the MapSet by assigning a reference of the source Map Object.
-	 * @param Mappable  $map
+     * @param Mappable $map
      * @access public
      * @return void
-     */	
-	public function __construct(Mappable $map){
-	    $this->map = $map;
-	}
+     */
+    public function __construct(Mappable $map)
+    {
+        $this->map = $map;
+    }
 
- 	/**
+    /**
      * The clear method, drops all objects currently stored in MapSet.
      * @access public
      * @return void
-     */			
-	public function clear(){
+     */
+    public function clear(): void
+    {
         $this->map->clear();
-    }	
-	
-	/**
+    }
+
+    /**
      * The isEmpty method, checks if the MapSet is empty or not.
      * @access public
-     * @return Boolean
-     */		
-	public function isEmpty(){
-	    return $this->map->isEmpty();
-	}
-	
-	/**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return $this->map->isEmpty();
+    }
+
+    /**
      * The size method, returns the current size of the MapSet.
      * @access public
      * @return int
-     */			
-    public function size(){
-	    return $this->map->size();
-	}
+     */
+    public function size(): int
+    {
+        return $this->map->size();
+    }
 }

@@ -12,7 +12,7 @@ class TosController extends AppController{
 		try{
 		    $document = $mysidia->frame->getDocument("tos");
 		}
-        catch(PageNotFoundException $pne){
+        catch(PageNotFoundException){
 		    $this->setFlags("error", "nonexist");		 
         }
         $this->setField("document", $document);

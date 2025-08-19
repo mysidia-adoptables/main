@@ -25,20 +25,20 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
     /**
      * Internal accumulator array for SAX parsers.
      */
-    protected $tokens = array();
+    protected $tokens = [];
     protected $last_token_was_empty;
 
     private $parent_handler;
-    private $stack = array();
+    private $stack = [];
 
     public function tokenizeHTML($string, $config, $context) {
 
-        $this->tokens = array();
+        $this->tokens = [];
         $this->last_token_was_empty = false;
 
         $string = $this->normalize($string, $config, $context);
 
-        $this->parent_handler = set_error_handler(array($this, 'muteStrictErrorHandler'));
+        $this->parent_handler = set_error_handler($this->muteStrictErrorHandler(...));
 
         $parser = new XML_HTMLSax3();
         $parser->set_object($this);
@@ -104,10 +104,10 @@ class HTMLPurifier_Lexer_PEARSax3 extends HTMLPurifier_Lexer
      * Escaped text handler, interface is defined by PEAR package.
      */
     public function escapeHandler(&$parser, $data) {
-        if (strpos($data, '--') === 0) {
+        if (str_starts_with((string) $data, '--')) {
             // remove trailing and leading double-dashes
-            $data = substr($data, 2);
-            if (strlen($data) >= 2 && substr($data, -2) == "--") {
+            $data = substr((string) $data, 2);
+            if (strlen($data) >= 2 && str_ends_with($data, "--")) {
                 $data = substr($data, 0, -2);
             }
             if (isset($this->stack[sizeof($this->stack) - 1]) &&

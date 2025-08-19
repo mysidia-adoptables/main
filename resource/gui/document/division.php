@@ -129,7 +129,7 @@ class Division extends Paragraph{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is The Division class.";
 	}
 }

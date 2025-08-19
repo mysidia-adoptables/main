@@ -13,7 +13,7 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
     /**
      * @type array
      */
-    public $needed = array('a' => array('href'));
+    public $needed = ['a' => ['href']];
 
     /**
      * @param HTMLPurifier_Token $token
@@ -24,7 +24,7 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
             return;
         }
 
-        if (strpos($token->data, '://') === false) {
+        if (!str_contains((string) $token->data, '://')) {
             // our really quick heuristic failed, abort
             // this may not work so well if we want to match things like
             // "google.com", but then again, most people don't
@@ -38,10 +38,10 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
         // the Unicode characters un-Unicodified.
         $bits = preg_split(
             '/\\b((?:[a-z][\\w\\-]+:(?:\\/{1,3}|[a-z0-9%])|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}\\/)(?:[^\\s()<>]|\\((?:[^\\s()<>]|(?:\\([^\\s()<>]+\\)))*\\))+(?:\\((?:[^\\s()<>]|(?:\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:\'".,<>?\x{00ab}\x{00bb}\x{201c}\x{201d}\x{2018}\x{2019}]))/iu',
-            $token->data, -1, PREG_SPLIT_DELIM_CAPTURE);
+            (string) $token->data, -1, PREG_SPLIT_DELIM_CAPTURE);
 
 
-        $token = array();
+        $token = [];
 
         // $i = index
         // $c = count
@@ -53,7 +53,7 @@ class HTMLPurifier_Injector_Linkify extends HTMLPurifier_Injector
                 }
                 $token[] = new HTMLPurifier_Token_Text($bits[$i]);
             } else {
-                $token[] = new HTMLPurifier_Token_Start('a', array('href' => $bits[$i]));
+                $token[] = new HTMLPurifier_Token_Start('a', ['href' => $bits[$i]]);
                 $token[] = new HTMLPurifier_Token_Text($bits[$i]);
                 $token[] = new HTMLPurifier_Token_End('a');
             }

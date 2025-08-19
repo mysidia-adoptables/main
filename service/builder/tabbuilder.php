@@ -23,13 +23,6 @@ use Resource\Native\MysObject;
 class TabBuilder extends MysObject{
 
 	/**
-	 * The num property, defines the number of tabs available.
-	 * @access private
-	 * @var int
-     */    
-    private $num;
-    
-    /**
 	 * The name property, stores an array of names for each tab.
 	 * @access private
 	 * @var MysArray
@@ -42,13 +35,6 @@ class TabBuilder extends MysObject{
 	 * @var MysArray
      */
     private $alias;
-    
-    /**
-	 * The default property, defines the default tab. 
-	 * @access private
-	 * @var MysArray
-     */
-    private $default;
     
     /**
 	 * The hide property, specifies whether the tab is hidden.
@@ -80,18 +66,24 @@ class TabBuilder extends MysObject{
      * @access public
      * @return void
      */    
-    public function __construct($num, Mappable $tabs, $default = 1){
+    public function __construct(/**
+     * The num property, defines the number of tabs available.
+     * @access private
+     */
+    private $num, Mappable $tabs, /**
+     * The default property, defines the default tab.
+     * @access private
+     */
+    private $default = 1){
         $path = Registry::get("path");
         $frame = Registry::get("frame");
         $header = $frame->getHeader();
         $header->addStyle("{$path->getTempRoot()}css/tabs.css");
         $header->addScript("{$path->getTempRoot()}js/tabs.js");
-	    $this->num = $num;
-        $this->name = new MysArray($num);
-        $this->alias = new MysArray($num);
-	    $this->default = $default;
-        $this->index = new MysArray($num);
-        $this->last = new MysArray($num);
+        $this->name = new MysArray($this->num);
+        $this->alias = new MysArray($this->num);
+        $this->index = new MysArray($this->num);
+        $this->last = new MysArray($this->num);
 
 	    $i = 0;
         $iterator = $tabs->iterator();
@@ -99,9 +91,9 @@ class TabBuilder extends MysObject{
             $entry = $iterator->next();
 	        $this->name[$i] = (string)$entry->getKey();
             $this->alias[$i] = (string)$entry->getValue();
-	        $this->index[$i] = ($i == $default - 1) ? " class='current" : "";
-	        $this->index[$i] = ($i == $num - 1) ? " class='last" : $this->index[$i];	  
-  	        $this->last[$i] = ($i == $num - 1) ? " last" : "";  
+	        $this->index[$i] = ($i == $this->default - 1) ? " class='current" : "";
+	        $this->index[$i] = ($i == $this->num - 1) ? " class='last" : $this->index[$i];	  
+  	        $this->last[$i] = ($i == $this->num - 1) ? " last" : "";  
 	        $i++;
         }
     }

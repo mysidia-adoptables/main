@@ -58,7 +58,7 @@ abstract class Helper extends GUI{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is the GUI Helper Class.";
 	}
 }

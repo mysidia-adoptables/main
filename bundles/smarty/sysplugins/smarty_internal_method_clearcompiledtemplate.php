@@ -70,12 +70,12 @@ class Smarty_Internal_Method_ClearCompiledTemplate
             $_compileDirs = new RecursiveDirectoryIterator($_dir);
             // NOTE: UnexpectedValueException thrown for PHP >= 5.3
         }
-        catch (Exception $e) {
+        catch (Exception) {
             return 0;
         }
         $_compile = new RecursiveIteratorIterator($_compileDirs, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($_compile as $_file) {
-            if (substr(basename($_file->getPathname()), 0, 1) == '.' || strpos($_file, '.svn') !== false) {
+            if (str_starts_with(basename((string) $_file->getPathname()), '.') || str_contains((string) $_file, '.svn')) {
                 continue;
             }
 

@@ -7,10 +7,7 @@ use Resource\Native\MysObject;
 
 class CKEditorBuilder extends MysObject{
     
-    private $package;
-    
-    public function __construct($package = "standard"){
-        $this->package = $package;
+    public function __construct(private $package = "standard"){
         $this->loadScripts();
     }
     

@@ -1,41 +1,47 @@
 <?php
 
 namespace Resource\Core;
+
 use Exception, SplFileInfo;
 
-abstract class Settings extends Core{
+abstract class Settings extends Core
+{
     // The settings class, the base class for all settings objects
-    protected $cfsetting = FALSE;
-    protected $dbsetting = FALSE;
-  
-    public function __construct($object){
+    protected $cfsetting = false;
+    protected $dbsetting = false;
+
+    public function __construct($object)
+    {
         $mode = $this->getMode($object);
-        switch($mode){
-	        case "config":
-               $this->cfsetting = TRUE;
-               $this->fetch();
-               break;
+        switch ($mode) {
+            case "config":
+                $this->cfsetting = true;
+                $this->fetch();
+                break;
             case "database":
-               $this->dbsetting = TRUE;
-               $this->fetch($object);
-               break;
+                $this->dbsetting = true;
+                $this->fetch($object);
+                break;
             default:
-               throw new Exception("Settings fetch mode not recognized.");		
-	    }
+                throw new Exception("Settings fetch mode not recognized.");
+        }
     }
-    
-    public function hasConfig(){
+
+    public function hasConfig()
+    {
         return $this->cfsetting;
     }
-    
-    public function hasDatabase(){
+
+    public function hasDatabase()
+    {
         return $this->dbsetting;
     }
-  
-    private function getMode($object){     
-	    if($object instanceof SplFileInfo) return "config";
-	    elseif($object instanceof Database) return "database";
-	    else return NULL;
+
+    private function getMode($object)
+    {
+        if ($object instanceof SplFileInfo) return "config";
+        elseif ($object instanceof Database) return "database";
+        else return null;
     }
 
     abstract public function fetch($object);

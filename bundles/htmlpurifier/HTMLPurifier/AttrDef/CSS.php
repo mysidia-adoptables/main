@@ -32,13 +32,13 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         // non-delimiting semicolon can appear are in strings
         // escape sequences.   So here is some dumb hack to
         // handle quotes.
-        $len = strlen($css);
+        $len = strlen((string) $css);
         $accum = "";
-        $declarations = array();
+        $declarations = [];
         $quoted = false;
         for ($i = 0; $i < $len; $i++) {
-            $c = strcspn($css, ";'\"", $i);
-            $accum .= substr($css, $i, $c);
+            $c = strcspn((string) $css, ";'\"", $i);
+            $accum .= substr((string) $css, $i, $c);
             $i += $c;
             if ($i == $len) break;
             $d = $css[$i];
@@ -59,7 +59,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
         }
         if ($accum != "") $declarations[] = $accum;
 
-        $propvalues = array();
+        $propvalues = [];
         $new_declarations = '';
 
         /**
@@ -75,7 +75,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
             if (!strpos($declaration, ':')) {
                 continue;
             }
-            list($property, $value) = explode(':', $declaration, 2);
+            [$property, $value] = explode(':', $declaration, 2);
             $property = trim($property);
             $value = trim($value);
             $ok = false;
@@ -127,7 +127,7 @@ class HTMLPurifier_AttrDef_CSS extends HTMLPurifier_AttrDef
             $new_declarations .= "$prop:$value;";
         }
 
-        return $new_declarations ? $new_declarations : false;
+        return $new_declarations ?: false;
 
     }
 

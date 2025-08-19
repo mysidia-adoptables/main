@@ -11,15 +11,8 @@ use Resource\Utility\Date;
 
 class ReadoptValidator extends Validator{ 
     
-    private $adopt;
-    private $cost;
-    private $settings;
-    
-    public function __construct(PoundAdoptable $adopt, $cost, PoundSettings $settings, ArrayObject $validations){
+    public function __construct(private readonly PoundAdoptable $adopt, private $cost, private readonly PoundSettings $settings, ArrayObject $validations){
         parent::__construct($validations);
-	    $this->adopt = $adopt;	
-        $this->cost = $cost;
-	    $this->settings = $settings;
 	}   
     
     protected function checkOwner(){ 

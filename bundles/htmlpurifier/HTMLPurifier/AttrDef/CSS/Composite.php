@@ -13,18 +13,10 @@ class HTMLPurifier_AttrDef_CSS_Composite extends HTMLPurifier_AttrDef
 {
 
     /**
-     * List of objects that may process strings.
-     * @type HTMLPurifier_AttrDef[]
-     * @todo Make protected
-     */
-    public $defs;
-
-    /**
      * @param HTMLPurifier_AttrDef[] $defs List of HTMLPurifier_AttrDef objects
      */
-    public function __construct($defs)
+    public function __construct(public $defs)
     {
-        $this->defs = $defs;
     }
 
     /**

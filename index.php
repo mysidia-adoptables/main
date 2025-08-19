@@ -11,78 +11,86 @@ require(__DIR__ . "/resource/native/objective.php");
 require(__DIR__ . "/resource/native/mysobject.php");
 require(__DIR__ . "/resource/core/loader.php");
 
-class IndexController extends MysObject{
-    
+class IndexController extends MysObject
+{
+
     private $frontController;
-    
-    public function initialize(){
+
+    public function initialize()
+    {
         $config = "config.php";
-        if(!file_exists($config)) exit("The file config.php cannot be found. If this is a new installation, please rename config_adopts.php to config.php and try again.");
+        if (!file_exists($config)) exit("The file config.php cannot be found. If this is a new installation, please rename config_adopts.php to config.php and try again.");
         require $config;
-        if(!defined("DBHOST") || !defined("DBUSER")) $this->redirectToInstall();
+        if (!defined("DBHOST") || !defined("DBUSER")) $this->redirectToInstall();
         $this->frontController = $this->isAdminCP($_SERVER['REQUEST_URI']) ? "AdminCP" : "Main";
         $this->initErrorHandler();
         $this->initLoader();
         $this->initBundles();
         $this->initMysidia($_SERVER['REQUEST_URI']);
     }
-    
-    private function isAdminCP($uri){
-        return (strpos($uri, "/admincp") !== FALSE);
+
+    private function isAdminCP($uri)
+    {
+        return (str_contains((string) $uri, "/admincp"));
     }
-    
-    private function redirectToInstall(){
+
+    private function redirectToInstall(): never
+    {
         $protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
-        $redirectURL = $protocol . $_SERVER['HTTP_HOST'] . str_replace("index.php", "install", $_SERVER['PHP_SELF']); 
+        $redirectURL = $protocol . $_SERVER['HTTP_HOST'] . str_replace("index.php", "install", $_SERVER['PHP_SELF']);
         header("Location: {$redirectURL}");
-        exit;        
+        exit;
     }
-    
-    private function initErrorHandler(){
-        if (PHP_MAJOR_VERSION >= 7){
-            set_error_handler(function($errno, $errstr){
-                return strpos($errstr, 'Declaration of') === 0;
-            }, E_WARNING);
+
+    private function initErrorHandler()
+    {
+        if (PHP_MAJOR_VERSION >= 7) {
+            set_error_handler(fn($errno, $errstr) => str_starts_with((string) $errstr, 'Declaration of'), E_WARNING);
         }
         error_reporting(E_ALL & ~E_STRICT);
     }
-    
-    private function initLoader(){
+
+    private function initLoader()
+    {
         $loader = new Loader;
         $registry = Registry::getInstance();
-        if($registry) Registry::set("loader", $loader, TRUE, TRUE);
+        if ($registry) Registry::set("loader", $loader, true, true);
     }
-    
-    private function initBundles(){
+
+    private function initBundles()
+    {
         $bundles = new Bundles;
         $bundles->register("smarty", "bundles/smarty/", "Smarty.class.php");
-        $bundles->register("htmlpurifier", "bundles/htmlpurifier/", "HTMLPurifier.auto.php");    
+        $bundles->register("htmlpurifier", "bundles/htmlpurifier/", "HTMLPurifier.auto.php");
         $registry = Registry::getInstance();
-        if($registry) Registry::set("bundles", $bundles, TRUE, TRUE);        
+        if ($registry) Registry::set("bundles", $bundles, true, true);
     }
-    
-    private function initMysidia($uri){
+
+    private function initMysidia($uri)
+    {
         $mysidia = new Mysidia;
         $mysidia->handle($uri);
         $wol = new OnlineService;
         $wol->update();
-        Registry::set("wol", $wol);   
+        Registry::set("wol", $wol);
     }
-    
-    public function run(){
+
+    public function run()
+    {
         $frontControllerClass = "\\Controller\\{$this->frontController}\\IndexController";
         $frontController = new $frontControllerClass;
-        if($frontController->getRequest()) $frontController->handleRequest();
+        if ($frontController->getRequest()) $frontController->handleRequest();
         else $frontController->index();
-		$frontController->getView();	
-        $frontController->render();	
+        $frontController->getView();
+        $frontController->render();
     }
-	
-    public static function main(){
+
+    public static function main()
+    {
         $application = new self;
         $application->initialize();
         $application->run();
-	}	
+    }
 }
 
 IndexController::main();

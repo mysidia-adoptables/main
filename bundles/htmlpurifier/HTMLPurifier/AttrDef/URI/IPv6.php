@@ -28,7 +28,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
         $pre = '(?:/(?:12[0-8]|1[0-1][0-9]|[1-9][0-9]|[0-9]))'; // /0 - /128
 
         //      prefix check
-        if (strpos($aIP, '/') !== false) {
+        if (str_contains($aIP, '/')) {
             if (preg_match('#' . $pre . '$#s', $aIP, $find)) {
                 $aIP = substr($aIP, 0, 0 - strlen($find[0]));
                 unset($find);
@@ -52,7 +52,7 @@ class HTMLPurifier_AttrDef_URI_IPv6 extends HTMLPurifier_AttrDef_URI_IPv4
         if ($c > 2) {
             return false;
         } elseif ($c == 2) {
-            list($first, $second) = $aIP;
+            [$first, $second] = $aIP;
             $first = explode(':', $first);
             $second = explode(':', $second);
 

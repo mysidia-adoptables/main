@@ -78,7 +78,7 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
      */
     public function buildUniqueResourceName(Smarty $smarty, $resource_name, $isConfig = false)
     {
-        return get_class($this) . '#' . $this->decode($resource_name);
+        return static::class . '#' . $this->decode($resource_name);
     }
 
     /**

@@ -88,7 +88,7 @@ abstract class ButtonComponent extends InputComponent{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is an instance of Mysidia ButtonComponent class.";
 	}
 }

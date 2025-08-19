@@ -36,7 +36,7 @@ abstract class HTMLPurifier_AttrTransform
      */
     public function prependCSS(&$attr, $css)
     {
-        $attr['style'] = isset($attr['style']) ? $attr['style'] : '';
+        $attr['style'] ??= '';
         $attr['style'] = $css . $attr['style'];
     }
 

@@ -72,7 +72,7 @@ class THeader extends TCell{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is The Table Header class.";
 	}
 }

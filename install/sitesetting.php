@@ -39,7 +39,7 @@ $password = new Resource\Utility\Password;
 $encryptpass = $password->hash($admin->password);
  
 // Update system settings
-if($theme == "" || $browsertitle == "" || $sitename == "" || $slogan == "" || $cost == "" || $startmoney == ""){
+if($theme == "" || $browsertitle == "" || $sitename == "" || $slogan == "" || $cost == "" || $startmoney == 0){
     die("Something important was left blank.  Please try again!");
 }
 

@@ -7,7 +7,7 @@ use Resource\Exception\InvalidIDException;
 
 class PagesController extends AppController{
 	
-	public function index(){
+	public function index(): never{
 	    throw new InvalidIDException("global_id"); 		
 	}
 

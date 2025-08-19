@@ -19,13 +19,8 @@ use Resource\Utility\Date;
 
 class TradeValidator extends Validator{
     
-    private $offer;
-    private $settings;
-
-    public function __construct(TradeOffer $offer, TradeSettings $settings, ArrayObject $validations){
-	    $this->offer = $offer;	
-	    $this->settings = $settings;
-        parent::__construct($validations);
+    public function __construct(private readonly TradeOffer $offer, private readonly TradeSettings $settings, ArrayObject $validations){
+	    parent::__construct($validations);
 	}
     
 	protected function checkRecipient(){
@@ -76,7 +71,7 @@ class TradeValidator extends Validator{
                 if(!$adopt->isOwnerID($senderID)) throw new TradeException("adoptoffered");
 			}
 		}
-		catch(AdoptNotfoundException $ane){
+		catch(AdoptNotfoundException){
 		    throw new TradeException("adoptoffered"); 
 		}
     }
@@ -93,7 +88,7 @@ class TradeValidator extends Validator{
                 if(!$adopt->isOwnerID($recipientID)) throw new TradeException("adoptwanted");
 			}
 		}
-		catch(AdoptNotfoundException $ane){
+		catch(AdoptNotfoundException){
 		    throw new TradeException("adoptwanted"); 
 		}
     }
@@ -108,7 +103,7 @@ class TradeValidator extends Validator{
 				$adopt = new Adoptable($id->getValue());
 			}
 		}
-		catch(AdoptNotfoundException $ane){
+		catch(AdoptNotfoundException){
 		    throw new TradeException("public_adopt"); 
 		}
     }
@@ -147,7 +142,7 @@ class TradeValidator extends Validator{
 			    $item = new Item($id->getValue());
 		    }
 		}
-		catch(ItemException $ine){
+		catch(ItemException){
 		    throw new TradeException("public_item"); 
 		}
     }

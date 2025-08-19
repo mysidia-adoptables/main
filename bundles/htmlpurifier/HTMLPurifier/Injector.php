@@ -52,7 +52,7 @@ abstract class HTMLPurifier_Injector
      * array('element' => array('attr', 'attr2'), 'element2')
      * @type array
      */
-    public $needed = array();
+    public $needed = [];
 
     /**
      * Number of elements to rewind backwards (relative).
@@ -92,7 +92,7 @@ abstract class HTMLPurifier_Injector
      * will work with the Injector (see checkNeeded()).
      * @param HTMLPurifier_Config $config
      * @param HTMLPurifier_Context $context
-     * @return bool|string Boolean false if success, string of missing needed element/attribute if failure
+     * @return bool|string bool false if success, string of missing needed element/attribute if failure
      */
     public function prepare($config, $context)
     {
@@ -105,8 +105,8 @@ abstract class HTMLPurifier_Injector
             return $result;
         }
         $this->currentNesting =& $context->get('CurrentNesting');
-        $this->currentToken   =& $context->get('CurrentToken');
-        $this->inputZipper    =& $context->get('InputZipper');
+        $this->currentToken =& $context->get('CurrentToken');
+        $this->inputZipper =& $context->get('InputZipper');
         return false;
     }
 
@@ -115,7 +115,7 @@ abstract class HTMLPurifier_Injector
      * will work with the Injector: if p tags are not allowed, the
      * Auto-Paragraphing injector should not be enabled.
      * @param HTMLPurifier_Config $config
-     * @return bool|string Boolean false if success, string of missing needed element/attribute if failure
+     * @return bool|string bool false if success, string of missing needed element/attribute if failure
      */
     public function checkNeeded($config)
     {
@@ -160,7 +160,7 @@ abstract class HTMLPurifier_Injector
         if (!empty($this->currentNesting)) {
             for ($i = count($this->currentNesting) - 2; $i >= 0; $i--) {
                 $node = $this->currentNesting[$i];
-                $def  = $this->htmlDefinition->info[$node->name];
+                $def = $this->htmlDefinition->info[$node->name];
                 if (isset($def->excludes[$name])) {
                     return false;
                 }

@@ -14,7 +14,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
      */
     public function __construct($varParser = null)
     {
-        $this->varParser = $varParser ? $varParser : new HTMLPurifier_VarParser_Native();
+        $this->varParser = $varParser ?: new HTMLPurifier_VarParser_Native();
     }
 
     /**
@@ -43,7 +43,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
             $interchange->name = $info['name'];
         }
 
-        $files = array();
+        $files = [];
         $dh = opendir($dir);
         while (false !== ($file = readdir($dh))) {
             if (!$file || $file[0] == '.' || strrchr($file, '.') !== '.txt') {
@@ -87,7 +87,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
         if (!isset($hash['ID'])) {
             throw new HTMLPurifier_ConfigSchema_Exception('Hash does not have any ID');
         }
-        if (strpos($hash['ID'], '.') === false) {
+        if (!str_contains((string) $hash['ID'], '.')) {
             if (count($hash) == 2 && isset($hash['DESCRIPTION'])) {
                 $hash->offsetGet('DESCRIPTION'); // prevent complaining
             } else {
@@ -189,7 +189,7 @@ class HTMLPurifier_ConfigSchema_InterchangeBuilder
      */
     protected function lookup($array)
     {
-        $ret = array();
+        $ret = [];
         foreach ($array as $val) {
             $ret[$val] = true;
         }

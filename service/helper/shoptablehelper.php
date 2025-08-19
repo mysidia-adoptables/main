@@ -1,6 +1,7 @@
 <?php
 
 namespace Service\Helper;
+
 use Model\DomainModel\Adoptable;
 use Model\DomainModel\Adoptshop;
 use Model\DomainModel\Item;
@@ -17,94 +18,99 @@ use Service\Builder\FormBuilder;
  * It is a specific helper for tables that involves operations on shops.
  * @category Service
  * @package Helper
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.3
  * @todo Not much at this point.
  *
  */
+class ShopTableHelper extends TableHelper
+{
 
-class ShopTableHelper extends TableHelper{
-
-	/**
+    /**
      * The getSalestax method, formats and retrieves the salestax of a shop.
-     * @param int  $salestax
+     * @param int $salestax
      * @access public
      * @return String
      */
-    public function getSalestax($salestax){
-		return "{$salestax}%";				
+    public function getSalestax($salestax)
+    {
+        return "{$salestax}%";
     }
-	
-	/**
+
+    /**
      * The getShopstatus method, returns the shop status with an enter link or a closed message.
-     * @param Shop  $shop
+     * @param Shop $shop
      * @access public
      * @return Link|String
      */
-    public function getShopStatus(Shop $shop){	
-	    if($shop->isOpen()) return new Link("shop/browse/{$shop->getID()}", new Image("templates/icons/next.gif"));
-		else return "Closed";		
+    public function getShopStatus(Shop $shop)
+    {
+        if ($shop->isOpen()) return new Link("shop/browse/{$shop->getID()}", new Image("templates/icons/next.gif"));
+        else return "Closed";
     }
-	
-	/**
+
+    /**
      * The getItemPurchaseForm method, constructs a buy form for an itemshop table.
-	 * @param Itemshop  $shop
-     * @param Item  $item 
+     * @param Itemshop $shop
+     * @param Item $item
      * @access public
      * @return Form
      */
-    public function getItemPurchaseForm(Itemshop $shop, Item $item){	
+    public function getItemPurchaseForm(Itemshop $shop, Item $item)
+    {
         $buyForm = new FormBuilder("buyform", "../purchase/{$shop->getID()}", "post");
-        $buyForm->setLineBreak(FALSE);
+        $buyForm->setLineBreak(false);
         $buyForm->buildComment("<br>")
-                ->buildPasswordField("hidden", "action", "purchase")
-		        ->buildPasswordField("hidden", "itemid", $item->getID())
-            	->buildPasswordField("hidden", "itemname", $item->getItemname())
-                ->buildPasswordField("hidden", "shoptype", "itemshop");
-				
+            ->buildPasswordField("hidden", "action", "purchase")
+            ->buildPasswordField("hidden", "itemid", $item->getID())
+            ->buildPasswordField("hidden", "itemname", $item->getItemname())
+            ->buildPasswordField("hidden", "shoptype", "itemshop");
+
         $quantity = new TextField("quantity");
         $quantity->setSize(3);
         $quantity->setMaxLength(3);
-        $quantity->setLineBreak(TRUE);
+        $quantity->setLineBreak(true);
 
         $buy = new Button("Buy", "buy", "buy");
-        $buy->setLineBreak(FALSE);
+        $buy->setLineBreak(false);
 
-		$buyForm->add($quantity);
-		$buyForm->add($buy);
-        return $buyForm;				
+        $buyForm->add($quantity);
+        $buyForm->add($buy);
+        return $buyForm;
     }
-	
-	/**
+
+    /**
      * The getAdoptPurchaseForm method, constructs a purchase form for an adoptshop table.
-	 * @param Adoptshop  $shop
-     * @param Adoptable  $adopt 
+     * @param Adoptshop $shop
+     * @param Adoptable $adopt
      * @access public
      * @return Form
      */
-    public function getAdoptPurchaseForm(Adoptshop $shop, Adoptable $adopt){	
+    public function getAdoptPurchaseForm(Adoptshop $shop, Adoptable $adopt)
+    {
         $buyForm = new FormBuilder("buyform", "../purchase/{$shop->getID()}", "post");
-        $buyForm->setLineBreak(FALSE);
+        $buyForm->setLineBreak(false);
         $buyForm->buildComment("<br>")
-                ->buildPasswordField("hidden", "action", "purchase")
-		        ->buildPasswordField("hidden", "adoptid", $adopt->getID())
-            	->buildPasswordField("hidden", "adopttype", $adopt->getType())
-                ->buildPasswordField("hidden", "shoptype", "adoptshop");
-				
+            ->buildPasswordField("hidden", "action", "purchase")
+            ->buildPasswordField("hidden", "adoptid", $adopt->getID())
+            ->buildPasswordField("hidden", "adopttype", $adopt->getType())
+            ->buildPasswordField("hidden", "shoptype", "adoptshop");
+
         $buy = new Button("Buy", "buy", "buy");
-        $buy->setLineBreak(FALSE);
-		$buyForm->add($buy);
-        return $buyForm;				
+        $buy->setLineBreak(false);
+        $buyForm->add($buy);
+        return $buyForm;
     }
-	
-	/**
+
+    /**
      * Magic method __toString for ShopTableHelper class, it reveals that the object is a shop table helper.
      * @access public
      * @return String
      */
-    public function __toString(){
-	    return "This is an instance of Mysidia ShopTableHelper class.";
-	}    
-} 
+    public function __toString(): string
+    {
+        return "This is an instance of Mysidia ShopTableHelper class.";
+    }
+}

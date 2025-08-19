@@ -13,10 +13,8 @@ use Service\Validator\ReadoptValidator;
 
 class PoundService extends MysObject{ 
     
-    private $settings;
-    
-    public function __construct(PoundSettings $settings){
-        $this->settings = $settings;
+    public function __construct(private readonly PoundSettings $settings)
+    {
     }
     
     public function getSettings(){ 

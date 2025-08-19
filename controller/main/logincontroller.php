@@ -29,7 +29,7 @@ class LoginController extends AppController{
 				$this->accountService->login($mysidia->input->post("username"));
 		        $mysidia->session->terminate("clientip");
 			}
-            catch(AuthenticationException $ane){ 
+            catch(AuthenticationException){ 
                 throw new LoginException("fail_details");
             }
 		}		

@@ -48,7 +48,7 @@ function smarty_function_html_image($params, $template)
     $prefix = '';
     $suffix = '';
     $path_prefix = '';
-    $basedir = isset($_SERVER[ 'DOCUMENT_ROOT' ]) ? $_SERVER[ 'DOCUMENT_ROOT' ] : '';
+    $basedir = $_SERVER[ 'DOCUMENT_ROOT' ] ?? '';
     foreach ($params as $_key => $_val) {
         switch ($_key) {
             case 'file':
@@ -57,12 +57,12 @@ function smarty_function_html_image($params, $template)
             case 'dpi':
             case 'path_prefix':
             case 'basedir':
-                $$_key = $_val;
+                ${$_key} = $_val;
                 break;
 
             case 'alt':
                 if (!is_array($_val)) {
-                    $$_key = smarty_function_escape_special_chars($_val);
+                    ${$_key} = smarty_function_escape_special_chars($_val);
                 } else {
                     throw new SmartyException ("html_image: extra attribute '$_key' cannot be an array", E_USER_NOTICE);
                 }
@@ -97,13 +97,13 @@ function smarty_function_html_image($params, $template)
     }
 
     // strip file protocol
-    if (stripos($params[ 'file' ], 'file://') === 0) {
-        $params[ 'file' ] = substr($params[ 'file' ], 7);
+    if (stripos((string) $params[ 'file' ], 'file://') === 0) {
+        $params[ 'file' ] = substr((string) $params[ 'file' ], 7);
     }
 
-    $protocol = strpos($params[ 'file' ], '://');
+    $protocol = strpos((string) $params[ 'file' ], '://');
     if ($protocol !== false) {
-        $protocol = strtolower(substr($params[ 'file' ], 0, $protocol));
+        $protocol = strtolower(substr((string) $params[ 'file' ], 0, $protocol));
     }
 
     if (isset($template->smarty->security_policy)) {
@@ -147,7 +147,7 @@ function smarty_function_html_image($params, $template)
     }
 
     if (isset($params[ 'dpi' ])) {
-        if (strstr($_SERVER[ 'HTTP_USER_AGENT' ], 'Mac')) {
+        if (strstr((string) $_SERVER[ 'HTTP_USER_AGENT' ], 'Mac')) {
             // FIXME: (rodneyrehm) wrong dpi assumption
             // don't know who thought this up… even if it was true in 1998, it's definitely wrong in 2011.
             $dpi_default = 72;

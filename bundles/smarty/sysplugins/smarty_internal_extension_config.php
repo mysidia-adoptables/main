@@ -14,7 +14,7 @@ class Smarty_Internal_Extension_Config
      */
     static function configLoad($obj, $config_file, $sections = null, $scope = 'local')
     {
-        $smarty = isset($obj->smarty) ? $obj->smarty : $obj;
+        $smarty = $obj->smarty ?? $obj;
         $confObj = new $smarty->template_class($config_file, $smarty, $obj);
         $confObj->caching = Smarty::CACHING_OFF;
         $confObj->source = Smarty_Template_Config::load($confObj);
@@ -22,14 +22,14 @@ class Smarty_Internal_Extension_Config
         $confObj->source->scope = $scope;
         $confObj->compiled = Smarty_Template_Compiled::load($confObj);
         if ($confObj->smarty->debugging) {
-            Smarty_Internal_Debug::start_render($confObj);
+            (new Smarty_Internal_Debug())->start_render($confObj);
         }
         $confObj->compiled->render($confObj);
         if ($confObj->smarty->debugging) {
-            Smarty_Internal_Debug::end_render($confObj);
+            (new Smarty_Internal_Debug())->end_render($confObj);
         }
         if ($obj instanceof Smarty_Internal_Template) {
-            $obj->properties['file_dependency'][$confObj->source->uid] = array($confObj->source->filepath, $confObj->source->timestamp, $confObj->source->type);
+            $obj->properties['file_dependency'][$confObj->source->uid] = [$confObj->source->filepath, $confObj->source->timestamp, $confObj->source->type];
         }
     }
 
@@ -91,7 +91,7 @@ class Smarty_Internal_Extension_Config
     static function getConfigVars($obj, $varname = null, $search_parents = true)
     {
         $_ptr = $obj;
-        $var_array = array();
+        $var_array = [];
         while ($_ptr !== null) {
             if (isset($varname)) {
                 if (isset($_ptr->config_vars[$varname])) {
@@ -135,7 +135,7 @@ class Smarty_Internal_Extension_Config
         }
         if ($obj->error_unassigned && $error_enable) {
             // force a notice
-            $x = $$variable;
+            $x = ${$variable};
         }
 
         return null;
@@ -153,7 +153,7 @@ class Smarty_Internal_Extension_Config
         if (isset($name)) {
             unset($obj->config_vars[$name]);
         } else {
-            $obj->config_vars = array();
+            $obj->config_vars = [];
         }
         return $obj;
     }

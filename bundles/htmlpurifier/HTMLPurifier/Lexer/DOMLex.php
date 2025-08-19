@@ -54,12 +54,12 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         if ($config->get('Core.AggressivelyFixLt')) {
             $char = '[^a-z!\/]';
             $comment = "/<!--(.*?)(-->|\z)/is";
-            $html = preg_replace_callback($comment, array($this, 'callbackArmorCommentEntities'), $html);
+            $html = preg_replace_callback($comment, $this->callbackArmorCommentEntities(...), $html);
             do {
                 $old = $html;
-                $html = preg_replace("/<($char)/i", '&lt;\\1', $html);
+                $html = preg_replace("/<($char)/i", '&lt;\\1', (string) $html);
             } while ($html !== $old);
-            $html = preg_replace_callback($comment, array($this, 'callbackUndoCommentSubst'), $html); // fix comments
+            $html = preg_replace_callback($comment, $this->callbackUndoCommentSubst(...), (string) $html); // fix comments
         }
 
         // preprocess html, essential for UTF-8
@@ -73,7 +73,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             $options |= LIBXML_PARSEHUGE;
         }
 
-        set_error_handler(array($this, 'muteErrorHandler'));
+        set_error_handler($this->muteErrorHandler(...));
         // loadHTML() fails on PHP 5.3 when second parameter is given
         if ($options) {
             $doc->loadHTML($html, $options);
@@ -86,7 +86,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
                       getElementsByTagName('body')->item(0);  // <body>
 
         $div = $body->getElementsByTagName('div')->item(0); // <div>
-        $tokens = array();
+        $tokens = [];
         $this->tokenizeDOM($div, $tokens, $config);
         // If the div has a sibling, that means we tripped across
         // a premature </div> tag.  So remove the div we parsed,
@@ -109,8 +109,8 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
     protected function tokenizeDOM($node, &$tokens, $config)
     {
         $level = 0;
-        $nodes = array($level => new HTMLPurifier_Queue(array($node)));
-        $closingNodes = array();
+        $nodes = [$level => new HTMLPurifier_Queue([$node])];
+        $closingNodes = [];
         do {
             while (!$nodes[$level]->isEmpty()) {
                 $node = $nodes[$level]->shift(); // FIFO
@@ -197,10 +197,10 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             $data = $node->data;
             // (note $node->tagname is already normalized)
             if ($last instanceof HTMLPurifier_Token_Start && ($last->name == 'script' || $last->name == 'style')) {
-                $new_data = trim($data);
-                if (substr($new_data, 0, 4) === '<!--') {
+                $new_data = trim((string) $data);
+                if (str_starts_with($new_data, '<!--')) {
                     $data = substr($new_data, 4);
-                    if (substr($data, -3) === '-->') {
+                    if (str_ends_with($data, '-->')) {
                         $data = substr($data, 0, -3);
                     } else {
                         // Highly suspicious! Not sure what to do...
@@ -219,7 +219,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
             // not-well tested: there may be other nodes we have to grab
             return false;
         }
-        $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : array();
+        $attr = $node->hasAttributes() ? $this->transformAttrToAssoc($node->attributes) : [];
         $tag_name = $this->getTagName($node); // Handle variable tagName property
         if (empty($tag_name)) {
             return (bool) $node->childNodes->length;
@@ -260,9 +260,9 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
         // features, namely, the fact that it implements Iterator and
         // has a ->length attribute
         if ($node_map->length === 0) {
-            return array();
+            return [];
         }
-        $array = array();
+        $array = [];
         foreach ($node_map as $attr) {
             $array[$attr->name] = $attr->value;
         }
@@ -286,7 +286,7 @@ class HTMLPurifier_Lexer_DOMLex extends HTMLPurifier_Lexer
      */
     public function callbackUndoCommentSubst($matches)
     {
-        return '<!--' . strtr($matches[1], array('&amp;' => '&', '&lt;' => '<')) . $matches[2];
+        return '<!--' . strtr($matches[1], ['&amp;' => '&', '&lt;' => '<']) . $matches[2];
     }
 
     /**

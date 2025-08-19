@@ -16,12 +16,6 @@ class HTMLPurifier_Token_Text extends HTMLPurifier_Token
      * @type string
      */
     public $name = '#PCDATA';
-    /**< PCDATA tag name compatible with DTD. */
-
-    /**
-     * @type string
-     */
-    public $data;
     /**< Parsed character data of text. */
 
     /**
@@ -37,10 +31,9 @@ class HTMLPurifier_Token_Text extends HTMLPurifier_Token
      * @param int $line
      * @param int $col
      */
-    public function __construct($data, $line = null, $col = null)
+    public function __construct(public $data, $line = null, $col = null)
     {
-        $this->data = $data;
-        $this->is_whitespace = ctype_space($data);
+        $this->is_whitespace = ctype_space((string) $this->data);
         $this->line = $line;
         $this->col = $col;
     }

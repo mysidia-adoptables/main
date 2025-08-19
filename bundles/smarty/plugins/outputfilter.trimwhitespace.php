@@ -19,7 +19,7 @@
  */
 function smarty_outputfilter_trimwhitespace($source)
 {
-    $store = array();
+    $store = [];
     $_store = 0;
     $_offset = 0;
 
@@ -27,7 +27,7 @@ function smarty_outputfilter_trimwhitespace($source)
     $source = preg_replace("/\015\012|\015|\012/", "\n", $source);
 
     // capture Internet Explorer and KnockoutJS Conditional Comments
-    if (preg_match_all('#<!--((\[[^\]]+\]>.*?<!\[[^\]]+\])|(\s*/?ko\s+.+))-->#is', $source, $matches,
+    if (preg_match_all('#<!--((\[[^\]]+\]>.*?<!\[[^\]]+\])|(\s*/?ko\s+.+))-->#is', (string) $source, $matches,
                        PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
         foreach ($matches as $match) {
             $store[] = $match[ 0 ][ 0 ];
@@ -42,12 +42,12 @@ function smarty_outputfilter_trimwhitespace($source)
 
     // Strip all HTML-Comments
     // yes, even the ones in <script> - see http://stackoverflow.com/a/808850/515124
-    $source = preg_replace('#<!--.*?-->#ms', '', $source);
+    $source = preg_replace('#<!--.*?-->#ms', '', (string) $source);
 
     // capture html elements not to be messed with
     $_offset = 0;
     if (preg_match_all('#(<script[^>]*>.*?</script[^>]*>)|(<textarea[^>]*>.*?</textarea[^>]*>)|(<pre[^>]*>.*?</pre[^>]*>)#is',
-                       $source, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+                       (string) $source, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
         foreach ($matches as $match) {
             $store[] = $match[ 0 ][ 0 ];
             $_length = strlen($match[ 0 ][ 0 ]);
@@ -59,22 +59,22 @@ function smarty_outputfilter_trimwhitespace($source)
         }
     }
 
-    $expressions = array(// replace multiple spaces between tags by a single space
+    $expressions = [// replace multiple spaces between tags by a single space
                          // can't remove them entirely, becaue that might break poorly implemented CSS display:inline-block elements
                          '#(:SMARTY@!@|>)\s+(?=@!@SMARTY:|<)#s' => '\1 \2',
                          // remove spaces between attributes (but not in attribute values!)
                          '#(([a-z0-9]\s*=\s*("[^"]*?")|(\'[^\']*?\'))|<[a-z0-9_]+)\s+([a-z/>])#is' => '\1 \5',
                          // note: for some very weird reason trim() seems to remove spaces inside attributes.
                          // maybe a \0 byte or something is interfering?
-                         '#^\s+<#Ss' => '<', '#>\s+$#Ss' => '>',);
+                         '#^\s+<#Ss' => '<', '#>\s+$#Ss' => '>',];
 
-    $source = preg_replace(array_keys($expressions), array_values($expressions), $source);
+    $source = preg_replace(array_keys($expressions), array_values($expressions), (string) $source);
     // note: for some very weird reason trim() seems to remove spaces inside attributes.
     // maybe a \0 byte or something is interfering?
     // $source = trim( $source );
 
     $_offset = 0;
-    if (preg_match_all('#@!@SMARTY:([0-9]+):SMARTY@!@#is', $source, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+    if (preg_match_all('#@!@SMARTY:([0-9]+):SMARTY@!@#is', (string) $source, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
         foreach ($matches as $match) {
             $_length = strlen($match[ 0 ][ 0 ]);
             $replace = $store[ $match[ 1 ][ 0 ] ];

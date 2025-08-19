@@ -4,60 +4,60 @@ namespace Resource\Collection;
 
 /**
  * The SubListIterator Class, extending from the ListIterator Class.
- * It defines a standard Iterator for SubList, it will come in handy. 
+ * It defines a standard Iterator for SubList, it will come in handy.
  * @category Resource
  * @package Collection
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.4
  * @todo Not much at this point.
  *
  */
-
-class SubListIterator extends ListIterator{
+class SubListIterator extends ListIterator
+{
 
     /**
-	 * The offset property, it determines the offset between fromIndex and toIndex
-	 * @access private
-	 * @var int
-     */	
-	private $offset;
-	
-    /**
-	 * The size property, it specifies the current size of the ArrayList.
-	 * @access private
-	 * @var int
-     */		
-	private $size;
+     * The size property, it specifies the current size of the ArrayList.
+     * @access private
+     * @var int
+     */
+    private $size;
 
-	/**
-     * Constructor of SubListIterator Class, it initializes the ListIterator with basic properties.    
-     * @param int|Collective  $param
+    /**
+     * Constructor of SubListIterator Class, it initializes the ListIterator with basic properties.
+     * @param int|Collective $param
      * @access public
      * @return void
-     */	
-	public function __construct(Lists $list, $fromIndex, $toIndex){
-	    $this->offset = $fromIndex;
-		$this->size = $toIndex - $fromIndex;
-		parent::__construct($fromIndex, $list);
-	}
+     * @param int $fromIndex
+     */
+    public function __construct(Lists $list, /**
+     * The offset property, it determines the offset between fromIndex and toIndex
+     * @access private
+     */
+    private $offset, $toIndex)
+    {
+        $this->size = $toIndex - $this->offset;
+        parent::__construct($this->offset, $list);
+    }
 
- 	/**
+    /**
      * The hasNext method, checks if the iterator has not reached the end of its iteration yet.
      * @access public
-     * @return Boolean
-     */		
-	public function hasNext(){
-	    return ($this->nextIndex() < $this->size);
-	}
-	
- 	/**
+     * @return bool
+     */
+    public function hasNext()
+    {
+        return ($this->nextIndex() < $this->size);
+    }
+
+    /**
      * The hasPrevious method, checks if the list iterator has objects before its current index.
      * @access public
-     * @return Boolean
-     */		
-	public function hasPrevious(){
-	    return ($this->previousIndex() >= 0);
-	}
+     * @return bool
+     */
+    public function hasPrevious()
+    {
+        return ($this->previousIndex() >= 0);
+    }
 }

@@ -25,8 +25,8 @@ function smarty_function_escape_special_chars($string)
             $string = htmlspecialchars($string, ENT_COMPAT, Smarty::$_CHARSET, false);
         } else {
             $string = preg_replace('!&(#?\w+);!', '%%%SMARTY_START%%%\\1%%%SMARTY_END%%%', $string);
-            $string = htmlspecialchars($string);
-            $string = str_replace(array('%%%SMARTY_START%%%', '%%%SMARTY_END%%%'), array('&', ';'), $string);
+            $string = htmlspecialchars((string) $string);
+            $string = str_replace(['%%%SMARTY_START%%%', '%%%SMARTY_END%%%'], ['&', ';'], $string);
         }
     }
 

@@ -45,7 +45,7 @@ function smarty_modifier_capitalize($string, $uc_digits = false, $lc_rest = fals
         }
         $upper_string =
             preg_replace_callback("!((^|\s)['\"])(\w)!" . Smarty::$_UTF8_MODIFIER, 'smarty_mod_cap_mbconvert2_cb',
-                                  $upper_string);
+                                  (string) $upper_string);
         return $upper_string;
     }
 
@@ -68,7 +68,7 @@ function smarty_modifier_capitalize($string, $uc_digits = false, $lc_rest = fals
         }
     }
     $upper_string = preg_replace_callback("!((^|\s)['\"])(\w)!" . Smarty::$_UTF8_MODIFIER, 'smarty_mod_cap_ucfirst2_cb',
-                                          $upper_string);
+                                          (string) $upper_string);
     return $upper_string;
 }
 
@@ -82,20 +82,20 @@ function smarty_modifier_capitalize($string, $uc_digits = false, $lc_rest = fals
  */
 function smarty_mod_cap_mbconvert_cb($matches)
 {
-    return stripslashes($matches[ 1 ]) . mb_convert_case(stripslashes($matches[ 2 ]), MB_CASE_UPPER, Smarty::$_CHARSET);
+    return stripslashes((string) $matches[ 1 ]) . mb_convert_case(stripslashes((string) $matches[ 2 ]), MB_CASE_UPPER, Smarty::$_CHARSET);
 }
 
 function smarty_mod_cap_mbconvert2_cb($matches)
 {
-    return stripslashes($matches[ 1 ]) . mb_convert_case(stripslashes($matches[ 3 ]), MB_CASE_UPPER, Smarty::$_CHARSET);
+    return stripslashes((string) $matches[ 1 ]) . mb_convert_case(stripslashes((string) $matches[ 3 ]), MB_CASE_UPPER, Smarty::$_CHARSET);
 }
 
 function smarty_mod_cap_ucfirst_cb($matches)
 {
-    return stripslashes($matches[ 1 ]) . ucfirst(stripslashes($matches[ 2 ]));
+    return stripslashes((string) $matches[ 1 ]) . ucfirst(stripslashes((string) $matches[ 2 ]));
 }
 
 function smarty_mod_cap_ucfirst2_cb($matches)
 {
-    return stripslashes($matches[ 1 ]) . ucfirst(stripslashes($matches[ 3 ]));
+    return stripslashes((string) $matches[ 1 ]) . ucfirst(stripslashes((string) $matches[ 3 ]));
 }

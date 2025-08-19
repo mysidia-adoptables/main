@@ -22,23 +22,6 @@
 class Smarty_Internal_Config {
 
     /**
-     * Samrty instance
-     *
-     * @var Smarty object
-     */
-    public $smarty = null;
-    /**
-     * Object of config var storage
-     *
-     * @var object
-     */
-    public $data = null;
-    /**
-     * Config resource
-     * @var string
-     */
-    public $config_resource = null;
-    /**
      * Compiled config file
      *
      * @var string
@@ -75,11 +58,21 @@ class Smarty_Internal_Config {
      * @param Smarty $smarty Smarty instance
      * @param object $data object for config vars storage
      */
-    public function __construct($config_resource, $smarty, $data = null)
+    public function __construct(
+        /**
+         * Config resource
+         */
+        public $config_resource,
+        /**
+         * Samrty instance
+         */
+        public $smarty,
+        /**
+         * Object of config var storage
+         */
+        public $data = null
+    )
     {
-        $this->data = $data;
-        $this->smarty = $smarty;
-        $this->config_resource = $config_resource;
     }
 
     /**
@@ -89,9 +82,7 @@ class Smarty_Internal_Config {
      */
     public function getCompiledFilepath()
     {
-        return $this->compiled_filepath === null ?
-                ($this->compiled_filepath = $this->buildCompiledFilepath()) :
-                $this->compiled_filepath;
+        return $this->compiled_filepath ?? $this->compiled_filepath = $this->buildCompiledFilepath();
     }
 
     /**
@@ -127,9 +118,7 @@ class Smarty_Internal_Config {
      */
     public function getCompiledTimestamp()
     {
-        return $this->compiled_timestamp === null
-            ? ($this->compiled_timestamp = (file_exists($this->getCompiledFilepath())) ? filemtime($this->getCompiledFilepath()) : false)
-            : $this->compiled_timestamp;
+        return $this->compiled_timestamp ?? $this->compiled_timestamp = (file_exists($this->getCompiledFilepath())) ? filemtime($this->getCompiledFilepath()) : false;
     }
 
     /**
@@ -141,9 +130,7 @@ class Smarty_Internal_Config {
      */
     public function mustCompile()
     {
-        return $this->mustCompile === null ?
-            $this->mustCompile = ($this->smarty->force_compile || $this->getCompiledTimestamp () === false || $this->smarty->compile_check && $this->getCompiledTimestamp () < $this->source->timestamp):
-            $this->mustCompile;
+        return $this->mustCompile ?? $this->mustCompile = ($this->smarty->force_compile || $this->getCompiledTimestamp () === false || $this->smarty->compile_check && $this->getCompiledTimestamp () < $this->source->timestamp);
     }
 
     /**
@@ -196,7 +183,7 @@ class Smarty_Internal_Config {
         }
         // compiling succeded
         // write compiled template
-        Smarty_Internal_Write_File::writeFile($this->getCompiledFilepath(), $this->getCompiledConfig(), $this->smarty);
+        (new Smarty_Internal_Write_File())->writeFile($this->getCompiledFilepath(), $this->getCompiledConfig(), $this->smarty);
     }
 
     /**
@@ -208,7 +195,7 @@ class Smarty_Internal_Config {
     public function loadConfigVars($sections = null, $scope = 'local')
     {
         if ($this->data instanceof Smarty_Internal_Template) {
-            $this->data->properties['file_dependency'][sha1($this->source->filepath)] = array($this->source->filepath, $this->source->timestamp, 'file');
+            $this->data->properties['file_dependency'][sha1($this->source->filepath)] = [$this->source->filepath, $this->source->timestamp, 'file'];
         }
         if ($this->mustCompile()) {
             $this->compileConfigSource();
@@ -228,7 +215,7 @@ class Smarty_Internal_Config {
                 $scope_ptr = $scope_ptr->parent;
             }
         }
-        $_config_vars = array();
+        $_config_vars = [];
         include($this->getCompiledFilepath());
         // copy global config vars
         foreach ($_config_vars['vars'] as $variable => $value) {

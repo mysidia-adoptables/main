@@ -187,7 +187,7 @@ class Form extends Container{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is The Form class.";
 	}
 }

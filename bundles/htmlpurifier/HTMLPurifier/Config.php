@@ -37,7 +37,7 @@ class HTMLPurifier_Config
      * @see getSerial() for more info.
      * @type string[]
      */
-    protected $serials = array();
+    protected $serials = [];
 
     /**
      * Serial for entire configuration object.
@@ -105,7 +105,7 @@ class HTMLPurifier_Config
      */
     public function __construct($definition, $parent = null)
     {
-        $parent = $parent ? $parent : $definition->defaultPlist;
+        $parent = $parent ?: $definition->defaultPlist;
         $this->plist = new HTMLPurifier_PropertyList($parent);
         $this->def = $definition; // keep a copy around for checking
         $this->parser = new HTMLPurifier_VarParser_Flexible();
@@ -195,7 +195,7 @@ class HTMLPurifier_Config
             return;
         }
         if ($this->lock) {
-            list($ns) = explode('.', $key);
+            [$ns] = explode('.', $key);
             if ($ns !== $this->lock) {
                 $this->triggerError(
                     'Cannot get value of namespace ' . $ns . ' when lock for ' .
@@ -278,9 +278,9 @@ class HTMLPurifier_Config
         if (!$this->finalized) {
             $this->autoFinalize();
         }
-        $ret = array();
+        $ret = [];
         foreach ($this->plist->squash() as $name => $value) {
-            list($ns, $key) = explode('.', $name, 2);
+            [$ns, $key] = explode('.', (string) $name, 2);
             $ret[$ns][$key] = $value;
         }
         return $ret;
@@ -295,14 +295,14 @@ class HTMLPurifier_Config
      */
     public function set($key, $value, $a = null)
     {
-        if (strpos($key, '.') === false) {
+        if (!str_contains($key, '.')) {
             $namespace = $key;
             $directive = $value;
             $value = $a;
             $key = "$key.$directive";
             $this->triggerError("Using deprecated API: use \$config->set('$key', ...) instead", E_USER_NOTICE);
         } else {
-            list($namespace) = explode('.', $key);
+            [$namespace] = explode('.', $key);
         }
         if ($this->isFinalized('Cannot set directive after finalization')) {
             return;
@@ -319,7 +319,7 @@ class HTMLPurifier_Config
         if (isset($def->isAlias)) {
             if ($this->aliasMode) {
                 $this->triggerError(
-                    'Double-aliases not allowed, please fix '.
+                    'Double-aliases not allowed, please fix ' .
                     'ConfigSchema bug with' . $key,
                     E_USER_ERROR
                 );
@@ -345,7 +345,7 @@ class HTMLPurifier_Config
 
         try {
             $value = $this->parser->parse($value, $type, $allow_null);
-        } catch (HTMLPurifier_VarParserException $e) {
+        } catch (HTMLPurifier_VarParserException) {
             $this->triggerError(
                 'Value for ' . $key . ' is of invalid type, should be ' .
                 HTMLPurifier_VarParser::getTypeName($type),
@@ -389,7 +389,7 @@ class HTMLPurifier_Config
      */
     private function _listify($lookup)
     {
-        $list = array();
+        $list = [];
         foreach ($lookup as $name => $b) {
             $list[] = $name;
         }
@@ -467,8 +467,8 @@ class HTMLPurifier_Config
      *        We probably won't ever change this default, as much as the
      *        maybe semantics is the "right thing to do."
      *
-     * @throws HTMLPurifier_Exception
      * @return HTMLPurifier_Definition|null
+     * @throws HTMLPurifier_Exception
      */
     public function getDefinition($type, $raw = false, $optimized = false)
     {
@@ -653,7 +653,7 @@ class HTMLPurifier_Config
     {
         return $this->getDefinition('HTML', true, true);
     }
-    
+
     /**
      * @return HTMLPurifier_CSSDefinition|null
      */
@@ -661,7 +661,7 @@ class HTMLPurifier_Config
     {
         return $this->getDefinition('CSS', true, true);
     }
-    
+
     /**
      * @return HTMLPurifier_URIDefinition|null
      */
@@ -683,13 +683,13 @@ class HTMLPurifier_Config
         }
         foreach ($config_array as $key => $value) {
             $key = str_replace('_', '.', $key);
-            if (strpos($key, '.') !== false) {
+            if (str_contains($key, '.')) {
                 $this->set($key, $value);
             } else {
                 $namespace = $key;
                 $namespace_values = $value;
                 foreach ($namespace_values as $directive => $value2) {
-                    $this->set($namespace .'.'. $directive, $value2);
+                    $this->set($namespace . '.' . $directive, $value2);
                 }
             }
         }
@@ -712,16 +712,16 @@ class HTMLPurifier_Config
         }
         if ($allowed !== true) {
             if (is_string($allowed)) {
-                $allowed = array($allowed);
+                $allowed = [$allowed];
             }
-            $allowed_ns = array();
-            $allowed_directives = array();
-            $blacklisted_directives = array();
+            $allowed_ns = [];
+            $allowed_directives = [];
+            $blacklisted_directives = [];
             foreach ($allowed as $ns_or_directive) {
-                if (strpos($ns_or_directive, '.') !== false) {
+                if (str_contains((string) $ns_or_directive, '.')) {
                     // directive
                     if ($ns_or_directive[0] == '-') {
-                        $blacklisted_directives[substr($ns_or_directive, 1)] = true;
+                        $blacklisted_directives[substr((string) $ns_or_directive, 1)] = true;
                     } else {
                         $allowed_directives[$ns_or_directive] = true;
                     }
@@ -731,9 +731,9 @@ class HTMLPurifier_Config
                 }
             }
         }
-        $ret = array();
+        $ret = [];
         foreach ($schema->info as $key => $def) {
-            list($ns, $directive) = explode('.', $key, 2);
+            [$ns, $directive] = explode('.', (string) $key, 2);
             if ($allowed !== true) {
                 if (isset($blacklisted_directives["$ns.$directive"])) {
                     continue;
@@ -748,7 +748,7 @@ class HTMLPurifier_Config
             if ($directive == 'DefinitionID' || $directive == 'DefinitionRev') {
                 continue;
             }
-            $ret[] = array($ns, $directive);
+            $ret[] = [$ns, $directive];
         }
         return $ret;
     }
@@ -760,7 +760,7 @@ class HTMLPurifier_Config
      * @param array $array $_GET or $_POST array to import
      * @param string|bool $index Index/name that the config variables are in
      * @param array|bool $allowed List of allowed namespaces/directives
-     * @param bool $mq_fix Boolean whether or not to enable magic quotes fix
+     * @param bool $mq_fix bool whether or not to enable magic quotes fix
      * @param HTMLPurifier_ConfigSchema $schema Schema to use, if not global copy
      *
      * @return mixed
@@ -778,12 +778,12 @@ class HTMLPurifier_Config
      * @param array $array $_GET or $_POST array to import
      * @param string|bool $index Index/name that the config variables are in
      * @param array|bool $allowed List of allowed namespaces/directives
-     * @param bool $mq_fix Boolean whether or not to enable magic quotes fix
+     * @param bool $mq_fix bool whether or not to enable magic quotes fix
      */
     public function mergeArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true)
     {
-         $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
-         $this->loadArray($ret);
+        $ret = HTMLPurifier_Config::prepareArrayFromForm($array, $index, $allowed, $mq_fix, $this->def);
+        $this->loadArray($ret);
     }
 
     /**
@@ -793,7 +793,7 @@ class HTMLPurifier_Config
      * @param array $array $_GET or $_POST array to import
      * @param string|bool $index Index/name that the config variables are in
      * @param array|bool $allowed List of allowed namespaces/directives
-     * @param bool $mq_fix Boolean whether or not to enable magic quotes fix
+     * @param bool $mq_fix bool whether or not to enable magic quotes fix
      * @param HTMLPurifier_ConfigSchema $schema Schema to use, if not global copy
      *
      * @return array
@@ -801,14 +801,14 @@ class HTMLPurifier_Config
     public static function prepareArrayFromForm($array, $index = false, $allowed = true, $mq_fix = true, $schema = null)
     {
         if ($index !== false) {
-            $array = (isset($array[$index]) && is_array($array[$index])) ? $array[$index] : array();
+            $array = (isset($array[$index]) && is_array($array[$index])) ? $array[$index] : [];
         }
         $mq = $mq_fix && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc();
 
         $allowed = HTMLPurifier_Config::getAllowedDirectivesForForm($allowed, $schema);
-        $ret = array();
+        $ret = [];
         foreach ($allowed as $key) {
-            list($ns, $directive) = $key;
+            [$ns, $directive] = $key;
             $skey = "$ns.$directive";
             if (!empty($array["Null_$skey"])) {
                 $ret[$ns][$directive] = null;

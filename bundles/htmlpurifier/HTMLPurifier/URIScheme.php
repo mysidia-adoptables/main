@@ -77,7 +77,7 @@ abstract class HTMLPurifier_URIScheme
         ) {
             do {
                 if (is_null($uri->scheme)) {
-                    if (substr($uri->path, 0, 2) != '//') {
+                    if (!str_starts_with((string) $uri->path, '//')) {
                         $uri->host = null;
                         break;
                     }

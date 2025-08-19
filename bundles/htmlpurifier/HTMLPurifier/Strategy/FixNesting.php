@@ -70,13 +70,13 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         // it is organized by parent elements, similar to $stack,
         // but it is only populated when an element with exclusions is
         // processed, i.e. there won't be empty exclusions.
-        $exclude_stack = array($definition->info_parent_def->excludes);
+        $exclude_stack = [$definition->info_parent_def->excludes];
 
         // variable that contains the start token while we are processing
         // nodes. This enables error reporting to do its job
         $node = $top_node;
         // dummy token
-        list($token, $d) = $node->toTokenPair();
+        [$token, $d] = $node->toTokenPair();
         $context->register('CurrentNode', $node);
         $context->register('CurrentToken', $token);
 
@@ -101,15 +101,15 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         // children.
 
         $parent_def = $definition->info_parent_def;
-        $stack = array(
-            array($top_node,
+        $stack = [
+            [$top_node,
                   $parent_def->descendants_are_inline,
                   $parent_def->excludes, // exclusions
-                  0)
-            );
+                  0]
+            ];
 
         while (!empty($stack)) {
-            list($node, $is_inline, $excludes, $ix) = array_pop($stack);
+            [$node, $is_inline, $excludes, $ix] = array_pop($stack);
             // recursive call
             $go = false;
             $def = empty($stack) ? $definition->info_parent_def : $definition->info[$node->name];
@@ -117,19 +117,19 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 $child = $node->children[$ix++];
                 if ($child instanceof HTMLPurifier_Node_Element) {
                     $go = true;
-                    $stack[] = array($node, $is_inline, $excludes, $ix);
-                    $stack[] = array($child,
+                    $stack[] = [$node, $is_inline, $excludes, $ix];
+                    $stack[] = [$child,
                         // ToDo: I don't think it matters if it's def or
                         // child_def, but double check this...
                         $is_inline || $def->descendants_are_inline,
                         empty($def->excludes) ? $excludes
                                               : array_merge($excludes, $def->excludes),
-                        0);
+                        0];
                     break;
                 }
             };
             if ($go) continue;
-            list($token, $d) = $node->toTokenPair();
+            [$token, $d] = $node->toTokenPair();
             // base case
             if ($excludes_enabled && isset($excludes[$node->name])) {
                 $node->dead = true;
@@ -138,7 +138,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                 // XXX I suppose it would be slightly more efficient to
                 // avoid the allocation here and have children
                 // strategies handle it
-                $children = array();
+                $children = [];
                 foreach ($node->children as $child) {
                     if (!$child->dead) $children[] = $child;
                 }

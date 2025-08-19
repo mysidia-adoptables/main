@@ -3,23 +3,23 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/green/header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
   'version' => '3.1.30',
   'unifunc' => 'content_610d72dff14220_53569543',
   'has_nocache_code' => false,
   'file_dependency' => 
-  array (
+   [
     '29a6de443f2a9403af275a385c68f96998f9bd05' => 
-    array (
+     [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/green/header.tpl',
       1 => 1628266009,
       2 => 'file',
-    ),
-  ),
+    ],
+  ],
   'includes' => 
-  array (
-  ),
-),false)) {
+   [
+  ],
+],false)) {
 function content_610d72dff14220_53569543 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -10,11 +10,8 @@ use Resource\Utility\Date;
 
 class PromocodeValidator extends Validator{ 
     
-    private $promocode;
-
-    public function __construct(Promocode $promocode, ArrayObject $validations){
-        parent::__construct($validations);
-	    $this->promocode = $promocode;	
+    public function __construct(private readonly Promocode $promocode, ArrayObject $validations){
+        parent::__construct($validations);	
 	}   
  
     protected function checkUser(){

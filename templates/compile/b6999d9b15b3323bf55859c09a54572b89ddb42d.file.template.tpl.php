@@ -1,22 +1,22 @@
 <?php /* Smarty version Smarty-3.1.12, created on 2020-12-04 16:52:06
          compiled from "/home/mysidia/public_html/site/mys135rc/templates/main/template.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:8606502175fca6936559495-14929671%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
-$_valid = $_smarty_tpl->decodeProperties(array (
+$_valid = $_smarty_tpl->decodeProperties( [
   'file_dependency' => 
-  array (
+   [
     'b6999d9b15b3323bf55859c09a54572b89ddb42d' => 
-    array (
+     [
       0 => '/home/mysidia/public_html/site/mys135rc/templates/main/template.tpl',
       1 => 1607098380,
       2 => 'file',
-    ),
-  ),
+    ],
+  ],
   'nocache_hash' => '8606502175fca6936559495-14929671',
   'function' => 
-  array (
-  ),
+   [
+  ],
   'variables' => 
-  array (
+   [
     'root' => 0,
     'temp' => 0,
     'theme' => 0,
@@ -27,12 +27,12 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'document_title' => 0,
     'document_content' => 0,
     'footer' => 0,
-  ),
+  ],
   'has_nocache_code' => false,
   'version' => 'Smarty-3.1.12',
   'unifunc' => 'content_5fca693658e894_38138821',
-),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_5fca693658e894_38138821')) {function content_5fca693658e894_38138821($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate (((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
+],false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_5fca693658e894_38138821')) {function content_5fca693658e894_38138821($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate (((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, [], 0);?>
 
 
 <body>

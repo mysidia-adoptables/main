@@ -19,12 +19,6 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
     public $allow_empty = false;
 
     /**
-     * Allowed child pattern as defined by the DTD.
-     * @type string
-     */
-    public $dtd_regex;
-
-    /**
      * PCRE regex derived from $dtd_regex.
      * @type string
      */
@@ -33,9 +27,12 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
     /**
      * @param $dtd_regex Allowed child pattern from the DTD
      */
-    public function __construct($dtd_regex)
+    public function __construct(/**
+     * Allowed child pattern as defined by the DTD.
+     * @type string
+     */
+    public $dtd_regex)
     {
-        $this->dtd_regex = $dtd_regex;
         $this->_compileRegex();
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace Resource\Core;
+
 use Exception;
 use Resource\Collection\ArrayList;
 use Resource\Collection\HashMap;
@@ -13,108 +14,114 @@ use Resource\Native\Objective;
  * It incorporates singleton design, although it holds more information than a simple singleton class.
  * @category Resource
  * @package Utility
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.2
  * @todo Not much at this point.
  *
  */
+class Registry extends MysObject
+{
 
-class Registry extends MysObject{
-
-	/**
-	 * The core property, specfies core objects that cannot be removed from registry by client users.
-	 * @access protected
-	 * @var ArrayList
-     */	 
+    /**
+     * The core property, specfies core objects that cannot be removed from registry by client users.
+     * @access protected
+     * @var ArrayList
+     */
     protected $core;
 
-	/**
-	 * The objects property, stores all objects set in this Registry with a HashMap.
-	 * @access protected
-	 * @var HashMap
-     */	 	
-	protected $objects;
-    
-	/**
-	 * The instance property, defines an instance of the Registry singleton object.
-	 * @access protected
-	 * @var Registry
-	 * @static
-     */	 	
-	protected static $instance;
+    /**
+     * The objects property, stores all objects set in this Registry with a HashMap.
+     * @access protected
+     * @var HashMap
+     */
+    protected $objects;
 
-	/**
-     * Constructor of Registry Class, it initializes the singleton instance of this Registry Class. 
+    /**
+     * The instance property, defines an instance of the Registry singleton object.
+     * @access protected
+     * @var Registry
+     * @static
+     */
+    protected static $instance;
+
+    /**
+     * Constructor of Registry Class, it initializes the singleton instance of this Registry Class.
      * This constructor is protected, which means it can only be called within the class or its child classes.
      * @access public
      * @return void
-     */	
-    protected function __construct(){
-	    $this->core = new ArrayList(16);
-        $this->objects = new HashMap;	
+     */
+    protected function __construct()
+    {
+        $this->core = new ArrayList(16);
+        $this->objects = new HashMap;
     }
- 
- 	/**
+
+    /**
      * The magic method clone, for Registry the clone operation is disabled.
      * @access public
-     * @return Boolean
+     * @return bool
      */
-    public function __clone(){
-	    return FALSE;
+    public function __clone()
+    {
+        return false;
     }
- 
+
     /**
      * The clear method, unset all registered objects, except for system objects
-	 * This is not a static method, must call Registry::getInstance() before to use it.
+     * This is not a static method, must call Registry::getInstance() before to use it.
      * @access public
      * @return void
-     */   
-    public function clear(){
-	    $this->objects->clear();
-    }    
- 
-   	/**
-     * The contains method, checks if an object exists in the Registry.
-	 * @param Objective  $key
-     * @access public
-     * @return Boolean
-	 * @static
      */
-    public static function contains(Objective $key){
+    public function clear()
+    {
+        $this->objects->clear();
+    }
+
+    /**
+     * The contains method, checks if an object exists in the Registry.
+     * @param Objective $key
+     * @access public
+     * @return bool
+     * @static
+     */
+    public static function contains(Objective $key)
+    {
         return self::$instance->getObjects()->containsKey($key);
     }
- 
- 	/**
+
+    /**
      * The extract method, acquires a collection of stored objects from the Registry.
-	 * This is not a static method, must call Registry::getInstance() before to use it.
+     * This is not a static method, must call Registry::getInstance() before to use it.
      * @access public
      * @return HashMap
-     */   
-    public function extract(){
-		$num = func_num_args();
-		$keys = func_get_args();
-		if($num == 0) return $this->objects;
-		
-		$objects = new HashMap;
-	    foreach($keys as $key){
-		    $objects->put(new MysString($key), self::get($key));
-	    }
-		return $objects;
-    }    
- 
+     */
+    public function extract()
+    {
+        $num = func_num_args();
+        $keys = func_get_args();
+        if ($num == 0) return $this->objects;
+
+        $objects = new HashMap;
+        foreach ($keys as $key) {
+            $objects->put(new MysString($key), self::get($key));
+        }
+        return $objects;
+    }
+
     /**
      * The get method, obtains an object from the Registry if it exists.
-	 * @param String  $key
+     * @param String $key
      * @access public
      * @return Object
-	 * @static
+     * @static
      */
-    public static function get($key){
+    public static function get($key)
+    {
         $key = new MysString($key);
-	    if(!self::contains($key)) throw new Exception("Cannot retrieve registered object");
-	    return self::$instance->getObjects()->get($key);
+        if (!self::contains($key)) throw new Exception("Cannot retrieve registered object");
+        return self::$instance->getObjects()->get($key);
     }
 
     /**
@@ -122,84 +129,91 @@ class Registry extends MysObject{
      * @access protected
      * @return ArrayList
      */
-    public function getCore(){
-	    return $this->core;
-    }	
-	
+    public function getCore()
+    {
+        return $this->core;
+    }
+
     /**
      * The getObjects method, getter method for property $objects.
      * @access protected
      * @return HashMap
      */
-    public function getObjects(){
-	    return $this->objects;
+    public function getObjects()
+    {
+        return $this->objects;
     }
 
-  	/**
+    /**
      * The getInstance method, getter method for static property $instance.
-     * An instance is created if it does not exist, or this instance is immediately returned. 
+     * An instance is created if it does not exist, or this instance is immediately returned.
      * @access public
      * @return Registry
-	 * @static
+     * @static
      */
-    public static function getInstance(){
-	    if(!self::$instance) self::$instance = new static;
-	    return self::$instance;
+    public static function getInstance()
+    {
+        if (!self::$instance) self::$instance = new static;
+        return self::$instance;
     }
-	
+
     /**
-     * The lock method, registers an object as system object so they are not deletable. 
-     * @param Objective  $key
+     * The lock method, registers an object as system object so they are not deletable.
+     * @param Objective $key
      * @access public
      * @return void
      */
-    public function lock(Objective $key){
+    public function lock(Objective $key)
+    {
         $this->core->add($key);
-    }	
-	
-	/**
+    }
+
+    /**
      * The insert method, fill the Registry with a collection of objects.
-	 * This is not a static method, must call Registry::getInstance() before to use it.
-	 * @param Mappable  $map
-	 * @param Boolean  $overwrite
+     * This is not a static method, must call Registry::getInstance() before to use it.
+     * @param Mappable $map
+     * @param bool $overwrite
      * @access public
      * @return void
-     */   
-    public function insert(Mappable $map, $overwrite = TRUE){
-	    $iterator = $map->iterator();
-		while($iterator->hasNext()){
-		    $next = $iterator->next();
-		    self::set($next->getKey(), $next->getValue(), $overwrite);
-		}
-    }    
-	
+     */
+    public function insert(Mappable $map, $overwrite = true)
+    {
+        $iterator = $map->iterator();
+        while ($iterator->hasNext()) {
+            $next = $iterator->next();
+            self::set($next->getKey(), $next->getValue(), $overwrite);
+        }
+    }
+
     /**
      * The remove method, removes an object from Registry.
-	 * @param Objective  $key
+     * @param Objective $key
      * @access public
      * @return void
-	 * @static
-     */ 
-    public static function remove(Objective $key){
-		if(self::$instance->getCore()->contains($key)) throw new Exception("Cannot remove core objects from Registry!");
-		self::$instance->getObjects()->remove($key); 
-    }	
-	
+     * @static
+     */
+    public static function remove(Objective $key)
+    {
+        if (self::$instance->getCore()->contains($key)) throw new Exception("Cannot remove core objects from Registry!");
+        self::$instance->getObjects()->remove($key);
+    }
+
     /**
      * The set method, assigns an object to Registry at a given key.
-	 * If the last parameter is supplied, Registry will not allow overwrite if an object with the given key already exists.
-	 * @param String  $key
-	 * @param Objective  $object
-	 * @param Boolean  $overwrite
-     * @param Boolean  $lock
+     * If the last parameter is supplied, Registry will not allow overwrite if an object with the given key already exists.
+     * @param String $key
+     * @param Objective $object
+     * @param bool $overwrite
+     * @param bool $lock
      * @access public
      * @return void
-	 * @static
-     */	
-    public static function set($key, Objective $object, $overwrite = TRUE, $lock = FALSE){
-        if(!($key instanceof MysString)) $key = new MysString($key);
-        if($lock) self::$instance->lock($key);
-	    if(!$overwrite && self::contains($key)) throw new Exception("Cannot overwrite registered object");
-	    else self::$instance->getObjects()->put($key, $object);
-    } 
+     * @static
+     */
+    public static function set($key, Objective $object, $overwrite = true, $lock = false)
+    {
+        if (!($key instanceof MysString)) $key = new MysString($key);
+        if ($lock) self::$instance->lock($key);
+        if (!$overwrite && self::contains($key)) throw new Exception("Cannot overwrite registered object");
+        else self::$instance->getObjects()->put($key, $object);
+    }
 }

@@ -93,7 +93,7 @@ class Align extends Element{
      * @access public
      * @return String
      */
-    public function __toString(){
+    public function __toString(): string{
 	    return "This is an instance of Mysidia Align class.";
 	}    
 } 

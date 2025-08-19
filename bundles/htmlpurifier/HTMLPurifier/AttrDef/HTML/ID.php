@@ -12,22 +12,11 @@
 class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
 {
 
-    // selector is NOT a valid thing to use for IDREFs, because IDREFs
-    // *must* target IDs that exist, whereas selector #ids do not.
-
-    /**
-     * Determines whether or not we're validating an ID in a CSS
-     * selector context.
-     * @type bool
-     */
-    protected $selector;
-
     /**
      * @param bool $selector
      */
-    public function __construct($selector = false)
+    public function __construct(protected $selector = false)
     {
-        $this->selector = $selector;
     }
 
     /**
@@ -52,7 +41,7 @@ class HTMLPurifier_AttrDef_HTML_ID extends HTMLPurifier_AttrDef
         if ($prefix !== '') {
             $prefix .= $config->get('Attr.IDPrefixLocal');
             // prevent re-appending the prefix
-            if (strpos($id, $prefix) !== 0) {
+            if (!str_starts_with($id, $prefix)) {
                 $id = $prefix . $id;
             }
         } elseif ($config->get('Attr.IDPrefixLocal') !== '') {

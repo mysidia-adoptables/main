@@ -24,12 +24,12 @@ function smarty_modifiercompiler_unescape($params)
         $params[ 1 ] = 'html';
     }
     if (!isset($params[ 2 ])) {
-        $params[ 2 ] = '\'' . addslashes(Smarty::$_CHARSET) . '\'';
+        $params[ 2 ] = '\'' . addslashes((string) Smarty::$_CHARSET) . '\'';
     } else {
         $params[ 2 ] = "'" . $params[ 2 ] . "'";
     }
 
-    switch (trim($params[ 1 ], '"\'')) {
+    switch (trim((string) $params[ 1 ], '"\'')) {
         case 'entity':
         case 'htmlall':
             if (Smarty::$_MBSTRING) {

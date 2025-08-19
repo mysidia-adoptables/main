@@ -18,7 +18,7 @@ class VmessageController extends AppController{
         if($mysidia->systems->vmessages != "enabled") throw new NoPermissionException("disabled");		            	
     }
 
-    public function index(){
+    public function index(): never{
         throw new InvalidActionException("global_action");
     }
 

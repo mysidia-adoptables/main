@@ -63,7 +63,7 @@ class Smarty_Internal_Extension_Clear
             $_cacheDirs = new RecursiveDirectoryIterator($_dir);
             $_cache = new RecursiveIteratorIterator($_cacheDirs, RecursiveIteratorIterator::CHILD_FIRST);
             foreach ($_cache as $_file) {
-                if (substr(basename($_file->getPathname()), 0, 1) == '.' || strpos($_file, '.svn') !== false) {
+                if (str_starts_with(basename((string) $_file->getPathname()), '.') || str_contains((string) $_file, '.svn')) {
                     continue;
                 }
                 // directory ?

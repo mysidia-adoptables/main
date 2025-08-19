@@ -44,6 +44,6 @@ class Smarty_Internal_Undefined
      */
     public function __call($name, $args)
     {
-        throw new SmartyException(get_class($args[ 0 ]) . "->{$name}() undefined method");
+        throw new SmartyException($args[ 0 ]::class . "->{$name}() undefined method");
     }
 }

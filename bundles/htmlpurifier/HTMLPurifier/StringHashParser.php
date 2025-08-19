@@ -62,7 +62,7 @@ class HTMLPurifier_StringHashParser
         if (!file_exists($file)) {
             return false;
         }
-        $ret = array();
+        $ret = [];
         $fh = fopen($file, 'r');
         if (!$fh) {
             return false;
@@ -87,7 +87,7 @@ class HTMLPurifier_StringHashParser
     {
         $state   = false;
         $single  = false;
-        $ret     = array();
+        $ret     = [];
         do {
             $line = fgets($fh);
             if ($line === false) {
@@ -112,9 +112,9 @@ class HTMLPurifier_StringHashParser
                 continue;
             } elseif (!$state) {
                 $single = true;
-                if (strpos($line, ':') !== false) {
+                if (str_contains($line, ':')) {
                     // Single-line declaration
-                    list($state, $line) = explode(':', $line, 2);
+                    [$state, $line] = explode(':', $line, 2);
                     $line = trim($line);
                 } else {
                     // Use default declaration
