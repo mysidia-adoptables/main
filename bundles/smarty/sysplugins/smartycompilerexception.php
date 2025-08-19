@@ -7,7 +7,7 @@
  */
 class SmartyCompilerException extends SmartyException
 {
-    public function __toString()
+    public function __toString(): string
     {
         return ' --> Smarty Compiler: ' . $this->message . ' <-- ';
     }

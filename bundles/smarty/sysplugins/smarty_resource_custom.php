@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Plugin
  *
@@ -55,7 +56,7 @@ abstract class Smarty_Resource_Custom extends Smarty_Resource
             $source->timestamp = $mtime;
         } else {
             $this->fetch($source->name, $content, $timestamp);
-            $source->timestamp = isset($timestamp) ? $timestamp : false;
+            $source->timestamp = $timestamp ?? false;
             if (isset($content)) {
                 $source->content = $content;
             }

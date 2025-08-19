@@ -30,10 +30,12 @@ class Smarty_Internal_Method_RegisterCacheResource
      *
      * @return \Smarty|\Smarty_Internal_Template
      */
-    public function registerCacheResource(Smarty_Internal_TemplateBase $obj, $name,
-                                          Smarty_CacheResource $resource_handler)
-    {
-        $smarty = isset($obj->smarty) ? $obj->smarty : $obj;
+    public function registerCacheResource(
+        Smarty_Internal_TemplateBase $obj,
+        $name,
+        Smarty_CacheResource $resource_handler
+    ) {
+        $smarty = $obj->smarty ?? $obj;
         $smarty->registered_cache_resources[ $name ] = $resource_handler;
         return $obj;
     }

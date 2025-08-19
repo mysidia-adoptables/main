@@ -26,7 +26,7 @@ $lang['nonexist'] = "The selected adoptables does not have alternative forms yet
 $lang['edit_title'] = "Edit Adoptable Alternate Form";
 $lang['edit'] = "This page allows you to edit an adoptable alternate form that you have created.
 				 Please fill in the form below and hit the <i>Edit Alt-form</i> button below when you're ready.";
-$lang['nonexist'] = "The Item does not exist in database.";		 
+$lang['nonexist'] = "The Item does not exist in database.";
 $lang['edited_title'] = "Adoptable edited Successfully";
 $lang['edited'] = "The alternate form has been edit successfully. You may <a href='../../'>go back to the Admin CP index page</a>.";
 $lang['delete_title'] = "Adoptable edited Deleted";
@@ -34,4 +34,4 @@ $lang['delete'] = "You have successfully removed this adoptable alternate form f
 $lang['adopt'] = "You did not specify what adoptable this alternate form belongs to. Please go back and try again.";
 $lang['level'] = "You did not enter the starting level for this alternate form. Please go back and specify a positive integer value for this field.";
 $lang['images'] = "You did not select an image for this adoptable alternate form. Please go back and make sure an image is selected.";
-$lang['chance'] = "You did not enter the chance of this alternate form being selected for your adoptable. Please go back and try again.";	
+$lang['chance'] = "You did not enter the chance of this alternate form being selected for your adoptable. Please go back and try again.";

@@ -9,7 +9,7 @@ class HTMLPurifier_AttrTypes
      * Lookup array of attribute string identifiers to concrete implementations.
      * @type HTMLPurifier_AttrDef[]
      */
-    protected $info = array();
+    protected $info = [];
 
     /**
      * Constructs the info array, supplying default implementations for attribute
@@ -58,7 +58,7 @@ class HTMLPurifier_AttrTypes
 
     private static function makeEnum($in)
     {
-        return new HTMLPurifier_AttrDef_Clone(new HTMLPurifier_AttrDef_Enum(explode(',', $in)));
+        return new HTMLPurifier_AttrDef_Clone(new HTMLPurifier_AttrDef_Enum(explode(',', (string) $in)));
     }
 
     /**
@@ -69,8 +69,8 @@ class HTMLPurifier_AttrTypes
     public function get($type)
     {
         // determine if there is any extra info tacked on
-        if (strpos($type, '#') !== false) {
-            list($type, $string) = explode('#', $type, 2);
+        if (str_contains($type, '#')) {
+            [$type, $string] = explode('#', $type, 2);
         } else {
             $string = '';
         }

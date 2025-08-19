@@ -2,6 +2,6 @@
 
 namespace Resource\Exception;
 
-class EmailException extends InvalidActionException{
-
+class EmailException extends InvalidActionException
+{
 }

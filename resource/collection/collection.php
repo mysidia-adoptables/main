@@ -1,6 +1,8 @@
 <?php
 
 namespace Resource\Collection;
+
+use Iterator;
 use Resource\Exception\UnsupportedOperationException;
 use Resource\Native\MysObject;
 use Resource\Native\Objective;
@@ -8,223 +10,193 @@ use Resource\Native\Objective;
 /**
  * The abstract Collection Class, extending from the root Object Class and implements Collective Interface.
  * It is parent to all Collection objects, subclasses have access to all its defined methods.
- * @category Resource
- * @package Collection
- * @author Hall of Famer 
- * @copyright Mysidia Adoptables Script
- * @link http://www.mysidiaadoptables.com
- * @since 1.3.4
- * @todo Not much at this point.
- * @abstract
- *
  */
- 
-abstract class Collection extends MysObject implements Collective{
-
- 	/**
-     * The add method, append an object to the end of the collection.
-	 * The method is disabled in abstract collection class, thus child class must implement its own version of add method.
-     * @param Objective  $object 
-     * @access public
-     * @return Boolean
-     */	
-	public function add(Objective $object){
-	    throw new UnsupportedOperationException;
-	}
-	
- 	/**
+abstract class Collection extends MysObject implements Collective
+{
+    /**
      * The addAll method, append a collection of objects to the end of the Collection.
-     * @param Collective  $collection
-     * @access public
-     * @return Boolean
-     */	
-	public function addAll(Collective $collection){
-	    $added = FALSE;
-		foreach($collection as $object){
-		    if($this->add($object)) $added = TRUE;
-		}
-		return $added;
-	}	
+     */
+    public function addAll(Collective $collection): bool
+    {
+        $added = false;
+        foreach ($collection as $object) {
+            if ($this->add($object)) {
+                $added = true;
+            }
+        }
+        return $added;
+    }
 
- 	/**
+    /**
+     * The add method, append an object to the end of the collection.
+     */
+    public function add(Objective $object): bool
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
      * The clear method, drops all objects currently stored in Collection.
-     * @access public
-     * @return void
-     */				
-	public function clear(){
-	    $iterator = $this->iterator();
-		while($iterator->hasNext()){
-		    $iterator->next();
-			$iterator->remove();
-		}
-	}
-	
-	/**
-     * The contains method, checks if a given object is already on the Collection.
-     * @param Objective  $object 
-     * @access public
-     * @return Boolean
-     */			
-	public function contains(Objective $object){
-	    $iterator = $this->iterator();		
-		while($iterator->hasNext()){
-			if($object->equals($iterator->next())) return TRUE;
-	    }		
-		return FALSE;
-	}
-	
-	/**
-     * The containsAll method, checks if a collection of objects are all available on the Collection.
-     * @param Collective  $collection
-     * @access public
-     * @return Boolean
-     */			
-	public function containsAll(Collective $collection){
-	    foreach($collection as $object){
-		    if(!$this->contains($object)) return FALSE;
-		}
-		return TRUE;
-	}
+     */
+    public function clear(): void
+    {
+        $iterator = $this->iterator();
+        while ($iterator->valid()) {
+            $iterator->next();
+            $iterator->remove();
+        }
+    }
 
-	/**
+    /**
+     * The abstract iterator method, must be implemented by child class.
+     */
+    abstract public function iterator(): Iterator;
+
+    /**
+     * The remove method, removes a supplied Object from this collection.
+     */
+    public function remove(Objective $object): bool
+    {
+        $iterator = $this->iterator();
+        while ($iterator->valid()) {
+            if ($object->equals($iterator->next())) {
+                $iterator->remove();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * The containsAll method, checks if a collection of objects are all available on the Collection.
+     */
+    public function containsAll(Collective $collection): bool
+    {
+        foreach ($collection as $object) {
+            if (!$this->contains($object)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * The contains method, checks if a given object is already on the Collection.
+     */
+    public function contains(Objective $object): bool
+    {
+        $iterator = $this->iterator();
+        while ($iterator->valid()) {
+            if ($object->equals($iterator->next())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * The count method, alias to the size() method.
-     * @access public
-     * @return int
-     */		
-	public function count(){
+     */
+    public function count(): int
+    {
         return $this->size();
     }
 
-	/**
+    /**
+     * The abstract size method, must be implemented by child class.
+     */
+    abstract public function size(): int;
+
+    /**
      * The getIterator method, alias to the iterator() method.
-     * @access public
-     * @return Iterator
-     */			
-    public function getIterator(){
+     */
+    public function getIterator(): Iterator
+    {
         return $this->iterator();
     }
 
-	/**
+    /**
      * The hashCode method, returns the hash code for this collection.
-	 * The method is disabled in abstract collection class, thus child class must implement its own version of hashCode method.
-     * @access public
-     * @return String
-     */		
-	public function hashCode(){
-	    return NULL;
-	}
-	
-	/**
+     */
+    public function hashCode(): int
+    {
+        // No return value since null isn't valid for string return type
+        return 0;
+    }
+
+    /**
      * The isEmpty method, checks if the collection is empty or not.
-     * @access public
-     * @return Boolean
-     */		
-	public function isEmpty(){
-	    return ($this->size() == 0);
-	}
+     */
+    public function isEmpty(): bool
+    {
+        return $this->size() === 0;
+    }
 
- 	/**
-     * The remove method, removes a supplied Object from this collection.
-     * @param Objective  $object
-     * @access public
-     * @return Boolean
-     */		
-	public function remove(Objective $object){
-	    $iterator = $this->iterator();
-		while($iterator->hasNext()){
-			if($object->equals($iterator->next())){
-			    $iterator->remove();
-				return TRUE;
-			}
-	    }		
-		return FALSE;
-	}
-
- 	/**
+    /**
      * The removeAll method, removes a collection of objects from this collection.
-     * @param Collective  $collection
-     * @access public
-     * @return Boolean
-     */		
-	public function removeAll(Collective $collection){
-	    $removed = FALSE;
-		$iterator = $this->iterator();
-		while($iterator->hasNext()){
-		    if($collection->contains($iterator->next())){
-			    $iterator->remove();
-				$removed = TRUE;
-			}
-		}
-		return $removed;
-	}
-	
-	/**
-     * The removeAll method, removes everything but the given collection of objects from this collection.
-     * @param Collective  $collection
-     * @access public
-     * @return Boolean
-     */			
-	public function retainAll(Collective $collection){
-		$retained = FALSE;
-		$iterator = $this->iterator();
-		while($iterator->hasNext()){
-		    if(!$collection->contains($iterator->next())){
-			    $iterator->remove();
-				$retained = TRUE;
-			}
-		}
-		return $retained;
-	}
-	
-	/**
-     * The toArray method, acquires an array copy of the objects stored in the collection.
-     * @access public
-     * @return Array
-     */				
-	public function toArray(){
-	    $iterator = $this->iterator();
-		$size = $iterator->size();
-	    $array = [];
-		for($i = 0; $i < $size; $i++){
-		    $array[$i] = $iterator->next();
-		}
-		return $array;
-	}
-	
-	/**
-     * The magic method __toString, defines the string expression of the collection.
-     * @access public
-     * @return String
-     */	
-	public function __toString(){
-	    $iterator = $this->iterator();
-		if(!$iterator->valid()) return "[]";
-		
-		$stringBuilder = "[";
-		while($iterator->hasNext()){
-		    $object = $iterator->next();
-            $stringBuilder .= ($object == $this) ? "(this collection)" : $object;
-			if(!$iterator->hasNext()) {
-                $stringBuilder .= "]";
-				return $stringBuilder;
-			}
-            $stringBuilder .= ", ";
-		}
-	}
+     */
+    public function removeAll(Collective $collection): bool
+    {
+        $removed = false;
+        $iterator = $this->iterator();
+        while ($iterator->valid()) {
+            if ($collection->contains($iterator->next())) {
+                $iterator->remove();
+                $removed = true;
+            }
+        }
+        return $removed;
+    }
 
-	/**
-     * The abstract size method, must be implemented by child class.
-     * @access public
-     * @return int
-	 * @abstract
-     */		
-    public abstract function size();
-	
-	/**
-     * The abstract iterator method, must be implemented by child class.
-     * @access public
-     * @return Iterator
-	 * @abstract
-     */		
-	public abstract function iterator();	
+    /**
+     * The retainAll method, removes everything but the given collection of objects from this collection.
+     */
+    public function retainAll(Collective $collection): bool
+    {
+        $retained = false;
+        $iterator = $this->iterator();
+        while ($iterator->valid()) {
+            if (!$collection->contains($iterator->next())) {
+                $iterator->remove();
+                $retained = true;
+            }
+        }
+        return $retained;
+    }
+
+    /**
+     * The toArray method, acquires an array copy of the objects stored in the collection.
+     */
+    public function toArray(): array
+    {
+        $iterator = $this->iterator();
+        $array = [];
+        while ($iterator->valid()) {
+            $array[] = $iterator->next();
+        }
+        return $array;
+    }
+
+    /**
+     * The magic method __toString, defines the string expression of the collection.
+     */
+    public function __toString(): string
+    {
+        $iterator = $this->iterator();
+        if (!$iterator->valid()) {
+            return "[]";
+        }
+
+        $stringBuilder = "[";
+        while ($iterator->valid()) {
+            $object = $iterator->next();
+            $stringBuilder .= ($object === $this) ? "(this collection)" : $object;
+            if (!$iterator->valid()) {
+                return $stringBuilder . "]";
+            }
+            $stringBuilder .= ", ";
+        }
+
+        return $stringBuilder . "]";
+    }
 }

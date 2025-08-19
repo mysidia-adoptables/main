@@ -14,26 +14,11 @@
 class HTMLPurifier_AttrDef_CSS_Multiple extends HTMLPurifier_AttrDef
 {
     /**
-     * Instance of component definition to defer validation to.
-     * @type HTMLPurifier_AttrDef
-     * @todo Make protected
-     */
-    public $single;
-
-    /**
-     * Max number of values allowed.
-     * @todo Make protected
-     */
-    public $max;
-
-    /**
      * @param HTMLPurifier_AttrDef $single HTMLPurifier_AttrDef to multiply
      * @param int $max Max number of values allowed (usually four)
      */
-    public function __construct($single, $max = 4)
+    public function __construct(public $single, public $max = 4)
     {
-        $this->single = $single;
-        $this->max = $max;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 namespace Model\Settings;
+
 use Resource\Core\Database;
 use Resource\Core\Settings;
 
@@ -10,128 +11,137 @@ use Resource\Core\Settings;
  * BreedingSetting is a final class, no child class shall derive from it.
  * @category Model
  * @package Settings
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.3
  * @todo Not much at this point.
  */
- 
-final class BreedingSettings extends Settings{
-  
-	/**
-	 * The system property, defines if the breeding system is enabled.
-	 * @access public
-	 * @var String
+
+final class BreedingSettings extends Settings
+{
+    /**
+     * The system property, defines if the breeding system is enabled.
+     * @access public
+     * @var String
      */
     public $system;
-	
-	/**
-	 * The method property, specifies whether the breeding method is heuristic or advanced.
-	 * @access public
-	 * @var String
-     */	
-	public $method;
-	
-	/**
-	 * The species property, stores a list of adoptables species not available to breed.
-	 * @access public
-	 * @var Array
-     */	
-	public $species;	
-  
-	/**
-	 * The interval property, the number of days successive breeding can occur for adoptables.
-	 * @access public
-	 * @var int
+
+    /**
+     * The method property, specifies whether the breeding method is heuristic or advanced.
+     * @access public
+     * @var String
+     */
+    public $method;
+
+    /**
+     * The species property, stores a list of adoptables species not available to breed.
+     * @access public
+     * @var Array
+     */
+    public $species;
+
+    /**
+     * The interval property, the number of days successive breeding can occur for adoptables.
+     * @access public
+     * @var int
      */
     public $interval;
-	
-	/**
-	 * The level property, the minimum level required for breeding eligibility.
-	 * @access public
-	 * @var Iint
+
+    /**
+     * The level property, the minimum level required for breeding eligibility.
+     * @access public
+     * @var Iint
      */
     public $level;
-	
-	/**
-	 * The capacity property, the total number of times an adoptable can breed.
-	 * @access public
-	 * @var int
+
+    /**
+     * The capacity property, the total number of times an adoptable can breed.
+     * @access public
+     * @var int
      */
     public $capacity;
-	
-	/**
-	 * The number property, the maximum number of babies an adoptable can produce. 
-	 * @access public
-	 * @var int
+
+    /**
+     * The number property, the maximum number of babies an adoptable can produce.
+     * @access public
+     * @var int
      */
     public $number;
-	
-	/**
-	 * The chance property, the chance for breeding to be successful. Must be somewhere between 0 or 100.
-	 * @access public
-	 * @var int
-     */	
-	public $chance;
-	
-	/**
-	 * The cost property, the amount of money required to spend on breeding.
-	 * @access public
-	 * @var int
+
+    /**
+     * The chance property, the chance for breeding to be successful. Must be somewhere between 0 or 100.
+     * @access public
+     * @var int
+     */
+    public $chance;
+
+    /**
+     * The cost property, the amount of money required to spend on breeding.
+     * @access public
+     * @var int
      */
     public $cost;
-	
-	/**
-	 * The usergroup property, the usergroup(s) allowed to breed their adoptables.
-	 * The default value is 'all', which means no limitation on usergroup.
-	 * @access public
-	 * @var String|Array
+
+    /**
+     * The usergroup property, the usergroup(s) allowed to breed their adoptables.
+     * The default value is 'all', which means no limitation on usergroup.
+     * @access public
+     * @var String|Array
      */
     public $usergroup;
-	
-	/**
-	 * The item property, the item(s) certificate required to breed adoptables.
-	 * @access public
-	 * @var String|Array
-     */	
-	public $item;
-  
+
+    /**
+     * The item property, the item(s) certificate required to breed adoptables.
+     * @access public
+     * @var String|Array
+     */
+    public $item;
+
     /**
      * Constructor of BreedingSetting Class, it initializes basic setting parameters.
-	 * @param Database  $db
+     * @param Database  $db
      * @access public
      * @return void
      */
-    public function __construct(Database $db){
-	    parent::__construct($db);
-        if($this->species) $this->species = explode(",", $this->species);		
-		if($this->usergroup != "all") $this->usergroup = explode(",", $this->usergroup);
-       	if($this->item) $this->item = explode(",", $this->item);	
+    public function __construct(Database $db)
+    {
+        parent::__construct($db);
+        if ($this->species) {
+            $this->species = explode(",", $this->species);
+        }
+        if ($this->usergroup != "all") {
+            $this->usergroup = explode(",", $this->usergroup);
+        }
+        if ($this->item) {
+            $this->item = explode(",", $this->item);
+        }
     }
 
-	/**
+    /**
      * The fetch method, returns all fields of BreedingSetting object by fetching information from database.
      * @param Database|SplFileInfo  $db
      * @access public
      * @return void
      */
-    public function fetch($db){
+    public function fetch($db)
+    {
         $stmt = $db->select("breeding_settings");
-	    while($row = $stmt->fetchObject()){
-	        $property = $row->name;
-	        $this->$property = $row->value;
-	    }	 
+        while ($row = $stmt->fetchObject()) {
+            $property = $row->name;
+            $this->$property = $row->value;
+        }
     }
-  
-  	/**
+
+    /**
      * The set method, set a field of BreedingSetting object with a specific value.
-	 * @param String  $property    
-	 * @param String|Number  $value    
+     * @param String  $property
+     * @param String|Number  $value
      * @access public
      * @return void
      */
-    public function set($property, $value){
+    public function set($property, $value)
+    {
         $this->$property = $value;
     }
 }

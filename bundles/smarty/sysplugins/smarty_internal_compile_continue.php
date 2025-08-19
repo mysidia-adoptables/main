@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Continue
  * Compiles the {continue} tag
@@ -22,7 +23,7 @@ class Smarty_Internal_Compile_Continue extends Smarty_Internal_CompileBase
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $optional_attributes = array('levels');
+    public $optional_attributes = ['levels'];
 
     /**
      * Attribute definition: Overwrites base class.
@@ -30,7 +31,7 @@ class Smarty_Internal_Compile_Continue extends Smarty_Internal_CompileBase
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $shorttag_order = array('levels');
+    public $shorttag_order = ['levels'];
 
     /**
      * Compiles code for the {continue} tag
@@ -44,7 +45,7 @@ class Smarty_Internal_Compile_Continue extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        static $_is_loopy = array('for' => true, 'foreach' => true, 'while' => true, 'section' => true);
+        static $_is_loopy = ['for' => true, 'foreach' => true, 'while' => true, 'section' => true];
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
 
@@ -64,9 +65,9 @@ class Smarty_Internal_Compile_Continue extends Smarty_Internal_CompileBase
         $stack_count = count($compiler->_tag_stack) - 1;
         while ($level_count > 0 && $stack_count >= 0) {
             if (isset($_is_loopy[ $compiler->_tag_stack[ $stack_count ][ 0 ] ])) {
-                $level_count --;
+                $level_count--;
             }
-            $stack_count --;
+            $stack_count--;
         }
         if ($level_count != 0) {
             $compiler->trigger_template_error("cannot continue {$_levels} level(s)", null, true);

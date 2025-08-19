@@ -12,7 +12,6 @@
 
 abstract class HTMLPurifier_AttrDef
 {
-
     /**
      * Tells us whether or not an HTML attribute is minimized.
      * Has no meaning in other contexts.
@@ -59,8 +58,8 @@ abstract class HTMLPurifier_AttrDef
      */
     public function parseCDATA($string)
     {
-        $string = trim($string);
-        $string = str_replace(array("\n", "\t", "\r"), ' ', $string);
+        $string = trim((string) $string);
+        $string = str_replace(["\n", "\t", "\r"], ' ', $string);
         return $string;
     }
 
@@ -103,17 +102,17 @@ abstract class HTMLPurifier_AttrDef
     {
         // flexibly parse it
         $ret = '';
-        for ($i = 0, $c = strlen($string); $i < $c; $i++) {
+        for ($i = 0, $c = strlen((string) $string); $i < $c; $i++) {
             if ($string[$i] === '\\') {
                 $i++;
                 if ($i >= $c) {
                     $ret .= '\\';
                     break;
                 }
-                if (ctype_xdigit($string[$i])) {
+                if (ctype_xdigit((string) $string[$i])) {
                     $code = $string[$i];
                     for ($a = 1, $i++; $i < $c && $a < 6; $i++, $a++) {
-                        if (!ctype_xdigit($string[$i])) {
+                        if (!ctype_xdigit((string) $string[$i])) {
                             break;
                         }
                         $code .= $string[$i];
@@ -121,12 +120,12 @@ abstract class HTMLPurifier_AttrDef
                     // We have to be extremely careful when adding
                     // new characters, to make sure we're not breaking
                     // the encoding.
-                    $char = HTMLPurifier_Encoder::unichr(hexdec($code));
+                    $char = HTMLPurifier_Encoder::unichr(hexdec((string) $code));
                     if (HTMLPurifier_Encoder::cleanUTF8($char) === '') {
                         continue;
                     }
                     $ret .= $char;
-                    if ($i < $c && trim($string[$i]) !== '') {
+                    if ($i < $c && trim((string) $string[$i]) !== '') {
                         $i--;
                     }
                     continue;

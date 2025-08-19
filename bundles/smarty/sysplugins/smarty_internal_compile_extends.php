@@ -23,7 +23,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $required_attributes = array('file');
+    public $required_attributes = ['file'];
 
     /**
      * Array of names of optional attribute required by tag
@@ -31,7 +31,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      *
      * @var array
      */
-    public $optional_attributes = array('extends_resource');
+    public $optional_attributes = ['extends_resource'];
 
     /**
      * Attribute definition: Overwrites base class.
@@ -39,7 +39,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $shorttag_order = array('file');
+    public $shorttag_order = ['file'];
 
     /**
      * Compiles code for the {extends} tag extends: resource
@@ -58,13 +58,13 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
         if ($_attr[ 'nocache' ] === true) {
             $compiler->trigger_template_error('nocache option not allowed', $compiler->parser->lex->line - 1);
         }
-        if (strpos($_attr[ 'file' ], '$_tmp') !== false) {
+        if (str_contains((string) $_attr[ 'file' ], '$_tmp')) {
             $compiler->trigger_template_error('illegal value for file attribute', $compiler->parser->lex->line - 1);
         }
         // add code to initialize inheritance
         $this->registerInit($compiler, true);
-        $file = trim($_attr[ 'file' ], '\'"');
-        if (strlen($file) > 8 && substr($file, 0, 8) == 'extends:') {
+        $file = trim((string) $_attr[ 'file' ], '\'"');
+        if (strlen($file) > 8 && str_starts_with($file, 'extends:')) {
             // generate code for each template
             $files = array_reverse(explode('|', substr($file, 8)));
             $i = 0;
@@ -74,7 +74,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
                 } else {
                     $file = "'{$file}'";
                 }
-                $i ++;
+                $i++;
                 if ($i == count($files) && isset($_attr[ 'extends_resource' ])) {
                     $this->compileEndChild($compiler);
                 }
@@ -98,8 +98,10 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      */
     private function compileEndChild(Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        $compiler->parser->template_postfix[] = new Smarty_Internal_ParseTree_Tag($compiler->parser,
-                                                                                  "<?php \$_smarty_tpl->inheritance->endChild();\n?>\n");
+        $compiler->parser->template_postfix[] = new Smarty_Internal_ParseTree_Tag(
+            $compiler->parser,
+            "<?php \$_smarty_tpl->inheritance->endChild();\n?>\n"
+        );
     }
 
     /**
@@ -110,10 +112,14 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      */
     private function compileInclude(Smarty_Internal_TemplateCompilerBase $compiler, $file)
     {
-        $compiler->parser->template_postfix[] = new Smarty_Internal_ParseTree_Tag($compiler->parser,
-                                                                                  $compiler->compileTag('include',
-                                                                                                        array($file,
-                                                                                                              array('scope' => 'parent'))));
+        $compiler->parser->template_postfix[] = new Smarty_Internal_ParseTree_Tag(
+            $compiler->parser,
+            $compiler->compileTag(
+                'include',
+                [$file,
+                                                                                                              ['scope' => 'parent']]
+            )
+        );
     }
 
     /**
@@ -125,7 +131,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      */
     public static function extendsSourceArrayCode($components)
     {
-        $resources = array();
+        $resources = [];
         foreach ($components as $source) {
             $resources[] = $source->resource;
         }

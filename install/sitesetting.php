@@ -7,14 +7,13 @@ require("../resource/native/objective.php");
 require("../resource/native/mysobject.php");
 require("../resource/utility/password.php");
 
-//Now connecting to the adoptables database 
-try{
+//Now connecting to the adoptables database
+try {
     $dsn = "mysql:host=" . DBHOST . ";dbname=". DBNAME;
     $prefix = constant("PREFIX");
-	$adopts = new PDO($dsn, DBUSER, DBPASS) or die("Cannot connect to database.");
-}
-catch(PDOException $pe){
-    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");  
+    $adopts = new PDO($dsn, DBUSER, DBPASS) or die("Cannot connect to database.");
+} catch (PDOException $pe) {
+    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");
 }
 
 //The grabanysetting function needs to be defined here
@@ -35,11 +34,11 @@ $username = $post["username"];
 
 $stmt = $adopts->query("SELECT username, password, email FROM {$prefix}users WHERE username = '{$username}'");
 $admin = $stmt->fetchObject();
-$password = new Resource\Utility\Password;
+$password = new Resource\Utility\Password();
 $encryptpass = $password->hash($admin->password);
- 
+
 // Update system settings
-if($theme == "" || $browsertitle == "" || $sitename == "" || $slogan == "" || $cost == "" || $startmoney == ""){
+if ($theme == "" || $browsertitle == "" || $sitename == "" || $slogan == "" || $cost == "" || $startmoney == 0) {
     die("Something important was left blank.  Please try again!");
 }
 

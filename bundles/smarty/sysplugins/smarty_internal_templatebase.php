@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Smarty Template  Base
  * This file contains the basic shared methods for template handling
@@ -80,7 +81,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
      *
      * @var array()
      */
-    public $_cache = array();
+    public $_cache = [];
 
     /**
      * fetches a rendered Smarty template
@@ -97,7 +98,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
     public function fetch($template = null, $cache_id = null, $compile_id = null, $parent = null)
     {
         $result = $this->_execute($template, $cache_id, $compile_id, $parent, 0);
-        return $result === null ? ob_get_clean() : $result;
+        return $result ?? ob_get_clean();
     }
 
     /**
@@ -164,7 +165,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
             /* @var Smarty_Internal_Template $template */
             $saveVars = false;
 
-            $template = $smarty->createTemplate($template, $cache_id, $compile_id, $parent ? $parent : $this, false);
+            $template = $smarty->createTemplate($template, $cache_id, $compile_id, $parent ?: $this, false);
             if ($this->_objType == 1) {
                 // set caching in template object
                 $template->caching = $this->caching;
@@ -204,7 +205,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 } else {
                     if (!$function && !isset($smarty->_cache[ 'tplObjects' ][ $template->templateId ])) {
                         $template->parent = null;
-                        $template->tpl_vars = $template->config_vars = array();
+                        $template->tpl_vars = $template->config_vars = [];
                         $smarty->_cache[ 'tplObjects' ][ $template->templateId ] = $template;
                     }
                 }
@@ -213,8 +214,7 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
                 error_reporting($_smarty_old_error_level);
             }
             return $result;
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             while (ob_get_level() > $level) {
                 ob_end_clean();
             }
@@ -295,11 +295,21 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
      * @return \Smarty|\Smarty_Internal_Template
      * @throws \SmartyException
      */
-    public function registerObject($object_name, $object, $allowed_methods_properties = array(), $format = true,
-                                   $block_methods = array())
-    {
-        return $this->ext->registerObject->registerObject($this, $object_name, $object, $allowed_methods_properties,
-                                                          $format, $block_methods);
+    public function registerObject(
+        $object_name,
+        $object,
+        $allowed_methods_properties = [],
+        $format = true,
+        $block_methods = []
+    ) {
+        return $this->ext->registerObject->registerObject(
+            $this,
+            $object_name,
+            $object,
+            $allowed_methods_properties,
+            $format,
+            $block_methods
+        );
     }
 
     /**
@@ -335,4 +345,3 @@ abstract class Smarty_Internal_TemplateBase extends Smarty_Internal_Data
     }
 
 }
-

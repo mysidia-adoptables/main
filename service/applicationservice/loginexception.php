@@ -2,6 +2,6 @@
 
 namespace Service\ApplicationService;
 
-class LoginException extends AuthenticationException{
-    
+class LoginException extends AuthenticationException
+{
 }

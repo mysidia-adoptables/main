@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Rdelim
  * Compiles the {rdelim} tag

@@ -1,24 +1,26 @@
 <?php /* Smarty version Smarty-3.1.12, created on 2020-11-07 09:06:50
          compiled from "/home/mysidia/public_html/site/mys135b/templates/acp/template.tpl" */ ?>
-<?php /*%%SmartyHeaderCode:115587912557d978f5013fa8-43312786%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
-$_valid = $_smarty_tpl->decodeProperties(array (
-  'file_dependency' => 
-  array (
-    '82ea20f5e1612d177e7638cfa394a4d9942c028d' => 
-    array (
+<?php /*%%SmartyHeaderCode:115587912557d978f5013fa8-43312786%%*/if (!defined('SMARTY_DIR')) {
+    exit('no direct access allowed');
+}
+$_valid = $_smarty_tpl->decodeProperties([
+  'file_dependency' =>
+   [
+    '82ea20f5e1612d177e7638cfa394a4d9942c028d' =>
+     [
       0 => '/home/mysidia/public_html/site/mys135b/templates/acp/template.tpl',
       1 => 1603942988,
       2 => 'file',
-    ),
-  ),
+    ],
+  ],
   'nocache_hash' => '115587912557d978f5013fa8-43312786',
-  'function' => 
-  array (
-  ),
+  'function' =>
+   [
+  ],
   'version' => 'Smarty-3.1.12',
   'unifunc' => 'content_57d978f502fd27_64681984',
-  'variables' => 
-  array (
+  'variables' =>
+   [
     'root' => 0,
     'temp' => 0,
     'theme' => 0,
@@ -26,10 +28,12 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'sidebar' => 0,
     'document_title' => 0,
     'document_content' => 0,
-  ),
+  ],
   'has_nocache_code' => false,
-),false); /*/%%SmartyHeaderCode%%*/?>
-<?php if ($_valid && !is_callable('content_57d978f502fd27_64681984')) {function content_57d978f502fd27_64681984($_smarty_tpl) {?><?php echo $_smarty_tpl->getSubTemplate (((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
+], false); /*/%%SmartyHeaderCode%%*/?>
+<?php if ($_valid && !is_callable('content_57d978f502fd27_64681984')) {
+    function content_57d978f502fd27_64681984($_smarty_tpl)
+    {?><?php echo $_smarty_tpl->getSubTemplate(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, [], 0);?>
 
 
 <body>
@@ -57,4 +61,5 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
 
 </body>
-</html><?php }} ?>
+</html><?php }
+    } ?>

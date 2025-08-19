@@ -4,7 +4,7 @@
 
 /**
  * Adds rel="nofollow" to all outbound links.  This transform is
- * only attached if Attr.Nofollow is TRUE.
+ * only attached if Attr.Nofollow is true.
  */
 class HTMLPurifier_AttrTransform_Nofollow extends HTMLPurifier_AttrTransform
 {

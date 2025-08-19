@@ -11,7 +11,6 @@
  */
 class Smarty_Internal_Undefined
 {
-
     /**
      * This function is executed automatically when a compiled or cached template file is included
      * - Decode saved properties from compiled template and cache files
@@ -44,6 +43,6 @@ class Smarty_Internal_Undefined
      */
     public function __call($name, $args)
     {
-        throw new SmartyException(get_class($args[ 0 ]) . "->{$name}() undefined method");
+        throw new SmartyException($args[ 0 ]::class . "->{$name}() undefined method");
     }
 }

@@ -32,7 +32,6 @@
  */
 class Smarty_Internal_Extension_Handler
 {
-
     public $objType = null;
 
     /**
@@ -41,11 +40,11 @@ class Smarty_Internal_Extension_Handler
      *
      * @var array
      */
-    private $_property_info = array('AutoloadFilters' => 0, 'DefaultModifiers' => 0, 'ConfigVars' => 0,
+    private $_property_info = ['AutoloadFilters' => 0, 'DefaultModifiers' => 0, 'ConfigVars' => 0,
                                     'DebugTemplate' => 0, 'RegisteredObject' => 0, 'StreamVariable' => 0,
-                                    'TemplateVars' => 0,);#
+                                    'TemplateVars' => 0,];#
 
-    private $resolvedProperties = array();
+    private $resolvedProperties = [];
 
     /**
      * Call external Method
@@ -60,16 +59,22 @@ class Smarty_Internal_Extension_Handler
     public function _callExternalMethod(Smarty_Internal_Data $data, $name, $args)
     {
         /* @var Smarty $data ->smarty */
-        $smarty = isset($data->smarty) ? $data->smarty : $data;
+        $smarty = $data->smarty ?? $data;
         if (!isset($smarty->ext->$name)) {
             $class = 'Smarty_Internal_Method_' . ucfirst($name);
             if (preg_match('/^(set|get)([A-Z].*)$/', $name, $match)) {
                 if (!isset($this->_property_info[ $prop = $match[ 2 ] ])) {
                     // convert camel case to underscored name
-                    $this->resolvedProperties[ $prop ] = $pn = strtolower(join('_',
-                                                                               preg_split('/([A-Z][^A-Z]*)/', $prop,
-                                                                                          - 1, PREG_SPLIT_NO_EMPTY |
-                                                                                               PREG_SPLIT_DELIM_CAPTURE)));
+                    $this->resolvedProperties[ $prop ] = $pn = strtolower(join(
+                        '_',
+                        preg_split(
+                            '/([A-Z][^A-Z]*)/',
+                            $prop,
+                            - 1,
+                            PREG_SPLIT_NO_EMPTY |
+                                                                                               PREG_SPLIT_DELIM_CAPTURE
+                        )
+                    ));
                     $this->_property_info[ $prop ] = property_exists($data, $pn) ? 1 :
                         ($data->_objType == 2 && property_exists($smarty, $pn) ? 2 : 0);
                 }
@@ -86,16 +91,16 @@ class Smarty_Internal_Extension_Handler
                 }
             }
             if (class_exists($class)) {
-                $callback = array($smarty->ext->$name = new $class(), $name);
+                $callback = [$smarty->ext->$name = new $class(), $name];
             }
         } else {
-            $callback = array($smarty->ext->$name, $name);
+            $callback = [$smarty->ext->$name, $name];
         }
         array_unshift($args, $data);
         if (isset($callback) && $callback[ 0 ]->objMap | $data->_objType) {
             return call_user_func_array($callback, $args);
         }
-        return call_user_func_array(array(new Smarty_Internal_Undefined(), $name), $args);
+        return call_user_func_array([new Smarty_Internal_Undefined(), $name], $args);
     }
 
     /**
@@ -141,7 +146,7 @@ class Smarty_Internal_Extension_Handler
      */
     public function __call($name, $args)
     {
-        return call_user_func_array(array(new Smarty_Internal_Undefined(), $name), array($this));
+        return call_user_func_array([new Smarty_Internal_Undefined(), $name], [$this]);
     }
 
 }

@@ -2,6 +2,6 @@
 
 namespace Resource\Exception;
 
-class LevelupException extends InvalidActionException{
-    
+class LevelupException extends InvalidActionException
+{
 }

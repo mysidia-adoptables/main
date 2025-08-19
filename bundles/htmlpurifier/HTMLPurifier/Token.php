@@ -23,7 +23,7 @@ abstract class HTMLPurifier_Token
      * "MakeWellFormed_TagClosedError"
      * @type array
      */
-    public $armor = array();
+    public $armor = [];
 
     /**
      * Used during MakeWellFormed.  See Note [Injector skips]
@@ -49,7 +49,7 @@ abstract class HTMLPurifier_Token
     {
         if ($n === 'type') {
             trigger_error('Deprecated type property called; use instanceof', E_USER_NOTICE);
-            switch (get_class($this)) {
+            switch (static::class) {
                 case 'HTMLPurifier_Token_Start':
                     return 'start';
                 case 'HTMLPurifier_Token_Empty':

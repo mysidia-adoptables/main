@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -75,7 +76,7 @@ function smarty_function_cycle($params, $template)
     if (is_array($cycle_vars[ $name ][ 'values' ])) {
         $cycle_array = $cycle_vars[ $name ][ 'values' ];
     } else {
-        $cycle_array = explode($cycle_vars[ $name ][ 'delimiter' ], $cycle_vars[ $name ][ 'values' ]);
+        $cycle_array = explode($cycle_vars[ $name ][ 'delimiter' ], (string) $cycle_vars[ $name ][ 'values' ]);
     }
 
     if (!isset($cycle_vars[ $name ][ 'index' ]) || $reset) {
@@ -97,7 +98,7 @@ function smarty_function_cycle($params, $template)
         if ($cycle_vars[ $name ][ 'index' ] >= count($cycle_array) - 1) {
             $cycle_vars[ $name ][ 'index' ] = 0;
         } else {
-            $cycle_vars[ $name ][ 'index' ] ++;
+            $cycle_vars[ $name ][ 'index' ]++;
         }
     }
 

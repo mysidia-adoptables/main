@@ -2,6 +2,7 @@
 
 namespace Resource\GUI;
 
-interface Renderable{
+interface Renderable
+{
     public function render();
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -29,5 +30,5 @@ function smarty_modifiercompiler_to_charset($params)
         $params[ 1 ] = '"ISO-8859-1"';
     }
 
-    return 'mb_convert_encoding(' . $params[ 0 ] . ', ' . $params[ 1 ] . ', "' . addslashes(Smarty::$_CHARSET) . '")';
+    return 'mb_convert_encoding(' . $params[ 0 ] . ', ' . $params[ 1 ] . ', "' . addslashes((string) Smarty::$_CHARSET) . '")';
 }

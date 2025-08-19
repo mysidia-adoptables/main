@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
 {
-
     protected $mask = null;
 
     public function __construct()
@@ -54,13 +53,13 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        static $generic_names = array(
+        static $generic_names = [
             'serif' => true,
             'sans-serif' => true,
             'monospace' => true,
             'fantasy' => true,
             'cursive' => true
-        );
+        ];
         $allowed_fonts = $config->get('CSS.AllowedFonts');
 
         // assume that no font names contain commas in them
@@ -99,7 +98,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
                 continue;
             }
 
-            if (ctype_alnum($font) && $font !== '') {
+            if (ctype_alnum((string) $font) && $font !== '') {
                 // very simple font, allow it in unharmed
                 $final .= $font . ', ';
                 continue;
@@ -107,7 +106,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
 
             // bugger out on whitespace.  form feed (0C) really
             // shouldn't show up regardless
-            $font = str_replace(array("\n", "\t", "\r", "\x0C"), ' ', $font);
+            $font = str_replace(["\n", "\t", "\r", "\x0C"], ' ', $font);
 
             // Here, there are various classes of characters which need
             // to be treated differently:
@@ -188,7 +187,7 @@ class HTMLPurifier_AttrDef_CSS_FontFamily extends HTMLPurifier_AttrDef
             // Edgy: alphanumeric, spaces, dashes, underscores and Unicode.  Use of
             // str(c)spn assumes that the string was already well formed
             // Unicode (which of course it is).
-            if (strspn($font, $this->mask) !== strlen($font)) {
+            if (strspn($font, (string) $this->mask) !== strlen($font)) {
                 continue;
             }
 

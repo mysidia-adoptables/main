@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Extension
  * This file contains the Smarty template extension to create a code frame
@@ -25,17 +26,21 @@ class Smarty_Internal_Runtime_CodeFrame
      *
      * @return string
      */
-    public function create(Smarty_Internal_Template $_template, $content = '', $functions = '', $cache = false,
-                           Smarty_Internal_TemplateCompilerBase $compiler = null)
-    {
+    public function create(
+        Smarty_Internal_Template $_template,
+        $content = '',
+        $functions = '',
+        $cache = false,
+        Smarty_Internal_TemplateCompilerBase $compiler = null
+    ) {
         // build property code
         $properties[ 'version' ] = Smarty::SMARTY_VERSION;
-        $properties[ 'unifunc' ] = 'content_' . str_replace(array('.', ','), '_', uniqid('', true));
+        $properties[ 'unifunc' ] = 'content_' . str_replace(['.', ','], '_', uniqid('', true));
         if (!$cache) {
             $properties[ 'has_nocache_code' ] = $_template->compiled->has_nocache_code;
             $properties[ 'file_dependency' ] = $_template->compiled->file_dependency;
             $properties[ 'includes' ] = $_template->compiled->includes;
-         } else {
+        } else {
             $properties[ 'has_nocache_code' ] = $_template->cached->has_nocache_code;
             $properties[ 'file_dependency' ] = $_template->cached->file_dependency;
             $properties[ 'cache_lifetime' ] = $_template->cache_lifetime;
@@ -62,7 +67,7 @@ class Smarty_Internal_Runtime_CodeFrame
             if (!empty($_template->compiled->required_plugins[ 'compiled' ])) {
                 foreach ($_template->compiled->required_plugins[ 'compiled' ] as $tmp) {
                     foreach ($tmp as $data) {
-                        $file = addslashes($data[ 'file' ]);
+                        $file = addslashes((string) $data[ 'file' ]);
                         if (is_array($data[ 'function' ])) {
                             $output .= "if (!is_callable(array('{$data['function'][0]}','{$data['function'][1]}'))) require_once '{$file}';\n";
                         } else {
@@ -76,7 +81,7 @@ class Smarty_Internal_Runtime_CodeFrame
                 $output .= "echo '/*%%SmartyNocache:{$_template->compiled->nocache_hash}%%*/<?php \$_smarty = \$_smarty_tpl->smarty; ";
                 foreach ($_template->compiled->required_plugins[ 'nocache' ] as $tmp) {
                     foreach ($tmp as $data) {
-                        $file = addslashes($data[ 'file' ]);
+                        $file = addslashes((string) $data[ 'file' ]);
                         if (is_array($data[ 'function' ])) {
                             $output .= addslashes("if (!is_callable(array('{$data['function'][0]}','{$data['function'][1]}'))) require_once '{$file}';\n");
                         } else {
@@ -93,6 +98,6 @@ class Smarty_Internal_Runtime_CodeFrame
         $output .= $functions;
         $output .= "<?php }\n";
         // remove unneeded PHP tags
-        return preg_replace(array('/\s*\?>[\n]?<\?php\s*/', '/\?>\s*$/'), array("\n", ''), $output);
+        return preg_replace(['/\s*\?>[\n]?<\?php\s*/', '/\?>\s*$/'], ["\n", ''], $output);
     }
 }

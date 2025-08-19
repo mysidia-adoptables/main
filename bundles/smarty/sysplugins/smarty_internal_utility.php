@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        smarty_internal_utility.php
@@ -69,16 +70,16 @@ class Smarty_Internal_Utility
             $_compile = new RecursiveIteratorIterator($_compileDirs);
             foreach ($_compile as $_fileinfo) {
                 $_file = $_fileinfo->getFilename();
-                if (substr(basename($_fileinfo->getPathname()), 0, 1) == '.' || strpos($_file, '.svn') !== false) {
+                if (str_starts_with(basename((string) $_fileinfo->getPathname()), '.') || str_contains((string) $_file, '.svn')) {
                     continue;
                 }
-                if (!substr_compare($_file, $extension, - strlen($extension)) == 0) {
+                if (!substr_compare((string) $_file, $extension, - strlen($extension)) == 0) {
                     continue;
                 }
-                if ($_fileinfo->getPath() == substr($_dir, 0, - 1)) {
+                if ($_fileinfo->getPath() == substr((string) $_dir, 0, - 1)) {
                     $_template_file = $_file;
                 } else {
-                    $_template_file = substr($_fileinfo->getPath(), strlen($_dir)) . DS . $_file;
+                    $_template_file = substr((string) $_fileinfo->getPath(), strlen((string) $_dir)) . DS . $_file;
                 }
                 echo '<br>', $_dir, '---', $_template_file;
                 flush();
@@ -87,21 +88,20 @@ class Smarty_Internal_Utility
                     $_tpl = $smarty->createTemplate($_template_file, null, null, null, false);
                     if ($_tpl->mustCompile()) {
                         $_tpl->compileTemplateSource();
-                        $_count ++;
+                        $_count++;
                         echo ' compiled in  ', microtime(true) - $_start_time, ' seconds';
                         flush();
                     } else {
                         echo ' is up to date';
                         flush();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     echo 'Error: ', $e->getMessage(), "<br><br>";
-                    $_error_count ++;
+                    $_error_count++;
                 }
                 // free memory
-                $smarty->template_objects = array();
-                $_tpl->smarty->template_objects = array();
+                $smarty->template_objects = [];
+                $_tpl->smarty->template_objects = [];
                 $_tpl = null;
                 if ($max_errors !== null && $_error_count == $max_errors) {
                     echo '<br><br>too many errors';
@@ -139,16 +139,16 @@ class Smarty_Internal_Utility
             $_compile = new RecursiveIteratorIterator($_compileDirs);
             foreach ($_compile as $_fileinfo) {
                 $_file = $_fileinfo->getFilename();
-                if (substr(basename($_fileinfo->getPathname()), 0, 1) == '.' || strpos($_file, '.svn') !== false) {
+                if (str_starts_with(basename((string) $_fileinfo->getPathname()), '.') || str_contains((string) $_file, '.svn')) {
                     continue;
                 }
-                if (!substr_compare($_file, $extension, - strlen($extension)) == 0) {
+                if (!substr_compare((string) $_file, $extension, - strlen($extension)) == 0) {
                     continue;
                 }
-                if ($_fileinfo->getPath() == substr($_dir, 0, - 1)) {
+                if ($_fileinfo->getPath() == substr((string) $_dir, 0, - 1)) {
                     $_config_file = $_file;
                 } else {
-                    $_config_file = substr($_fileinfo->getPath(), strlen($_dir)) . DS . $_file;
+                    $_config_file = substr((string) $_fileinfo->getPath(), strlen((string) $_dir)) . DS . $_file;
                 }
                 echo '<br>', $_dir, '---', $_config_file;
                 flush();
@@ -157,17 +157,16 @@ class Smarty_Internal_Utility
                     $_config = new Smarty_Internal_Config($_config_file, $smarty);
                     if ($_config->mustCompile()) {
                         $_config->compileConfigSource();
-                        $_count ++;
+                        $_count++;
                         echo ' compiled in  ', microtime(true) - $_start_time, ' seconds';
                         flush();
                     } else {
                         echo ' is up to date';
                         flush();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     echo 'Error: ', $e->getMessage(), "<br><br>";
-                    $_error_count ++;
+                    $_error_count++;
                 }
                 if ($max_errors !== null && $_error_count == $max_errors) {
                     echo '<br><br>too many errors';
@@ -237,13 +236,12 @@ class Smarty_Internal_Utility
         try {
             $_compileDirs = new RecursiveDirectoryIterator($_dir);
             // NOTE: UnexpectedValueException thrown for PHP >= 5.3
-        }
-        catch (Exception $e) {
+        } catch (Exception) {
             return 0;
         }
         $_compile = new RecursiveIteratorIterator($_compileDirs, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($_compile as $_file) {
-            if (substr(basename($_file->getPathname()), 0, 1) == '.' || strpos($_file, '.svn') !== false) {
+            if (str_starts_with(basename((string) $_file->getPathname()), '.') || str_contains((string) $_file, '.svn')) {
                 continue;
             }
 
@@ -273,13 +271,13 @@ class Smarty_Internal_Utility
                 }
 
                 if ($unlink && @unlink($_filepath)) {
-                    $_count ++;
+                    $_count++;
                 }
             }
         }
         // clear compiled cache
-        Smarty_Resource::$sources = array();
-        Smarty_Resource::$compileds = array();
+        Smarty_Resource::$sources = [];
+        Smarty_Resource::$compileds = [];
 
         return $_count;
     }

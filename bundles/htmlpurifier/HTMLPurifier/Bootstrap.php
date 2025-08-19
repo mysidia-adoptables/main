@@ -2,22 +2,17 @@
 
 // constants are slow, so we use as few as possible
 if (!defined('HTMLPURIFIER_PREFIX')) {
-    define('HTMLPURIFIER_PREFIX', realpath(dirname(__FILE__) . '/..'));
+    define('HTMLPURIFIER_PREFIX', realpath(__DIR__ . '/..'));
 }
 
 // accomodations for versions earlier than 5.0.2
 // borrowed from PHP_Compat, LGPL licensed, by Aidan Lister <aidan@php.net>
 if (!defined('PHP_EOL')) {
-    switch (strtoupper(substr(PHP_OS, 0, 3))) {
-        case 'WIN':
-            define('PHP_EOL', "\r\n");
-            break;
-        case 'DAR':
-            define('PHP_EOL', "\r");
-            break;
-        default:
-            define('PHP_EOL', "\n");
-    }
+    match (strtoupper(substr(PHP_OS, 0, 3))) {
+        'WIN' => define('PHP_EOL', "\r\n"),
+        'DAR' => define('PHP_EOL', "\r"),
+        default => define('PHP_EOL', "\n"),
+    };
 }
 
 /**
@@ -29,7 +24,6 @@ if (!defined('PHP_EOL')) {
  */
 class HTMLPurifier_Bootstrap
 {
-
     /**
      * Autoload function for HTML Purifier
      * @param string $class Class to load
@@ -78,7 +72,7 @@ class HTMLPurifier_Bootstrap
      */
     public static function registerAutoload()
     {
-        $autoload = array('HTMLPurifier_Bootstrap', 'autoload');
+        $autoload = ['HTMLPurifier_Bootstrap', 'autoload'];
         if (($funcs = spl_autoload_functions()) === false) {
             spl_autoload_register($autoload);
         } elseif (function_exists('spl_autoload_unregister')) {

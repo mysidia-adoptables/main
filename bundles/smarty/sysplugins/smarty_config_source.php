@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin
  *
@@ -19,8 +20,8 @@
  * @property int    $timestamp
  * @property bool   $exists
  */
-class Smarty_Config_Source extends Smarty_Template_Source {
-
+class Smarty_Config_Source extends Smarty_Template_Source
+{
     /**
      * create Config Object container
      *
@@ -56,16 +57,10 @@ class Smarty_Config_Source extends Smarty_Template_Source {
      */
     public function __set($property_name, $value)
     {
-        switch ($property_name) {
-            case 'content':
-            case 'timestamp':
-            case 'exists':
-                $this->$property_name = $value;
-                break;
-
-            default:
-                throw new SmartyException("invalid config property '$property_name'.");
-        }
+        $this->$property_name = match ($property_name) {
+            'content', 'timestamp', 'exists' => $value,
+            default => throw new SmartyException("invalid config property '$property_name'."),
+        };
     }
 
     /**
@@ -91,5 +86,3 @@ class Smarty_Config_Source extends Smarty_Template_Source {
     }
 
 }
-
-?>

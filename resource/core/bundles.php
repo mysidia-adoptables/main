@@ -1,14 +1,18 @@
 <?php
 
 namespace Resource\Core;
+
 use Resource\Native\MysObject;
 
-class Bundles extends MysObject{
-    
+class Bundles extends MysObject
+{
     protected $bundles;
-    
-    public function register($name, $path, $file = NULL){
+
+    public function register($name, $path, $file = null)
+    {
         $this->bundles[$name] = $path;
-        if($file) require $path . $file;           
+        if ($file) {
+            require $path . $file;
+        }
     }
 }

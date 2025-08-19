@@ -10,7 +10,6 @@
  */
 class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
 {
-
     /**
      * @param array $attr
      * @param HTMLPurifier_Config $config
@@ -32,7 +31,7 @@ class HTMLPurifier_AttrTransform_ImgRequired extends HTMLPurifier_AttrTransform
             if ($src) {
                 $alt = $config->get('Attr.DefaultImageAlt');
                 if ($alt === null) {
-                    $attr['alt'] = basename($attr['src']);
+                    $attr['alt'] = basename((string) $attr['src']);
                 } else {
                     $attr['alt'] = $alt;
                 }

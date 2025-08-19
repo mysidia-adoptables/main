@@ -23,7 +23,7 @@ class Smarty_Internal_Method_SetAutoloadFilters
      *
      * @var array
      */
-    private $filterTypes = array('pre' => true, 'post' => true, 'output' => true, 'variable' => true);
+    private $filterTypes = ['pre' => true, 'post' => true, 'output' => true, 'variable' => true];
 
     /**
      * Set autoload filters
@@ -41,7 +41,7 @@ class Smarty_Internal_Method_SetAutoloadFilters
      */
     public function setAutoloadFilters(Smarty_Internal_TemplateBase $obj, $filters, $type = null)
     {
-        $smarty = isset($obj->smarty) ? $obj->smarty : $obj;
+        $smarty = $obj->smarty ?? $obj;
         if ($type !== null) {
             $this->_checkFilterType($type);
             $smarty->autoload_filters[ $type ] = (array) $filters;

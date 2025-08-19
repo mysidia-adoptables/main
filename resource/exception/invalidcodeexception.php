@@ -2,6 +2,6 @@
 
 namespace Resource\Exception;
 
-class InvalidCodeException extends InvalidIDException{
-
+class InvalidCodeException extends InvalidIDException
+{
 }

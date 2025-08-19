@@ -6,26 +6,20 @@
 class HTMLPurifier_AttrTransform_ImgSpace extends HTMLPurifier_AttrTransform
 {
     /**
-     * @type string
-     */
-    protected $attr;
-
-    /**
      * @type array
      */
-    protected $css = array(
-        'hspace' => array('left', 'right'),
-        'vspace' => array('top', 'bottom')
-    );
+    protected $css = [
+        'hspace' => ['left', 'right'],
+        'vspace' => ['top', 'bottom']
+    ];
 
     /**
      * @param string $attr
      */
-    public function __construct($attr)
+    public function __construct(protected $attr)
     {
-        $this->attr = $attr;
-        if (!isset($this->css[$attr])) {
-            trigger_error(htmlspecialchars($attr) . ' is not valid space attribute');
+        if (!isset($this->css[$this->attr])) {
+            trigger_error(htmlspecialchars((string) $this->attr) . ' is not valid space attribute');
         }
     }
 

@@ -6,10 +6,9 @@
  */
 class HTMLPurifier_UnitConverter
 {
-
-    const ENGLISH = 1;
-    const METRIC = 2;
-    const DIGITAL = 3;
+    public const ENGLISH = 1;
+    public const METRIC = 2;
+    public const DIGITAL = 3;
 
     /**
      * Units information array. Units are grouped into measuring systems
@@ -20,32 +19,20 @@ class HTMLPurifier_UnitConverter
      * constraint on memory (this is generally not a problem, since
      * the number of measuring systems is small.)
      */
-    protected static $units = array(
-        self::ENGLISH => array(
+    protected static $units = [
+        self::ENGLISH => [
             'px' => 3, // This is as per CSS 2.1 and Firefox. Your mileage may vary
             'pt' => 4,
             'pc' => 48,
             'in' => 288,
-            self::METRIC => array('pt', '0.352777778', 'mm'),
-        ),
-        self::METRIC => array(
+            self::METRIC => ['pt', '0.352777778', 'mm'],
+        ],
+        self::METRIC => [
             'mm' => 1,
             'cm' => 10,
-            self::ENGLISH => array('mm', '2.83464567', 'pt'),
-        ),
-    );
-
-    /**
-     * Minimum bcmath precision for output.
-     * @type int
-     */
-    protected $outputPrecision;
-
-    /**
-     * Bcmath precision for internal calculations.
-     * @type int
-     */
-    protected $internalPrecision;
+            self::ENGLISH => ['mm', '2.83464567', 'pt'],
+        ],
+    ];
 
     /**
      * Whether or not BCMath is available.
@@ -53,10 +40,17 @@ class HTMLPurifier_UnitConverter
      */
     private $bcmath;
 
-    public function __construct($output_precision = 4, $internal_precision = 10, $force_no_bcmath = false)
-    {
-        $this->outputPrecision = $output_precision;
-        $this->internalPrecision = $internal_precision;
+    public function __construct(/**
+     * Minimum bcmath precision for output.
+     * @type int
+     */
+        protected $outputPrecision = 4, /**
+     * Bcmath precision for internal calculations.
+     * @type int
+     */
+        protected $internalPrecision = 10,
+        $force_no_bcmath = false
+    ) {
         $this->bcmath = !$force_no_bcmath && function_exists('bcmul');
     }
 
@@ -176,7 +170,7 @@ class HTMLPurifier_UnitConverter
         //echo "$n\nsigfigs = $sigfigs\nnew_log = $new_log\nlog = $log\nrp = $rp\n</pre>\n";
 
         $n = $this->round($n, $sigfigs);
-        if (strpos($n, '.') !== false) {
+        if (str_contains($n, '.')) {
             $n = rtrim($n, '0');
         }
         $n = rtrim($n, '.');

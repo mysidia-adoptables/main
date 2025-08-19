@@ -9,31 +9,22 @@
 class HTMLPurifier_ConfigSchema_ValidatorAtom
 {
     /**
-     * @type string
-     */
-    protected $context;
-
-    /**
-     * @type object
-     */
-    protected $obj;
-
-    /**
-     * @type string
-     */
-    protected $member;
-
-    /**
      * @type mixed
      */
     protected $contents;
 
-    public function __construct($context, $obj, $member)
-    {
-        $this->context = $context;
-        $this->obj = $obj;
-        $this->member = $member;
-        $this->contents =& $obj->$member;
+    public function __construct(/**
+     * @type string
+     */
+        protected $context, /**
+     * @type object
+     */
+        protected $obj, /**
+     * @type string
+     */
+        protected $member
+    ) {
+        $this->contents = & $this->obj->{$this->member};
     }
 
     /**
@@ -86,7 +77,7 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
     public function assertAlnum()
     {
         $this->assertIsString();
-        if (!ctype_alnum($this->contents)) {
+        if (!ctype_alnum((string) $this->contents)) {
             $this->error('must be alphanumeric');
         }
         return $this;
@@ -121,9 +112,9 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
      * @param string $msg
      * @throws HTMLPurifier_ConfigSchema_Exception
      */
-    protected function error($msg)
+    protected function error($msg): never
     {
-        throw new HTMLPurifier_ConfigSchema_Exception(ucfirst($this->member) . ' in ' . $this->context . ' ' . $msg);
+        throw new HTMLPurifier_ConfigSchema_Exception(ucfirst((string) $this->member) . ' in ' . $this->context . ' ' . $msg);
     }
 }
 

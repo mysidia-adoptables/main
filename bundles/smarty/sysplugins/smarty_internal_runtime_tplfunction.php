@@ -15,7 +15,7 @@ class Smarty_Internal_Runtime_TplFunction
      *
      * @var array
      */
-    private $tplFunctions = array();
+    private $tplFunctions = [];
 
     /**
      * Call template function
@@ -41,14 +41,14 @@ class Smarty_Internal_Runtime_TplFunction
             }
             if (function_exists($function)) {
                 $this->saveTemplateVariables($tpl, $name);
-                $function ($tpl, $params);
+                $function($tpl, $params);
                 $this->restoreTemplateVariables($tpl, $name);
                 return;
             }
             // try to load template function dynamically
             if ($this->addTplFuncToCache($tpl, $name, $function)) {
                 $this->saveTemplateVariables($tpl, $name);
-                $function ($tpl, $params);
+                $function($tpl, $params);
                 $this->restoreTemplateVariables($tpl, $name);
                 return;
             }
@@ -83,7 +83,7 @@ class Smarty_Internal_Runtime_TplFunction
     public function getTplFunction($name = null)
     {
         if (isset($name)) {
-            return $this->tplFunctions[ $name ] ? $this->tplFunctions[ $name ] : false;
+            return $this->tplFunctions[ $name ] ?: false;
         } else {
             return $this->tplFunctions;
         }
@@ -125,14 +125,20 @@ class Smarty_Internal_Runtime_TplFunction
                         $content = $cache->read($tplPtr);
                         if ($content) {
                             // check if we must update file dependency
-                            if (!preg_match("/'{$funcParam['uid']}'(.*?)'nocache_hash'/", $content, $match2)) {
-                                $content = preg_replace("/('file_dependency'(.*?)\()/", "\\1{$match1[0]}", $content);
+                            if (!preg_match("/'{$funcParam['uid']}'(.*?)'nocache_hash'/", (string) $content, $match2)) {
+                                $content = preg_replace("/('file_dependency'(.*?)\()/", "\\1{$match1[0]}", (string) $content);
                             }
-                            $tplPtr->smarty->ext->_updateCache->write($cache, $tplPtr,
-                                                                      preg_replace('/\s*\?>\s*$/', "\n", $content) .
-                                                                      "\n" . preg_replace(array('/^\s*<\?php\s+/',
-                                                                                                '/\s*\?>\s*$/',), "\n",
-                                                                                          $match[ 0 ]));
+                            $tplPtr->smarty->ext->_updateCache->write(
+                                $cache,
+                                $tplPtr,
+                                preg_replace('/\s*\?>\s*$/', "\n", (string) $content) .
+                                                                      "\n" . preg_replace(
+                                                                          ['/^\s*<\?php\s+/',
+                                                                                                '/\s*\?>\s*$/',],
+                                                                          "\n",
+                                                                          $match[ 0 ]
+                                                                      )
+                            );
                         }
                     }
                     return true;
@@ -151,7 +157,7 @@ class Smarty_Internal_Runtime_TplFunction
     public function saveTemplateVariables(Smarty_Internal_Template $tpl, $name)
     {
         $tpl->_cache[ 'varStack' ][] =
-            array('tpl' => $tpl->tpl_vars, 'config' => $tpl->config_vars, 'name' => "_tplFunction_{$name}");
+            ['tpl' => $tpl->tpl_vars, 'config' => $tpl->config_vars, 'name' => "_tplFunction_{$name}"];
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -45,13 +46,14 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
                 } else {
                     // php <5.2.3 - prevent double encoding
                     $string = preg_replace('!&(#?\w+);!', '%%%SMARTY_START%%%\\1%%%SMARTY_END%%%', $string);
-                    $string = htmlspecialchars($string, ENT_QUOTES, $char_set);
-                    $string = str_replace(array('%%%SMARTY_START%%%', '%%%SMARTY_END%%%'), array('&', ';'), $string);
+                    $string = htmlspecialchars((string) $string, ENT_QUOTES, $char_set);
+                    $string = str_replace(['%%%SMARTY_START%%%', '%%%SMARTY_END%%%'], ['&', ';'], $string);
 
                     return $string;
                 }
             }
 
+            // no break
         case 'htmlall':
             if (Smarty::$_MBSTRING) {
                 // mb_convert_encoding ignores htmlspecialchars()
@@ -65,9 +67,9 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
                     } else {
                         // php <5.2.3 - prevent double encoding
                         $string = preg_replace('!&(#?\w+);!', '%%%SMARTY_START%%%\\1%%%SMARTY_END%%%', $string);
-                        $string = htmlspecialchars($string, ENT_QUOTES, $char_set);
+                        $string = htmlspecialchars((string) $string, ENT_QUOTES, $char_set);
                         $string =
-                            str_replace(array('%%%SMARTY_START%%%', '%%%SMARTY_END%%%'), array('&', ';'), $string);
+                            str_replace(['%%%SMARTY_START%%%', '%%%SMARTY_END%%%'], ['&', ';'], $string);
 
                         return $string;
                     }
@@ -85,13 +87,14 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
                     return htmlentities($string, ENT_QUOTES, $char_set);
                 } else {
                     $string = preg_replace('!&(#?\w+);!', '%%%SMARTY_START%%%\\1%%%SMARTY_END%%%', $string);
-                    $string = htmlentities($string, ENT_QUOTES, $char_set);
-                    $string = str_replace(array('%%%SMARTY_START%%%', '%%%SMARTY_END%%%'), array('&', ';'), $string);
+                    $string = htmlentities((string) $string, ENT_QUOTES, $char_set);
+                    $string = str_replace(['%%%SMARTY_START%%%', '%%%SMARTY_END%%%'], ['&', ';'], $string);
 
                     return $string;
                 }
             }
 
+            // no break
         case 'url':
             return rawurlencode($string);
 
@@ -107,7 +110,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             // Note that the UTF-8 encoded character ä will be represented as %c3%a4
             $return = '';
             $_length = strlen($string);
-            for ($x = 0; $x < $_length; $x ++) {
+            for ($x = 0; $x < $_length; $x++) {
                 $return .= '%' . bin2hex($string[ $x ]);
             }
 
@@ -126,7 +129,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             }
             // no MBString fallback
             $_length = strlen($string);
-            for ($x = 0; $x < $_length; $x ++) {
+            for ($x = 0; $x < $_length; $x++) {
                 $return .= '&#x' . bin2hex($string[ $x ]) . ';';
             }
 
@@ -145,7 +148,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             }
             // no MBString fallback
             $_length = strlen($string);
-            for ($x = 0; $x < $_length; $x ++) {
+            for ($x = 0; $x < $_length; $x++) {
                 $return .= '&#' . ord($string[ $x ]) . ';';
             }
 
@@ -153,17 +156,17 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
 
         case 'javascript':
             // escape quotes and backslashes, newlines, etc.
-            return strtr($string, array('\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n',
-                                        '</' => '<\/'));
+            return strtr($string, ['\\' => '\\\\', "'" => "\\'", '"' => '\\"', "\r" => '\\r', "\n" => '\\n',
+                                        '</' => '<\/']);
 
         case 'mail':
             if (Smarty::$_MBSTRING) {
                 require_once(SMARTY_PLUGINS_DIR . 'shared.mb_str_replace.php');
 
-                return smarty_mb_str_replace(array('@', '.'), array(' [AT] ', ' [DOT] '), $string);
+                return smarty_mb_str_replace(['@', '.'], [' [AT] ', ' [DOT] '], $string);
             }
             // no MBString fallback
-            return str_replace(array('@', '.'), array(' [AT] ', ' [DOT] '), $string);
+            return str_replace(['@', '.'], [' [AT] ', ' [DOT] '], $string);
 
         case 'nonstd':
             // escape non-standard chars, such as ms document quotes
@@ -182,7 +185,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = null, $
             }
 
             $_length = strlen($string);
-            for ($_i = 0; $_i < $_length; $_i ++) {
+            for ($_i = 0; $_i < $_length; $_i++) {
                 $_ord = ord(substr($string, $_i, 1));
                 // non-standard char, escape it
                 if ($_ord >= 126) {

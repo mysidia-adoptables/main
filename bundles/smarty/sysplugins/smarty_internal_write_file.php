@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty write file plugin
  *
@@ -36,15 +37,15 @@ class Smarty_Internal_Write_File
         $_dirpath = dirname($_filepath);
         // if subdirs, create dir structure
         if ($_dirpath !== '.' && !file_exists($_dirpath)) {
-            mkdir($_dirpath, $smarty->_dir_perms === null ? 0777 : $smarty->_dir_perms, true);
+            mkdir($_dirpath, $smarty->_dir_perms ?? 0777, true);
         }
 
         // write to tmp file, then move to overt file lock race condition
-        $_tmp_file = $_dirpath . DS . str_replace(array('.', ','), '_', uniqid('wrt', true));
+        $_tmp_file = $_dirpath . DS . str_replace(['.', ','], '_', uniqid('wrt', true));
         if (!file_put_contents($_tmp_file, $_contents)) {
             error_reporting($_error_reporting);
             throw new SmartyException("unable to write file {$_tmp_file}");
-       }
+        }
 
         /*
          * Windows' rename() fails if the destination exists,

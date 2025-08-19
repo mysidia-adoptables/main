@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Templateparser Parsetrees
  * These are classes to build parsetrees in the template parser
@@ -16,7 +17,6 @@
  */
 abstract class Smarty_Internal_ParseTree
 {
-
     /**
      * Buffer content
      *
@@ -29,7 +29,7 @@ abstract class Smarty_Internal_ParseTree
      *
      * @var array
      */
-    public $subtrees = array();
+    public $subtrees = [];
 
     /**
      * Return buffer
@@ -50,5 +50,3 @@ abstract class Smarty_Internal_ParseTree
     }
 
 }
-
-

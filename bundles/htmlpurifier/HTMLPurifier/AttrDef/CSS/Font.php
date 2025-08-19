@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
 {
-
     /**
      * Local copy of validators
      * @type HTMLPurifier_AttrDef[]
@@ -14,7 +13,7 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
      *       CSSDefinition, this wouldn't be necessary.  We'd instantiate
      *       our own copies.
      */
-    protected $info = array();
+    protected $info = [];
 
     /**
      * @param HTMLPurifier_Config $config
@@ -38,14 +37,14 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        static $system_fonts = array(
+        static $system_fonts = [
             'caption' => true,
             'icon' => true,
             'menu' => true,
             'message-box' => true,
             'small-caption' => true,
             'status-bar' => true
-        );
+        ];
 
         // regular pre-processing
         $string = $this->parseCDATA($string);
@@ -54,15 +53,15 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
         }
 
         // check if it's one of the keywords
-        $lowercase_string = strtolower($string);
+        $lowercase_string = strtolower((string) $string);
         if (isset($system_fonts[$lowercase_string])) {
             return $lowercase_string;
         }
 
-        $bits = explode(' ', $string); // bits to process
+        $bits = explode(' ', (string) $string); // bits to process
         $stage = 0; // this indicates what we're looking for
-        $caught = array(); // which stage 0 properties have we caught?
-        $stage_1 = array('font-style', 'font-variant', 'font-weight');
+        $caught = []; // which stage 0 properties have we caught?
+        $stage_1 = ['font-style', 'font-variant', 'font-weight'];
         $final = ''; // output
 
         for ($i = 0, $size = count($bits); $i < $size; $i++) {
@@ -93,10 +92,11 @@ class HTMLPurifier_AttrDef_CSS_Font extends HTMLPurifier_AttrDef
                     if ($r !== false) {
                         break;
                     }
+                    // no break
                 case 1: // attempting to catch font-size and perhaps line-height
                     $found_slash = false;
-                    if (strpos($bits[$i], '/') !== false) {
-                        list($font_size, $line_height) =
+                    if (str_contains($bits[$i], '/')) {
+                        [$font_size, $line_height] =
                             explode('/', $bits[$i]);
                         if ($line_height === '') {
                             // ooh, there's a space after the slash!

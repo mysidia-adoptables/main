@@ -6,12 +6,6 @@
 class HTMLPurifier_Token_Comment extends HTMLPurifier_Token
 {
     /**
-     * Character data within comment.
-     * @type string
-     */
-    public $data;
-
-    /**
      * @type bool
      */
     public $is_whitespace = true;
@@ -23,14 +17,14 @@ class HTMLPurifier_Token_Comment extends HTMLPurifier_Token
      * @param int $line
      * @param int $col
      */
-    public function __construct($data, $line = null, $col = null)
+    public function __construct(public $data, $line = null, $col = null)
     {
-        $this->data = $data;
         $this->line = $line;
         $this->col = $col;
     }
 
-    public function toNode() {
+    public function toNode()
+    {
         return new HTMLPurifier_Node_Comment($this->data, $this->line, $this->col);
     }
 }

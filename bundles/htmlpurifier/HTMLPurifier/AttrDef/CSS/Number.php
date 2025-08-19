@@ -5,19 +5,11 @@
  */
 class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
 {
-
-    /**
-     * Indicates whether or not only positive values are allowed.
-     * @type bool
-     */
-    protected $non_negative = false;
-
     /**
      * @param bool $non_negative indicates whether negatives are forbidden
      */
-    public function __construct($non_negative = false)
+    public function __construct(protected $non_negative = false)
     {
-        $this->non_negative = $non_negative;
     }
 
     /**
@@ -46,21 +38,22 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
                     return false;
                 }
                 $sign = '-';
+                // no break
             case '+':
-                $number = substr($number, 1);
+                $number = substr((string) $number, 1);
         }
 
-        if (ctype_digit($number)) {
+        if (ctype_digit((string) $number)) {
             $number = ltrim($number, '0');
             return $number ? $sign . $number : '0';
         }
 
         // Period is the only non-numeric character allowed
-        if (strpos($number, '.') === false) {
+        if (!str_contains((string) $number, '.')) {
             return false;
         }
 
-        list($left, $right) = explode('.', $number, 2);
+        [$left, $right] = explode('.', (string) $number, 2);
 
         if ($left === '' && $right === '') {
             return false;

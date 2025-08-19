@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -57,8 +58,8 @@ function smarty_function_html_select_date($params)
     static $_current_year = null;
     if ($_month_timestamps === null) {
         $_current_year = date('Y');
-        $_month_timestamps = array();
-        for ($i = 1; $i <= 12; $i ++) {
+        $_month_timestamps = [];
+        for ($i = 1; $i <= 12; $i++) {
             $_month_timestamps[ $i ] = mktime(0, 0, 0, $i, 1, 2000);
         }
     }
@@ -122,7 +123,7 @@ function smarty_function_html_select_date($params)
 
             case 'month_names':
                 if (is_array($_value) && count($_value) == 12) {
-                    $$_key = $_value;
+                    ${$_key} = $_value;
                 } else {
                     trigger_error("html_select_date: month_names must be an array of 12 strings", E_USER_NOTICE);
                 }
@@ -154,7 +155,7 @@ function smarty_function_html_select_date($params)
             case 'month_id':
             case 'day_id':
             case 'year_id':
-                $$_key = (string) $_value;
+                ${$_key} = (string) $_value;
                 break;
 
             case 'display_days':
@@ -162,7 +163,7 @@ function smarty_function_html_select_date($params)
             case 'display_years':
             case 'year_as_text':
             case 'reverse_years':
-                $$_key = (bool) $_value;
+                ${$_key} = (bool) $_value;
                 break;
 
             default:
@@ -180,46 +181,44 @@ function smarty_function_html_select_date($params)
     if (isset($params[ 'time' ]) && is_array($params[ 'time' ])) {
         if (isset($params[ 'time' ][ $prefix . 'Year' ])) {
             // $_REQUEST[$field_array] given
-            foreach (array('Y' => 'Year', 'm' => 'Month', 'd' => 'Day') as $_elementKey => $_elementName) {
+            foreach (['Y' => 'Year', 'm' => 'Month', 'd' => 'Day'] as $_elementKey => $_elementName) {
                 $_variableName = '_' . strtolower($_elementName);
-                $$_variableName =
-                    isset($params[ 'time' ][ $prefix . $_elementName ]) ? $params[ 'time' ][ $prefix . $_elementName ] :
-                        date($_elementKey);
+                ${$_variableName} =
+                    $params[ 'time' ][ $prefix . $_elementName ] ?? date($_elementKey);
             }
         } elseif (isset($params[ 'time' ][ $field_array ][ $prefix . 'Year' ])) {
             // $_REQUEST given
-            foreach (array('Y' => 'Year', 'm' => 'Month', 'd' => 'Day') as $_elementKey => $_elementName) {
+            foreach (['Y' => 'Year', 'm' => 'Month', 'd' => 'Day'] as $_elementKey => $_elementName) {
                 $_variableName = '_' . strtolower($_elementName);
-                $$_variableName = isset($params[ 'time' ][ $field_array ][ $prefix . $_elementName ]) ?
-                    $params[ 'time' ][ $field_array ][ $prefix . $_elementName ] : date($_elementKey);
+                ${$_variableName} = $params[ 'time' ][ $field_array ][ $prefix . $_elementName ] ?? date($_elementKey);
             }
         } else {
             // no date found, use NOW
-            list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d'));
+            [$_year, $_month, $_day] = $time = explode('-', date('Y-m-d'));
         }
     } elseif ($time === null) {
         if (array_key_exists('time', $params)) {
             $_year = $_month = $_day = $time = null;
         } else {
-            list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d'));
+            [$_year, $_month, $_day] = $time = explode('-', date('Y-m-d'));
         }
     } else {
-        list($_year, $_month, $_day) = $time = explode('-', date('Y-m-d', $time));
+        [$_year, $_month, $_day] = $time = explode('-', date('Y-m-d', $time));
     }
 
     // make syntax "+N" or "-N" work with $start_year and $end_year
     // Note preg_match('!^(\+|\-)\s*(\d+)$!', $end_year, $match) is slower than trim+substr
-    foreach (array('start', 'end') as $key) {
+    foreach (['start', 'end'] as $key) {
         $key .= '_year';
-        $t = $$key;
+        $t = ${$key};
         if ($t === null) {
-            $$key = (int) $_current_year;
+            ${$key} = (int) $_current_year;
         } elseif ($t[ 0 ] == '+') {
-            $$key = (int) ($_current_year + (int) trim(substr($t, 1)));
+            ${$key} = (int) ($_current_year + (int) trim(substr($t, 1)));
         } elseif ($t[ 0 ] == '-') {
-            $$key = (int) ($_current_year - (int) trim(substr($t, 1)));
+            ${$key} = (int) ($_current_year - (int) trim(substr($t, 1)));
         } else {
-            $$key = (int) $$key;
+            ${$key} = (int) ${$key};
         }
     }
 
@@ -249,7 +248,7 @@ function smarty_function_html_select_date($params)
             $_html_years = '<select name="' . $_name . '"';
             if ($year_id !== null || $all_id !== null) {
                 $_html_years .= ' id="' . smarty_function_escape_special_chars($year_id !== null ?
-                                                                                   ($year_id ? $year_id : $_name) :
+                                                                                   ($year_id ?: $_name) :
                                                                                    ($all_id ? ($all_id . $_name) :
                                                                                        $_name)) . '"';
             }
@@ -259,7 +258,7 @@ function smarty_function_html_select_date($params)
             $_html_years .= $_extra . $extra_attrs . '>' . $option_separator;
 
             if (isset($year_empty) || isset($all_empty)) {
-                $_html_years .= '<option value="">' . (isset($year_empty) ? $year_empty : $all_empty) . '</option>' .
+                $_html_years .= '<option value="">' . ($year_empty ?? $all_empty) . '</option>' .
                                 $option_separator;
             }
 
@@ -287,7 +286,7 @@ function smarty_function_html_select_date($params)
         $_html_months = '<select name="' . $_name . '"';
         if ($month_id !== null || $all_id !== null) {
             $_html_months .= ' id="' . smarty_function_escape_special_chars($month_id !== null ?
-                                                                                ($month_id ? $month_id : $_name) :
+                                                                                ($month_id ?: $_name) :
                                                                                 ($all_id ? ($all_id . $_name) :
                                                                                     $_name)) . '"';
         }
@@ -297,11 +296,11 @@ function smarty_function_html_select_date($params)
         $_html_months .= $_extra . $extra_attrs . '>' . $option_separator;
 
         if (isset($month_empty) || isset($all_empty)) {
-            $_html_months .= '<option value="">' . (isset($month_empty) ? $month_empty : $all_empty) . '</option>' .
+            $_html_months .= '<option value="">' . ($month_empty ?? $all_empty) . '</option>' .
                              $option_separator;
         }
 
-        for ($i = 1; $i <= 12; $i ++) {
+        for ($i = 1; $i <= 12; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = isset($month_names) ? smarty_function_escape_special_chars($month_names[ $i ]) :
                 ($month_format == "%m" ? $_val : strftime($month_format, $_month_timestamps[ $i ]));
@@ -327,7 +326,7 @@ function smarty_function_html_select_date($params)
         $_html_days = '<select name="' . $_name . '"';
         if ($day_id !== null || $all_id !== null) {
             $_html_days .= ' id="' .
-                           smarty_function_escape_special_chars($day_id !== null ? ($day_id ? $day_id : $_name) :
+                           smarty_function_escape_special_chars($day_id !== null ? ($day_id ?: $_name) :
                                                                     ($all_id ? ($all_id . $_name) : $_name)) . '"';
         }
         if ($day_size) {
@@ -336,11 +335,11 @@ function smarty_function_html_select_date($params)
         $_html_days .= $_extra . $extra_attrs . '>' . $option_separator;
 
         if (isset($day_empty) || isset($all_empty)) {
-            $_html_days .= '<option value="">' . (isset($day_empty) ? $day_empty : $all_empty) . '</option>' .
+            $_html_days .= '<option value="">' . ($day_empty ?? $all_empty) . '</option>' .
                            $option_separator;
         }
 
-        for ($i = 1; $i <= 31; $i ++) {
+        for ($i = 1; $i <= 31; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = $day_format == '%02d' ? $_val : sprintf($day_format, $i);
             $_value = $day_value_format == '%02d' ? $_val : sprintf($day_value_format, $i);
@@ -353,7 +352,7 @@ function smarty_function_html_select_date($params)
 
     // order the fields for output
     $_html = '';
-    for ($i = 0; $i <= 2; $i ++) {
+    for ($i = 0; $i <= 2; $i++) {
         switch ($field_order[ $i ]) {
             case 'Y':
             case 'y':

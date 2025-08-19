@@ -9,12 +9,11 @@
  */
 class HTMLPurifier_Context
 {
-
     /**
      * Private array that stores the references.
      * @type array
      */
-    private $_storage = array();
+    private $_storage = [];
 
     /**
      * Registers a variable into the context.
@@ -30,13 +29,13 @@ class HTMLPurifier_Context
             );
             return;
         }
-        $this->_storage[$name] =& $ref;
+        $this->_storage[$name] = & $ref;
     }
 
     /**
      * Retrieves a variable reference from the context.
      * @param string $name String name
-     * @param bool $ignore_error Boolean whether or not to ignore error
+     * @param bool $ignore_error bool whether or not to ignore error
      * @return mixed
      */
     public function &get($name, $ignore_error = false)
