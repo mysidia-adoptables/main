@@ -17,7 +17,6 @@ use Resource\Native\Integer;
 
 class LevelController extends AppController
 {
-
     private $settings;
 
     public function __construct()
@@ -38,15 +37,18 @@ class LevelController extends AppController
     public function add($id = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("select")) return;
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$mysidia->input->post("select")) {
+            return;
+        } elseif (!$mysidia->input->post("submit")) {
             try {
                 $id = $id ?: $mysidia->input->post("adopt");
                 $adopt = new Adoptable($id);
                 $mysidia->session->assign("acpLevel", "add", true);
 
                 $currentlevel = $mysidia->db->select("levels", [], "adopt = :adopt", ["adopt" => $id])->rowCount();
-                if ($currentlevel > $this->settings->maximum) throw new InvalidActionException("maximum");
+                if ($currentlevel > $this->settings->maximum) {
+                    throw new InvalidActionException("maximum");
+                }
                 $previouslevel = $currentlevel - 1;
                 $prevlevelclicks = $mysidia->db->select("levels", ["requiredclicks"], "adopt = :adopt AND level = :level", ["adopt" => $id, "level" => $previouslevel])->fetchColumn();
 
@@ -78,8 +80,11 @@ class LevelController extends AppController
                     $mysidia->db->insert("levels", ["lvid" => null, "adopt" => $adopt->getID(), "level" => $i, "requiredclicks" => (int)$reqclicks[$n],
                         "primaryimage" => $primimg, "rewarduser" => $mysidia->input->post("isreward"), "promocode" => $mysidia->input->post("rewardcode")]);
                 } catch (Exception $e) {
-                    if ($i == $currentLevel) throw $e;
-                    else break;
+                    if ($i == $currentLevel) {
+                        throw $e;
+                    } else {
+                        break;
+                    }
                 }
             }
             $this->setField("adopt", $adopt);
@@ -96,8 +101,12 @@ class LevelController extends AppController
                 $primaryLocal = $mysidia->input->post("primarylocal");
                 $reqclicks = (int)$mysidia->input->post("reqclicks");
                 $primimg = ($primaryHosted && $primaryLocal == "none") ? $primaryHosted : $primaryLocal;
-                if ($primimg && $primimg != "none") $adoptLevel->updatePrimaryImage($primimg);
-                if ($reqclicks) $adoptLevel->updateRequiredClicks($reqclicks);
+                if ($primimg && $primimg != "none") {
+                    $adoptLevel->updatePrimaryImage($primimg);
+                }
+                if ($reqclicks) {
+                    $adoptLevel->updateRequiredClicks($reqclicks);
+                }
             } catch (Exception) {
                 throw new InvalidIDException("nonexist");
             }
@@ -130,7 +139,9 @@ class LevelController extends AppController
             }
         } elseif ($mysidia->input->post("select")) {
             $this->edit($id, $level);
-        } elseif ($level) $this->setField("level", new Level($id, $level));
+        } elseif ($level) {
+            $this->setField("level", new Level($id, $level));
+        }
     }
 
     public function settings()
@@ -139,7 +150,9 @@ class LevelController extends AppController
         if ($mysidia->input->post("submit")) {
             $settings = ['system', 'method', 'maximum', 'clicks', 'number', 'reward', 'owner'];
             foreach ($settings as $name) {
-                if ($mysidia->input->post($name) != ($this->settings->{$name})) $mysidia->db->update("levels_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                if ($mysidia->input->post($name) != ($this->settings->{$name})) {
+                    $mysidia->db->update("levels_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                }
             }
             return;
         }
@@ -153,7 +166,9 @@ class LevelController extends AppController
         if ($mysidia->input->post("submit")) {
             $settings = ['system', 'display', 'number', 'columns', 'level', 'species', 'info', 'owned'];
             foreach ($settings as $name) {
-                if ($mysidia->input->post($name) != ($daycareSettings->$name)) $mysidia->db->update("daycare_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                if ($mysidia->input->post($name) != ($daycareSettings->$name)) {
+                    $mysidia->db->update("daycare_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                }
             }
             return;
         }
@@ -170,11 +185,21 @@ class LevelController extends AppController
         $reqclicks = $mysidia->input->post("reqclicks");
         $prevclicks = $mysidia->input->post("prevclicks");
 
-        if (!$adopt || !$currentLevel) throw new BlankFieldException("name");
-        if (!$primaryHosted[$i] && !$primaryLocal[$i]) throw new BlankFieldException("primary_image");
-        if (!$primaryHosted[$i] && $primaryLocal[$i] == "none") throw new BlankFieldException("primary_image");
-        if (!is_numeric($reqclicks[$i])) throw new BlankFieldException("clicks");
-        if ($prevclicks >= $reqclicks[$i]) throw new InvalidActionException("clicks2");
+        if (!$adopt || !$currentLevel) {
+            throw new BlankFieldException("name");
+        }
+        if (!$primaryHosted[$i] && !$primaryLocal[$i]) {
+            throw new BlankFieldException("primary_image");
+        }
+        if (!$primaryHosted[$i] && $primaryLocal[$i] == "none") {
+            throw new BlankFieldException("primary_image");
+        }
+        if (!is_numeric($reqclicks[$i])) {
+            throw new BlankFieldException("clicks");
+        }
+        if ($prevclicks >= $reqclicks[$i]) {
+            throw new InvalidActionException("clicks2");
+        }
         return true;
     }
 }

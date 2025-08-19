@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 class LinkedHashMapEntry extends HashMapEntry
 {
-
     /**
      * The before property, it stores the MapEntry that comes before.
      * @access protected
@@ -89,7 +88,9 @@ class LinkedHashMapEntry extends HashMapEntry
      */
     public function recordAccess(HashMap $map)
     {
-        if (!($map instanceof LinkedHashMap)) throw new IllegalArgumentException;
+        if (!($map instanceof LinkedHashMap)) {
+            throw new IllegalArgumentException();
+        }
         if ($map->getOrder()) {
             $this->remove();
             $this->addBefore($map->getHeader());

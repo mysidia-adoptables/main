@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Assign
  * Compiles the {assign} tag
@@ -24,11 +25,11 @@ class Smarty_Internal_Compile_Assign extends Smarty_Internal_CompileBase
      */
     public $option_flags = ['nocache', 'noscope'];
 
-   /**
-     * Valid scope names
-     *
-     * @var array
-     */
+    /**
+      * Valid scope names
+      *
+      * @var array
+      */
     public $valid_scopes = ['local' => Smarty::SCOPE_LOCAL, 'parent' => Smarty::SCOPE_PARENT,
                                  'root' => Smarty::SCOPE_ROOT, 'global' => Smarty::SCOPE_GLOBAL,
                                  'tpl_root' => Smarty::SCOPE_TPL_ROOT, 'smarty' => Smarty::SCOPE_SMARTY];

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Object Block Function
  * Compiles code for registered objects as block function

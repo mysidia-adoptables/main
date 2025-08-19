@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Extension
  * This file contains the Smarty template extension to create a code frame
@@ -25,9 +26,13 @@ class Smarty_Internal_Runtime_CodeFrame
      *
      * @return string
      */
-    public function create(Smarty_Internal_Template $_template, $content = '', $functions = '', $cache = false,
-                           Smarty_Internal_TemplateCompilerBase $compiler = null)
-    {
+    public function create(
+        Smarty_Internal_Template $_template,
+        $content = '',
+        $functions = '',
+        $cache = false,
+        Smarty_Internal_TemplateCompilerBase $compiler = null
+    ) {
         // build property code
         $properties[ 'version' ] = Smarty::SMARTY_VERSION;
         $properties[ 'unifunc' ] = 'content_' . str_replace(['.', ','], '_', uniqid('', true));
@@ -35,7 +40,7 @@ class Smarty_Internal_Runtime_CodeFrame
             $properties[ 'has_nocache_code' ] = $_template->compiled->has_nocache_code;
             $properties[ 'file_dependency' ] = $_template->compiled->file_dependency;
             $properties[ 'includes' ] = $_template->compiled->includes;
-         } else {
+        } else {
             $properties[ 'has_nocache_code' ] = $_template->cached->has_nocache_code;
             $properties[ 'file_dependency' ] = $_template->cached->file_dependency;
             $properties[ 'cache_lifetime' ] = $_template->cache_lifetime;

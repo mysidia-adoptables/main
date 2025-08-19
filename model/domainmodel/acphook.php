@@ -9,7 +9,6 @@ use Resource\Native\MysString;
 
 class ACPHook extends Model
 {
-
     protected $id;
     protected $linktext;
     protected $linkurl;
@@ -19,11 +18,15 @@ class ACPHook extends Model
     public function __construct($acphookinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($acphookinfo instanceof MysString) $acphookinfo = $acphookinfo->getValue();
+        if ($acphookinfo instanceof MysString) {
+            $acphookinfo = $acphookinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($acphookinfo) ? "id = :acphookinfo" : "pluginname = :acphookinfo";
             $dto = $mysidia->db->select("acp_hooks", [], $whereClause, ["acphookinfo" => $acphookinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Plugin {$acphookinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Plugin {$acphookinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }

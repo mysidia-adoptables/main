@@ -10,7 +10,6 @@ use Resource\Utility\Date;
 
 class Advertisement extends Model
 {
-
     protected $id;
     protected $adname;
     protected $text;
@@ -25,11 +24,15 @@ class Advertisement extends Model
     public function __construct($adinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($adinfo instanceof MysString) $adinfo = $adinfo->getValue();
+        if ($adinfo instanceof MysString) {
+            $adinfo = $adinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($adinfo) ? "id = :adinfo" : "adname = :adname";
             $dto = $mysidia->db->select("ads", [], $whereClause, ["adinfo" => $adinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Ad {$adinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Ad {$adinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -77,8 +80,11 @@ class Advertisement extends Model
 
     public function getUser($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Member($this->user);
-        else return $this->user;
+        if ($fetchMode == Model::MODEL) {
+            return new Member($this->user);
+        } else {
+            return $this->user;
+        }
     }
 
     public function isExtra()
@@ -113,7 +119,9 @@ class Advertisement extends Model
 
     public function updateImpressions()
     {
-        if (!$this->impressions) $this->impressions = 0;
+        if (!$this->impressions) {
+            $this->impressions = 0;
+        }
         $this->actualimpressions++;
         $this->save("actualimpressions", $this->actualimpressions);
         if (!$this->isActive()) {

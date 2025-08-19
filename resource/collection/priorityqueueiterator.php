@@ -21,7 +21,6 @@ use Resource\Native\Objective;
  */
 class PriorityQueueIterator extends QueueIterator
 {
-
     /**
      * The unvisited property, it stores a collection of unvisited portion of the heap that we must iterate through this time.
      * @access protected
@@ -78,9 +77,11 @@ class PriorityQueueIterator extends QueueIterator
         if ($this->unvisited != null) {
             $this->lastIndex = -1;
             $this->lastObject = $this->unvisited->poll();
-            if ($this->lastObject != null) return $this->lastObject;
+            if ($this->lastObject != null) {
+                return $this->lastObject;
+            }
         }
-        throw new NosuchElementException;
+        throw new NosuchElementException();
     }
 
     /**
@@ -93,14 +94,19 @@ class PriorityQueueIterator extends QueueIterator
         if ($this->lastIndex != -1) {
             $moved = $this->queue->delete($this->lastIndex);
             $this->lastIndex = -1;
-            if ($moved == null) $this->cursor--;
-            else {
-                if ($this->unvisited == null) $this->unvisited = new ArrayDeque;
+            if ($moved == null) {
+                $this->cursor--;
+            } else {
+                if ($this->unvisited == null) {
+                    $this->unvisited = new ArrayDeque();
+                }
                 $this->unvisited->add($moved);
             }
         } elseif ($this->lastObject != null) {
             $this->queue->removeEq($this->lastObject);
             $this->lastObject = null;
-        } else throw new IllegalStateException;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 }

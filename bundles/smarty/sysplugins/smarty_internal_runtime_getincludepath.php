@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty read include path plugin
  *
@@ -127,7 +128,7 @@ class Smarty_Internal_Runtime_GetIncludePath
         }
         // try PHP include_path
         foreach ($dirs as $dir) {
-            $dir_n = $this->number[ $dir ] ?? $this->number[ $dir ] = $this->counter ++;
+            $dir_n = $this->number[ $dir ] ?? $this->number[ $dir ] = $this->counter++;
             if (isset($this->isFile[ $dir_n ][ $file ])) {
                 if ($this->isFile[ $dir_n ][ $file ]) {
                     return $this->isFile[ $dir_n ][ $file ];

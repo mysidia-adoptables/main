@@ -24,7 +24,6 @@ use Resource\Utility\URL;
  */
 class MessageTableHelper extends TableHelper
 {
-
     /**
      * The getProfile method, generates the sender/recipient profile field for the message table.
      * @param String $param
@@ -33,7 +32,9 @@ class MessageTableHelper extends TableHelper
      */
     public function getProfile($param)
     {
-        if ($param == "SYSTEM") return $param;
+        if ($param == "SYSTEM") {
+            return $param;
+        }
         return new Link("profile/view/{$param}", $param);
     }
 
@@ -45,7 +46,9 @@ class MessageTableHelper extends TableHelper
      */
     public function getRecipient($param)
     {
-        if ($param == "SYSTEM") return $param;
+        if ($param == "SYSTEM") {
+            return $param;
+        }
         return new Link("profile/view/{$param}", $param);
     }
 
@@ -58,7 +61,9 @@ class MessageTableHelper extends TableHelper
     public function getStatus($param = "")
     {
         $status = new Comment($param);
-        if ($param == "unread") $status->setBold();
+        if ($param == "unread") {
+            $status->setBold();
+        }
         return $status;
     }
 
@@ -165,7 +170,7 @@ class MessageTableHelper extends TableHelper
      */
     public function getVisitorMessage(VisitorMessage $vmessage)
     {
-        $vmField = new ArrayList;
+        $vmField = new ArrayList();
         $vmField->add(new Link("profile/view/{$vmessage->getSenderID()}", $vmessage->getSenderName()));
         $vmField->add(new Comment("({$vmessage->getDateSent('Y-m-d')})", false));
         $vmField->add(new Link("vmessage/view/{$vmessage->getSenderID()}/{$vmessage->getRecipientID()}", new Image("templates/icons/status.gif"), true));
@@ -180,7 +185,7 @@ class MessageTableHelper extends TableHelper
      */
     public function getManageActions($vid)
     {
-        $action = new ArrayList;
+        $action = new ArrayList();
         $action->add(new Link("vmessage/edit/{$vid}", new Image("templates/icons/cog.gif")));
         $action->add(new Link("vmessage/delete/{$vid}", new Image("templates/icons/delete.gif"), true));
         return $action;

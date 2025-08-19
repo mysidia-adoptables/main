@@ -21,7 +21,6 @@ use Resource\GUI\Document\Division;
 
 class TradeFormHelper extends Helper
 {
-
     public function __construct(private $lang, private $multiSelect = false)
     {
     }
@@ -32,8 +31,9 @@ class TradeFormHelper extends Helper
         $recipientDiv = new Division(null, "recipient");
         $recipientDiv->add(new Image("templates/icons/warning.gif"));
 
-        if (!$recipient) $recipientDiv->add(new Comment($lang->recipient_none, true, "b"));
-        else {
+        if (!$recipient) {
+            $recipientDiv->add(new Comment($lang->recipient_none, true, "b"));
+        } else {
             $recipientDiv->add(new Comment($lang->recipient . $recipient->getUsername(), true, "b"));
             $recipientDiv->add(new PasswordField("hidden", "recipient", $recipient->getID()));
         }
@@ -43,14 +43,17 @@ class TradeFormHelper extends Helper
     public function getAdoptOffered(ArrayList $adopts = null, $adoptOffered = null)
     {
         $lang = $this->lang;
-        $adoptOfferedDiv = new Division(Null, "adoptoffered");
+        $adoptOfferedDiv = new Division(null, "adoptoffered");
 
-        if (!$adoptOffered) $adoptOfferedDiv->add(new Comment($lang->adopt_offered_none));
-        else {
+        if (!$adoptOffered) {
+            $adoptOfferedDiv->add(new Comment($lang->adopt_offered_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("adoptOffered[]", true) : new DropdownList("adoptOffered");
             $list->add(new Option("None Selected", "none"));
             $list->fill($adoptOffered);
-            if ($adopts) $this->selectOptions($list, $adopts);
+            if ($adopts) {
+                $this->selectOptions($list, $adopts);
+            }
 
             $adoptOfferedDiv->add(new Image("templates/icons/next.gif"));
             $adoptOfferedDiv->add(new Comment($lang->adopt_offered));
@@ -62,14 +65,17 @@ class TradeFormHelper extends Helper
     public function getAdoptWanted(ArrayList $adopts = null, $adoptWanted = null)
     {
         $lang = $this->lang;
-        $adoptWantedDiv = new Division(Null, "adoptwanted");
+        $adoptWantedDiv = new Division(null, "adoptwanted");
 
-        if (!$adoptWanted) $adoptWantedDiv->add(new Comment($lang->adopt_wanted_none));
-        else {
+        if (!$adoptWanted) {
+            $adoptWantedDiv->add(new Comment($lang->adopt_wanted_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("adoptWanted[]", true) : new DropdownList("adoptWanted");
             $list->add(new Option("None Selected", "none"));
             $list->fill($adoptWanted);
-            if ($adopts) $this->selectOptions($list, $adopts);
+            if ($adopts) {
+                $this->selectOptions($list, $adopts);
+            }
 
             $adoptWantedDiv->add(new Image("templates/icons/next.gif"));
             $adoptWantedDiv->add(new Comment($lang->adopt_wanted));
@@ -81,10 +87,11 @@ class TradeFormHelper extends Helper
     public function getAdoptOfferedPublic($recipient = null, $adoptOffered = null)
     {
         $lang = $this->lang;
-        $adoptOfferedDiv = new Division(Null, "adoptoffered");
+        $adoptOfferedDiv = new Division(null, "adoptoffered");
 
-        if (!$recipient || !$adoptOffered) $adoptOfferedDiv->add(new Comment($lang->adopt_offered_none));
-        else {
+        if (!$recipient || !$adoptOffered) {
+            $adoptOfferedDiv->add(new Comment($lang->adopt_offered_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("adoptOffered[]", true) : new DropdownList("adoptOffered");
             $list->add(new Option("None Selected", "none"));
             $list->fill($adoptOffered);
@@ -99,10 +106,11 @@ class TradeFormHelper extends Helper
     public function getAdoptWantedPublic($recipient = null, $adoptWanted = null)
     {
         $lang = $this->lang;
-        $adoptWantedDiv = new Division(Null, "adoptwanted");
+        $adoptWantedDiv = new Division(null, "adoptwanted");
 
-        if (!$recipient || !$adoptWanted) $adoptWantedDiv->add(new Comment($lang->adopt_wanted_none));
-        else {
+        if (!$recipient || !$adoptWanted) {
+            $adoptWantedDiv->add(new Comment($lang->adopt_wanted_none));
+        } else {
             $adoptWantedDiv->add(new Image("templates/icons/next.gif"));
             $adoptWantedDiv->add(new Comment($lang->adopt_wanted_public));
             $adoptIterator = $adoptWanted->iterator();
@@ -120,14 +128,17 @@ class TradeFormHelper extends Helper
     public function getItemOffered(ArrayList $items = null, $itemOffered = null)
     {
         $lang = $this->lang;
-        $itemOfferedDiv = new Division(Null, "itemoffered");
+        $itemOfferedDiv = new Division(null, "itemoffered");
 
-        if (!$itemOffered) $itemOfferedDiv->add(new Comment($lang->item_offered_none));
-        else {
+        if (!$itemOffered) {
+            $itemOfferedDiv->add(new Comment($lang->item_offered_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("itemOffered[]", true) : new DropdownList("itemOffered");
             $list->add(new Option("None Selected", "none"));
             $list->fill($itemOffered);
-            if ($items) $this->selectOptions($list, $items);
+            if ($items) {
+                $this->selectOptions($list, $items);
+            }
 
             $itemOfferedDiv->add(new Image("templates/icons/next.gif"));
             $itemOfferedDiv->add(new Comment($lang->item_offered));
@@ -139,14 +150,17 @@ class TradeFormHelper extends Helper
     public function getItemWanted(ArrayList $items = null, $itemWanted = null)
     {
         $lang = $this->lang;
-        $itemWantedDiv = new Division(Null, "itemwanted");
+        $itemWantedDiv = new Division(null, "itemwanted");
 
-        if (!$itemWanted) $itemWantedDiv->add(new Comment($lang->item_wanted_none));
-        else {
+        if (!$itemWanted) {
+            $itemWantedDiv->add(new Comment($lang->item_wanted_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("itemWanted[]", true) : new DropdownList("itemWanted");
             $list->add(new Option("None Selected", "none"));
             $list->fill($itemWanted);
-            if ($items) $this->selectOptions($list, $items);
+            if ($items) {
+                $this->selectOptions($list, $items);
+            }
 
             $itemWantedDiv->add(new Image("templates/icons/next.gif"));
             $itemWantedDiv->add(new Comment($lang->item_wanted));
@@ -158,10 +172,11 @@ class TradeFormHelper extends Helper
     public function getItemOfferedPublic($recipient = null, $itemOffered = null)
     {
         $lang = $this->lang;
-        $itemOfferedDiv = new Division(Null, "itemwanted");
+        $itemOfferedDiv = new Division(null, "itemwanted");
 
-        if (!$recipient || !$itemOffered) $itemOfferedDiv->add(new Comment($lang->item_offered_none));
-        else {
+        if (!$recipient || !$itemOffered) {
+            $itemOfferedDiv->add(new Comment($lang->item_offered_none));
+        } else {
             $list = $this->multiSelect ? new SelectionList("itemOffered[]", true) : new DropdownList("itemOffered");
             $list->add(new Option("None Selected", "none"));
             $list->fill($itemOffered);
@@ -176,10 +191,11 @@ class TradeFormHelper extends Helper
     public function getItemWantedPublic($recipient = null, $itemWanted = null)
     {
         $lang = $this->lang;
-        $itemWantedDiv = new Division(Null, "itemwanted");
+        $itemWantedDiv = new Division(null, "itemwanted");
 
-        if (!$recipient || !$itemWanted) $itemWantedDiv->add(new Comment($lang->item_wanted_none));
-        else {
+        if (!$recipient || !$itemWanted) {
+            $itemWantedDiv->add(new Comment($lang->item_wanted_none));
+        } else {
             $itemWantedDiv->add(new Image("templates/icons/next.gif"));
             $itemWantedDiv->add(new Comment($lang->item_wanted_public));
             $itemIterator = $itemWanted->iterator();
@@ -198,7 +214,9 @@ class TradeFormHelper extends Helper
     {
         $lang = $this->lang;
         $checkbox = new CheckBox("This is a public trade offer", "public", "yes");
-        if (!$recipient) $checkbox->setChecked(true);
+        if (!$recipient) {
+            $checkbox->setChecked(true);
+        }
 
         $publicDiv = new Division(null, "publics");
         $publicDiv->add($checkbox);
@@ -210,7 +228,9 @@ class TradeFormHelper extends Helper
     public function getPartialOffer($recipient = null)
     {
         $lang = $this->lang;
-        if (!$recipient) return new Comment;
+        if (!$recipient) {
+            return new Comment();
+        }
         $checkbox = new CheckBox("This is a partial trade offer", "partial", "yes");
 
         $partialDiv = new Division(null, "partials");
@@ -241,7 +261,9 @@ class TradeFormHelper extends Helper
             } catch (AdoptNotfoundException) {
                 $image = new Image("templates/icons/no.gif");
             }
-            if ($resize) $image->resize(1 / $columns, true);
+            if ($resize) {
+                $image->resize(1 / $columns, true);
+            }
             $adoptsDiv->add($image);
         }
         return $adoptsDiv;
@@ -264,7 +286,9 @@ class TradeFormHelper extends Helper
             $item = new OwnedItem($iid->getValue());
             $image = ($item->isNew()) ? new Image("templates/icons/no.gif") : $item->getImageURL(Model::GUI);
             $image->setDimension(40);
-            if ($resize) $image->resize(1 / $columns, true);
+            if ($resize) {
+                $image->resize(1 / $columns, true);
+            }
             $itemsDiv->add($image);
         }
         return $itemsDiv;

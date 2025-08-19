@@ -22,7 +22,6 @@ use Service\Builder\FormBuilder;
  */
 class ItemTableHelper extends TableHelper
 {
-
     /**
      * The getUseForm method, constructs a use form for the inventory table.
      * @param OwnedItem $item
@@ -31,7 +30,9 @@ class ItemTableHelper extends TableHelper
      */
     public function getUseForm(OwnedItem $item)
     {
-        if (!$item->isConsumable()) return "N/A";
+        if (!$item->isConsumable()) {
+            return "N/A";
+        }
         $useForm = new FormBuilder("useform", "inventory/uses", "post");
         $useForm->setLineBreak(false);
         $useForm->buildComment("")
@@ -49,7 +50,9 @@ class ItemTableHelper extends TableHelper
      */
     public function getSellForm(OwnedItem $item)
     {
-        if ($item->getCategory() == "Key Items") return "N/A";
+        if ($item->getCategory() == "Key Items") {
+            return "N/A";
+        }
         $sellForm = new FormBuilder("sellform", "inventory/sell", "post");
         $sellForm->setLineBreak(false);
         $sellForm->buildComment("")
@@ -77,7 +80,9 @@ class ItemTableHelper extends TableHelper
      */
     public function getTossForm(OwnedItem $item)
     {
-        if ($item->getCategory() == "Key Items") return "N/A";
+        if ($item->getCategory() == "Key Items") {
+            return "N/A";
+        }
         $tossForm = new FormBuilder("tossform", "inventory/toss", "post");
         $tossForm->setLineBreak(false);
         $tossForm->buildComment("")

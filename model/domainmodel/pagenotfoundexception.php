@@ -1,9 +1,9 @@
 <?php
 
 namespace Model\DomainModel;
+
 use Resource\Exception\InvalidIDException;
 
-
-class PageNotFoundException extends InvalidIDException{
-
+class PageNotFoundException extends InvalidIDException
+{
 }

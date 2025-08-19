@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -52,6 +53,7 @@ function smarty_modifiercompiler_escape($params, $compiler)
                     // fall back to modifier.escape.php
                 }
 
+                // no break
             case 'htmlall':
                 if (Smarty::$_MBSTRING) {
                     if ($_double_encode) {
@@ -80,6 +82,7 @@ function smarty_modifiercompiler_escape($params, $compiler)
                     // fall back to modifier.escape.php
                 }
 
+                // no break
             case 'url':
                 return 'rawurlencode(' . $params[ 0 ] . ')';
 
@@ -95,8 +98,7 @@ function smarty_modifiercompiler_escape($params, $compiler)
                 return 'strtr(' . $params[ 0 ] .
                        ', array("\\\\" => "\\\\\\\\", "\'" => "\\\\\'", "\"" => "\\\\\"", "\\r" => "\\\\r", "\\n" => "\\\n", "</" => "<\/" ))';
         }
-    }
-    catch (SmartyException) {
+    } catch (SmartyException) {
         // pass through to regular plugin fallback
     }
 

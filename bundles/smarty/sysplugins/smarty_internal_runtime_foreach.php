@@ -10,7 +10,6 @@
  */
 class Smarty_Internal_Runtime_Foreach
 {
-
     /**
      * Stack of saved variables
      *
@@ -34,9 +33,15 @@ class Smarty_Internal_Runtime_Foreach
      *
      * @return mixed $from
      */
-    public function init(Smarty_Internal_Template $tpl, $from, $item, $needTotal = false, $key = null, $name = null,
-                         $properties = [])
-    {
+    public function init(
+        Smarty_Internal_Template $tpl,
+        $from,
+        $item,
+        $needTotal = false,
+        $key = null,
+        $name = null,
+        $properties = []
+    ) {
         $saveVars = [];
         if (!is_array($from) && !is_object($from)) {
             settype($from, 'array');

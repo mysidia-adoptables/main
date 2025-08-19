@@ -20,7 +20,6 @@ use Resource\Exception\NosuchElementException;
  */
 abstract class LinkedHashMapIterator extends CollectionIterator
 {
-
     /**
      * The last property, it defines the last returned Entry.
      * @access private
@@ -45,8 +44,8 @@ abstract class LinkedHashMapIterator extends CollectionIterator
      * The map property, it stores a reference to the LinkedHashMap object.
      * @access private
      */
-    private readonly LinkedHashMap $map)
-    {
+        private readonly LinkedHashMap $map
+    ) {
         $this->next = $this->map->getHeader()->getAfter();
     }
 
@@ -67,7 +66,7 @@ abstract class LinkedHashMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function hasNext()
+    final public function hasNext()
     {
         return ($this->next !== $this->map->getHeader());
     }
@@ -79,9 +78,11 @@ abstract class LinkedHashMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function nextEntry()
+    final public function nextEntry()
     {
-        if ($this->next === $this->map->getHeader()) throw new NosuchElementException;
+        if ($this->next === $this->map->getHeader()) {
+            throw new NosuchElementException();
+        }
         $entry = $this->last = $this->next;
         $this->next = $entry->getAfter();
         return $entry;
@@ -94,7 +95,9 @@ abstract class LinkedHashMapIterator extends CollectionIterator
      */
     public function remove()
     {
-        if ($this->last == null) throw new IllegalStateException;
+        if ($this->last == null) {
+            throw new IllegalStateException();
+        }
         $this->map->remove($this->last->getKey());
         $this->last = null;
     }

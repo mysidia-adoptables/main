@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -112,8 +113,10 @@ function smarty_function_html_checkboxes($params, $template)
                 break;
 
             case 'checkboxes':
-                trigger_error('html_checkboxes: the use of the "checkboxes" attribute is deprecated, use "options" instead',
-                              E_USER_WARNING);
+                trigger_error(
+                    'html_checkboxes: the use of the "checkboxes" attribute is deprecated, use "options" instead',
+                    E_USER_WARNING
+                );
                 $options = (array) $_val;
                 break;
 
@@ -127,8 +130,10 @@ function smarty_function_html_checkboxes($params, $template)
             case 'readonly':
                 if (!empty($params[ 'strict' ])) {
                     if (!is_scalar($_val)) {
-                        trigger_error("html_options: $_key attribute must be a scalar, only boolean true or string '$_key' will actually add the attribute",
-                                      E_USER_NOTICE);
+                        trigger_error(
+                            "html_options: $_key attribute must be a scalar, only boolean true or string '$_key' will actually add the attribute",
+                            E_USER_NOTICE
+                        );
                     }
 
                     if ($_val === true || $_val === $_key) {
@@ -137,8 +142,9 @@ function smarty_function_html_checkboxes($params, $template)
 
                     break;
                 }
-            // omit break; to fall through!
+                // omit break; to fall through!
 
+                // no break
             default:
                 if (!is_array($_val)) {
                     $extra .= ' ' . $_key . '="' . smarty_function_escape_special_chars($_val) . '"';
@@ -158,15 +164,33 @@ function smarty_function_html_checkboxes($params, $template)
     if (isset($options)) {
         foreach ($options as $_key => $_val) {
             $_html_result[] =
-                smarty_function_html_checkboxes_output($name, $_key, $_val, $selected, $extra, $separator, $labels,
-                                                       $label_ids, $escape);
+                smarty_function_html_checkboxes_output(
+                    $name,
+                    $_key,
+                    $_val,
+                    $selected,
+                    $extra,
+                    $separator,
+                    $labels,
+                    $label_ids,
+                    $escape
+                );
         }
     } else {
         foreach ($values as $_i => $_key) {
             $_val = $output[ $_i ] ?? '';
             $_html_result[] =
-                smarty_function_html_checkboxes_output($name, $_key, $_val, $selected, $extra, $separator, $labels,
-                                                       $label_ids, $escape);
+                smarty_function_html_checkboxes_output(
+                    $name,
+                    $_key,
+                    $_val,
+                    $selected,
+                    $extra,
+                    $separator,
+                    $labels,
+                    $label_ids,
+                    $escape
+                );
         }
     }
 
@@ -177,9 +201,17 @@ function smarty_function_html_checkboxes($params, $template)
     }
 }
 
-function smarty_function_html_checkboxes_output($name, $value, $output, $selected, $extra, $separator, $labels,
-                                                $label_ids, $escape = true)
-{
+function smarty_function_html_checkboxes_output(
+    $name,
+    $value,
+    $output,
+    $selected,
+    $extra,
+    $separator,
+    $labels,
+    $label_ids,
+    $escape = true
+) {
     $_output = '';
 
     if (is_object($value)) {
@@ -210,8 +242,11 @@ function smarty_function_html_checkboxes_output($name, $value, $output, $selecte
 
     if ($labels) {
         if ($label_ids) {
-            $_id = smarty_function_escape_special_chars(preg_replace('![^\w\-\.]!' . Smarty::$_UTF8_MODIFIER, '_',
-                                                                     $name . '_' . $value));
+            $_id = smarty_function_escape_special_chars(preg_replace(
+                '![^\w\-\.]!' . Smarty::$_UTF8_MODIFIER,
+                '_',
+                $name . '_' . $value
+            ));
             $_output .= '<label for="' . $_id . '">';
         } else {
             $_output .= '<label>';

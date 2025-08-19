@@ -18,7 +18,6 @@ use Resource\Native\MysObject;
  */
 final class Curl extends MysObject
 {
-
     /**
      * The handle property, it stores an initialized curl request.
      * @access private
@@ -43,7 +42,9 @@ final class Curl extends MysObject
     public function __construct($url = "")
     {
         $this->init();
-        if (!empty($url)) $this->setUrl($url);
+        if (!empty($url)) {
+            $this->setUrl($url);
+        }
     }
 
     /**
@@ -57,7 +58,9 @@ final class Curl extends MysObject
      */
     public function __call($name, $args)
     {
-        if (!str_starts_with($name, "set") or count($args) !== 0) return;
+        if (!str_starts_with($name, "set") or count($args) !== 0) {
+            return;
+        }
         $args = $args[0];
         $option = substr($name, 4);
         $option = "CURLOPT_" . strtoupper($option);
@@ -71,7 +74,9 @@ final class Curl extends MysObject
      */
     private function init()
     {
-        if (!is_null($this->handle)) @curl_close($this->handle);
+        if (!is_null($this->handle)) {
+            @curl_close($this->handle);
+        }
         $this->handle = curl_init();
         $this->status = null;
         $this->set_return(true);
@@ -97,7 +102,9 @@ final class Curl extends MysObject
      */
     public function setUrl($url)
     {
-        if ($url instanceof URL) $url = $url->getUrl();
+        if ($url instanceof URL) {
+            $url = $url->getUrl();
+        }
         return $this->setOpt(CURLOPT_URL, $url);
     }
 
@@ -136,7 +143,7 @@ final class Curl extends MysObject
         $info = $this->getInfo();
         $this->status = $info['http_code'];
         if ($returnStatus == true) {
-            $data = new ArrayObject;
+            $data = new ArrayObject();
             $data->offsetSet("data", $data);
             $data->offsetSet("status", $this->status);
         }

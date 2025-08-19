@@ -16,7 +16,6 @@ namespace Resource\Collection;
  */
 class DescendingListIterator extends LinkedListIterator
 {
-
     /**
      * Constructor of DescendingListIterator Class, initializes basic properties for the iterator.
      * @param LinkedList $list

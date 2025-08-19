@@ -20,7 +20,6 @@ use Service\Builder\FormBuilder;
 
 class AdoptView extends View
 {
-
     public function index()
     {
         parent::index();

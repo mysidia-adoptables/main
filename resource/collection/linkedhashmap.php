@@ -19,11 +19,10 @@ use Resource\Native\Objective;
  */
 class LinkedHashMap extends HashMap
 {
-
     /**
      * serialID constant, it serves as identifier of the object being LinkedHashMap.
      */
-    const SERIALID = "3801124242820219131L";
+    public const SERIALID = "3801124242820219131L";
     /**
      * The header property, it stores the head of doubly linked list.
      * @access protected
@@ -43,7 +42,7 @@ class LinkedHashMap extends HashMap
      * The order property, it defines if an access order is specified for this LinkedHashMap.
      * @access protected
      */
-    protected $order = false)
+        protected $order = false)
     {
         parent::__construct($param, $loadFactor);
         if (is_int($param)) {
@@ -66,9 +65,12 @@ class LinkedHashMap extends HashMap
     {
         $this->createEntry($hash, $key, $value, $index);
         $eldest = $this->header->getAfter();
-        if ($this->removeEldest($eldest)) $this->removeKey($eldest->getKey());
-        else {
-            if ($this->size >= $this->threshold) $this->resize(2 * $this->entries->length());
+        if ($this->removeEldest($eldest)) {
+            $this->removeKey($eldest->getKey());
+        } else {
+            if ($this->size >= $this->threshold) {
+                $this->resize(2 * $this->entries->length());
+            }
         }
     }
 
@@ -123,11 +125,15 @@ class LinkedHashMap extends HashMap
     {
         if ($value == null) {
             for ($entry = $this->header->getAfter(); $entry !== $this->header; $entry = $entry->getAfter()) {
-                if ($entry->getValue() == null) return true;
+                if ($entry->getValue() == null) {
+                    return true;
+                }
             }
         } else {
             for ($entry = $this->header->getAfter(); $entry !== $this->header; $entry = $entry->getAfter()) {
-                if ($value->equals($entry->getValue())) return true;
+                if ($value->equals($entry->getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -152,7 +158,9 @@ class LinkedHashMap extends HashMap
     public function get(Objective $key): ?\Resource\Native\Objective
     {
         $entry = $this->getEntry($key);
-        if ($entry == null) return null;
+        if ($entry == null) {
+            return null;
+        }
         $entry->recordAccess($this);
         return $entry->getValue();
     }

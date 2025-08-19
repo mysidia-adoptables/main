@@ -95,7 +95,7 @@ class Smarty_Internal_Extension_Clear
                         if ($_parts_count < $_cache_id_parts_count) {
                             continue;
                         }
-                        for ($i = 0; $i < $_cache_id_parts_count; $i ++) {
+                        for ($i = 0; $i < $_cache_id_parts_count; $i++) {
                             if ($_parts[ $i ] != $_cache_id_parts[ $i ]) {
                                 continue 2;
                             }

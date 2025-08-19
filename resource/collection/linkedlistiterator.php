@@ -20,7 +20,6 @@ use Resource\Native\Objective;
  */
 class LinkedListIterator extends ListIterator
 {
-
     /**
      * The next property, it specifies the next Node in iteration.
      * @access private
@@ -57,8 +56,11 @@ class LinkedListIterator extends ListIterator
     public function add(Objective $object)
     {
         $this->prev = null;
-        if ($this->next == null) $this->list->linkLast($object);
-        else $this->list->linkBefore($object, $this->next);
+        if ($this->next == null) {
+            $this->list->linkLast($object);
+        } else {
+            $this->list->linkBefore($object, $this->next);
+        }
         $this->cursor++;
     }
 
@@ -79,7 +81,9 @@ class LinkedListIterator extends ListIterator
      */
     public function next()
     {
-        if (!$this->hasNext()) throw new NosuchElementException;
+        if (!$this->hasNext()) {
+            throw new NosuchElementException();
+        }
         $this->prev = $this->next;
         $this->next = $this->next->getNext();
         $this->cursor++;
@@ -93,7 +97,9 @@ class LinkedListIterator extends ListIterator
      */
     public function previous()
     {
-        if (!$this->hasPrevious()) throw new NosuchElementException;
+        if (!$this->hasPrevious()) {
+            throw new NosuchElementException();
+        }
         $this->next = $this->prev;
         $this->prev = ($this->next == null) ? $this->prev : $this->next->getPrev();
         $this->cursor--;
@@ -107,12 +113,17 @@ class LinkedListIterator extends ListIterator
      */
     public function remove()
     {
-        if ($this->prev == null) throw new IllegalStateException;
+        if ($this->prev == null) {
+            throw new IllegalStateException();
+        }
         $lastNext = $this->prev->getNext();
         $this->list->unlink($this->prev);
 
-        if ($this->next == $this->prev) $this->next = $lastNext;
-        else $this->cursor--;
+        if ($this->next == $this->prev) {
+            $this->next = $lastNext;
+        } else {
+            $this->cursor--;
+        }
         $this->prev = null;
     }
 
@@ -124,7 +135,9 @@ class LinkedListIterator extends ListIterator
      */
     public function set(Objective $object)
     {
-        if ($this->prev == null) throw new IllegalStateException;
+        if ($this->prev == null) {
+            throw new IllegalStateException();
+        }
         $this->prev->set($object);
     }
 }

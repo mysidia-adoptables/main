@@ -17,7 +17,6 @@ namespace Resource\GUI\Component;
  */
 class RadioButton extends ButtonComponent
 {
-
     /**
      * The type property, which is a radio button.
      * @access protected

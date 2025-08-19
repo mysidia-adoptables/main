@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -379,11 +380,13 @@ class Smarty_Security
     public function isTrustedTag($tag_name, $compiler)
     {
         // check for internal always required tags
-        if (in_array($tag_name,
-                     ['assign', 'call', 'private_filter', 'private_block_plugin', 'private_function_plugin',
+        if (in_array(
+            $tag_name,
+            ['assign', 'call', 'private_filter', 'private_block_plugin', 'private_function_plugin',
                            'private_object_block_function', 'private_object_function', 'private_registered_function',
                            'private_registered_block', 'private_special_variable', 'private_print_expression',
-                           'private_modifier'])) {
+                           'private_modifier']
+        )) {
             return true;
         }
         // check security settings
@@ -416,8 +419,11 @@ class Smarty_Security
         if (!in_array($var_name, $this->disabled_special_smarty_vars)) {
             return true;
         } else {
-            $compiler->trigger_template_error("special variable '\$smarty.{$var_name}' not allowed by security setting",
-                                              null, true);
+            $compiler->trigger_template_error(
+                "special variable '\$smarty.{$var_name}' not allowed by security setting",
+                null,
+                true
+            );
         }
 
         return false; // should not, but who knows what happens to the compiler in the future?
@@ -443,16 +449,22 @@ class Smarty_Security
             if (empty($this->disabled_modifiers) || !in_array($modifier_name, $this->disabled_modifiers)) {
                 return true;
             } else {
-                $compiler->trigger_template_error("modifier '{$modifier_name}' disabled by security setting", null,
-                                                  true);
+                $compiler->trigger_template_error(
+                    "modifier '{$modifier_name}' disabled by security setting",
+                    null,
+                    true
+                );
             }
         } elseif (in_array($modifier_name, $this->allowed_modifiers) &&
                   !in_array($modifier_name, $this->disabled_modifiers)
         ) {
             return true;
         } else {
-            $compiler->trigger_template_error("modifier '{$modifier_name}' not allowed by security setting", null,
-                                              true);
+            $compiler->trigger_template_error(
+                "modifier '{$modifier_name}' not allowed by security setting",
+                null,
+                true
+            );
         }
 
         return false; // should not, but who knows what happens to the compiler in the future?
@@ -627,7 +639,7 @@ class Smarty_Security
             $this->_checkDir($this->smarty->_realpath($filepath, true), $this->_php_resource_dir);
         return true;
     }
-    
+
     /**
      * Check if file is inside a valid directory
      *
@@ -701,7 +713,7 @@ class Smarty_Security
      */
     public function startTemplate($template)
     {
-        if ($this->max_template_nesting > 0 && $this->_current_template_nesting ++ >= $this->max_template_nesting) {
+        if ($this->max_template_nesting > 0 && $this->_current_template_nesting++ >= $this->max_template_nesting) {
             throw new SmartyException("maximum template nesting level of '{$this->max_template_nesting}' exceeded when calling '{$template->template_resource}'");
         }
     }
@@ -713,7 +725,7 @@ class Smarty_Security
     public function endTemplate()
     {
         if ($this->max_template_nesting > 0) {
-            $this->_current_template_nesting --;
+            $this->_current_template_nesting--;
         }
     }
 

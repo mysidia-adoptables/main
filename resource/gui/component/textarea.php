@@ -19,7 +19,6 @@ use Resource\GUI\GUIException;
  */
 class TextArea extends TextComponent
 {
-
     /**
      * The rows property, specifies the height of this text area.
      * @access protected
@@ -55,8 +54,12 @@ class TextArea extends TextComponent
     public function __construct($name = "", $value = "", $rows = "", $cols = "", $event = "")
     {
         parent::__construct($name, $value, $event);
-        if (is_numeric($rows)) $this->setRows($rows);
-        if (is_numeric($cols)) $this->setCols($cols);
+        if (is_numeric($rows)) {
+            $this->setRows($rows);
+        }
+        if (is_numeric($cols)) {
+            $this->setCols($cols);
+        }
     }
 
     /**
@@ -77,7 +80,9 @@ class TextArea extends TextComponent
      */
     public function setRows($rows)
     {
-        if (!is_numeric($rows)) throw new GUIException("The supplied height is not numeric!");
+        if (!is_numeric($rows)) {
+            throw new GUIException("The supplied height is not numeric!");
+        }
         $this->rows = $rows;
         $this->setAttributes("Rows");
     }
@@ -100,7 +105,9 @@ class TextArea extends TextComponent
      */
     public function setCols($cols)
     {
-        if (!is_numeric($cols)) throw new GUIException("The supplied height is not numeric!");
+        if (!is_numeric($cols)) {
+            throw new GUIException("The supplied height is not numeric!");
+        }
         $this->cols = $cols;
         $this->setAttributes("Cols");
     }
@@ -147,7 +154,9 @@ class TextArea extends TextComponent
      */
     public function insert($text, $position)
     {
-        if (!is_numeric($position)) throw new GUIException("The supplied position is not numeric!");
+        if (!is_numeric($position)) {
+            throw new GUIException("The supplied position is not numeric!");
+        }
         $text1 = substr_replace($this->value, $text, $position);
         $text2 = substr_replace($this->value, "", 0, $position);
         $this->value = $text1 . $text2;
@@ -163,7 +172,9 @@ class TextArea extends TextComponent
      */
     public function replace($text, $start, $end)
     {
-        if (!is_numeric($start) or !is_numeric($end)) throw new GUIException("The supplied positions are not numeric!");
+        if (!is_numeric($start) or !is_numeric($end)) {
+            throw new GUIException("The supplied positions are not numeric!");
+        }
         $length = $end - $start;
         $this->value = substr_replace($this->value, $text, $start, $length);
     }

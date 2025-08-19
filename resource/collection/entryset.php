@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class EntrySet extends MapSet
 {
-
     /**
      * Constructor of EntrySet Class, it simply calls parent constructor.
      * @param HashMap $map
@@ -38,7 +37,9 @@ class EntrySet extends MapSet
      */
     public function contains(Objective $object): bool
     {
-        if (!($object instanceof MapEntry)) return false;
+        if (!($object instanceof MapEntry)) {
+            return false;
+        }
         $entry = $object;
         $candidate = $this->map->getEntry($entry->getKey());
         return ($candidate != null and $candidate->equals($entry));
@@ -62,7 +63,9 @@ class EntrySet extends MapSet
      */
     public function remove(Objective $object): bool
     {
-        if (!($object instanceof Entry)) return false;
+        if (!($object instanceof Entry)) {
+            return false;
+        }
         return ($this->map->removeMapping($object) != null);
     }
 }

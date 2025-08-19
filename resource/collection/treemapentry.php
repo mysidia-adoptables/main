@@ -20,7 +20,6 @@ use Resource\Native\Objective;
  */
 final class TreeMapEntry extends MapEntry
 {
-
     /**
      * The color property, it defines the color of the Entry.
      * @access private
@@ -54,7 +53,7 @@ final class TreeMapEntry extends MapEntry
      * The parent property, it defines the parent entry above this one.
      * @access private
      */
-    private ?\Resource\Collection\MapEntry $parent = null)
+        private ?\Resource\Collection\MapEntry $parent = null)
     {
         parent::__construct($key, $value);
         $this->color = TreeMap::BLACK;
@@ -68,7 +67,9 @@ final class TreeMapEntry extends MapEntry
      */
     public function equals(Objective $object)
     {
-        if (!($object instanceof TreeMapEntry)) return false;
+        if (!($object instanceof TreeMapEntry)) {
+            return false;
+        }
         return (($this->valueEquals($this->key, $object->getKey())) && ($this->valueEquals($this->value, $object->getValue())));
     }
 

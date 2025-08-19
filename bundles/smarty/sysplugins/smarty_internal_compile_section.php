@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Section
  * Compiles the {section} {sectionelse} {/section} tags
@@ -87,7 +88,7 @@ class Smarty_Internal_Compile_Section extends Smarty_Internal_Compile_Private_Fo
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        $compiler->loopNesting ++;
+        $compiler->loopNesting++;
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         $attributes = ['name' => $compiler->getId($_attr[ 'name' ])];
@@ -97,7 +98,7 @@ class Smarty_Internal_Compile_Section extends Smarty_Internal_Compile_Private_Fo
                 $compiler->trigger_template_error("'{$a}' attribute/variable has illegal value", null, true);
             }
         }
-        $local = "\$__section_{$attributes['name']}_" . $this->counter ++ . '_';
+        $local = "\$__section_{$attributes['name']}_" . $this->counter++ . '_';
         $sectionVar = "\$_smarty_tpl->tpl_vars['__smarty_section_{$attributes['name']}']";
         $this->openTag($compiler, 'section', ['section', $compiler->nocache, $local, $sectionVar]);
         // maybe nocache because of nocache variables
@@ -265,21 +266,25 @@ class Smarty_Internal_Compile_Section extends Smarty_Internal_Compile_Private_Fo
                 $propType[ 'start' ] = $propType[ 'step' ] + $propType[ 'loop' ];
                 $start_code[ 1 ] = '';
                 if ($propValue[ 'start' ] < 0) {
-                    for ($i = 11; $i <= 19; $i ++) {
+                    for ($i = 11; $i <= 19; $i++) {
                         $start_code[ $i ] = '';
                     }
                     if ($propType[ 'start' ] == 0) {
-                        $start_code = [max($propValue[ 'step' ] > 0 ? 0 : - 1,
-                                                $propValue[ 'start' ] + $propValue[ 'loop' ])];
+                        $start_code = [max(
+                            $propValue[ 'step' ] > 0 ? 0 : - 1,
+                            $propValue[ 'start' ] + $propValue[ 'loop' ]
+                        )];
                     }
                 } else {
-                    for ($i = 1; $i <= 11; $i ++) {
+                    for ($i = 1; $i <= 11; $i++) {
                         $start_code[ $i ] = '';
                     }
                     if ($propType[ 'start' ] == 0) {
                         $start_code =
-                            [min($propValue[ 'step' ] > 0 ? $propValue[ 'loop' ] : $propValue[ 'loop' ] - 1,
-                                      $propValue[ 'start' ])];
+                            [min(
+                                $propValue[ 'step' ] > 0 ? $propValue[ 'loop' ] : $propValue[ 'loop' ] - 1,
+                                $propValue[ 'start' ]
+                            )];
                     }
                 }
             }
@@ -444,7 +449,7 @@ class Smarty_Internal_Compile_Sectionclose extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        $compiler->loopNesting --;
+        $compiler->loopNesting--;
         // must endblock be nocache?
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -215,7 +216,7 @@ function smarty_function_html_select_time($params)
 
         $start = $use_24_hours ? 0 : 1;
         $end = $use_24_hours ? 23 : 12;
-        for ($i = $start; $i <= $end; $i ++) {
+        for ($i = $start; $i <= $end; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = $hour_format == '%02d' ? $_val : sprintf($hour_format, $i);
             $_value = $hour_value_format == '%02d' ? $_val : sprintf($hour_value_format, $i);

@@ -21,7 +21,6 @@ use Service\Builder\TableBuilder;
 
 class LevelView extends View
 {
-
     public function add()
     {
         $mysidia = Registry::get("mysidia");
@@ -66,8 +65,11 @@ class LevelView extends View
             $levelForm->add(new Comment("Required Clicks: ", false, "u"));
             $levelForm->add(new Comment(" (How many clicks are required to reach this level?)<br><br>"));
             for ($i = $currentlevel; $i < $settings->maximum + 1; $i++) {
-                if ($settings->method == "incremental") $reqclicks = $settings->clicks[$i];
-                else $reqclicks = ($i == 1) ? $settings->clicks[0] : $settings->clicks[0] * $settings->clicks[1] ** ($i - 1);
+                if ($settings->method == "incremental") {
+                    $reqclicks = $settings->clicks[$i];
+                } else {
+                    $reqclicks = ($i == 1) ? $settings->clicks[0] : $settings->clicks[0] * $settings->clicks[1] ** ($i - 1);
+                }
                 $levelForm->add(new Comment("lv.{$i}: ", false, "b"));
                 $levelForm->add(new TextField("reqclicks[]", $reqclicks));
             }
@@ -109,7 +111,7 @@ class LevelView extends View
                 $levelTable->setAlign(new Align("center", "middle"));
                 $levelTable->buildHeaders("Level", "Image", "Clicks Required", "Reward Given", "Edit", "Delete");
 
-                $eggCells = new LinkedList;
+                $eggCells = new LinkedList();
                 $eggCells->add(new TCell(0));
                 $eggCells->add(new TCell($adopt->getEggImage(Model::GUI)));
                 $eggCells->add(new TCell(0));
@@ -119,7 +121,7 @@ class LevelView extends View
                 $levelTable->buildRow($eggCells);
 
                 foreach ($levels as $level) {
-                    $levelCells = new LinkedList;
+                    $levelCells = new LinkedList();
                     $levelCells->add(new TCell($level->getLevel()));
                     $levelCells->add(new TCell($level->getPrimaryImage(Model::GUI)));
                     $levelCells->add(new TCell($level->getRequiredClicks()));
@@ -132,8 +134,11 @@ class LevelView extends View
             } else {
                 $primaryLocal = "";
                 $primaryHosted = "";
-                if ($level->hasUploadedImage()) $primaryLocal = $level->getPrimaryImage();
-                else $primaryHosted = $level->getPrimaryImage();
+                if ($level->hasUploadedImage()) {
+                    $primaryLocal = $level->getPrimaryImage();
+                } else {
+                    $primaryHosted = $level->getPrimaryImage();
+                }
                 $document->setTitle($this->lang->edit_title . $level->getLevel());
                 $document->addLangvar($this->lang->edit);
 
@@ -172,8 +177,9 @@ class LevelView extends View
             $document->setTitle($this->lang->deleted_title);
             $document->addLangvar($this->lang->deleted);
         } else {
-            if (!$level) $this->edit();
-            else {
+            if (!$level) {
+                $this->edit();
+            } else {
                 $document->setTitle($this->lang->delete_title . $level->getLevel());
                 $document->addLangvar($this->lang->delete);
                 $document->add(new Image("templates/icons/warning.gif"));
@@ -205,10 +211,10 @@ class LevelView extends View
         $document->addLangvar($this->lang->settings);
         $settingsForm = new FormBuilder("settingsform", "settings", "post");
         $levelSettings = $this->getField("levelSettings");
-        $levelSystem = new LinkedHashMap;
+        $levelSystem = new LinkedHashMap();
         $levelSystem->put(new MysString("Enabled"), new MysString("enabled"));
         $levelSystem->put(new MysString("Disabled"), new MysString("disabled"));
-        $levelMethod = new LinkedHashMap;
+        $levelMethod = new LinkedHashMap();
         $levelMethod->put(new MysString("Incremental"), new MysString("incremental"));
         $levelMethod->put(new MysString("Multiple"), new MysString("multiple"));
         $levelOwner = clone $levelSystem;
@@ -241,10 +247,10 @@ class LevelView extends View
         $document->setTitle($this->lang->daycare_title);
         $document->addLangvar($this->lang->daycare, true);
         $daycareSettings = $this->getField("daycareSettings");
-        $daycareSystem = new LinkedHashMap;
+        $daycareSystem = new LinkedHashMap();
         $daycareSystem->put(new MysString("Enabled"), new MysString("enabled"));
         $daycareSystem->put(new MysString("Disabled"), new MysString("disabled"));
-        $daycareDisplay = new LinkedHashMap;
+        $daycareDisplay = new LinkedHashMap();
         $daycareDisplay->put(new MysString("All"), new MysString("all"));
         $daycareDisplay->put(new MysString("Random"), new MysString("random"));
 

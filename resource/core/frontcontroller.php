@@ -2,7 +2,9 @@
 
 namespace Resource\Core;
 
-use Exception, ReflectionException, ReflectionMethod;
+use Exception;
+use ReflectionException;
+use ReflectionMethod;
 use Resource\Exception\BlankFieldException;
 use Resource\Exception\DuplicateIDException;
 use Resource\Exception\InvalidActionException;
@@ -26,7 +28,6 @@ use Resource\Native\MysString;
  */
 abstract class FrontController extends Controller
 {
-
     /**
      * The appController property, holds a reference to the app-controller available for this front-controller.
      * @access protected
@@ -82,8 +83,11 @@ abstract class FrontController extends Controller
     public function getView()
     {
         if (!$this->view) {
-            if ($this->appController instanceof AppController) $this->view = $this->appController->getView();
-            else $this->loadView($this->name);
+            if ($this->appController instanceof AppController) {
+                $this->view = $this->appController->getView();
+            } else {
+                $this->loadView($this->name);
+            }
         }
         return $this->view;
     }
@@ -109,9 +113,13 @@ abstract class FrontController extends Controller
     private function hasAppController($file)
     {
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->input->get("appcontroller") == "index") $appControllerExist = false;
-        elseif (file_exists($file)) $appControllerExist = true;
-        else $appControllerExist = false;
+        if ($mysidia->input->get("appcontroller") == "index") {
+            $appControllerExist = false;
+        } elseif (file_exists($file)) {
+            $appControllerExist = true;
+        } else {
+            $appControllerExist = false;
+        }
         return $appControllerExist;
     }
 
@@ -122,8 +130,9 @@ abstract class FrontController extends Controller
      */
     public function render()
     {
-        if ($this->flags) $this->view->triggerError($this->flags);
-        else {
+        if ($this->flags) {
+            $this->view->triggerError($this->flags);
+        } else {
             $action = $this->action ? (string)$this->action : "index";
             $this->view->$action();
         }
@@ -191,11 +200,13 @@ abstract class FrontController extends Controller
         $mysidia = Registry::get("mysidia");
         $controllerClass = "Controller\\{$this->name}\\{$mysidia->input->get("appcontroller")}Controller";
         $this->action = $mysidia->input->action();
-        $this->appController = new $controllerClass;
+        $this->appController = new $controllerClass();
         $this->appController->setFrontController($this);
         $actionClass = new ReflectionMethod($this->appController, $this->action);
         $numRequiredArgs = $actionClass->getNumberOfRequiredParameters();
-        if (count($mysidia->input->params()) < $numRequiredArgs) throw new ReflectionException;
+        if (count($mysidia->input->params()) < $numRequiredArgs) {
+            throw new ReflectionException();
+        }
         $actionClass->invokeArgs($this->appController, $mysidia->input->params());
     }
 }

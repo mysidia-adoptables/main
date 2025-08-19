@@ -19,7 +19,6 @@ namespace Resource\Core;
  */
 final class GlobalSettings extends Settings
 {
-
     /**
      * The theme property, contains information of default theme.
      * @access public

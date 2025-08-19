@@ -15,7 +15,6 @@ use Resource\Exception\InvalidIDException;
 
 class ProfileController extends AppController
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -23,7 +22,7 @@ class ProfileController extends AppController
         $pagination = new Pagination($total, 10, "profile");
         $pagination->setPage($mysidia->input->get("page"));
         $stmt = $mysidia->db->select("users", [], "1 ORDER BY uid ASC LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $users = new ArrayList;
+        $users = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $users->add(new Member($dto->uid, $dto));
         }
@@ -42,9 +41,11 @@ class ProfileController extends AppController
         }
 
         if ($mysidia->input->post("vmtext")) {
-            $vmessage = new VisitorMessage;
+            $vmessage = new VisitorMessage();
             $options = $user->getOption();
-            if ($options->getVMStatus() == 1 && !$user->isFriend($mysidia->user)) throw new InvalidActionException("VM_friend");
+            if ($options->getVMStatus() == 1 && !$user->isFriend($mysidia->user)) {
+                throw new InvalidActionException("VM_friend");
+            }
             $vmessage->post($user, $mysidia->input->post("vmtext"));
             $this->setField("vmessage", $vmessage);
         }

@@ -16,7 +16,6 @@ use Resource\Exception\NoPermissionException;
 
 class OwnedadoptController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,11 +30,13 @@ class OwnedadoptController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("owned_adoptables")->rowCount();
-        if ($total == 0) throw new InvalidIDException("empty");
+        if ($total == 0) {
+            throw new InvalidIDException("empty");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/ownedadopt", $mysidia->input->get("page"));
         $stmt = $mysidia->db->join("adoptables", "adoptables.id = owned_adoptables.adopt")
             ->select("owned_adoptables", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $ownedAdopts = new ArrayList;
+        $ownedAdopts = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $ownedAdopts->add(new OwnedAdoptable($dto->aid, $dto));
         }
@@ -58,8 +59,9 @@ class OwnedadoptController extends AppController
     public function edit($aid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$aid) $this->index();
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$aid) {
+            $this->index();
+        } elseif (!$mysidia->input->post("submit")) {
             try {
                 $ownedAdopt = new OwnedAdoptable($aid);
                 $this->setField("ownedAdopt", $ownedAdopt);
@@ -79,8 +81,9 @@ class OwnedadoptController extends AppController
     public function delete($aid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$aid) $this->index();
-        else {
+        if (!$aid) {
+            $this->index();
+        } else {
             $ownedAdopt = new OwnedAdoptable($aid);
             $mysidia->db->delete("owned_adoptables", "aid = '{$ownedAdopt->getID()}'");
         }

@@ -20,12 +20,11 @@ use Service\Helper\TableHelper;
 
 class ThemeView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $themeTable = new TableBuilder("themes");
         $themeTable->setAlign(new Align("center", "middle"));
         $themeTable->buildHeaders("ID", "Theme", "Folder", "Edit", "Delete");
@@ -35,7 +34,7 @@ class ThemeView extends View
         $iterator = $themes->iterator();
         while ($iterator->hasNext()) {
             $theme = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($theme->getID()));
             $cells->add(new TCell($theme->getThemename()));
             $cells->add(new TCell($theme->getThemeFolder()));
@@ -83,8 +82,9 @@ class ThemeView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $theme = $this->getField("theme");
-        if (!$theme) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$theme) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
@@ -109,8 +109,9 @@ class ThemeView extends View
     {
         $document = $this->document;
         $theme = $this->getField("theme");
-        if (!$theme) $this->index();
-        else {
+        if (!$theme) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }
@@ -137,7 +138,7 @@ class ThemeView extends View
         while ($cssIterator->hasNext()) {
             $cssEntry = $cssIterator->next();
             $css = $cssEntry->getKey()->remove("{$mysidia->path->getRoot()}css/")->remove(".css")->getValue();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cssButton = new RadioButton("", "file", $css);
             $cssContent = new TextArea($css, $cssEntry->getValue(), 6, 65);
 

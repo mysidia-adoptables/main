@@ -9,8 +9,7 @@ use Resource\Utility\Date;
 
 class VisitorMessage extends Message
 {
-
-    const IDKEY = "vid";
+    public const IDKEY = "vid";
     protected $vid;
     protected $fromuser;
     protected $touser;
@@ -30,10 +29,14 @@ class VisitorMessage extends Message
         } else {
             // The visitor message is not being composed, so fetch the information from database
             $dto = $mysidia->db->select("visitor_messages", [], "vid = :vid", ["vid" => $vid])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("view_nonexist");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("view_nonexist");
+            }
         }
         parent::__construct($dto);
-        if ($notifier == true) $this->getNotifier();
+        if ($notifier == true) {
+            $this->getNotifier();
+        }
     }
 
     protected function createFromDTO($dto)
@@ -50,22 +53,29 @@ class VisitorMessage extends Message
 
     public function getContent()
     {
-        if (!empty($this->vmtext)) return $this->vmtext;
-        else return "";
+        if (!empty($this->vmtext)) {
+            return $this->vmtext;
+        } else {
+            return "";
+        }
     }
 
     public function getnotifier()
     {
-        if (is_object($this->notifier)) throw new InvalidActionException("A VM Notifier already exists...");
-        else $this->notifier = new VMNotifier;
+        if (is_object($this->notifier)) {
+            throw new InvalidActionException("A VM Notifier already exists...");
+        } else {
+            $this->notifier = new VMNotifier();
+        }
     }
 
     public function post(Member $recipient, $text)
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->vid != 0) return false;
-        else {
-            $date = new Date;
+        if ($this->vid != 0) {
+            return false;
+        } else {
+            $date = new Date();
             $mysidia->db->insert("visitor_messages", ["vid" => null, "fromuser" => $this->fromuser, "touser" => $recipient->getID(), "datesent" => $date->format("Y-m-d H:i:s"), "vmtext" => $text]);
         }
         return true;

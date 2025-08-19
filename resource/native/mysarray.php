@@ -2,7 +2,8 @@
 
 namespace Resource\Native;
 
-use ArrayIterator, SplFixedArray;
+use ArrayIterator;
+use SplFixedArray;
 
 /**
  * The MysArray Class, extending from SplFixedArray class
@@ -19,7 +20,6 @@ use ArrayIterator, SplFixedArray;
  */
 final class MysArray extends SplFixedArray implements Objective
 {
-
     /**
      * The each method, calls the given block once for each element in this Array.
      * @param Mixed $block
@@ -41,7 +41,9 @@ final class MysArray extends SplFixedArray implements Objective
      */
     public function equals(Objective $array)
     {
-        if (!($array instanceof Arrays)) throw new InvalidArgumentException("Supplied argument array must be an instance of Arrays.");
+        if (!($array instanceof Arrays)) {
+            throw new InvalidArgumentException("Supplied argument array must be an instance of Arrays.");
+        }
         return ($this == $array);
     }
 

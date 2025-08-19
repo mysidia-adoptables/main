@@ -10,7 +10,6 @@ use Resource\Native\MysObject;
 
 class ShopService extends MysObject
 {
-
     public function getShop($sid, $eagerLoad = false)
     {
         $mysidia = Registry::get("mysidia");
@@ -31,7 +30,7 @@ class ShopService extends MysObject
         $shopModel = "\\Model\\DomainModel\\{$type}";
         $whereClause = "shoptype = '{$type}' AND {$this->formatFetchMode($fetchMode)}";
         $stmt = $mysidia->db->select("shops", [], $whereClause);
-        $shops = new ArrayList;
+        $shops = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $shops->add(new $shopModel($dto->sid, $dto));
         }
@@ -40,7 +39,9 @@ class ShopService extends MysObject
 
     public function purchaseItem($shopID, $itemID, $quantity = 1)
     {
-        if (!is_numeric($quantity) || $quantity < 1) throw new InvalidActionException("invalid_quantity");
+        if (!is_numeric($quantity) || $quantity < 1) {
+            throw new InvalidActionException("invalid_quantity");
+        }
         $shop = new Itemshop($shopID);
         return $shop->purchase($itemID, (int)$quantity);
     }
@@ -53,8 +54,12 @@ class ShopService extends MysObject
 
     private function formatFetchMode($fetchMode = null)
     {
-        if ($fetchMode == "visible") return "status != 'invisible'";
-        if ($fetchMode == "open") return "status = 'open'";
+        if ($fetchMode == "visible") {
+            return "status != 'invisible'";
+        }
+        if ($fetchMode == "open") {
+            return "status = 'open'";
+        }
         return "1";
     }
 }

@@ -2,7 +2,8 @@
 
 namespace Resource\Core;
 
-use ReflectionException, ReflectionMethod;
+use ReflectionException;
+use ReflectionMethod;
 use Resource\Collection\HashMap;
 use Resource\Exception\AlreadyLoggedinException;
 use Resource\Exception\GuestNoaccessException;
@@ -25,7 +26,6 @@ use Resource\Native\Objective;
  */
 abstract class AppController extends Controller
 {
-
     /**
      * The fields property, stores a map of key-value pairs to be passed to View.
      * @access protected
@@ -57,18 +57,20 @@ abstract class AppController extends Controller
      * The access property, specifies the access control of this controller.
      * @access protected
      */
-    protected $access = "")
-    {
+        protected $access = ""
+    ) {
         $mysidia = Registry::get("mysidia");
         $this->frontController = $mysidia->input->get("frontcontroller");
         $this->action = $mysidia->input->action();
         $this->name = $mysidia->input->get("appcontroller");
-        $this->fields = new HashMap;
+        $this->fields = new HashMap();
 
         if (!$this->hasAction()) {
             throw new InvalidActionException("global_action");
         }
-        if (!empty($this->access)) $this->handleAccess();
+        if (!empty($this->access)) {
+            $this->handleAccess();
+        }
     }
 
     /**
@@ -119,8 +121,11 @@ abstract class AppController extends Controller
     public function getView()
     {
         if (!$this->view) {
-            if ($this->subController instanceof SubController) $this->view = $this->subController->getView();
-            else $this->loadView($this->name);
+            if ($this->subController instanceof SubController) {
+                $this->view = $this->subController->getView();
+            } else {
+                $this->loadView($this->name);
+            }
         }
         return $this->view;
     }

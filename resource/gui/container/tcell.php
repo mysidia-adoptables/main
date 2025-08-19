@@ -21,7 +21,6 @@ use Resource\GUI\GUIException;
  */
 class TCell extends TableContainer
 {
-
     /**
      * The text property, it stores the text inside this table cell.
      * @access protected
@@ -66,10 +65,12 @@ class TCell extends TableContainer
      * The headers property, it defines the headers associated with this table cell.
      * @access protected
      */
-    protected $headers = "", $width = "", $event = "")
+        protected $headers = "", $width = "", $event = "")
     {
         parent::__construct($name, $width, $event, $components);
-        if (is_scalar($components)) $this->setText($components);
+        if (is_scalar($components)) {
+            $this->setText($components);
+        }
     }
 
     /**
@@ -133,7 +134,9 @@ class TCell extends TableContainer
      */
     public function setRowspan($rowspan)
     {
-        if (!is_int($rowspan)) throw new GUIException("The specified rowspan is not valid.");
+        if (!is_int($rowspan)) {
+            throw new GUIException("The specified rowspan is not valid.");
+        }
         $this->rowspan = $rowspan;
         $this->setAttributes("Rowspan");
     }
@@ -156,7 +159,9 @@ class TCell extends TableContainer
      */
     public function setColspan($colspan)
     {
-        if (!is_int($colspan)) throw new GUIException("The specified colspan is not valid.");
+        if (!is_int($colspan)) {
+            throw new GUIException("The specified colspan is not valid.");
+        }
         $this->colspan = $colspan;
         $this->setAttributes("Colspan");
     }
@@ -179,9 +184,14 @@ class TCell extends TableContainer
      */
     public function setHeight($height)
     {
-        if (!$this->inline) $this->inline = true;
-        if (is_numeric($height)) $this->height = "{$height}px";
-        else $this->height = $height;
+        if (!$this->inline) {
+            $this->inline = true;
+        }
+        if (is_numeric($height)) {
+            $this->height = "{$height}px";
+        } else {
+            $this->height = $height;
+        }
         $this->setTableAttributes("Width");
     }
 
@@ -195,11 +205,17 @@ class TCell extends TableContainer
     {
         if ($this->renderer->getStatus() == "ready") {
             $this->renderer->start();
-            if ($this->css instanceof HashSet) $this->renderer->renderCSS();
-            if ($this->attributes instanceof HashSet) $this->renderer->renderAttributes();
+            if ($this->css instanceof HashSet) {
+                $this->renderer->renderCSS();
+            }
+            if ($this->attributes instanceof HashSet) {
+                $this->renderer->renderAttributes();
+            }
             $this->renderer->pause();
 
-            if ($this->components instanceof ArrayList) $this->renderer->renderComponents();
+            if ($this->components instanceof ArrayList) {
+                $this->renderer->renderComponents();
+            }
             parent::render();
             $this->renderer->renderText()->end();
         }

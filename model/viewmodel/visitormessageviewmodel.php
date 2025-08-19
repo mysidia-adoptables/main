@@ -14,12 +14,12 @@ use Resource\GUI\Document\Comment;
 
 class VisitorMessageViewModel extends ViewModel
 {
-
     public function view()
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->getID() == 0) throw new InvalidIDException("view_none");
-        else {
+        if ($this->getID() == 0) {
+            throw new InvalidIDException("view_none");
+        } else {
             $dateSent = $this->model->getDateSent("Y-m-d");
             $sender = $this->model->getSender(Model::MODEL);
 
@@ -27,7 +27,7 @@ class VisitorMessageViewModel extends ViewModel
             $message = new TCell(new Link("profile/view/{$sender->getID()}", $sender->getUsername()));
             $message->add(new Comment("(at {$dateSent})"));
             $message->add(new Comment($this->model->getContent()));
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add($avatar);
             $cells->add($message);
 

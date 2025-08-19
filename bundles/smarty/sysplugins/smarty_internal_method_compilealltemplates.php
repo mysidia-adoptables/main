@@ -31,9 +31,13 @@ class Smarty_Internal_Method_CompileAllTemplates
      *
      * @return integer number of template files recompiled
      */
-    public function compileAllTemplates(Smarty $smarty, $extension = '.tpl', $force_compile = false, $time_limit = 0,
-                                        $max_errors = null)
-    {
+    public function compileAllTemplates(
+        Smarty $smarty,
+        $extension = '.tpl',
+        $force_compile = false,
+        $time_limit = 0,
+        $max_errors = null
+    ) {
         return $this->compileAll($smarty, $extension, $force_compile, $time_limit, $max_errors);
     }
 
@@ -49,9 +53,14 @@ class Smarty_Internal_Method_CompileAllTemplates
      *
      * @return int number of template files compiled
      */
-    protected function compileAll(Smarty $smarty, $extension, $force_compile, $time_limit, $max_errors,
-                                  $isConfig = false)
-    {
+    protected function compileAll(
+        Smarty $smarty,
+        $extension,
+        $force_compile,
+        $time_limit,
+        $max_errors,
+        $isConfig = false
+    ) {
         // switch off time limit
         if (function_exists('set_time_limit')) {
             @set_time_limit($time_limit);
@@ -79,7 +88,7 @@ class Smarty_Internal_Method_CompileAllTemplates
                 flush();
                 $_start_time = microtime(true);
                 $_smarty = clone $smarty;
-                // 
+                //
                 $_smarty->_cache = [];
                 $_smarty->ext = new Smarty_Internal_Extension_Handler();
                 $_smarty->ext->objType = $_smarty->_objType;
@@ -92,17 +101,16 @@ class Smarty_Internal_Method_CompileAllTemplates
                         $isConfig ? Smarty_Template_Config::load($_tpl) : Smarty_Template_Source::load($_tpl);
                     if ($_tpl->mustCompile()) {
                         $_tpl->compileTemplateSource();
-                        $_count ++;
+                        $_count++;
                         echo ' compiled in  ', microtime(true) - $_start_time, ' seconds';
                         flush();
                     } else {
                         echo ' is up to date';
                         flush();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     echo "\n<br>        ------>Error: ", $e->getMessage(), "<br><br>\n";
-                    $_error_count ++;
+                    $_error_count++;
                 }
                 // free memory
                 unset($_tpl);

@@ -23,15 +23,14 @@ use PDOException;
  */
 final class Mysidia extends Core
 {
-
     /**
      * version constant, displays the version of Mysidia Adoptables in String format.
      */
-    const version = "1.3.6";
+    public const version = "1.3.6";
     /**
      * vercode constant, reveals the version code of Mysidia Adoptables in Int format.
      */
-    const vercode = 136;
+    public const vercode = 136;
     /**
      * The path property, which is not yet fully developed at this point.
      * @access public
@@ -168,7 +167,7 @@ final class Mysidia extends Core
      */
     public function locatePath()
     {
-        $this->path = new Path;
+        $this->path = new Path();
         Registry::set("path", $this->path, true, true);
         return $this->path;
     }
@@ -208,7 +207,7 @@ final class Mysidia extends Core
      */
     public function loadPlugins()
     {
-        $this->plugins = new Plugins;
+        $this->plugins = new Plugins();
         Registry::set("plugins", $this->plugins, true, true);
         return $this->plugins;
     }
@@ -220,7 +219,7 @@ final class Mysidia extends Core
      */
     public function getCookies()
     {
-        $this->cookies = new Cookies;
+        $this->cookies = new Cookies();
         Registry::set("cookies", $this->cookies, true, true);
         return $this->cookies;
     }
@@ -232,7 +231,7 @@ final class Mysidia extends Core
      */
     public function getSession()
     {
-        $this->session = new Session;
+        $this->session = new Session();
         Registry::set("session", $this->session, true, true);
         return $this->session;
     }
@@ -270,7 +269,7 @@ final class Mysidia extends Core
     public function getCurrentUser()
     {
         $uid = $this->secure($this->cookies->getcookies("mysuid"));
-        $this->user = $this->loginCheck() ? new Member($uid) : new Visitor;
+        $this->user = $this->loginCheck() ? new Member($uid) : new Visitor();
         $this->usergroup = $this->user->getUsergroup(Model::MODEL);
         Registry::set("user", $this->user, true, true);
         Registry::set("usergroup", $this->usergroup, true, true);
@@ -295,8 +294,9 @@ final class Mysidia extends Core
      */
     public function loginCheck()
     {
-        if (!$this->cookies->getcookies("mysuid") || !$this->cookies->getcookies("myssession")) return false;
-        else {
+        if (!$this->cookies->getcookies("mysuid") || !$this->cookies->getcookies("myssession")) {
+            return false;
+        } else {
             $uid = $this->secure($this->cookies->getcookies("mysuid"));
             $session = $this->secure($this->cookies->getcookies("myssession"));
 
@@ -305,10 +305,15 @@ final class Mysidia extends Core
             $luid = $luser->uid ?? null;
             $lsess = isset($luser->uid) ? $luser->session : null;
 
-            if ($uid == $luid && $session == $lsess) return true;
-            else {
-                if (isset($_COOKIE['mysuid'])) setcookie("mysuid", $uid, ['expires' => time() - 10]);
-                if (isset($_COOKIE['myssession'])) setcookie("myssession", $session, ['expires' => time() - 10]);
+            if ($uid == $luid && $session == $lsess) {
+                return true;
+            } else {
+                if (isset($_COOKIE['mysuid'])) {
+                    setcookie("mysuid", $uid, ['expires' => time() - 10]);
+                }
+                if (isset($_COOKIE['myssession'])) {
+                    setcookie("myssession", $session, ['expires' => time() - 10]);
+                }
                 return false;
             }
         }
@@ -322,7 +327,7 @@ final class Mysidia extends Core
      */
     public function getFrame()
     {
-        $this->frame = new Frame;
+        $this->frame = new Frame();
         Registry::set("frame", $this->frame, true, true);
         return $this->frame;
     }
@@ -347,7 +352,7 @@ final class Mysidia extends Core
      */
     public function parseInput()
     {
-        $this->input = new Input;
+        $this->input = new Input();
         Registry::set("input", $this->input, true, true);
         return $this->input;
     }
@@ -375,8 +380,11 @@ final class Mysidia extends Core
     public function checkVersion()
     {
         $versions = explode(",", trim(file_get_contents("http://www.mysidiaadoptables.com/version.txt")));
-        if (self::vercode >= $versions[0]) return true;
-        else return false;
+        if (self::vercode >= $versions[0]) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

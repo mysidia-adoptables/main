@@ -16,7 +16,6 @@
  */
 class HTMLPurifier_Config
 {
-
     /**
      * HTML Purifier's version
      * @type string
@@ -133,7 +132,9 @@ class HTMLPurifier_Config
         }
         if (is_string($config)) {
             $ret->loadIni($config);
-        } elseif (is_array($config)) $ret->loadArray($config);
+        } elseif (is_array($config)) {
+            $ret->loadArray($config);
+        }
         return $ret;
     }
 

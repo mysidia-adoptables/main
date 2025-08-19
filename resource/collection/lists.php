@@ -21,7 +21,6 @@ use Resource\Utility\Hash;
  */
 abstract class Lists extends Collection implements Listable
 {
-
     /**
      * The delete method, removes an Object at the supplied index and returns the deleted object.
      * The method is disabled in abstract Lists class, thus child class must implement its own version of delete method.
@@ -31,7 +30,7 @@ abstract class Lists extends Collection implements Listable
      */
     public function delete($index)
     {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -41,7 +40,7 @@ abstract class Lists extends Collection implements Listable
      */
     public function hashCode(): int
     {
-        $hash = new Hash;
+        $hash = new Hash();
         $iterator = $this->iterator();
         while ($iterator->next()) {
             $hash->update($iterator->next()->hashCode());
@@ -59,7 +58,9 @@ abstract class Lists extends Collection implements Listable
     {
         $iterator = $this->listIterator();
         while ($iterator->hasNext()) {
-            if ($object->equals($iterator->getNext())) return $iterator->previousIndex();
+            if ($object->equals($iterator->getNext())) {
+                return $iterator->previousIndex();
+            }
         }
         return -1;
     }
@@ -84,7 +85,9 @@ abstract class Lists extends Collection implements Listable
      */
     protected function rangeCheck($index)
     {
-        if ($index < 0 or $index > $this->size()) throw new IndexOutOfBoundsException;
+        if ($index < 0 or $index > $this->size()) {
+            throw new IndexOutOfBoundsException();
+        }
     }
 
     /**
@@ -115,7 +118,7 @@ abstract class Lists extends Collection implements Listable
      */
     public function insert($index, Objective $object)
     {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -128,7 +131,9 @@ abstract class Lists extends Collection implements Listable
     {
         $iterator = $this->listIterator($this->size());
         while ($iterator->hasPrevious()) {
-            if ($object->equals($iterator->getPrevious())) return $iterator->nextIndex();
+            if ($object->equals($iterator->getPrevious())) {
+                return $iterator->nextIndex();
+            }
         }
         return -1;
     }

@@ -20,7 +20,6 @@ use Resource\Native\Objective;
  */
 abstract class SubMap extends Map implements NavigableMappable
 {
-
     /**
      * The map property, it stores a reference to the backup map object.
      * @access protected
@@ -93,17 +92,23 @@ abstract class SubMap extends Map implements NavigableMappable
      * The lowInclusive property, determines if the lower bound is the inclusive bound.
      * @access protected
      */
-    protected $lowInclusive = false, $toEnd = null, Objective $high = null, /**
+        protected $lowInclusive = false, $toEnd = null, Objective $high = null, /**
      * The highInclusive property, determines if the upper bound is the inclusive bound.
      * @access protected
      */
-    protected $highInclusive = false)
+        protected $highInclusive = false)
     {
         if (!$fromStart and !$toEnd) {
-            if ($map->compare($low, $high) > 0) throw new IllegalArgumentException("fromKey > toKey");
+            if ($map->compare($low, $high) > 0) {
+                throw new IllegalArgumentException("fromKey > toKey");
+            }
         } else {
-            if (!$fromStart) $map->compare($low, $low);
-            if (!$toEnd) $map->compare($high, $high);
+            if (!$fromStart) {
+                $map->compare($low, $low);
+            }
+            if (!$toEnd) {
+                $map->compare($high, $high);
+            }
         }
         $this->map = $map;
         $this->fromStart = $fromStart;
@@ -120,9 +125,11 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absCeiling(Objective $key)
+    final public function absCeiling(Objective $key)
     {
-        if ($this->tooLow($key)) return $this->absLowest();
+        if ($this->tooLow($key)) {
+            return $this->absLowest();
+        }
         $entry = $this->map->getCeilingEntry($key);
         return (($entry == null or $this->tooHigh($entry->getKey())) ? null : $entry);
     }
@@ -135,9 +142,11 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absFloor(Objective $key)
+    final public function absFloor(Objective $key)
     {
-        if ($this->tooHigh($key)) return $this->absHighest();
+        if ($this->tooHigh($key)) {
+            return $this->absHighest();
+        }
         $entry = $this->map->getFloorEntry($key);
         return (($entry == null or $this->tooLow($entry->getKey())) ? null : $entry);
     }
@@ -149,7 +158,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absHigh()
+    final public function absHigh()
     {
         return ($this->toEnd ? null : ($this->highInclusive ?
             $this->map->getHigherEntry($this->high) :
@@ -164,9 +173,11 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absHigher(Objective $key)
+    final public function absHigher(Objective $key)
     {
-        if ($this->tooLow($key)) return $this->absLowest();
+        if ($this->tooLow($key)) {
+            return $this->absLowest();
+        }
         $entry = $this->map->getHigherEntry($key);
         return (($entry == null or $this->tooHigh($entry->getKey())) ? null : $entry);
     }
@@ -178,7 +189,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absHighest()
+    final public function absHighest()
     {
         $entry = ($this->toEnd ?
             $this->map->getLastEntry() :
@@ -195,7 +206,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absLow()
+    final public function absLow()
     {
         return ($this->fromStart ? null : ($this->lowInclusive ?
             $this->map->getLowerEntry($this->low) :
@@ -209,7 +220,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absLowest()
+    final public function absLowest()
     {
         $entry = ($this->fromStart ?
             $this->map->getFirstEntry() :
@@ -227,9 +238,11 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @final
      */
-    public final function absLower(Objective $key)
+    final public function absLower(Objective $key)
     {
-        if ($this->tooHigh($key)) return $this->absHighest();
+        if ($this->tooHigh($key)) {
+            return $this->absHighest();
+        }
         $entry = $this->map->getLowerEntry($key);
         return (($entry == null or $this->tooLow($entry->getKey())) ? null : $entry);
     }
@@ -242,7 +255,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function ceilingEntry(Objective $key)
+    final public function ceilingEntry(Objective $key)
     {
         return $this->map->exportEntry($this->subCeiling($key));
     }
@@ -255,7 +268,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function ceilingKey(Objective $key)
+    final public function ceilingKey(Objective $key)
     {
         return $this->map->key($this->subCeiling($key), true);
     }
@@ -268,7 +281,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function containsKey(Objective $key = null): bool
+    final public function containsKey(Objective $key = null): bool
     {
         return ($this->inRange($key) and $this->map->containsKey($key));
     }
@@ -292,7 +305,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function firstEntry()
+    final public function firstEntry()
     {
         return $this->map->exportEntry($this->subLowest());
     }
@@ -304,7 +317,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function firstKey()
+    final public function firstKey()
     {
         return $this->map->key($this->subLowest());
     }
@@ -317,7 +330,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function floorEntry(Objective $key)
+    final public function floorEntry(Objective $key)
     {
         return $this->map->exportEntry($this->subFloor($key));
     }
@@ -330,7 +343,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function floorKey(Objective $key)
+    final public function floorKey(Objective $key)
     {
         return $this->map->key($this->subFloor($key), true);
     }
@@ -389,7 +402,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function higherEntry(Objective $key)
+    final public function higherEntry(Objective $key)
     {
         return $this->map->exportEntry($this->subHigher($key));
     }
@@ -402,7 +415,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function higherKey(Objective $key)
+    final public function higherKey(Objective $key)
     {
         return $this->map->key($this->subHigher($key), true);
     }
@@ -415,7 +428,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function inCloseRange(Objective $key)
+    final public function inCloseRange(Objective $key)
     {
         return (($this->fromStart or $this->map->compare($key, $this->low) >= 0) and ($this->toEnd or $this->map->compare($this->high, $key) >= 0));
     }
@@ -428,7 +441,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function inRange(Objective $key)
+    final public function inRange(Objective $key)
     {
         return (!$this->tooLow($key) and !$this->tooHigh($key));
     }
@@ -442,7 +455,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function inRanges(Objective $key, $inclusive = false)
+    final public function inRanges(Objective $key, $inclusive = false)
     {
         return ($inclusive ? $this->inRange($key) : $this->inCloseRange($key));
     }
@@ -474,7 +487,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return KeySet
      * @final
      */
-    public final function keySet(): \Resource\Collection\KeyMapSet
+    final public function keySet(): \Resource\Collection\KeyMapSet
     {
         return $this->navigableKeySet();
     }
@@ -486,7 +499,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function lastEntry()
+    final public function lastEntry()
     {
         return $this->map->exportEntry($this->subHighest());
     }
@@ -498,7 +511,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function lastKey()
+    final public function lastKey()
     {
         return $this->map->key($this->subHighest());
     }
@@ -511,7 +524,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function LowerEntry(Objective $key)
+    final public function LowerEntry(Objective $key)
     {
         return $this->map->exportEntry($this->subLower($key));
     }
@@ -524,7 +537,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function LowerKey(Objective $key)
+    final public function LowerKey(Objective $key)
     {
         return $this->map->key($this->subLower($key), true);
     }
@@ -536,7 +549,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return NavigableSettable
      * @final
      */
-    public final function navigableKeySet()
+    final public function navigableKeySet()
     {
         $keySet = $this->navigableKeySubSet;
         return (($keySet != null) ? $keySet : ($this->navigableKeySubSet = new KeyTreeSet($this)));
@@ -549,11 +562,13 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function pollFirstEntry()
+    final public function pollFirstEntry()
     {
         $entry = $this->subLowest();
         $exportEntry = $this->map->exportEntry($entry);
-        if ($entry != null) $this->map->deleteEntry($entry);
+        if ($entry != null) {
+            $this->map->deleteEntry($entry);
+        }
         return $exportEntry;
     }
 
@@ -564,11 +579,13 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function pollLastEntry()
+    final public function pollLastEntry()
     {
         $entry = $this->subHighest();
         $exportEntry = $this->map->exportEntry($entry);
-        if ($entry != null) $this->map->deleteEntry($entry);
+        if ($entry != null) {
+            $this->map->deleteEntry($entry);
+        }
         return $exportEntry;
     }
 
@@ -581,9 +598,11 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return Objective
      * @final
      */
-    public final function put(Objective $key = null, Objective $value = null)
+    final public function put(Objective $key = null, Objective $value = null)
     {
-        if (!$this->inRange($key) and $this->map->containsKey($key)) throw new IllegalArgumentException("key out of range");
+        if (!$this->inRange($key) and $this->map->containsKey($key)) {
+            throw new IllegalArgumentException("key out of range");
+        }
         return $this->map->put($key, $value);
     }
 
@@ -632,7 +651,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return NavigableMappable
      * @final
      */
-    public final function tailMap(Objective $fromKey)
+    final public function tailMap(Objective $fromKey)
     {
         return $this->map->tailMaps($fromKey, false);
     }
@@ -655,11 +674,13 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function tooHigh(Objective $key)
+    final public function tooHigh(Objective $key)
     {
         if (!$this->toEnd) {
             $comparison = $this->map->compare($key, $this->high);
-            if ($comparison > 0 or ($comparison == 0 and !$this->highInclusive)) return true;
+            if ($comparison > 0 or ($comparison == 0 and !$this->highInclusive)) {
+                return true;
+            }
         }
         return false;
     }
@@ -672,11 +693,13 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return bool
      * @final
      */
-    public final function tooLow(Objective $key)
+    final public function tooLow(Objective $key)
     {
         if (!$this->fromStart) {
             $comparison = $this->map->compare($key, $this->low);
-            if ($comparison < 0 or ($comparison == 0 and !$this->lowInclusive)) return true;
+            if ($comparison < 0 or ($comparison == 0 and !$this->lowInclusive)) {
+                return true;
+            }
         }
         return false;
     }
@@ -687,7 +710,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return DescendingKeyIterator
      * @abstract
      */
-    public abstract function descendingKeyIterator();
+    abstract public function descendingKeyIterator();
 
     /**
      * The abstract keyIterator method, must be implemented by child class.
@@ -695,7 +718,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return KeyIterator
      * @abstract
      */
-    public abstract function keyIterator();
+    abstract public function keyIterator();
 
     /**
      * The abstract subCeiling method, must be implemented by child class.
@@ -704,7 +727,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subCeiling(Objective $key);
+    abstract public function subCeiling(Objective $key);
 
     /**
      * The abstract subFloor method, must be implemented by child class.
@@ -713,7 +736,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subFloor(Objective $key);
+    abstract public function subFloor(Objective $key);
 
     /**
      * The abstract subHigher method, must be implemented by child class.
@@ -722,7 +745,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subHigher(Objective $key);
+    abstract public function subHigher(Objective $key);
 
     /**
      * The abstract subHighest method, must be implemented by child class.
@@ -730,7 +753,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subHighest();
+    abstract public function subHighest();
 
     /**
      * The abstract subLower method, must be implemented by child class.
@@ -739,7 +762,7 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subLower(Objective $key);
+    abstract public function subLower(Objective $key);
 
     /**
      * The abstract subLowest method, must be implemented by child class.
@@ -747,5 +770,5 @@ abstract class SubMap extends Map implements NavigableMappable
      * @return TreeMapEntry
      * @abstract
      */
-    public abstract function subLowest();
+    abstract public function subLowest();
 }

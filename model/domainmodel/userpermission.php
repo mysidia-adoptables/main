@@ -8,8 +8,7 @@ use Resource\Exception\InvalidIDException;
 
 class UserPermission extends Model
 {
-
-    const IDKEY = "uid";
+    public const IDKEY = "uid";
     protected $uid;
     protected $canlevel;
     protected $canvm;
@@ -28,7 +27,9 @@ class UserPermission extends Model
             $prefix = constant("PREFIX");
             $dto = $mysidia->db->join("users", "users.uid = users_permissions.uid")
                 ->select("users_permissions", [], "{$prefix}users.uid = :uid", ["uid" => $uid])->fetchObject();
-            if (!is_object($dto)) throw new MemberNotfoundException("The specified user permission {$uid} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user permission {$uid} does not exist...");
+            }
         }
         parent::__construct($dto);
         $this->user = $user ?: new Member($uid, $dto);
@@ -36,8 +37,9 @@ class UserPermission extends Model
 
     public function getPermission($perms)
     {
-        if (isset($this->$perms)) return $this->$perms;
-        else {
+        if (isset($this->$perms)) {
+            return $this->$perms;
+        } else {
             $usergroup = $this->user->getUsergroup(Model::MODEL);
             return $usergroup->getPermission($perms);
         }
@@ -51,7 +53,9 @@ class UserPermission extends Model
     public function setPermission($fields = [])
     {
         $mysidia = Registry::get("mysidia");
-        if (!$this->isAssoc($fields)) throw new InvalidIDException('The parameter must be an associative array...');
+        if (!$this->isAssoc($fields)) {
+            throw new InvalidIDException('The parameter must be an associative array...');
+        }
         $mysidia->db->update("users_permissions", $fields, "uid ='{$this->uid}'");
     }
 

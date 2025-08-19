@@ -21,7 +21,6 @@ use Resource\GUI\Renderer\ListRenderer;
  */
 class FieldSet extends Container
 {
-
     /**
      * The disabled property, checks if elements in this fieldset is disabled.
      * @access protected
@@ -44,10 +43,15 @@ class FieldSet extends Container
         if ($name instanceof Legend) {
             $this->setName($name->getText());
             $this->add($name);
-        } elseif (!empty($name)) $this->setName($name);
-        else $this->name = "";
+        } elseif (!empty($name)) {
+            $this->setName($name);
+        } else {
+            $this->name = "";
+        }
 
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
         $this->renderer = new ListRenderer($this);
     }
 

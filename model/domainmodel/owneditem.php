@@ -10,7 +10,7 @@ class OwnedItem extends Item
 {
     // The OwnedItem class, which defines functionalities for items that belong to specific users
 
-    const IDKEY = "iid";
+    public const IDKEY = "iid";
     protected $iid;
     protected $item;
     protected $owner;
@@ -21,14 +21,18 @@ class OwnedItem extends Item
     {
         // the item is an owned item in user inventory, so retrieve database info to assign properties
         $mysidia = Registry::get("mysidia");
-        if ($iteminfo instanceof MysString) $iteminfo = $iteminfo->getValue();
+        if ($iteminfo instanceof MysString) {
+            $iteminfo = $iteminfo->getValue();
+        }
         if (!$dto) {
             $fetchmode = $itemowner ? "item" : "iid";
             $whereclause = ($fetchmode == "iid") ? "{$fetchmode} = :iteminfo" : "{$fetchmode} = :iteminfo AND owner = '{$itemowner}'";
             $dto = $mysidia->db->join("items", "items.id = inventory.item")
                 ->select("inventory", [], $whereclause, ["iteminfo" => $iteminfo])->fetchObject();
             if (!is_object($dto)) {
-                if ($fetchmode == "iid") return;
+                if ($fetchmode == "iid") {
+                    return;
+                }
                 $this->iid = 0;
                 $this->quantity = 0;
                 parent::__construct($iteminfo);
@@ -50,8 +54,11 @@ class OwnedItem extends Item
 
     public function getItem($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Item($this->id);
-        else return $this->id;
+        if ($fetchMode == Model::MODEL) {
+            return new Item($this->id);
+        } else {
+            return $this->id;
+        }
     }
 
     public function inInventory()
@@ -61,8 +68,11 @@ class OwnedItem extends Item
 
     public function getOwner($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Member($this->owner);
-        else return $this->owner;
+        if ($fetchMode == Model::MODEL) {
+            return new Member($this->owner);
+        } else {
+            return $this->owner;
+        }
     }
 
     public function getOwnerName()
@@ -106,14 +116,22 @@ class OwnedItem extends Item
 
     public function apply($adopt = "", $user = "")
     {
-        if (is_numeric($adopt)) $target = new OwnedAdoptable($adopt);
-        if (!empty($user)) $target = new Member($user);
-        if (!$target) throw new ItemException("Cannot apply item to invalid target.");
+        if (is_numeric($adopt)) {
+            $target = new OwnedAdoptable($adopt);
+        }
+        if (!empty($user)) {
+            $target = new Member($user);
+        }
+        if (!$target) {
+            throw new ItemException("Cannot apply item to invalid target.");
+        }
 
         // Now we decide which function to call...
         $itemFunction = new ItemFunction($this->function);
         $message = $itemFunction->apply($this, $target);
-        if ($this->consumable) $this->remove();
+        if ($this->consumable) {
+            $this->remove();
+        }
         return $message;
     }
 
@@ -127,8 +145,9 @@ class OwnedItem extends Item
         $mysidia = Registry::get("mysidia");
         $this->owner = empty($owner) ? $this->owner : $owner;
         $this->quantity += $quantity;
-        if ($this->iid) $mysidia->db->update("inventory", ["quantity" => $this->quantity], "iid = '{$this->iid}'");
-        else {
+        if ($this->iid) {
+            $mysidia->db->update("inventory", ["quantity" => $this->quantity], "iid = '{$this->iid}'");
+        } else {
             $mysidia->db->insert("inventory", ["iid" => null, "item" => $this->id, "owner" => $this->owner, "quantity" => $this->quantity, "status" => "Available"]);
             $this->iid = $mysidia->db->lastInsertId();
         }
@@ -144,7 +163,9 @@ class OwnedItem extends Item
             $profit = $this->getCost($quantity, 0.5);
             $owner->changeMoney($profit);
             return true;
-        } else return false;
+        } else {
+            return false;
+        }
     }
 
     public function toss()
@@ -160,8 +181,9 @@ class OwnedItem extends Item
         $mysidia = Registry::get("mysidia");
         $this->owner = empty($owner) ? $this->owner : $owner;
         $this->quantity -= $quantity;
-        if (!$quantity || $this->quantity < 0) return false;
-        else {
+        if (!$quantity || $this->quantity < 0) {
+            return false;
+        } else {
             match ($this->quantity) {
                 0 => $mysidia->db->delete("inventory", "iid = '{$this->iid}'"),
                 default => $mysidia->db->update("inventory", ["quantity" => $this->quantity], "iid = '{$this->iid}'"),

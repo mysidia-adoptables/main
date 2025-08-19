@@ -9,7 +9,6 @@ use Resource\Utility\Date;
 
 class ShoutComment extends Model
 {
-
     protected $id;
     protected $user;
     protected $date;
@@ -20,7 +19,9 @@ class ShoutComment extends Model
         $mysidia = Registry::get("mysidia");
         if (!$dto) {
             $dto = $mysidia->db->select("shoutbox", [], "id = :id", ["id" => $id])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Shoutbox Comment {$id} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Shoutbox Comment {$id} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -33,13 +34,18 @@ class ShoutComment extends Model
 
     public function getUser($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Member($this->user);
-        else return $this->user;
+        if ($fetchMode == Model::MODEL) {
+            return new Member($this->user);
+        } else {
+            return $this->user;
+        }
     }
 
     public function getUsername()
     {
-        if (!$this->user) return "Guest";
+        if (!$this->user) {
+            return "Guest";
+        }
         return $this->getUser(Model::MODEL)->getUsername();
     }
 

@@ -23,7 +23,6 @@ use Resource\Native\MysString;
  */
 abstract class TableContainer extends Container
 {
-
     /**
      * The width property, it stores the width of the entire table.
      * @access protected
@@ -54,8 +53,12 @@ abstract class TableContainer extends Container
             $this->setName($name);
             $this->setID($name);
         }
-        if (!empty($width)) $this->setWidth($width);
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($width)) {
+            $this->setWidth($width);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
         $this->lineBreak = false;
         $this->renderer = new TableRenderer($this);
     }
@@ -78,8 +81,11 @@ abstract class TableContainer extends Container
      */
     public function setWidth($width)
     {
-        if (is_numeric($width)) $this->width = "{$width}px";
-        else $this->width = $width;
+        if (is_numeric($width)) {
+            $this->width = "{$width}px";
+        } else {
+            $this->width = $width;
+        }
         $this->setTableAttributes("Width");
     }
 
@@ -101,7 +107,9 @@ abstract class TableContainer extends Container
      */
     public function setTableAttributes($tableAttributes)
     {
-        if (!$this->tableAttributes) $this->tableAttributes = new HashSet;
+        if (!$this->tableAttributes) {
+            $this->tableAttributes = new HashSet();
+        }
         $this->tableAttributes->add(new MysString($tableAttributes));
     }
 

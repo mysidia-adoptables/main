@@ -18,26 +18,33 @@ use Resource\Native\MysString;
 
 class MyadoptsController extends AppController
 {
-
     private $adopt;
 
     public function __construct()
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->adopts != "enabled") throw new NoPermissionException("The admin has turned off adoption feature for this site, please contact him/her for detailed information.");
+        if ($mysidia->systems->adopts != "enabled") {
+            throw new NoPermissionException("The admin has turned off adoption feature for this site, please contact him/her for detailed information.");
+        }
     }
 
     public function index()
     {
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->user->countOwnedAdopts();
-        if ($total == 0) throw new AdoptNotfoundException($mysidia->lang->empty);
-        $pagination = new Pagination($total, $mysidia->settings->pagination,
-            "myadopts", $mysidia->input->get("page"));
+        if ($total == 0) {
+            throw new AdoptNotfoundException($mysidia->lang->empty);
+        }
+        $pagination = new Pagination(
+            $total,
+            $mysidia->settings->pagination,
+            "myadopts",
+            $mysidia->input->get("page")
+        );
         $stmt = $mysidia->db->join("adoptables", "adoptables.id = owned_adoptables.adopt")
             ->select("owned_adoptables", [], "owner ='{$mysidia->user->getID()}' ORDER BY totalclicks LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $ownedAdopts = new ArrayList;
+        $ownedAdopts = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $ownedAdopts->add(new OwnedAdoptableViewModel(new OwnedAdoptable($dto->aid, $dto)));
         }
@@ -57,7 +64,7 @@ class MyadoptsController extends AppController
         $mysidia = Registry::get("mysidia");
         $this->initOwnedAdopt($aid);
         $stmt = $mysidia->db->select("vote_voters", [], "adoptableid='{$this->adopt->getAdoptID()}' ORDER BY date DESC LIMIT 10");
-        $votes = new ArrayList;
+        $votes = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $votes->add(new Vote(null, null, null, null, $dto));
         }
@@ -124,6 +131,8 @@ class MyadoptsController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $this->adopt = new OwnedAdoptable($aid);
-        if (!$this->adopt->isOwner($mysidia->user)) throw new NoPermissionException("permission");
+        if (!$this->adopt->isOwner($mysidia->user)) {
+            throw new NoPermissionException("permission");
+        }
     }
 }

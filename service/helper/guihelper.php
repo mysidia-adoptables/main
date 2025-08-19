@@ -19,7 +19,6 @@ use Resource\GUI\GUI;
  */
 abstract class GUIHelper extends GUI
 {
-
     /**
      * The resource property, specifies which GUI resource this helper belongs to.
      * @access protected

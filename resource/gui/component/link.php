@@ -20,7 +20,6 @@ use Resource\Utility\URL;
  */
 class Link extends Accessory
 {
-
     /**
      * The href property, defines the href query string for link object.
      * @access protected
@@ -97,11 +96,18 @@ class Link extends Accessory
     {
         parent::__construct($id);
         $this->setHref(($href instanceof URL) ? $href : new URL($href));
-        if ($component instanceof Image) $this->setImage($component);
-        else $this->setText($component);
+        if ($component instanceof Image) {
+            $this->setImage($component);
+        } else {
+            $this->setText($component);
+        }
 
-        if ($lineBreak) $this->setLineBreak(true);
-        if (!empty($event)) $this->setEvent($event);
+        if ($lineBreak) {
+            $this->setLineBreak(true);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
     }
 
     /**
@@ -212,7 +218,9 @@ class Link extends Accessory
     public function setTarget($target)
     {
         $targets = ["blank", "parent", "self", "top"];
-        if (!in_array($target, $targets)) throw new GUIException("The link target is invalid...");
+        if (!in_array($target, $targets)) {
+            throw new GUIException("The link target is invalid...");
+        }
         $this->target = $target;
         $this->setAttributes("Target");
     }

@@ -22,7 +22,6 @@ use Resource\GUI\Renderer\DocumentRenderer;
  */
 class Comment extends Accessory
 {
-
     /**
      * The text property, specifies the textual content of this comment.
      * @access protected
@@ -53,11 +52,19 @@ class Comment extends Accessory
      */
     public function __construct($text = "", $linebreak = true, $styles = "", $heading = "")
     {
-        $this->styles = new ArrayObject;
-        if (!empty($text)) $this->text = $text;
-        if (!empty($styles)) $this->setStyles($styles);
-        if ($linebreak == false) $this->setLineBreak(false);
-        if (is_numeric($heading)) $this->setHeading($heading);
+        $this->styles = new ArrayObject();
+        if (!empty($text)) {
+            $this->text = $text;
+        }
+        if (!empty($styles)) {
+            $this->setStyles($styles);
+        }
+        if ($linebreak == false) {
+            $this->setLineBreak(false);
+        }
+        if (is_numeric($heading)) {
+            $this->setHeading($heading);
+        }
         $this->renderer = new DocumentRenderer($this);
     }
 
@@ -100,7 +107,9 @@ class Comment extends Accessory
      */
     public function setHeading($heading)
     {
-        if ($heading > 6 or $heading < 1) throw new GUIException("The heading is not a valid number.");
+        if ($heading > 6 or $heading < 1) {
+            throw new GUIException("The heading is not a valid number.");
+        }
         $this->heading = $heading;
     }
 
@@ -136,7 +145,9 @@ class Comment extends Accessory
             foreach ($styles as $style) {
                 $this->styles->offsetSet($style, true);
             }
-        } else $this->styles->offsetSet($styles, true);
+        } else {
+            $this->styles->offsetSet($styles, true);
+        }
     }
 
     /**
@@ -146,7 +157,7 @@ class Comment extends Accessory
      */
     public function unsetStyles()
     {
-        $this->styles = new ArrayObject;
+        $this->styles = new ArrayObject();
     }
 
     /**

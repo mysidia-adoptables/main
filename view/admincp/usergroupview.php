@@ -19,12 +19,11 @@ use Service\Helper\GroupTableHelper;
 
 class UsergroupView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new GroupTableHelper;
+        $helper = new GroupTableHelper();
         $usergroupTable = new TableBuilder("user");
         $usergroupTable->setAlign(new Align("center", "middle"));
         $usergroupTable->buildHeaders("ID", "Usergroup", "Can Adopt Pets", "Can Use PM", "Can Access ACP", "Edit", "Delete");
@@ -34,7 +33,7 @@ class UsergroupView extends View
         $iterator = $usergroups->iterator();
         while ($iterator->hasNext()) {
             $usergroup = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($usergroup->getID()));
             $cells->add(new TCell($usergroup->getGroupname()));
             $cells->add(new TCell($helper->getPermissionImage($usergroup->getPermission("canadopt"))));
@@ -74,14 +73,15 @@ class UsergroupView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $usergroup = $this->getField("usergroup");
-        if (!$usergroup) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$usergroup) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
             $document->setTitle("{$this->lang->edit_title}: {$usergroup->getID()}");
             $document->addlangvar("{$this->lang->edit} {$usergroup->getGroupname()}, {$this->lang->edit2}");
-            $checkBoxes = new LinkedHashMap;
+            $checkBoxes = new LinkedHashMap();
             $permissions = ["canadopt", "canpm", "cancp", "canmanageusers", "canmanageadopts", "canmanagecontent", "canmanagesettings", "canmanageads"];
             foreach ($permissions as $permission) {
                 $checkBoxes->put(new MysString($permission), new CheckBox($this->lang->{$permission}, $permission, "yes", $usergroup->getPermission($permission) == "yes"));
@@ -107,8 +107,9 @@ class UsergroupView extends View
     {
         $document = $this->document;
         $usergroup = $this->getField("usergroup");
-        if (!$usergroup) $this->index();
-        else {
+        if (!$usergroup) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

@@ -16,7 +16,6 @@ use Service\ApplicationService\TradeService;
 
 class MytradesController extends AppController
 {
-
     private $settings;
     private $tradeService;
 
@@ -39,8 +38,10 @@ class MytradesController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("trade", [], " type='private' AND recipient='{$mysidia->user->getID()}' AND status='pending'");
-        if ($stmt->rowCount() == 0) throw new TradeException("empty");
-        $offers = new ArrayList;
+        if ($stmt->rowCount() == 0) {
+            throw new TradeException("empty");
+        }
+        $offers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $offers->add(new TradeOffer($dto->tid, $dto));
         }
@@ -50,13 +51,17 @@ class MytradesController extends AppController
     public function accept($tid = null, $confirm = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) throw new TradeException("accept_none");
+        if (!$tid) {
+            throw new TradeException("accept_none");
+        }
         $offer = new TradeOffer($tid);
         $this->setField("confirm", $confirm ? new MysString($confirm) : null);
 
         if ($confirm) {
             try {
-                if (!$mysidia->session->fetch("tid")) throw new Exception("Session already expired");
+                if (!$mysidia->session->fetch("tid")) {
+                    throw new Exception("Session already expired");
+                }
                 $validator = $this->tradeService->getValidator($offer);
                 $validator->validate();
                 $this->tradeService->completeTrade($offer);
@@ -76,12 +81,16 @@ class MytradesController extends AppController
     public function decline($tid = null, $confirm = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) throw new TradeException("decline_none");
+        if (!$tid) {
+            throw new TradeException("decline_none");
+        }
         $offer = new TradeOffer($tid);
         $this->setField("confirm", $confirm ? new MysString($confirm) : null);
 
         if ($confirm) {
-            if (!$mysidia->session->fetch("tid")) throw new Exception("Session already expired");
+            if (!$mysidia->session->fetch("tid")) {
+                throw new Exception("Session already expired");
+            }
             $offer = new TradeOffer($tid);
             $offer->decline();
             $mysidia->session->terminate("tid");

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Smarty Template Compiler Base
  * This file contains the basic classes and methods for compiling Smarty templates with lexer/parser
@@ -54,11 +55,12 @@ class Smarty_Internal_SmartyTemplateCompiler extends Smarty_Internal_TemplateCom
     public function __construct(/**
      * Lexer class name
      */
-    public $lexer_class, /**
+        public $lexer_class, /**
      * Parser class name
      */
-    public $parser_class, Smarty $smarty)
-    {
+        public $parser_class,
+        Smarty $smarty
+    ) {
         parent::__construct($smarty);
     }
 
@@ -78,8 +80,10 @@ class Smarty_Internal_SmartyTemplateCompiler extends Smarty_Internal_TemplateCom
           then written to compiled files. */
         // init the lexer/parser to compile the template
         $this->parser =
-            new $this->parser_class(new $this->lexer_class(str_replace(["\r\n", "\r"], "\n", $_content), $this),
-                                    $this);
+            new $this->parser_class(
+                new $this->lexer_class(str_replace(["\r\n", "\r"], "\n", $_content), $this),
+                $this
+            );
         if ($isTemplateSource && $this->template->caching) {
             $this->parser->insertPhpCode("<?php\n\$_smarty_tpl->compiled->nocache_hash = '{$this->nocache_hash}';\n?>\n");
         }

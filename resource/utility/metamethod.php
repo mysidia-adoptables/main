@@ -2,7 +2,8 @@
 
 namespace Resource\Utility;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 use Resource\Native\MysObject;
 
 /**
@@ -18,7 +19,6 @@ use Resource\Native\MysObject;
  */
 final class MetaMethod extends MysObject
 {
-
     /**
      * The args property, it stores an array of arguments.
      * @access private
@@ -41,7 +41,9 @@ final class MetaMethod extends MysObject
      */
     public function getParam($index = 0)
     {
-        if (!$this->params) $this->params = new ArrayObject(func_get_args());
+        if (!$this->params) {
+            $this->params = new ArrayObject(func_get_args());
+        }
         return $this->params[$index];
     }
 
@@ -52,7 +54,9 @@ final class MetaMethod extends MysObject
      */
     public function getParams()
     {
-        if (!$this->params) $this->params = new ArrayObject(func_get_args());
+        if (!$this->params) {
+            $this->params = new ArrayObject(func_get_args());
+        }
         return $this->params;
     }
 
@@ -63,7 +67,9 @@ final class MetaMethod extends MysObject
      */
     public function numArgs()
     {
-        if (!$this->num) $this->num = func_num_args();
+        if (!$this->num) {
+            $this->num = func_num_args();
+        }
         return $this->num;
     }
 
@@ -74,7 +80,9 @@ final class MetaMethod extends MysObject
      */
     public function call()
     {
-        if ($this->numArgs() < 2) throw new Exception("Invalid callback method specified.");
+        if ($this->numArgs() < 2) {
+            throw new Exception("Invalid callback method specified.");
+        }
         $params = $this->getParams()->getArrayCopy();
         $class = array_shift($params);
         $method = array_shift($params);
@@ -88,7 +96,9 @@ final class MetaMethod extends MysObject
      */
     public function callStatic()
     {
-        if ($this->numArgs() < 2) throw new Exception("Invalid callback method specified.");
+        if ($this->numArgs() < 2) {
+            throw new Exception("Invalid callback method specified.");
+        }
         $params = $this->getParams()->getArrayCopy();
         $class = array_shift($param);
         $method = array_shift($params);

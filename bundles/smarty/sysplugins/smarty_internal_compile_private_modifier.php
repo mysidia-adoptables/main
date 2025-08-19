@@ -68,8 +68,11 @@ class Smarty_Internal_Compile_Private_Modifier extends Smarty_Internal_CompileBa
                         // registered modifier compiler
                         if (isset($compiler->smarty->registered_plugins[ Smarty::PLUGIN_MODIFIERCOMPILER ][ $modifier ][ 0 ])) {
                             $output =
-                                call_user_func($compiler->smarty->registered_plugins[ Smarty::PLUGIN_MODIFIERCOMPILER ][ $modifier ][ 0 ],
-                                               $single_modifier, $compiler->smarty);
+                                call_user_func(
+                                    $compiler->smarty->registered_plugins[ Smarty::PLUGIN_MODIFIERCOMPILER ][ $modifier ][ 0 ],
+                                    $single_modifier,
+                                    $compiler->smarty
+                                );
                             $compiler->known_modifier_type[ $modifier ] = $type;
                             break 2;
                         }

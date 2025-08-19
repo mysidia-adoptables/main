@@ -21,21 +21,20 @@ use Resource\Exception\ClassCastException;
  */
 final class Integer extends Number
 {
-
     /**
      * Size constant, specifies the size an integer value occupies.
      */
-    const Size = 32;
+    public const Size = 32;
 
     /**
      * MinValue constant, an integer cannot contain number less than -2147483648.
      */
-    const MinValue = -2147483648;
+    public const MinValue = -2147483648;
 
     /**
      * MaxValue constant, an integer cannot contain number greater than 2147483647.
      */
-    const MaxValue = 2147483647;
+    public const MaxValue = 2147483647;
 
 
     /**
@@ -47,7 +46,9 @@ final class Integer extends Number
      */
     public function __construct($num)
     {
-        if (!is_int($num)) $num = (int)$num;
+        if (!is_int($num)) {
+            $num = (int)$num;
+        }
         parent::__construct($num);
         $this->value = $num;
     }
@@ -158,8 +159,12 @@ final class Integer extends Number
      */
     public function verify($num)
     {
-        if ($num > self::MaxValue) throw new Exception('Supplied value cannot be greater than 2147483647 for Int type.');
-        elseif ($num < self::MinValue) throw new Exception('Supplied value cannot be smaller than -2147483648 for Int type.');
-        else return true;
+        if ($num > self::MaxValue) {
+            throw new Exception('Supplied value cannot be greater than 2147483647 for Int type.');
+        } elseif ($num < self::MinValue) {
+            throw new Exception('Supplied value cannot be smaller than -2147483648 for Int type.');
+        } else {
+            return true;
+        }
     }
 }

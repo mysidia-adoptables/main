@@ -112,8 +112,11 @@ class Smarty_Internal_Compile_Insert extends Smarty_Internal_CompileBase
             $_output .= "require_once '{$_filepath}' ;";
             require_once $_filepath;
             if (!is_callable($_function)) {
-                $compiler->trigger_template_error(" {insert} function '{$_function}' is not callable in script file '{$_script}'",
-                                                  null, true);
+                $compiler->trigger_template_error(
+                    " {insert} function '{$_function}' is not callable in script file '{$_script}'",
+                    null,
+                    true
+                );
             }
         } else {
             $_filepath = 'null';
@@ -122,8 +125,11 @@ class Smarty_Internal_Compile_Insert extends Smarty_Internal_CompileBase
             if (!is_callable($_function)) {
                 // try plugin
                 if (!$_function = $compiler->getPlugin($_name, 'insert')) {
-                    $compiler->trigger_template_error("{insert} no function or plugin found for '{$_name}'", null,
-                                                      true);
+                    $compiler->trigger_template_error(
+                        "{insert} no function or plugin found for '{$_name}'",
+                        null,
+                        true
+                    );
                 }
             }
         }

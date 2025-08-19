@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin CompileBase
  *
@@ -46,14 +47,14 @@ abstract class Smarty_Internal_CompileBase
 
     /**
      * Mapping array for boolqn option value
-     * 
+     *
      * @var array
      */
     public $optionMap = [1 => true, 0 => false, 'true' => true, 'false' => false];
 
     /**
      * Mapping array with attributes as key
-     * 
+     *
      * @var array
      */
     public $mapCache = [];
@@ -124,8 +125,11 @@ abstract class Smarty_Internal_CompileBase
         if ($this->optional_attributes != ['_any']) {
             if (!isset($this->mapCache[ 'all' ])) {
                 $this->mapCache[ 'all' ] =
-                    array_fill_keys(array_merge($this->required_attributes, $this->optional_attributes,
-                                                $this->option_flags), true);
+                    array_fill_keys(array_merge(
+                        $this->required_attributes,
+                        $this->optional_attributes,
+                        $this->option_flags
+                    ), true);
             }
             foreach ($_indexed_attr as $key => $dummy) {
                 if (!isset($this->mapCache[ 'all' ][ $key ]) && $key !== 0) {

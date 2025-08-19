@@ -14,7 +14,6 @@ use Resource\Native\MysObject;
 
 class FriendService extends MysObject
 {
-
     private $friendList;
 
     public function __construct(private readonly Member $user)
@@ -46,8 +45,12 @@ class FriendService extends MysObject
     public function getValidRequest($fid)
     {
         $friendRequest = new FriendRequest($fid);
-        if ($friendRequest->getStatus() != "pending") throw new InvalidActionException("The friend request is not pending, it may have been accepted or declined.");
-        if ($friendRequest->getRecipientID() != $this->user->getID()) throw new InvalidActionException("The friend request has invalid recipient.");
+        if ($friendRequest->getStatus() != "pending") {
+            throw new InvalidActionException("The friend request is not pending, it may have been accepted or declined.");
+        }
+        if ($friendRequest->getRecipientID() != $this->user->getID()) {
+            throw new InvalidActionException("The friend request has invalid recipient.");
+        }
         return $friendRequest;
     }
 
@@ -55,8 +58,10 @@ class FriendService extends MysObject
     {
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("friend_requests", [], "touser='{$this->user->getID()}' AND status='pending'");
-        if ($stmt->rowCount() == 0) throw new InvalidIDException("request_empty");
-        $requests = new ArrayList;
+        if ($stmt->rowCount() == 0) {
+            throw new InvalidIDException("request_empty");
+        }
+        $requests = new ArrayList();
         while ($dto = $stmt->fetchObject) {
             $requests->add(new FriendRequest($dto->fid, $dto));
         }
@@ -75,12 +80,12 @@ class FriendService extends MysObject
     {
         $title = "New Friend Request Received";
         $offer = "You have received a friendrequest from {$this->user->getUsername()}! You may go to your usercp to accept/decline this offer.";
-        $frequest = new FriendRequest;
+        $frequest = new FriendRequest();
         $frequest->setMessage($offer);
         $frequest->post($user->getID());
 
         // And at the very last, send a PM to the very user receiving this request
-        $message = new PrivateMessage;
+        $message = new PrivateMessage();
         $message->setRecipient($user->getID());
         $message->setMessage($title, $offer);
         $message->post();
@@ -88,7 +93,9 @@ class FriendService extends MysObject
 
     public function addFriend(Member $user)
     {
-        if ($this->isFriendWith($user)) throw new InvalidIDException("The user is already on the friend list.");
+        if ($this->isFriendWith($user)) {
+            throw new InvalidIDException("The user is already on the friend list.");
+        }
         $this->user->addFriend($user->getID());
         $user->addFriend($this->user->getID());
     }
@@ -96,10 +103,14 @@ class FriendService extends MysObject
     public function removeFriend(Member $user)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$this->isFriendWith($user)) throw new InvalidIDException("The user is not currently on the friend list.");
+        if (!$this->isFriendWith($user)) {
+            throw new InvalidIDException("The user is not currently on the friend list.");
+        }
         $this->user->removeFriend($user->getID());
         $user->removeFriend($this->user->getID());
         $fid = $mysidia->db->select("friend_requests", ["fid"], "(fromuser = '{$this->user->getID()}' AND touser = '{$user->getID()}') OR (touser = '{$this->user->getID()}' AND fromuser = '{$user->getID()}')")->fetchColumn();
-        if ($fid) $mysidia->db->delete("friend_requests", "fid = '{$fid}'");
+        if ($fid) {
+            $mysidia->db->delete("friend_requests", "fid = '{$fid}'");
+        }
     }
 }

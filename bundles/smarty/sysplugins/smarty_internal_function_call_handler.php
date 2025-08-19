@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Function Call Handler
  *

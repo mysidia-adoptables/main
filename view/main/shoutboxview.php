@@ -17,7 +17,6 @@ use Service\Builder\CKEditorBuilder;
 
 class ShoutboxView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -31,21 +30,22 @@ class ShoutboxView extends View
         }
 
         $messages = $this->getField("messages");
-        if ($messages->isEmpty()) $document->add(new Comment("Currently no one has ever here yet, wanna be the first to shout a message?"));
-        else {
-            $shoutboxes = new Division;
+        if ($messages->isEmpty()) {
+            $document->add(new Comment("Currently no one has ever here yet, wanna be the first to shout a message?"));
+        } else {
+            $shoutboxes = new Division();
             $shoutboxes->setClass("enclosecomments");
             $iterator = $messages->iterator();
             while ($iterator->hasNext()) {
                 $message = $iterator->next();
-                $comment = new Division;
+                $comment = new Division();
                 $comment->setClass("comment");
                 $comment->setDimension(new Dimension("94%"));
                 $comment->setPadding(new Padding("", "2%"));
                 $comment->setBackground(new Color("aliceblue"));
                 $comment->setMargin(new Margin("bottom", "5px"));
 
-                $userdate = new Division;
+                $userdate = new Division();
                 $userdate->setClass("userdate");
                 $userdate->setDimension(new Dimension("50%", "25%"));
                 $userdate->setForeground(new Color("red"));

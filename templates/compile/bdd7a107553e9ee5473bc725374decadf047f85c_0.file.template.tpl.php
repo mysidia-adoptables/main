@@ -3,42 +3,43 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/elements/template.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, [
   'version' => '3.1.30',
   'unifunc' => 'content_610d72e41fc698_27026195',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
    [
-    'bdd7a107553e9ee5473bc725374decadf047f85c' => 
+    'bdd7a107553e9ee5473bc725374decadf047f85c' =>
      [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/elements/template.tpl',
       1 => 1628271153,
       2 => 'file',
     ],
   ],
-  'includes' => 
+  'includes' =>
    [
   ],
-],false)) {
-function content_610d72e41fc698_27026195 (Smarty_Internal_Template $_smarty_tpl) {
-$_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
-?>
+], false)) {
+    function content_610d72e41fc698_27026195(Smarty_Internal_Template $_smarty_tpl)
+    {
+        $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
+        ?>
 
 
     <body>
         <div id="wrapper">
             <div id="left">
                 <img src="<?php echo $_smarty_tpl->tpl_vars['home']->value;
-echo $_smarty_tpl->tpl_vars['temp']->value;
-echo $_smarty_tpl->tpl_vars['theme']->value;?>
+        echo $_smarty_tpl->tpl_vars['temp']->value;
+        echo $_smarty_tpl->tpl_vars['theme']->value;?>
 /inc/images/left.png">
                 <ul><?php echo $_smarty_tpl->tpl_vars['menu']->value;?>
 </ul> 
             </div>
             <div id="center">
                 <img src="<?php echo $_smarty_tpl->tpl_vars['home']->value;
-echo $_smarty_tpl->tpl_vars['temp']->value;
-echo $_smarty_tpl->tpl_vars['theme']->value;?>
+        echo $_smarty_tpl->tpl_vars['temp']->value;
+        echo $_smarty_tpl->tpl_vars['theme']->value;?>
 /inc/images/center.png">
                 <h1><?php echo $_smarty_tpl->tpl_vars['document_title']->value;?>
 </h1>
@@ -48,8 +49,8 @@ echo $_smarty_tpl->tpl_vars['theme']->value;?>
 
             <div id="right">
                 <img src="<?php echo $_smarty_tpl->tpl_vars['home']->value;
-echo $_smarty_tpl->tpl_vars['temp']->value;
-echo $_smarty_tpl->tpl_vars['theme']->value;?>
+        echo $_smarty_tpl->tpl_vars['temp']->value;
+        echo $_smarty_tpl->tpl_vars['theme']->value;?>
 /inc/images/right.png">
                 <p><?php echo $_smarty_tpl->tpl_vars['sidebar']->value;?>
 </p>
@@ -64,4 +65,4 @@ echo $_smarty_tpl->tpl_vars['theme']->value;?>
     </body>
 
 </html><?php }
-}
+    }

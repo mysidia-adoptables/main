@@ -16,7 +16,6 @@ use Service\Helper\TradeFormHelper;
 
 class MytradesView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -33,7 +32,7 @@ class MytradesView extends View
         $iterator = $offers->iterator();
         while ($iterator->hasNext()) {
             $offer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($offer->getID()));
             $cells->add(new TCell($offer->getSenderName()));
             $cells->add(new TCell($tradeHelper->getAdoptImages($offer->getAdoptOffered())));
@@ -68,7 +67,7 @@ class MytradesView extends View
         $document->addLangvar($this->lang->review);
         $document->add(new Image("templates/icons/warning.gif"));
         $document->add(new Comment($this->lang->review_partner . $offer->getSenderName(), true, "b"));
-        $document->add(new Comment);
+        $document->add(new Comment());
         $document->add(new Image("templates/icons/next.gif"));
         $document->addLangvar($this->lang->review_adoptoffered);
         $document->add($tradeHelper->getAdoptImages($offer->getAdoptOffered(), false));

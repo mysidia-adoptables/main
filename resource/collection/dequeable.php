@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface Dequeable extends Queueable
 {
-
     /**
      * The addFirst method, inserts an object at the first index of the Deque.
      * @param Objective $object

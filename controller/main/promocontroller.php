@@ -14,12 +14,13 @@ use Service\Validator\PromocodeValidator;
 
 class PromoController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->promo != "enabled") throw new NoPermissionException("The admin has turned off promocode feature for this site, please contact him/her for detailed information.");
+        if ($mysidia->systems->promo != "enabled") {
+            throw new NoPermissionException("The admin has turned off promocode feature for this site, please contact him/her for detailed information.");
+        }
     }
 
     public function index()
@@ -29,7 +30,9 @@ class PromoController extends AppController
             $mysidia->session->validate("promo");
             try {
                 $promocode = new Promocode($mysidia->input->post("promocode"));
-                if ($promocode->isNew()) throw new PromocodeException("fail");
+                if ($promocode->isNew()) {
+                    throw new PromocodeException("fail");
+                }
                 $validator = new PromocodeValidator($promocode, new ArrayObject(["user", "number", "date"]));
                 $validator->validate();
                 $reward = $promocode->execute();

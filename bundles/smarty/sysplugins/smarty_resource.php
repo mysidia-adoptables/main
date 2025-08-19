@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Plugin
  *
@@ -152,9 +153,11 @@ abstract class Smarty_Resource
             if (class_exists($_resource_class, false)) {
                 return $smarty->_cache[ 'resource_handlers' ][ $type ] = new $_resource_class();
             } else {
-                $smarty->registerResource($type,
-                                          ["smarty_resource_{$type}_source", "smarty_resource_{$type}_timestamp",
-                                                "smarty_resource_{$type}_secure", "smarty_resource_{$type}_trusted"]);
+                $smarty->registerResource(
+                    $type,
+                    ["smarty_resource_{$type}_source", "smarty_resource_{$type}_timestamp",
+                                                "smarty_resource_{$type}_secure", "smarty_resource_{$type}_trusted"]
+                );
                 // give it another try, now that the resource is registered properly
                 return self::load($smarty, $type);
             }
@@ -218,7 +221,7 @@ abstract class Smarty_Resource
         if ($obj->_objType == 2 && $_file_is_dotted &&
             ($obj->source->type == 'file' || $obj->parent->source->type == 'extends')
         ) {
-             $name = $smarty->_realpath(dirname((string) $obj->parent->source->filepath) . DS . $name);
+            $name = $smarty->_realpath(dirname((string) $obj->parent->source->filepath) . DS . $name);
         }
         return $resource->buildUniqueResourceName($smarty, $name);
     }
@@ -245,10 +248,11 @@ abstract class Smarty_Resource
      *
      * @return Smarty_Template_Source   Source Object
      */
-    public static function source(Smarty_Internal_Template $_template = null, Smarty $smarty = null,
-                                  $template_resource = null)
-    {
+    public static function source(
+        Smarty_Internal_Template $_template = null,
+        Smarty $smarty = null,
+        $template_resource = null
+    ) {
         return Smarty_Template_Source::load($_template, $smarty, $template_resource);
     }
 }
-

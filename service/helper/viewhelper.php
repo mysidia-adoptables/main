@@ -20,7 +20,6 @@ use Resource\Core\View;
  */
 class ViewHelper extends Helper
 {
-
     /**
      * The view property, it stores a reference to the calling View Object.
      * @access protected
@@ -127,10 +126,13 @@ class ViewHelper extends Helper
     public function getTheme()
     {
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->frame->getController() == "admincp") $theme = "acp";
-        else {
+        if ($mysidia->frame->getController() == "admincp") {
+            $theme = "acp";
+        } else {
             $theme = $mysidia->user->getTheme();
-            if (!$theme) $theme = $mysidia->settings->theme;
+            if (!$theme) {
+                $theme = $mysidia->settings->theme;
+            }
         }
         return $theme;
     }

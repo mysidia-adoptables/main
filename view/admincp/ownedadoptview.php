@@ -16,14 +16,13 @@ use Service\Helper\AdoptTableHelper;
 
 class OwnedadoptView extends View
 {
-
     public function index()
     {
         parent::index();
         $ownedAdopts = $this->getField("ownedAdopts");
         $document = $this->document;
 
-        $helper = new AdoptTableHelper;
+        $helper = new AdoptTableHelper();
         $ownedAdoptTable = new TableBuilder("ownedadopt");
         $ownedAdoptTable->setAlign(new Align("center", "middle"));
         $ownedAdoptTable->buildHeaders("ID", "Type", "Name", "Owner", "Gender", "Edit", "Delete");
@@ -32,7 +31,7 @@ class OwnedadoptView extends View
         $iterator = $ownedAdopts->iterator();
         while ($iterator->hasNext()) {
             $ownedAdopt = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($ownedAdopt->getID()));
             $cells->add(new TCell($ownedAdopt->getType()));
             $cells->add(new TCell($ownedAdopt->getName()));
@@ -59,7 +58,7 @@ class OwnedadoptView extends View
 
         $document->setTitle($this->lang->add_title);
         $document->addLangvar($this->lang->add);
-        $genders = new LinkedHashMap;
+        $genders = new LinkedHashMap();
         $genders->put(new MysString("female"), new MysString("f"));
         $genders->put(new MysString("male"), new MysString("m"));
 
@@ -82,11 +81,12 @@ class OwnedadoptView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $ownedAdopt = $this->getField("ownedAdopt");
-        if (!$ownedAdopt) $this->index();
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$ownedAdopt) {
+            $this->index();
+        } elseif (!$mysidia->input->post("submit")) {
             $document->setTitle("{$this->lang->edit_title} {$ownedAdopt->getName()}({$ownedAdopt->getType()}))");
             $document->addLangvar($this->lang->edit);
-            $genders = new LinkedHashMap;
+            $genders = new LinkedHashMap();
             $genders->put(new MysString("female"), new MysString("f"));
             $genders->put(new MysString("male"), new MysString("m"));
 
@@ -112,8 +112,9 @@ class OwnedadoptView extends View
     {
         $document = $this->document;
         $ownedAdopt = $this->getField("ownedAdopt");
-        if (!$ownedAdopt) $this->index();
-        else {
+        if (!$ownedAdopt) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
             header("Refresh:3; URL='../index'");

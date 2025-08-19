@@ -21,7 +21,6 @@ use Resource\Native\MysString;
  */
 final class OutputBuffer extends MysObject
 {
-
     /**
      * The contents property, stores the contents inside the Output buffer.
      * @access private
@@ -222,7 +221,7 @@ final class OutputBuffer extends MysObject
         $this->flush = null;
         $this->length = 0;
         $this->level = 0;
-        $this->status = new HashMap;
+        $this->status = new HashMap();
     }
 
     /**

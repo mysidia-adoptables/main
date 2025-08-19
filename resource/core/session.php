@@ -18,7 +18,6 @@ use Exception;
  */
 class Session extends Core
 {
-
     /**
      * The ssid property, which stores the current session id.
      * @access private
@@ -58,7 +57,9 @@ class Session extends Core
     {
         // Start our session
 
-        if (!isset($_SESSION)) session_start();
+        if (!isset($_SESSION)) {
+            session_start();
+        }
         $this->started = true;
 
         // Initiate our session properties
@@ -70,33 +71,48 @@ class Session extends Core
 
     public function getid()
     {
-        if (empty($this->ssid)) $this->error("Session already expired...");
-        else return $this->ssid;
+        if (empty($this->ssid)) {
+            $this->error("Session already expired...");
+        } else {
+            return $this->ssid;
+        }
     }
 
     private function exist($name)
     {
-        if (!empty($_SESSION[$name])) return true;
-        else return false;
+        if (!empty($_SESSION[$name])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function fetch($name)
     {
-        if ($this->exist($name)) return $_SESSION[$name];
-        else return false;
+        if ($this->exist($name)) {
+            return $_SESSION[$name];
+        } else {
+            return false;
+        }
     }
 
     public function assign($name, $value, $override = true, $encrypt = false)
     {
         $value = ($encrypt == true) ? hash('sha512', (string) $value) : $value;
-        if (!empty($_SESSION[$name]) and $override == false) $this->error("Cannot override session var {$name}.");
-        else $_SESSION[$name] = $value;
+        if (!empty($_SESSION[$name]) and $override == false) {
+            $this->error("Cannot override session var {$name}.");
+        } else {
+            $_SESSION[$name] = $value;
+        }
     }
 
     public function terminate($name)
     {
-        if (!isset($_SESSION[$name])) return false;
-        else unset($_SESSION[$name]);
+        if (!isset($_SESSION[$name])) {
+            return false;
+        } else {
+            unset($_SESSION[$name]);
+        }
     }
 
     public function regen($name)
@@ -112,7 +128,9 @@ class Session extends Core
             $this->error("User IP has changed...");
         } elseif (!isset($_SESSION[$name])) {
             $this->error("Session already expired...");
-        } else return true;
+        } else {
+            return true;
+        }
     }
 
     public function destroy()

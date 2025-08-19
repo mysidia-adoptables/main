@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class ValueSet extends ValueMapSet
 {
-
     /**
      * Constructor of ValueSet Class, it simply calls parent constructor.
      * @param HashMap $map

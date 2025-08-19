@@ -7,7 +7,6 @@ use Resource\GUI\Component\Link;
 
 class OnlineView extends View
 {
-
     public function index()
     {
         $document = $this->document;

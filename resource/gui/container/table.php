@@ -20,7 +20,6 @@ use Resource\GUI\GUIException;
  */
 class Table extends TableContainer
 {
-
     /**
      * The bordered property, defines if the table comes with a border
      * @access protected
@@ -76,7 +75,9 @@ class Table extends TableContainer
     public function __construct($name = "", $width = "", $bordered = true, $event = "", $components = "")
     {
         parent::__construct($name, $width, $event, $components);
-        if ($bordered) $this->setBordered(true);
+        if ($bordered) {
+            $this->setBordered(true);
+        }
     }
 
     /**
@@ -141,8 +142,11 @@ class Table extends TableContainer
      */
     public function setSpacing($spacing)
     {
-        if (is_numeric($spacing)) $this->spacing = "{$spacing}px";
-        else $this->spacing = $spacing;
+        if (is_numeric($spacing)) {
+            $this->spacing = "{$spacing}px";
+        } else {
+            $this->spacing = $spacing;
+        }
         $this->setTableAttributes("Spacing");
     }
 
@@ -222,14 +226,23 @@ class Table extends TableContainer
      */
     public function fill($rows, $cells = "", $index = -1)
     {
-        if ($index != -1) $this->currentIndex = $index;
-        elseif (!is_array($rows)) throw new GUIException("Cannot fill table rows/cells into this table.");
+        if ($index != -1) {
+            $this->currentIndex = $index;
+        } elseif (!is_array($rows)) {
+            throw new GUIException("Cannot fill table rows/cells into this table.");
+        }
 
         for ($i = 0; $i < count($rows); $i++) {
-            if (!($rows[$i] instanceof TRow)) throw new GUIException("The supplied row is not an instance of TableRow.");
-            if ($cells) $rows[$i]->fill($cells[$i]);
+            if (!($rows[$i] instanceof TRow)) {
+                throw new GUIException("The supplied row is not an instance of TableRow.");
+            }
+            if ($cells) {
+                $rows[$i]->fill($cells[$i]);
+            }
             $this->add($rows[$i], $index);
-            if ($index != -1) $index++;
+            if ($index != -1) {
+                $index++;
+            }
         }
     }
 

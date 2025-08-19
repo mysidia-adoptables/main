@@ -19,7 +19,6 @@ use Resource\Exception\NosuchElementException;
  */
 class DescendingQueueIterator extends DequeIterator
 {
-
     /**
      * Constructor of DescendingQueueIterator Class, initializes basic properties for the iterator.
      * @param Dequeable $deque
@@ -50,7 +49,9 @@ class DescendingQueueIterator extends DequeIterator
      */
     public function next()
     {
-        if (!$this->hasNext()) throw new NosuchElementException;
+        if (!$this->hasNext()) {
+            throw new NosuchElementException();
+        }
         $array = $this->queue->getArray();
         $this->cursor = ($this->cursor - 1) & ($array->length() - 1);
         $object = $array[$this->cursor];
@@ -65,7 +66,9 @@ class DescendingQueueIterator extends DequeIterator
      */
     public function remove()
     {
-        if ($this->last < 0) throw new IllegalStateException;
+        if ($this->last < 0) {
+            throw new IllegalStateException();
+        }
         $array = $this->queue->getArray();
         if (!$this->queue->delete($this->last)) {
             $this->cursor = ($this->cursor + 1) & ($array->length() - 1);

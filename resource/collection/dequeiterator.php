@@ -19,7 +19,6 @@ use Resource\Exception\NosuchElementException;
  */
 class DequeIterator extends QueueIterator
 {
-
     /**
      * The fence property, it defines the tail recorded at iterator construction.
      * @access protected
@@ -65,7 +64,9 @@ class DequeIterator extends QueueIterator
      */
     public function next()
     {
-        if (!$this->hasNext()) throw new NosuchElementException;
+        if (!$this->hasNext()) {
+            throw new NosuchElementException();
+        }
         $array = $this->queue->getArray();
         $object = $array[$this->cursor];
         $this->last = $this->cursor;
@@ -80,7 +81,9 @@ class DequeIterator extends QueueIterator
      */
     public function remove()
     {
-        if ($this->last < 0) throw new IllegalStateException;
+        if ($this->last < 0) {
+            throw new IllegalStateException();
+        }
         $array = $this->queue->getArray();
         if ($this->queue->delete($this->last)) {
             $this->cursor = ($this->cursor - 1) & ($array->length() - 1);

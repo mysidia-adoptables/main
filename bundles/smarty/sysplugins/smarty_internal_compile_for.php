@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile For
  * Compiles the {for} {forelse} {/for} tags
@@ -34,7 +35,7 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
      */
     public function compile($args, $compiler, $parameter)
     {
-        $compiler->loopNesting ++;
+        $compiler->loopNesting++;
         if ($parameter == 0) {
             $this->required_attributes = ['start', 'to'];
             $this->optional_attributes = ['max', 'step'];
@@ -150,7 +151,7 @@ class Smarty_Internal_Compile_Forclose extends Smarty_Internal_CompileBase
      */
     public function compile($args, $compiler, $parameter)
     {
-        $compiler->loopNesting --;
+        $compiler->loopNesting--;
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         // must endblock be nocache?

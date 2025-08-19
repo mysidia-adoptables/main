@@ -10,7 +10,6 @@
  **/
 class Smarty_Internal_Runtime_Inheritance
 {
-
     /**
      * State machine
      * - 0 idle next extends will create a new inheritance tree
@@ -75,7 +74,7 @@ class Smarty_Internal_Runtime_Inheritance
             $tpl->inheritance->init($tpl, $initChild, $blockNames);
             return;
         }
-        $this->tplIndex ++;
+        $this->tplIndex++;
         $this->sources[ $this->tplIndex ] = $tpl->source;
 
         // start of child sub template(s)
@@ -85,7 +84,7 @@ class Smarty_Internal_Runtime_Inheritance
                 //grab any output of child templates
                 ob_start();
             }
-            $this->inheritanceLevel ++;
+            $this->inheritanceLevel++;
             //           $tpl->startRenderCallbacks[ 'inheritance' ] = array($this, 'subTemplateStart');
             //           $tpl->endRenderCallbacks[ 'inheritance' ] = array($this, 'subTemplateEnd');
         }
@@ -102,7 +101,7 @@ class Smarty_Internal_Runtime_Inheritance
      */
     public function endChild()
     {
-        $this->inheritanceLevel --;
+        $this->inheritanceLevel--;
         if (!$this->inheritanceLevel) {
             ob_end_clean();
             $this->state = 2;
@@ -145,9 +144,11 @@ class Smarty_Internal_Runtime_Inheritance
      *
      * @throws \SmartyException
      */
-    public function process(Smarty_Internal_Template $tpl, Smarty_Internal_Block $block,
-                            Smarty_Internal_Block $parent = null)
-    {
+    public function process(
+        Smarty_Internal_Template $tpl,
+        Smarty_Internal_Block $block,
+        Smarty_Internal_Block $parent = null
+    ) {
         if ($block->hide && !isset($block->child)) {
             return;
         }

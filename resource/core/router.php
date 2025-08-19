@@ -19,7 +19,6 @@ use ReflectionClass;
  */
 final class Router extends Core
 {
-
     /**
      * The path property, specifies the path of the route.
      * @access private
@@ -162,8 +161,12 @@ final class Router extends Core
         try {
             $query = explode("/", $this->url);
             array_shift($query);
-            if ($this->frontController != "Main") array_shift($query);
-            if ($this->hasPage($query)) $this->setPage(array_pop($query));
+            if ($this->frontController != "Main") {
+                array_shift($query);
+            }
+            if ($this->hasPage($query)) {
+                $this->setPage(array_pop($query));
+            }
             $this->setAppController(array_shift($query));
             $this->setAction(array_shift($query));
             $this->setParams($query);
@@ -220,7 +223,9 @@ final class Router extends Core
         if (str_contains($action ?? '', "page-")) {
             $this->action = "index";
             $this->setPage($action);
-        } else $this->action = $action ?: "index";
+        } else {
+            $this->action = $action ?: "index";
+        }
     }
 
     /**
@@ -232,17 +237,24 @@ final class Router extends Core
      */
     private function setParams($params)
     {
-        if (!$this->action || !$params) return;
+        if (!$this->action || !$params) {
+            return;
+        }
         $className = "\\Controller\\{$this->frontController}\\{$this->appController}Controller";
         $class = new ReflectionClass($className);
         $parameters = $class->getMethod($this->action)->getParameters();
-        if (!$params) return;
-        $this->params = new ArrayObject;
+        if (!$params) {
+            return;
+        }
+        $this->params = new ArrayObject();
         $index = 0;
         foreach ($parameters as $parameter) {
             $param = $params[$index] ?? null;
-            if (str_contains((string)$param, "page-")) $this->setPage($param);
-            else $this->params[$parameter->getName()] = $param;
+            if (str_contains((string)$param, "page-")) {
+                $this->setPage($param);
+            } else {
+                $this->params[$parameter->getName()] = $param;
+            }
             $index++;
         }
     }

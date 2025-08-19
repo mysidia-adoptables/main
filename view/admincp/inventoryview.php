@@ -16,14 +16,13 @@ use Service\Helper\TableHelper;
 
 class InventoryView extends View
 {
-
     public function index()
     {
         parent::index();
         $ownedItems = $this->getField("ownedItems");
         $document = $this->document;
 
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $inventoryTable = new TableBuilder("inventory");
         $inventoryTable->setAlign(new Align("center", "middle"));
         $inventoryTable->buildHeaders("ID", "Item", "Owner", "Quantity", "Edit", "Delete");
@@ -32,7 +31,7 @@ class InventoryView extends View
         $iterator = $ownedItems->iterator();
         while ($iterator->hasNext()) {
             $ownedItems = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($ownedItems->getInventoryID()));
             $cells->add(new TCell($ownedItems->getItemname()));
             $cells->add(new TCell($ownedItems->getOwnerName()));
@@ -80,8 +79,9 @@ class InventoryView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $ownedItem = $this->getField("ownedItem");
-        if (!$ownedItem) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$ownedItem) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
@@ -108,8 +108,9 @@ class InventoryView extends View
     {
         $document = $this->document;
         $ownedItem = $this->getField("ownedItem");
-        if (!$ownedItem) $this->index();
-        else {
+        if (!$ownedItem) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

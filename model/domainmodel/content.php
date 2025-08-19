@@ -10,8 +10,7 @@ use Resource\Utility\Date;
 
 class Content extends Model
 {
-
-    const IDKEY = "cid";
+    public const IDKEY = "cid";
     protected $cid;
     protected $page;
     protected $title;
@@ -26,11 +25,15 @@ class Content extends Model
     public function __construct($contentinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($contentinfo instanceof MysString) $contentinfo = $contentinfo->getValue();
+        if ($contentinfo instanceof MysString) {
+            $contentinfo = $contentinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($contentinfo) ? "cid = :contentinfo" : "page = :contentinfo";
             $dto = $mysidia->db->select("content", [], $whereClause, ["contentinfo" => $contentinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Custom Page {$contentinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Custom Page {$contentinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -39,7 +42,9 @@ class Content extends Model
     {
         parent::createFromDTO($dto);
         $this->date = new Date($dto->date);
-        if ($this->time) $this->time = new Date($this->time);
+        if ($this->time) {
+            $this->time = new Date($this->time);
+        }
     }
 
     public function getPage()
@@ -69,26 +74,37 @@ class Content extends Model
 
     public function getCode($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Promocode($this->code);
-        else return $this->code;
+        if ($fetchMode == Model::MODEL) {
+            return new Promocode($this->code);
+        } else {
+            return $this->code;
+        }
     }
 
     public function getItem($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Item($this->item);
-        else return $this->item;
+        if ($fetchMode == Model::MODEL) {
+            return new Item($this->item);
+        } else {
+            return $this->item;
+        }
     }
 
     public function getTime($format = null)
     {
-        if (!$this->time) return null;
+        if (!$this->time) {
+            return null;
+        }
         return $format ? $this->time->format($format) : $this->time;
     }
 
     public function getGroup($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Usergroup($this->group);
-        else return $this->group;
+        if ($fetchMode == Model::MODEL) {
+            return new Usergroup($this->group);
+        } else {
+            return $this->group;
+        }
     }
 
     public function hasDisplayConditions()

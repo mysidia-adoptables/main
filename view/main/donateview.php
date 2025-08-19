@@ -11,7 +11,6 @@ use Service\Builder\FormBuilder;
 
 class DonateView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");

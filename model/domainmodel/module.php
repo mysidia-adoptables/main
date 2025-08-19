@@ -12,8 +12,7 @@ use Resource\Utility\Comparable;
 
 class Module extends Model implements Comparable
 {
-
-    const IDKEY = "moid";
+    public const IDKEY = "moid";
     protected $moid;
     protected $widget;
     protected $name;
@@ -27,19 +26,26 @@ class Module extends Model implements Comparable
     public function __construct($moduleinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($moduleinfo instanceof MysString) $moduleinfo = $moduleinfo->getValue();
+        if ($moduleinfo instanceof MysString) {
+            $moduleinfo = $moduleinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($moduleinfo) ? "moid = :moduleinfo" : "name = :moduleinfo";
             $dto = $mysidia->db->select("modules", [], $whereClause, ["moduleinfo" => $moduleinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Module {$moduleinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Module {$moduleinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
 
     public function getWidget($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Widget($this->widget);
-        else return $this->widget;
+        if ($fetchMode == Model::MODEL) {
+            return new Widget($this->widget);
+        } else {
+            return $this->widget;
+        }
     }
 
     public function getWidgetName()
@@ -84,7 +90,9 @@ class Module extends Model implements Comparable
 
     public function compareTo(Objective $object)
     {
-        if (!($object instanceof Module)) throw new UnsupportedOperationException("Modules can only be compared with another module.");
+        if (!($object instanceof Module)) {
+            throw new UnsupportedOperationException("Modules can only be compared with another module.");
+        }
         return $this->order - $object->getOrder();
     }
 

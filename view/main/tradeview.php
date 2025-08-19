@@ -22,7 +22,6 @@ use Service\Helper\TradeFormHelper;
 
 class TradeView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -84,8 +83,12 @@ class TradeView extends View
 
         $publicTrade = (string)$this->getField("publicTrade");
         $partialTrade = (string)$this->getField("partialTrade");
-        if ($publicTrade == "enabled" && !$recipient) $tradeForm->add($tradeHelper->getPublicOffer($recipient));
-        if ($partialTrade == "enabled") $tradeForm->add($tradeHelper->getPartialOffer($recipient));
+        if ($publicTrade == "enabled" && !$recipient) {
+            $tradeForm->add($tradeHelper->getPublicOffer($recipient));
+        }
+        if ($partialTrade == "enabled") {
+            $tradeForm->add($tradeHelper->getPartialOffer($recipient));
+        }
         $tradeForm->add(new Button("Submit Trade Offer!", "submit", "submit"));
         $document->add($tradeForm);
     }
@@ -140,7 +143,7 @@ class TradeView extends View
         $iterator = $offers->iterator();
         while ($iterator->hasNext()) {
             $offer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($offer->getID()));
             $cells->add(new TCell($offer->getSender(Model::MODEL)->getUsername()));
             $cells->add(new TCell($tradeHelper->getAdoptImages($offer->getAdoptOffered())));
@@ -202,7 +205,7 @@ class TradeView extends View
         $iterator = $offers->iterator();
         while ($iterator->hasNext()) {
             $offer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($offer->getID()));
             $cells->add(new TCell($offer->getRecipientName()));
             $cells->add(new TCell($tradeHelper->getAdoptImages($offer->getAdoptOffered())));
@@ -246,7 +249,7 @@ class TradeView extends View
             $tradeForm->add(new Comment($this->lang->message));
             $tradeForm->add(new TextArea("message", "Enter your reply message here, make sure it is brief. "));
             $tradeForm->add(new CheckBox("Decline this trade offer?", "decline", "yes"));
-            $tradeForm->add(new Comment);
+            $tradeForm->add(new Comment());
             $tradeForm->add(new CheckBox("This is a partial trade offer", "partial", "yes", "yes"));
             $tradeForm->add(new PasswordField("hidden", "sender", $offer->getRecipient()));
             $tradeForm->add(new PasswordField("hidden", "recipient", $offer->getSender()));
@@ -268,7 +271,7 @@ class TradeView extends View
         $iterator = $offers->iterator();
         while ($iterator->hasNext()) {
             $offer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($offer->getID()));
             $cells->add(new TCell($offer->getSenderName()));
             $cells->add(new TCell($tradeHelper->getAdoptImages($offer->getAdoptOffered())));

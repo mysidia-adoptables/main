@@ -7,7 +7,6 @@ use Resource\Exception\NoPermissionException;
 
 class Adoptshop extends Shop
 {
-
     protected $adopts;
 
     public function __construct($shopinfo, $dto = null, $loadAdopts = false)
@@ -41,7 +40,9 @@ class Adoptshop extends Shop
     {
         $mysidia = Registry::get("mysidia");
         $adopt = new Adoptable($adoptinfo);
-        if ($adopt->getShop() != $this->sid) throw new NoPermissionException("shop_belong");
+        if ($adopt->getShop() != $this->sid) {
+            throw new NoPermissionException("shop_belong");
+        }
         $totalcost = $this->getTotalCost($adopt);
         $mysidia->user->payMoney($totalcost);
         $adopt->makeOwnedAdopt($mysidia->user->getID());

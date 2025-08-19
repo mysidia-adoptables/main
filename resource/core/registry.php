@@ -23,7 +23,6 @@ use Resource\Native\Objective;
  */
 class Registry extends MysObject
 {
-
     /**
      * The core property, specfies core objects that cannot be removed from registry by client users.
      * @access protected
@@ -55,7 +54,7 @@ class Registry extends MysObject
     protected function __construct()
     {
         $this->core = new ArrayList(16);
-        $this->objects = new HashMap;
+        $this->objects = new HashMap();
     }
 
     /**
@@ -101,9 +100,11 @@ class Registry extends MysObject
     {
         $num = func_num_args();
         $keys = func_get_args();
-        if ($num == 0) return $this->objects;
+        if ($num == 0) {
+            return $this->objects;
+        }
 
-        $objects = new HashMap;
+        $objects = new HashMap();
         foreach ($keys as $key) {
             $objects->put(new MysString($key), self::get($key));
         }
@@ -120,7 +121,9 @@ class Registry extends MysObject
     public static function get($key)
     {
         $key = new MysString($key);
-        if (!self::contains($key)) throw new Exception("Cannot retrieve registered object");
+        if (!self::contains($key)) {
+            throw new Exception("Cannot retrieve registered object");
+        }
         return self::$instance->getObjects()->get($key);
     }
 
@@ -153,7 +156,9 @@ class Registry extends MysObject
      */
     public static function getInstance()
     {
-        if (!self::$instance) self::$instance = new static;
+        if (!self::$instance) {
+            self::$instance = new static();
+        }
         return self::$instance;
     }
 
@@ -194,7 +199,9 @@ class Registry extends MysObject
      */
     public static function remove(Objective $key)
     {
-        if (self::$instance->getCore()->contains($key)) throw new Exception("Cannot remove core objects from Registry!");
+        if (self::$instance->getCore()->contains($key)) {
+            throw new Exception("Cannot remove core objects from Registry!");
+        }
         self::$instance->getObjects()->remove($key);
     }
 
@@ -211,9 +218,16 @@ class Registry extends MysObject
      */
     public static function set($key, Objective $object, $overwrite = true, $lock = false)
     {
-        if (!($key instanceof MysString)) $key = new MysString($key);
-        if ($lock) self::$instance->lock($key);
-        if (!$overwrite && self::contains($key)) throw new Exception("Cannot overwrite registered object");
-        else self::$instance->getObjects()->put($key, $object);
+        if (!($key instanceof MysString)) {
+            $key = new MysString($key);
+        }
+        if ($lock) {
+            self::$instance->lock($key);
+        }
+        if (!$overwrite && self::contains($key)) {
+            throw new Exception("Cannot overwrite registered object");
+        } else {
+            self::$instance->getObjects()->put($key, $object);
+        }
     }
 }

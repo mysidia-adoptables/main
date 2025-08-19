@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_Switch
 {
-
     /**
      * @param string $tag Tag name to switch upon
      * @param HTMLPurifier_AttrDef $withTag Call if token matches tag

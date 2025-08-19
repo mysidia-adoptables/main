@@ -109,7 +109,7 @@ $query18 = "INSERT INTO {$prefix}breeding_settings (bsid, name, value) VALUES (1
 $adopts->query($query18);
 
 
-$today = new DateTime;
+$today = new DateTime();
 $query19 = "CREATE TABLE {$prefix}content (cid int NOT null AUTO_INCREMENT PRIMARY KEY, page varchar(20), title varchar(75), date varchar(15), content varchar(15000), level varchar(50), code varchar(128), item int DEFAULT 0, time varchar(20), `group` int DEFAULT 0)";
 $adopts->query($query19);
 

@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 abstract class Set extends Collection implements Settable
 {
-
     /**
      * The equals method, evaluates if the given set is equivalent to the set.
      * This implementation is different from a typical equals method for objects.
@@ -29,9 +28,15 @@ abstract class Set extends Collection implements Settable
      */
     public function equals(Objective $object)
     {
-        if ($object === $this) return true;
-        if (!($object instanceof Set)) return false;
-        if ($this->size() != $object->size()) return false;
+        if ($object === $this) {
+            return true;
+        }
+        if (!($object instanceof Set)) {
+            return false;
+        }
+        if ($this->size() != $object->size()) {
+            return false;
+        }
         return $this->containsAll($object);
     }
 
@@ -46,7 +51,9 @@ abstract class Set extends Collection implements Settable
         $iterator = $this->iterator;
         while ($iterator->hasNext()) {
             $object = $iterator->next();
-            if ($object != null) $hash += $object->hashCode();
+            if ($object != null) {
+                $hash += $object->hashCode();
+            }
         }
         return $hash;
     }

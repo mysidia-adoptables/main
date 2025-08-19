@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Template
  * This file contains the Smarty template engine
@@ -110,9 +111,14 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
     public function __construct(/**
      * Template resource
      */
-        public $template_resource, Smarty $smarty, Smarty_Internal_Data $_parent = null,
-               $_cache_id = null, $_compile_id = null, $_caching = null, $_cache_lifetime = null)
-    {
+        public $template_resource,
+        Smarty $smarty,
+        Smarty_Internal_Data $_parent = null,
+        $_cache_id = null,
+        $_compile_id = null,
+        $_caching = null,
+        $_cache_lifetime = null
+    ) {
         $this->smarty = $smarty;
         // Smarty parameter
         $this->cache_id = $_cache_id ?? $this->smarty->cache_id;
@@ -145,9 +151,18 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
      * @param string $content_func function name
      *
      */
-    public function _subTemplateRender($template, $cache_id, $compile_id, $caching, $cache_lifetime, $data, $scope,
-                                       $forceTplCache, $uid = null, $content_func = null)
-    {
+    public function _subTemplateRender(
+        $template,
+        $cache_id,
+        $compile_id,
+        $caching,
+        $cache_lifetime,
+        $data,
+        $scope,
+        $forceTplCache,
+        $uid = null,
+        $content_func = null
+    ) {
         $tpl = clone $this;
         $tpl->parent = $this;
         $smarty = &$this->smarty;
@@ -329,8 +344,11 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
         // display or fetch
         if ($display) {
             if ($this->caching && $this->smarty->cache_modified_check) {
-                $this->smarty->ext->_cacheModify->cacheModifiedCheck($this->cached, $this,
-                    $content ?? ob_get_clean());
+                $this->smarty->ext->_cacheModify->cacheModifiedCheck(
+                    $this->cached,
+                    $this,
+                    $content ?? ob_get_clean()
+                );
             } else {
                 if ((!$this->caching || $this->cached->has_nocache_code || $this->source->handler->recompiled) &&
                     !$no_output_filter && (isset($this->smarty->autoload_filters['output']) ||
@@ -638,8 +656,11 @@ class Smarty_Internal_Template extends Smarty_Internal_TemplateBase
             $this->smarty->loadPlugin($this->source->compiler_class);
         }
         $this->compiler =
-            new $this->source->compiler_class($this->source->template_lexer_class, $this->source->template_parser_class,
-                $this->smarty);
+            new $this->source->compiler_class(
+                $this->source->template_lexer_class,
+                $this->source->template_parser_class,
+                $this->smarty
+            );
     }
 
     /**

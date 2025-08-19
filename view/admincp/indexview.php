@@ -8,7 +8,6 @@ use Service\Builder\FormBuilder;
 
 class IndexView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");

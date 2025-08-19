@@ -15,7 +15,6 @@ use Resource\Utility\Date;
 
 class ContentController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -30,10 +29,12 @@ class ContentController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("content")->rowCount();
-        if ($total == 0) throw new InvalidIDException("default_none");
+        if ($total == 0) {
+            throw new InvalidIDException("default_none");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/content", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("content", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $contents = new ArrayList;
+        $contents = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $contents->add(new Content($dto->cid, $dto));
         }
@@ -45,10 +46,12 @@ class ContentController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
-            if (!$mysidia->input->post("page")) throw new BlankFieldException("url");
+            if (!$mysidia->input->post("page")) {
+                throw new BlankFieldException("url");
+            }
             $this->dataValidate();
             $contentText = ($mysidia->user->getUsergroup() == 1) ? $mysidia->input->rawPost("content") : $mysidia->format($mysidia->input->rawPost("content"));
-            $date = new Date;
+            $date = new Date();
             $mysidia->db->insert("content", ["cid" => null, "page" => $mysidia->input->post("page"), "title" => $mysidia->input->post("title"), "date" => $date->format('Y-m-d'), "content" => $contentText,
                 "level" => null, "code" => $mysidia->input->post("promocode"), "item" => (int)$mysidia->input->post("item"), "time" => $mysidia->input->post("time"), "group" => (int)$mysidia->input->post("group")]);
         }
@@ -57,7 +60,9 @@ class ContentController extends AppController
     public function edit($cid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$cid) return $this->index();
+        if (!$cid) {
+            return $this->index();
+        }
         try {
             $content = new Content($cid);
             if ($mysidia->input->post("submit")) {
@@ -75,10 +80,13 @@ class ContentController extends AppController
     public function delete($cid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$cid) $this->index();
-        else {
+        if (!$cid) {
+            $this->index();
+        } else {
             $content = new Content($cid);
-            if ($content->getPage() == "index" || $content->getPage() == "tos") throw new InvalidIDException("special");
+            if ($content->getPage() == "index" || $content->getPage() == "tos") {
+                throw new InvalidIDException("special");
+            }
             $mysidia->db->delete("content", "cid = '{$content->getID()}'");
         }
         $this->setField("content", $cid ? $content : null);
@@ -87,7 +95,11 @@ class ContentController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("title")) throw new BlankFieldException("title");
-        if (!$mysidia->input->post("content")) throw new BlankFieldException("content");
+        if (!$mysidia->input->post("title")) {
+            throw new BlankFieldException("title");
+        }
+        if (!$mysidia->input->post("content")) {
+            throw new BlankFieldException("content");
+        }
     }
 }

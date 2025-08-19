@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -97,7 +98,7 @@ function smarty_function_cycle($params, $template)
         if ($cycle_vars[ $name ][ 'index' ] >= count($cycle_array) - 1) {
             $cycle_vars[ $name ][ 'index' ] = 0;
         } else {
-            $cycle_vars[ $name ][ 'index' ] ++;
+            $cycle_vars[ $name ][ 'index' ]++;
         }
     }
 

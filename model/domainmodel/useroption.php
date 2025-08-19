@@ -7,8 +7,7 @@ use Resource\Core\Registry;
 
 class UserOption extends Model
 {
-
-    const IDKEY = "uid";
+    public const IDKEY = "uid";
     protected $uid;
     protected $newmessagenotify;
     protected $pmstatus;
@@ -25,7 +24,9 @@ class UserOption extends Model
             $prefix = constant("PREFIX");
             $dto = $mysidia->db->join("users", "users.uid = users_options.uid")
                 ->select("users_options", [], "{$prefix}users.uid = :uid", ["uid" => $uid])->fetchObject();
-            if (!is_object($dto)) throw new MemberNotfoundException("The specified user option {$uid} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user option {$uid} does not exist...");
+            }
         }
         parent::__construct($dto);
         $this->user = $user ?: new Member($uid, $dto);
@@ -53,13 +54,17 @@ class UserOption extends Model
 
     public function getTheme($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Theme($this->theme);
+        if ($fetchMode == Model::MODEL) {
+            return new Theme($this->theme);
+        }
         return $this->theme;
     }
 
     public function setTheme($theme, $assignMode = "")
     {
-        if ($assignMode == Model::UPDATE) $this->save("theme", $theme);
+        if ($assignMode == Model::UPDATE) {
+            $this->save("theme", $theme);
+        }
         $this->theme = $theme;
     }
 

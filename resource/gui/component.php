@@ -21,7 +21,6 @@ use Resource\GUI\Element;
  */
 abstract class Component extends GUI implements Renderable
 {
-
     /**
      * The name property, specifies the name of this component.
      * @access protected
@@ -236,7 +235,9 @@ abstract class Component extends GUI implements Renderable
      */
     protected function setCSS($css)
     {
-        if (!$this->css) $this->css = new ArrayObject;
+        if (!$this->css) {
+            $this->css = new ArrayObject();
+        }
         $this->css->offsetSet($css, true);
     }
 
@@ -292,8 +293,11 @@ abstract class Component extends GUI implements Renderable
     {
         $container = $this->container;
         while ($container) {
-            if ($container instanceof Form) return $container;
-            else $container = $container->container;
+            if ($container instanceof Form) {
+                return $container;
+            } else {
+                $container = $container->container;
+            }
         }
         return false;
     }
@@ -308,8 +312,11 @@ abstract class Component extends GUI implements Renderable
     {
         $container = $this->container;
         while ($container) {
-            if ($container instanceof Table) return $container;
-            else $container = $container->container;
+            if ($container instanceof Table) {
+                return $container;
+            } else {
+                $container = $container->container;
+            }
         }
         return false;
     }
@@ -322,7 +329,9 @@ abstract class Component extends GUI implements Renderable
      */
     public function render()
     {
-        if ($this->css instanceof ArrayObject) $this->renderer->renderCSS();
+        if ($this->css instanceof ArrayObject) {
+            $this->renderer->renderCSS();
+        }
 
         if ($this->attributes instanceof ArrayObject) {
             foreach ($this->attributes as $attribute => $status) {

@@ -25,7 +25,6 @@ use Resource\Utility\URL;
  */
 class AdoptTableHelper extends TableHelper
 {
-
     /**
      * The getAdopt method, fetches the adoptable type.
      * @param Type $adopt
@@ -34,8 +33,11 @@ class AdoptTableHelper extends TableHelper
      */
     public function getAdopt($adopt)
     {
-        if (empty($adopt)) return "N/A";
-        else return $adopt;
+        if (empty($adopt)) {
+            return "N/A";
+        } else {
+            return $adopt;
+        }
     }
 
     /**
@@ -47,9 +49,13 @@ class AdoptTableHelper extends TableHelper
      */
     public function getAdoptImage($adopt, $level)
     {
-        if ($adopt->currentlevel == 0) $url = $adopt->eggimage;
-        elseif ($adopt->usealternates == 'yes') $url = $level->alternateimage;
-        else $url = $level->primaryimage;
+        if ($adopt->currentlevel == 0) {
+            $url = $adopt->eggimage;
+        } elseif ($adopt->usealternates == 'yes') {
+            $url = $level->alternateimage;
+        } else {
+            $url = $level->primaryimage;
+        }
 
         $image = new Image($url, $adopt->name);
         return new Link("myadopts/manage/{$adopt->aid}", $image);
@@ -75,7 +81,9 @@ class AdoptTableHelper extends TableHelper
      */
     public function getOwnerProfile($ownerID, $ownerName = null)
     {
-        if (!$ownerName) $ownerName = $ownerID;
+        if (!$ownerName) {
+            $ownerName = $ownerID;
+        }
         $url = new URL("profile/view/{$ownerID}");
         return new Link($url, $ownerName);
     }
@@ -114,7 +122,7 @@ class AdoptTableHelper extends TableHelper
         $nameField = new Comment($name);
         $nameField->setBold();
         $costField = new Comment("Cost: {$cost}", false);
-        $info = new ArrayList;
+        $info = new ArrayList();
         $info->add($nameField);
         $info->add($costField);
         return $info;
@@ -128,7 +136,7 @@ class AdoptTableHelper extends TableHelper
      */
     public function getAdditionalInfo($adopt)
     {
-        $info = new ArrayList;
+        $info = new ArrayList();
         $info->add(new Comment("level: {$adopt->getCurrentLevel()} "));
         $info->add(new Comment("Gender: ", false));
         $info->add($this->getGenderImage($adopt->getGender()));

@@ -2,7 +2,8 @@
 
 namespace Resource\Core;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 
 /**
  * The Language Class, it locates and stores lang vars to be used in document.
@@ -19,7 +20,6 @@ use ArrayObject, Exception;
  */
 final class Language extends Core implements Initializable
 {
-
     /**
      * The dir property, it stores a reference of the directory of lang file.
      * @access private
@@ -52,7 +52,7 @@ final class Language extends Core implements Initializable
      * The file property, it stores a copy of the lang file object for reference.
      * @access private
      */
-    private readonly File $file)
+        private readonly File $file)
     {
         $this->dir = $path->getRoot();
         $this->initialize();
@@ -65,9 +65,13 @@ final class Language extends Core implements Initializable
      */
     public function __get($property)
     {
-        if (str_contains((string) $property, 'global')) return $this->global->{$property};
-        elseif (isset($this->lang->{$property})) return $this->lang->{$property};
-        else throw new LanguageException("Language var {$property} does not exist.");
+        if (str_contains((string) $property, 'global')) {
+            return $this->global->{$property};
+        } elseif (isset($this->lang->{$property})) {
+            return $this->lang->{$property};
+        } else {
+            throw new LanguageException("Language var {$property} does not exist.");
+        }
     }
 
     /**
@@ -95,7 +99,9 @@ final class Language extends Core implements Initializable
 
         if ($langfile->isReadable()) {
             require $thislangfile;
-            if (!is_array($lang)) throw new Exception("Failed to load language vars in file {$langfile}.");
+            if (!is_array($lang)) {
+                throw new Exception("Failed to load language vars in file {$langfile}.");
+            }
             $this->lang = new ArrayObject($lang, ArrayObject::ARRAY_AS_PROPS);
         }
     }

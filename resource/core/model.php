@@ -19,41 +19,40 @@ use Resource\Native\MysObject;
  */
 abstract class Model extends MysObject
 {
-
     /**
      * OBJ constant, stores the fetch mode Object.
      */
-    const OBJ = "object";
+    public const OBJ = "object";
 
     /**
      * MODEL constant, stores the fetch mode Model.
      */
-    const MODEL = "model";
+    public const MODEL = "model";
 
     /**
      * GUI constant, stores the fetch mode GUI.
      */
-    const GUI = "gui";
+    public const GUI = "gui";
 
     /**
      * INSERT constant, defines the assign mode Insert.
      */
-    const INSERT = "insert";
+    public const INSERT = "insert";
 
     /**
      * UPDATE constant, defines the assign mode Update.
      */
-    const UPDATE = "update";
+    public const UPDATE = "update";
 
     /**
      * DELETE constant, defines the assign mode Delete.
      */
-    const DELETE = "delete";
+    public const DELETE = "delete";
 
     /**
      * IDNAME constant, defines the name of the model ID. By default, it is just id.
      */
-    const IDKEY = "id";
+    public const IDKEY = "id";
 
     /**
      * Constructor of Model Class, which simply serves as a marker for child classes.
@@ -63,7 +62,9 @@ abstract class Model extends MysObject
      */
     public function __construct($dto)
     {
-        if ($dto) $this->createFromDTO($dto);
+        if ($dto) {
+            $this->createFromDTO($dto);
+        }
     }
 
     /**
@@ -161,5 +162,5 @@ abstract class Model extends MysObject
      * @access protected
      * @abstract
      */
-    protected abstract function save($field, $value);
+    abstract protected function save($field, $value);
 }

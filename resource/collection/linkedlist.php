@@ -20,11 +20,10 @@ use Resource\Native\Objective;
  */
 class LinkedList extends SequentialList implements Dequeable, Stackable
 {
-
     /**
      * serialID constant, it serves as identifier of the object being LinkedList.
      */
-    const SERIALID = "876323262645176354L";
+    public const SERIALID = "876323262645176354L";
 
     /**
      * The first property, it stores a reference of the first node on this LinkedList.
@@ -55,7 +54,9 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
      */
     public function __construct($param = "")
     {
-        if ($param instanceof Collective) $this->addAll($param);
+        if ($param instanceof Collective) {
+            $this->addAll($param);
+        }
     }
 
     /**
@@ -229,7 +230,9 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
      */
     public function getFirst()
     {
-        if ($this->first == null) throw new NosuchElementException;
+        if ($this->first == null) {
+            throw new NosuchElementException();
+        }
         return $this->first->get();
     }
 
@@ -241,7 +244,9 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
      */
     public function getLast()
     {
-        if ($this->last == null) throw new NosuchElementException;
+        if ($this->last == null) {
+            throw new NosuchElementException();
+        }
         return $this->last->get();
     }
 
@@ -256,12 +261,16 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $index = 0;
         if ($object == null) {
             for ($node = $this->first; $node != null; $node = $node->getNext()) {
-                if ($node->get() == null) return $index;
+                if ($node->get() == null) {
+                    return $index;
+                }
                 $index++;
             }
         } else {
             for ($node = $this->first; $node != null; $node = $node->getNext()) {
-                if ($object->equals($node->get())) return $index;
+                if ($object->equals($node->get())) {
+                    return $index;
+                }
                 $index++;
             }
         }
@@ -278,8 +287,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
     public function insert($index, Objective $object)
     {
         $this->rangeCheck($index);
-        if ($index == $this->size) $this->linkLast($object);
-        else $this->linkBefore($object, $this->node($index));
+        if ($index == $this->size) {
+            $this->linkLast($object);
+        } else {
+            $this->linkBefore($object, $this->node($index));
+        }
     }
 
     /**
@@ -293,7 +305,9 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
     {
         $this->rangeCheck($index);
         $array = $collection->getArray();
-        if ($array->length() == 0) return false;
+        if ($array->length() == 0) {
+            return false;
+        }
 
         if ($index == $this->size) {
             $successor = null;
@@ -305,13 +319,17 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
 
         foreach ($array as $object) {
             $new = new Node($object, null, $predecessor);
-            if ($predecessor == null) $this->first = $new;
-            else $predecessor->setNext($new);
+            if ($predecessor == null) {
+                $this->first = $new;
+            } else {
+                $predecessor->setNext($new);
+            }
             $predecessor = $new;
         }
 
-        if ($successor == null) $this->last = $predecessor;
-        else {
+        if ($successor == null) {
+            $this->last = $predecessor;
+        } else {
             $predecessor->setNext($successor);
             $successor->setPrev($predecessor);
         }
@@ -331,12 +349,16 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         if ($object == null) {
             for ($node = $this->last; $node != null; $node = $node->getPrev()) {
                 $index--;
-                if ($node->get() == null) return $index;
+                if ($node->get() == null) {
+                    return $index;
+                }
             }
         } else {
             for ($node = $this->first; $node != null; $node = $node->getPrev()) {
                 $index--;
-                if ($object->equals($node->get())) return $index;
+                if ($object->equals($node->get())) {
+                    return $index;
+                }
             }
         }
         return -1;
@@ -354,8 +376,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $predecessor = $successor->getPrev();
         $new = new Node($object, $successor, $predecessor);
         $successor->setPrev($new);
-        if ($predecessor == null) $this->first = $new;
-        else $predecessor->setNext($new);
+        if ($predecessor == null) {
+            $this->first = $new;
+        } else {
+            $predecessor->setNext($new);
+        }
         $this->size++;
     }
 
@@ -370,8 +395,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $first = $this->first;
         $new = new Node($object, $first, null);
         $this->first = $new;
-        if ($first == null) $this->last = $new;
-        else $first->setPrev($new);
+        if ($first == null) {
+            $this->last = $new;
+        } else {
+            $first->setPrev($new);
+        }
         $this->size++;
     }
 
@@ -386,8 +414,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $last = $this->last;
         $new = new Node($object, null, $last);
         $this->last = $new;
-        if ($last == null) $this->first = $new;
-        else $last->setNext($new);
+        if ($last == null) {
+            $this->first = $new;
+        } else {
+            $last->setNext($new);
+        }
         $this->size++;
     }
 
@@ -622,7 +653,9 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
     public function search(Objective $object)
     {
         $index = $this->lastIndexOf($object);
-        if ($index > 0) return ($this->size - $index);
+        if ($index > 0) {
+            return ($this->size - $index);
+        }
         return $index;
     }
 
@@ -675,14 +708,16 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $next = $node->getNext();
         $prev = $node->getPrev();
 
-        if ($prev == null) $this->first = $next;
-        else {
+        if ($prev == null) {
+            $this->first = $next;
+        } else {
             $prev->setNext($next);
             $node->setPrev(null);
         }
 
-        if ($next == null) $this->last = $prev;
-        else {
+        if ($next == null) {
+            $this->last = $prev;
+        } else {
             $next->setPrev($prev);
             $node->setNext(null);
         }
@@ -705,8 +740,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $first->set(null);
         $first->setNext(null);
         $this->first = $next;
-        if ($next == null) $this->last = null;
-        else $next->setPrev(null);
+        if ($next == null) {
+            $this->last = null;
+        } else {
+            $next->setPrev(null);
+        }
         $this->size--;
         return $object;
     }
@@ -724,8 +762,11 @@ class LinkedList extends SequentialList implements Dequeable, Stackable
         $last->set(null);
         $last->setPrev(null);
         $this->last = $prev;
-        if ($prev == null) $this->first = null;
-        else $prev->setNext(null);
+        if ($prev == null) {
+            $this->first = null;
+        } else {
+            $prev->setNext(null);
+        }
         $this->size--;
         return $object;
     }

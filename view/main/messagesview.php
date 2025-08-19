@@ -21,7 +21,6 @@ use Service\Helper\MessageTableHelper;
 
 class MessagesView extends View
 {
-
     public function index()
     {
         $document = $this->document;
@@ -44,13 +43,13 @@ class MessagesView extends View
         $pmTable = new TableBuilder("pmtable", 650);
         $pmTable->setAlign(new Align("center"));
         $pmTable->buildHeaders("Message Title", "From User", "Date Received", "Status", "ReadPM", "Delete");
-        $helper = new MessageTableHelper;
+        $helper = new MessageTableHelper();
         $pmTable->setHelper($helper);
 
         $messageIterator = $messages->iterator();
         while ($messageIterator->hasNext()) {
             $message = $messageIterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($message->getTitle()));
             $cells->add(new TCell($helper->getProfile($message->getSenderName())));
             $cells->add(new TCell($message->getDateSent("Y-m-d")));
@@ -78,16 +77,20 @@ class MessagesView extends View
         if ($mysidia->input->post("submit")) {
             $draftStatus = (string)$this->getField("draftStatus");
             $document->setTitle($this->lang->sent_title);
-            if ($draftStatus == "draftnew") $document->addLangvar($this->lang->draft_sent);
-            elseif ($draftStatus == "draftedit") $document->addLangvar($this->lang->draft_edited);
-            else $document->addLangvar($this->lang->sent);
+            if ($draftStatus == "draftnew") {
+                $document->addLangvar($this->lang->draft_sent);
+            } elseif ($draftStatus == "draftedit") {
+                $document->addLangvar($this->lang->draft_edited);
+            } else {
+                $document->addLangvar($this->lang->sent);
+            }
             return;
         }
 
         $document->setTitle($this->lang->send_title);
         $document->addLangvar($this->lang->send);
         $recipient = $this->getField("recipient");
-        $editor = new CKEditorBuilder;
+        $editor = new CKEditorBuilder();
         $pmForm = new Form("pmform", "", "post");
         $pmForm->add(new Comment("Message Recipient: ", false));
         $pmForm->add(new TextField("recipient", $recipient ? $recipient->getUsername() : "", 50));
@@ -124,13 +127,13 @@ class MessagesView extends View
         $pmTable = new TableBuilder("pmtable", 650);
         $pmTable->setAlign(new Align("center"));
         $pmTable->buildHeaders("Message Title", "To User", "Date Sent", "ReadPM", "Delete");
-        $helper = new MessageTableHelper;
+        $helper = new MessageTableHelper();
         $pmTable->setHelper($helper);
 
         $messageIterator = $messages->iterator();
         while ($messageIterator->hasNext()) {
             $message = $messageIterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($message->getTitle()));
             $cells->add(new TCell($helper->getProfile($message->getRecipientName())));
             $cells->add(new TCell($message->getDateSent("Y-m-d")));
@@ -168,13 +171,13 @@ class MessagesView extends View
         $pmTable = new TableBuilder("pmtable", 650);
         $pmTable->setAlign(new Align("center"));
         $pmTable->buildHeaders("Message Title", "To User", "Date Created", "Edit", "Delete");
-        $helper = new MessageTableHelper;
+        $helper = new MessageTableHelper();
         $pmTable->setHelper($helper);
 
         $messageIterator = $messages->iterator();
         while ($messageIterator->hasNext()) {
             $message = $messageIterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($message->getTitle()));
             $cells->add(new TCell($helper->getProfile($message->getRecipientName())));
             $cells->add(new TCell($message->getDateSent("Y-m-d")));
@@ -194,7 +197,7 @@ class MessagesView extends View
         $document->addLangvar($this->lang->draft_edit);
         $message = $this->getField("message");
 
-        $editor = new CKEditorBuilder;
+        $editor = new CKEditorBuilder();
         $draftForm = new Form("pmform", "../newpm", "post");
         $draftForm->add(new Comment("Message Recipient: ", false));
         $draftForm->add(new TextField("recipient", $message->getRecipientName(), 50));

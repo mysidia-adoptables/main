@@ -26,7 +26,6 @@ use Service\Builder\FormBuilder;
  */
 class Sidebar extends WidgetViewModel
 {
-
     /**
      * The moneyBar property, specifies the money/donation bar for members.
      * @access protected
@@ -76,7 +75,7 @@ class Sidebar extends WidgetViewModel
     protected function setDivision(Component $module)
     {
         if (!$this->division) {
-            $this->division = new Division;
+            $this->division = new Division();
             $this->division->setClass("sidebar");
         }
         $this->division->add($module);
@@ -101,7 +100,7 @@ class Sidebar extends WidgetViewModel
     protected function setMoneyBar()
     {
         $mysidia = Registry::get("mysidia");
-        $this->moneyBar = new Paragraph;
+        $this->moneyBar = new Paragraph();
         $this->moneyBar->add(new Comment("You have {$mysidia->user->getMoney()} {$mysidia->settings->cost}."));
 
         $donate = new Link("donate");
@@ -129,7 +128,7 @@ class Sidebar extends WidgetViewModel
     protected function setLinksBar()
     {
         $mysidia = Registry::get("mysidia");
-        $this->linksBar = new Paragraph;
+        $this->linksBar = new Paragraph();
         $linkTitle = new Comment("{$mysidia->user->getUsername()}'s Links:");
         $linkTitle->setBold();
         $this->linksBar->add($linkTitle);
@@ -151,14 +150,18 @@ class Sidebar extends WidgetViewModel
     {
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("links", ["id", "linktext", "linkurl"], "linktype = 'sidelink' ORDER BY linkorder");
-        if ($stmt->rowCount() == 0) throw new Exception("There is an error with sidebar links, please contact the admin immediately for help.");
+        if ($stmt->rowCount() == 0) {
+            throw new Exception("There is an error with sidebar links, please contact the admin immediately for help.");
+        }
 
         while ($sideLink = $stmt->fetchObject()) {
             $link = new Link($sideLink->linkurl);
             $link->setText($sideLink->linktext);
             if ($sideLink->linkurl == "messages") {
                 $num = $mysidia->db->select("messages", ["touser"], "touser = '{$mysidia->user->getID()}' AND status = 'unread'")->rowCount();
-                if ($num > 0) $link->setText("<b>{$link->getText()} ({$num})</b>");
+                if ($num > 0) {
+                    $link->setText("<b>{$link->getText()} ({$num})</b>");
+                }
             }
             $link->setListed(true);
             $linksList->add($link);

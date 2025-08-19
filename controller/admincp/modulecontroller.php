@@ -14,7 +14,6 @@ use Resource\Exception\NoPermissionException;
 
 class ModuleController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,7 +30,7 @@ class ModuleController extends AppController
         $total = $mysidia->db->select("modules")->rowCount();
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/module", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("modules", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $modules = new ArrayList;
+        $modules = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $modules->add(new Module($dto->moid, $dto));
         }
@@ -43,7 +42,9 @@ class ModuleController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
-            if (!$mysidia->input->post("widget") || !$mysidia->input->post("name")) throw new BlankFieldException("global_blank");
+            if (!$mysidia->input->post("widget") || !$mysidia->input->post("name")) {
+                throw new BlankFieldException("global_blank");
+            }
             $userLevel = $mysidia->input->post("userlevel") ?: "user";
             $html = ($mysidia->user->getUsergroup() == 1) ? $mysidia->input->rawPost("html") : $mysidia->format($mysidia->input->rawPost("html"));
             $php = ($mysidia->user->getUsergroup() == 1) ? $mysidia->input->rawPost("php") : $mysidia->format($mysidia->input->rawPost("php"));
@@ -55,7 +56,9 @@ class ModuleController extends AppController
     public function edit($moid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$moid) return $this->index();
+        if (!$moid) {
+            return $this->index();
+        }
         try {
             $module = new Module($moid);
             if ($mysidia->input->post("submit")) {
@@ -74,8 +77,9 @@ class ModuleController extends AppController
     public function delete($moid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$moid) $this->index();
-        else {
+        if (!$moid) {
+            $this->index();
+        } else {
             $module = new Module($moid);
             $mysidia->db->delete("modules", "moid = '{$module->getID()}'");
         }

@@ -13,7 +13,6 @@
  */
 class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
 {
-
     /**
      * Array stream of tokens being processed.
      * @type HTMLPurifier_Token[]
@@ -82,10 +81,10 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
         $stack = [];
 
         // member variables
-        $this->stack =& $stack;
-        $this->tokens =& $tokens;
-        $this->token =& $token;
-        $this->zipper =& $zipper;
+        $this->stack = & $stack;
+        $this->tokens = & $tokens;
+        $this->token = & $token;
+        $this->zipper = & $zipper;
         $this->config = $config;
         $this->context = $context;
 
@@ -111,7 +110,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
             if (!$b) {
                 continue;
             }
-            $this->injectors[] = new $injector;
+            $this->injectors[] = new $injector();
         }
         foreach ($def_injectors as $injector) {
             // assumed to be objects
@@ -123,7 +122,7 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
             }
             if (is_string($injector)) {
                 $injector = "HTMLPurifier_Injector_$injector";
-                $injector = new $injector;
+                $injector = new $injector();
             }
             $this->injectors[] = $injector;
         }
@@ -162,7 +161,9 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
                 $rewind_offset = $this->injectors[$i]->getRewindOffset();
                 if (is_int($rewind_offset)) {
                     for ($j = 0; $j < $rewind_offset; $j++) {
-                        if (empty($zipper->front)) break;
+                        if (empty($zipper->front)) {
+                            break;
+                        }
                         $token = $zipper->prev($token);
                         // indicate that other injectors should not process this token,
                         // but we need to reprocess it.  See Note [Injector skips]

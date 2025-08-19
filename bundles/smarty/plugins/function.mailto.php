@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -87,6 +88,7 @@ function smarty_function_mailto($params)
             case 'text':
                 ${$var} = $value;
 
+                // no break
             default:
         }
     }
@@ -97,8 +99,10 @@ function smarty_function_mailto($params)
 
     $encode = (empty($params[ 'encode' ])) ? 'none' : $params[ 'encode' ];
     if (!isset($_allowed_encoding[ $encode ])) {
-        trigger_error("mailto: 'encode' parameter must be none, javascript, javascript_charcode or hex",
-                      E_USER_WARNING);
+        trigger_error(
+            "mailto: 'encode' parameter must be none, javascript, javascript_charcode or hex",
+            E_USER_WARNING
+        );
 
         return;
     }
@@ -107,7 +111,7 @@ function smarty_function_mailto($params)
         $string = 'document.write(\'<a href="mailto:' . $address . '" ' . $extra . '>' . $text . '</a>\');';
 
         $js_encode = '';
-        for ($x = 0, $_length = strlen($string); $x < $_length; $x ++) {
+        for ($x = 0, $_length = strlen($string); $x < $_length; $x++) {
             $js_encode .= '%' . bin2hex($string[ $x ]);
         }
 
@@ -115,7 +119,7 @@ function smarty_function_mailto($params)
     } elseif ($encode == 'javascript_charcode') {
         $string = '<a href="mailto:' . $address . '" ' . $extra . '>' . $text . '</a>';
 
-        for ($x = 0, $y = strlen($string); $x < $y; $x ++) {
+        for ($x = 0, $y = strlen($string); $x < $y; $x++) {
             $ord[] = ord($string[ $x ]);
         }
 
@@ -131,7 +135,7 @@ function smarty_function_mailto($params)
             return;
         }
         $address_encode = '';
-        for ($x = 0, $_length = strlen((string) $address); $x < $_length; $x ++) {
+        for ($x = 0, $_length = strlen((string) $address); $x < $_length; $x++) {
             if (preg_match('!\w!' . Smarty::$_UTF8_MODIFIER, (string) $address[ $x ])) {
                 $address_encode .= '%' . bin2hex((string) $address[ $x ]);
             } else {
@@ -139,7 +143,7 @@ function smarty_function_mailto($params)
             }
         }
         $text_encode = '';
-        for ($x = 0, $_length = strlen((string) $text); $x < $_length; $x ++) {
+        for ($x = 0, $_length = strlen((string) $text); $x < $_length; $x++) {
             $text_encode .= '&#x' . bin2hex((string) $text[ $x ]) . ';';
         }
 

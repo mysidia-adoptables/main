@@ -21,7 +21,6 @@ use Resource\Native\Objective;
  */
 abstract class Map extends Collection implements Mappable
 {
-
     /**
      * The keySet property, it stores a set of the keys inside this Map.
      * @access protected
@@ -52,7 +51,7 @@ abstract class Map extends Collection implements Mappable
      * @return Settable
      * @abstract
      */
-    public abstract function entrySet();
+    abstract public function entrySet();
 
     /**
      * The contains method, checks if the map contains a specific value among its key-value pairs.
@@ -78,12 +77,16 @@ abstract class Map extends Collection implements Mappable
         if ($value == null) {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($entry->getValue() == null) return true;
+                if ($entry->getValue() == null) {
+                    return true;
+                }
             }
         } else {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($value->equals($entry->getValue())) return true;
+                if ($value->equals($entry->getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -107,10 +110,16 @@ abstract class Map extends Collection implements Mappable
      */
     public function equals(Objective $object)
     {
-        if ($object == $this) return true;
-        if (!($object instanceof Mappable)) return false;
+        if ($object == $this) {
+            return true;
+        }
+        if (!($object instanceof Mappable)) {
+            return false;
+        }
         $map = $object;
-        if ($map->size() != $this->size()) return false;
+        if ($map->size() != $this->size()) {
+            return false;
+        }
 
         $iterator = $this->entrySet()->iterator();
         while ($iterator->hasNext()) {
@@ -118,9 +127,13 @@ abstract class Map extends Collection implements Mappable
             $key = $entry->getKey();
             $value = $entry->getValue();
             if ($value == null) {
-                if (!($map->get($key) == null and $map->containsKey($key))) return false;
+                if (!($map->get($key) == null and $map->containsKey($key))) {
+                    return false;
+                }
             } else {
-                if (!$value->equals($map->get($key))) return false;
+                if (!$value->equals($map->get($key))) {
+                    return false;
+                }
             }
         }
         return true;
@@ -148,12 +161,16 @@ abstract class Map extends Collection implements Mappable
         if ($key == null) {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($entry->getKey() == null) return $entry->getValue();
+                if ($entry->getKey() == null) {
+                    return $entry->getValue();
+                }
             }
         } else {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($key->equals($entry->getKey())) return $entry->getValue();
+                if ($key->equals($entry->getKey())) {
+                    return $entry->getValue();
+                }
             }
         }
         return null;
@@ -171,12 +188,16 @@ abstract class Map extends Collection implements Mappable
         if ($key == null) {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($entry->getKey() == null) return true;
+                if ($entry->getKey() == null) {
+                    return true;
+                }
             }
         } else {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
-                if ($key->equals($entry->getKey())) return true;
+                if ($key->equals($entry->getKey())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -204,7 +225,9 @@ abstract class Map extends Collection implements Mappable
      */
     public function keySet(): KeyMapSet
     {
-        if (!$this->keySet) $this->keySet = new KeyMapSet($this);
+        if (!$this->keySet) {
+            $this->keySet = new KeyMapSet($this);
+        }
         return $this->keySet;
     }
 
@@ -233,7 +256,7 @@ abstract class Map extends Collection implements Mappable
      */
     public function put(Objective $key, Objective $value = null)
     {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -248,12 +271,16 @@ abstract class Map extends Collection implements Mappable
         if ($key == null) {
             while ($iterator->hasNext()) {
                 $entry = $iterator->getNext();
-                if ($entry->getKey() == null) return $iterator->remove()->getValue();
+                if ($entry->getKey() == null) {
+                    return $iterator->remove()->getValue();
+                }
             }
         } else {
             while ($iterator->hasNext()) {
                 $entry = $iterator->getNext();
-                if ($key->equals($entry->getKey())) return $iterator->remove()->getValue();
+                if ($key->equals($entry->getKey())) {
+                    return $iterator->remove()->getValue();
+                }
             }
         }
         return false;
@@ -266,7 +293,9 @@ abstract class Map extends Collection implements Mappable
      */
     public function valueSet(): ValueMapSet
     {
-        if (!$this->valueSet) $this->valueSet = new ValueMapSet($this);
+        if (!$this->valueSet) {
+            $this->valueSet = new ValueMapSet($this);
+        }
         return $this->valueSet;
     }
 
@@ -278,7 +307,9 @@ abstract class Map extends Collection implements Mappable
     public function __toString(): string
     {
         $iterator = $this->entrySet()->iterator();
-        if (!$iterator->hasNext()) return "{}";
+        if (!$iterator->hasNext()) {
+            return "{}";
+        }
 
         $stringBuilder = "{";
         while ($iterator->hasNext()) {

@@ -21,7 +21,6 @@ use ReturnTypeWillChange;
  */
 abstract class HashMapIterator extends CollectionIterator
 {
-
     /**
      * The current property, it specifies the current Entry to return.
      * @access private
@@ -46,8 +45,8 @@ abstract class HashMapIterator extends CollectionIterator
      * The map property, it stores a reference to the HashMap object.
      * @access private
      */
-        private readonly HashMap $map)
-    {
+        private readonly HashMap $map
+    ) {
         if ($this->map->size() > 0) {
             $entries = $this->map->getEntries();
             while ($this->cursor < $entries->length() and ($this->next = $entries[$this->cursor++]) == null) ;
@@ -72,7 +71,7 @@ abstract class HashMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function hasNext()
+    final public function hasNext()
     {
         return ($this->next != null);
     }
@@ -84,10 +83,12 @@ abstract class HashMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function nextEntry()
+    final public function nextEntry()
     {
         $entry = $this->next;
-        if ($entry == null) throw new NosuchElementException;
+        if ($entry == null) {
+            throw new NosuchElementException();
+        }
         if (($this->next = $entry->getNext()) == null) {
             $entries = $this->map->getEntries();
             while ($this->cursor < $entries->length() and ($this->next = $entries[$this->cursor++]) == null) ;
@@ -103,7 +104,9 @@ abstract class HashMapIterator extends CollectionIterator
      */
     public function remove()
     {
-        if ($this->current == null) throw new IllegalStateException;
+        if ($this->current == null) {
+            throw new IllegalStateException();
+        }
         $key = $this->current->getKey();
         $this->current = null;
         $this->map->removeKey($key);

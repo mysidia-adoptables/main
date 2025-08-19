@@ -11,7 +11,6 @@ use Resource\Exception\NoPermissionException;
 
 class AdoptController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -32,30 +31,48 @@ class AdoptController extends AppController
                 return;
             }
 
-            if (!$mysidia->input->post("type")) throw new BlankFieldException("type");
-            elseif (!$mysidia->input->post("class")) throw new BlankFieldException("class");
-            elseif (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") throw new BlankFieldException("image");
-            elseif ($mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") != "none") throw new BlankFieldException("image2");
-            elseif (!$mysidia->input->post("cba")) throw new BlankFieldException("condition");
+            if (!$mysidia->input->post("type")) {
+                throw new BlankFieldException("type");
+            } elseif (!$mysidia->input->post("class")) {
+                throw new BlankFieldException("class");
+            } elseif (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") {
+                throw new BlankFieldException("image");
+            } elseif ($mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") != "none") {
+                throw new BlankFieldException("image2");
+            } elseif (!$mysidia->input->post("cba")) {
+                throw new BlankFieldException("condition");
+            }
 
             if ($mysidia->input->post("cba") == "conditions") {
-                if ($mysidia->input->post("freqcond") == "enabled" && !is_numeric($mysidia->input->post("number"))) throw new BlankFieldException("condition_freq");
-                if ($mysidia->input->post("datecond") == "enabled" && !$mysidia->input->post("date")) throw new BlankFieldException("condition_date");
+                if ($mysidia->input->post("freqcond") == "enabled" && !is_numeric($mysidia->input->post("number"))) {
+                    throw new BlankFieldException("condition_freq");
+                }
+                if ($mysidia->input->post("datecond") == "enabled" && !$mysidia->input->post("date")) {
+                    throw new BlankFieldException("condition_date");
+                }
                 if ($mysidia->input->post("adoptscond") == "enabled") {
                     if (!$mysidia->input->post("moreless") || !is_numeric($mysidia->input->post("morelessnum")) || !$mysidia->input->post("levelgrle") or !is_numeric($mysidia->input->post("grlelevel"))) {
                         throw new BlankFieldException("condition_moreandlevel");
                     }
                 }
 
-                if ($mysidia->input->post("maxnumcond") == "enabled" && !is_numeric($mysidia->input->post("morethannum"))) throw new BlankFieldException("maxnum");
-                if ($mysidia->input->post("usergroupcond") == "enabled" && !is_numeric($mysidia->input->post("usergroups"))) throw new BlankFieldException("group");
+                if ($mysidia->input->post("maxnumcond") == "enabled" && !is_numeric($mysidia->input->post("morethannum"))) {
+                    throw new BlankFieldException("maxnum");
+                }
+                if ($mysidia->input->post("usergroupcond") == "enabled" && !is_numeric($mysidia->input->post("usergroups"))) {
+                    throw new BlankFieldException("group");
+                }
             }
 
             if ($mysidia->input->post("alternates") == "enabled") {
-                if (!is_numeric($mysidia->input->post("altoutlevel"))) throw new BlankFieldException("alternate");
+                if (!is_numeric($mysidia->input->post("altoutlevel"))) {
+                    throw new BlankFieldException("alternate");
+                }
             }
             $typeExist = $mysidia->db->select("adoptables", ["type"], "type = :type", ["type" => $mysidia->input->post("type")])->fetchColumn();
-            if ($typeExist) throw new DuplicateIDException("exist");
+            if ($typeExist) {
+                throw new DuplicateIDException("exist");
+            }
 
             $eggimage = ($mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") ? $mysidia->input->post("imageurl") : $mysidia->input->post("existingimageurl");
             // insert into table adoptables
@@ -77,7 +94,9 @@ class AdoptController extends AppController
     public function edit()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("choose")) return;
+        if (!$mysidia->input->post("choose")) {
+            return;
+        }
         $adopt = new Adoptable($mysidia->input->post("adopt"));
         if ($mysidia->input->post("submit")) {
             if ($mysidia->session->fetch("acpAdopt") != "edit") {

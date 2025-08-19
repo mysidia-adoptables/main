@@ -21,11 +21,10 @@ use Resource\Utility\Comparative;
  */
 class PriorityQueue extends Queue
 {
-
     /**
      * serialID constant, it serves as identifier of the object being PriorityQueue.
      */
-    const SERIALID = "-7720805057305804111L";
+    public const SERIALID = "-7720805057305804111L";
 
     /**
      * The queue property, it stores a balanced binary heap inside the PriorityQueue.
@@ -52,11 +51,15 @@ class PriorityQueue extends Queue
      * The comparator property, it defines the comparator used to order elements inside Priority Queue.
      * @access private
      */
-    private readonly ?\Resource\Utility\Comparative $comparator = null)
+        private readonly ?\Resource\Utility\Comparative $comparator = null)
     {
-        if (is_int($param)) $this->queue = new MysArray($param);
-        elseif ($param instanceof Collective) $this->initialize($param);
-        else throw new IllegalArgumentException;
+        if (is_int($param)) {
+            $this->queue = new MysArray($param);
+        } elseif ($param instanceof Collective) {
+            $this->initialize($param);
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -112,14 +115,17 @@ class PriorityQueue extends Queue
     {
         assert($i >= 0 and $i < $this->size);
         $size = --$this->size;
-        if ($size == $index) $this->queue[$index] = null;
-        else {
+        if ($size == $index) {
+            $this->queue[$index] = null;
+        } else {
             $moved = $this->queue[$size];
             $this->queue[$size] = null;
             $this->siftDown($index, $moved);
             if ($this->queue[$index] == $moved) {
                 $this->siftUp($index, $moved);
-                if ($this->queue[$index] != $moved) return $moved;
+                if ($this->queue[$index] != $moved) {
+                    return $moved;
+                }
             }
         }
         return null;
@@ -172,7 +178,9 @@ class PriorityQueue extends Queue
     {
         if ($object != null) {
             for ($i = 0; $i < $this->size; $i++) {
-                if ($object->equals($this->queue[$i])) return $i;
+                if ($object->equals($this->queue[$i])) {
+                    return $i;
+                }
             }
         }
         return -1;
@@ -210,10 +218,15 @@ class PriorityQueue extends Queue
     public function offer(Objective $object)
     {
         $index = $this->size;
-        if ($index >= $this->queue->length()) $this->grow($index * 2);
+        if ($index >= $this->queue->length()) {
+            $this->grow($index * 2);
+        }
         $this->size = $index + 1;
-        if ($index == 0) $this->queue[$index] = $object;
-        else $this->siftUp($index, $object);
+        if ($index == 0) {
+            $this->queue[$index] = $object;
+        } else {
+            $this->siftUp($index, $object);
+        }
         return true;
     }
 
@@ -225,7 +238,9 @@ class PriorityQueue extends Queue
      */
     public function peek()
     {
-        if ($this->size == 0) return null;
+        if ($this->size == 0) {
+            return null;
+        }
         return $this->queue[0];
     }
 
@@ -236,12 +251,16 @@ class PriorityQueue extends Queue
      */
     public function poll()
     {
-        if ($this->size == 0) return null;
+        if ($this->size == 0) {
+            return null;
+        }
         $size = --$this->size;
         $result = $this->queue[0];
         $element = $this->queue[$size];
         $this->queue[$size] = null;
-        if ($size != 0) $this->siftDown(0, $element);
+        if ($size != 0) {
+            $this->siftDown(0, $element);
+        }
         return $result;
     }
 
@@ -254,8 +273,9 @@ class PriorityQueue extends Queue
     public function remove(Objective $object): bool
     {
         $i = $this->indexOf($object);
-        if ($i == -1) return false;
-        else {
+        if ($i == -1) {
+            return false;
+        } else {
             $this->delete($i);
             return true;
         }
@@ -287,8 +307,11 @@ class PriorityQueue extends Queue
      */
     private function siftDown($index, Objective $object)
     {
-        if ($this->comparator instanceof Comparative) $this->siftDownComparator($index, $object);
-        else $this->siftDownComparable($index, $object);
+        if ($this->comparator instanceof Comparative) {
+            $this->siftDownComparator($index, $object);
+        } else {
+            $this->siftDownComparable($index, $object);
+        }
     }
 
     /**
@@ -306,8 +329,12 @@ class PriorityQueue extends Queue
             $current = ($index << 1) + 1;
             $child = $this->queue[$current];
             $right = $current + 1;
-            if ($right < $this->size and $child->compareTo($this->queue[$right]) > 0) $child = $this->queue[$current = $right];
-            if ($element->compareTo($child) <= 0) break;
+            if ($right < $this->size and $child->compareTo($this->queue[$right]) > 0) {
+                $child = $this->queue[$current = $right];
+            }
+            if ($element->compareTo($child) <= 0) {
+                break;
+            }
             $this->queue[$index] = $child;
             $index = $current;
         }
@@ -328,8 +355,12 @@ class PriorityQueue extends Queue
             $current = ($index << 1) + 1;
             $child = $this->queue[$current];
             $right = $current + 1;
-            if ($right < $this->size and $this->comparator->compare($child, $this->queue[$right]) > 0) $child = $this->queue[$current = $right];
-            if ($this->comparator->compare($object, $child) <= 0) break;
+            if ($right < $this->size and $this->comparator->compare($child, $this->queue[$right]) > 0) {
+                $child = $this->queue[$current = $right];
+            }
+            if ($this->comparator->compare($object, $child) <= 0) {
+                break;
+            }
             $this->queue[$index] = $child;
             $index = $current;
         }
@@ -345,8 +376,11 @@ class PriorityQueue extends Queue
      */
     private function siftUp($index, Objective $object)
     {
-        if ($this->comparator instanceof Comparative) $this->siftUpComparator($index, $object);
-        else $this->siftUpComparable($index, $object);
+        if ($this->comparator instanceof Comparative) {
+            $this->siftUpComparator($index, $object);
+        } else {
+            $this->siftUpComparable($index, $object);
+        }
     }
 
     /**
@@ -362,7 +396,9 @@ class PriorityQueue extends Queue
         while ($index > 0) {
             $current = ($index - 1) >> 1;
             $parent = $this->queue[$current];
-            if ($element->compareTo($parent) >= 0) break;
+            if ($element->compareTo($parent) >= 0) {
+                break;
+            }
             $this->queue[$index] = $parent;
             $index = $current;
         }
@@ -382,7 +418,9 @@ class PriorityQueue extends Queue
         while ($index > 0) {
             $current = ($index - 1) >> 1;
             $parent = $this->queue[$current];
-            if ($this->comparator->compare($element, $parent) >= 0) break;
+            if ($this->comparator->compare($element, $parent) >= 0) {
+                break;
+            }
             $this->queue[$index] = $parent;
             $index = $current;
         }

@@ -11,7 +11,6 @@
  */
 class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
 {
-
     /**
      * nocache hash
      *
@@ -26,7 +25,7 @@ class Smarty_Template_Compiled extends Smarty_Template_Resource_Base
      *
      * @return Smarty_Template_Compiled compiled object
      */
-    static function load($_template)
+    public static function load($_template)
     {
         $compiled = new Smarty_Template_Compiled();
         if ($_template->source->handler->hasCompiledHandler) {

@@ -9,8 +9,7 @@ use Resource\Utility\Date;
 
 class Vote extends Model
 {
-
-    const IDKEY = "void";
+    public const IDKEY = "void";
     protected $void;
     protected $adoptableid;
     protected $userid;
@@ -24,12 +23,22 @@ class Vote extends Model
         $mysidia = Registry::get("mysidia");
         if (!$dto) {
             $whereClause = "1";
-            if ($adopt) $whereClause .= " AND adoptableid = '{$adopt}'";
-            if ($user) $whereClause .= " AND userid = '{$user}'";
-            if ($ip) $whereClause .= "AND ip = '{$ip}'";
-            if ($date) $whereClause .= "AND date = {$date->format('Y-m-d')}";
+            if ($adopt) {
+                $whereClause .= " AND adoptableid = '{$adopt}'";
+            }
+            if ($user) {
+                $whereClause .= " AND userid = '{$user}'";
+            }
+            if ($ip) {
+                $whereClause .= "AND ip = '{$ip}'";
+            }
+            if ($date) {
+                $whereClause .= "AND date = {$date->format('Y-m-d')}";
+            }
             $dto = $mysidia->db->select("vote_voters", [], $whereClause)->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("The adoptable's vote/click record does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("The adoptable's vote/click record does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -42,15 +51,22 @@ class Vote extends Model
 
     public function getAdopt($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new OwnedAdoptable($this->adoptableid);
-        else return $this->adoptableid;
+        if ($fetchMode == Model::MODEL) {
+            return new OwnedAdoptable($this->adoptableid);
+        } else {
+            return $this->adoptableid;
+        }
     }
 
     public function getUser($fetchMode = "")
     {
-        if (!$this->userid) return null;
+        if (!$this->userid) {
+            return null;
+        }
         if ($fetchMode == Model::MODEL) {
-            if (!$this->user) $this->user = new Member($this->userid);
+            if (!$this->user) {
+                $this->user = new Member($this->userid);
+            }
             return $this->user;
         }
         return $this->userid;
@@ -63,7 +79,9 @@ class Vote extends Model
 
     public function getUsername()
     {
-        if (!$this->userid) return "Guest";
+        if (!$this->userid) {
+            return "Guest";
+        }
         return $this->getUser(Model::MODEL)->getUsername();
     }
 

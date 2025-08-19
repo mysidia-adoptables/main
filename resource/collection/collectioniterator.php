@@ -20,7 +20,6 @@ use ReturnTypeWillChange;
  */
 abstract class CollectionIterator extends MysObject implements Iterative
 {
-
     /**
      * The cursor property, it specifies the current index location for the iterator.
      * @access protected

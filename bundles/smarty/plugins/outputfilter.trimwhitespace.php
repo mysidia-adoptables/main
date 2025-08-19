@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -27,8 +28,12 @@ function smarty_outputfilter_trimwhitespace($source)
     $source = preg_replace("/\015\012|\015|\012/", "\n", $source);
 
     // capture Internet Explorer and KnockoutJS Conditional Comments
-    if (preg_match_all('#<!--((\[[^\]]+\]>.*?<!\[[^\]]+\])|(\s*/?ko\s+.+))-->#is', (string) $source, $matches,
-                       PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+    if (preg_match_all(
+        '#<!--((\[[^\]]+\]>.*?<!\[[^\]]+\])|(\s*/?ko\s+.+))-->#is',
+        (string) $source,
+        $matches,
+        PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+    )) {
         foreach ($matches as $match) {
             $store[] = $match[ 0 ][ 0 ];
             $_length = strlen($match[ 0 ][ 0 ]);
@@ -36,7 +41,7 @@ function smarty_outputfilter_trimwhitespace($source)
             $source = substr_replace($source, $replace, $match[ 0 ][ 1 ] - $_offset, $_length);
 
             $_offset += $_length - strlen($replace);
-            $_store ++;
+            $_store++;
         }
     }
 
@@ -46,8 +51,12 @@ function smarty_outputfilter_trimwhitespace($source)
 
     // capture html elements not to be messed with
     $_offset = 0;
-    if (preg_match_all('#(<script[^>]*>.*?</script[^>]*>)|(<textarea[^>]*>.*?</textarea[^>]*>)|(<pre[^>]*>.*?</pre[^>]*>)#is',
-                       (string) $source, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER)) {
+    if (preg_match_all(
+        '#(<script[^>]*>.*?</script[^>]*>)|(<textarea[^>]*>.*?</textarea[^>]*>)|(<pre[^>]*>.*?</pre[^>]*>)#is',
+        (string) $source,
+        $matches,
+        PREG_OFFSET_CAPTURE | PREG_SET_ORDER
+    )) {
         foreach ($matches as $match) {
             $store[] = $match[ 0 ][ 0 ];
             $_length = strlen($match[ 0 ][ 0 ]);
@@ -55,7 +64,7 @@ function smarty_outputfilter_trimwhitespace($source)
             $source = substr_replace($source, $replace, $match[ 0 ][ 1 ] - $_offset, $_length);
 
             $_offset += $_length - strlen($replace);
-            $_store ++;
+            $_store++;
         }
     }
 
@@ -81,7 +90,7 @@ function smarty_outputfilter_trimwhitespace($source)
             $source = substr_replace($source, $replace, $match[ 0 ][ 1 ] + $_offset, $_length);
 
             $_offset += strlen($replace) - $_length;
-            $_store ++;
+            $_store++;
         }
     }
 

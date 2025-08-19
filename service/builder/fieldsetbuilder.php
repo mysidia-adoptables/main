@@ -23,7 +23,6 @@ use Service\Helper\FormHelper;
  */
 class FieldSetBuilder extends FieldSet
 {
-
     /**
      * The Helper property, determines the helper class used to process fieldset content.
      * @access protected
@@ -88,10 +87,14 @@ class FieldSetBuilder extends FieldSet
      */
     public function buildDropdownList($name, $type, $identity = "")
     {
-        if (!$this->helper) $this->helper = new FormHelper;
+        if (!$this->helper) {
+            $this->helper = new FormHelper();
+        }
         $method = "build{$type}";
         $dropdownList = $this->helper->$method($name);
-        if (!empty($identity)) $dropdownList->select($identity);
+        if (!empty($identity)) {
+            $dropdownList->select($identity);
+        }
         $this->add($dropdownList);
         return $this;
     }

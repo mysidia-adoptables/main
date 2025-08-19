@@ -19,7 +19,6 @@ use Resource\Native\MysObject;
  */
 abstract class Renderer extends MysObject implements Rendering
 {
-
     /**
      * The tag property, stores the tag used in our rendering process.
      * @access protected
@@ -88,8 +87,11 @@ abstract class Renderer extends MysObject implements Rendering
      */
     public function renderText()
     {
-        if (!is_null($this->component->getText())) $this->setRender(">{$this->component->getText()}");
-        else $this->setRender(">");
+        if (!is_null($this->component->getText())) {
+            $this->setRender(">{$this->component->getText()}");
+        } else {
+            $this->setRender(">");
+        }
         return $this;
     }
 
@@ -184,8 +186,12 @@ abstract class Renderer extends MysObject implements Rendering
         while ($iterator->hasNext()) {
             $component = $iterator->next();
             $this->setRender($component->render());
-            if ($component->isLineBreak()) $this->renderLineBreak();
-            if (isset($this->thematicBreak)) $this->renderThematicBreak();
+            if ($component->isLineBreak()) {
+                $this->renderLineBreak();
+            }
+            if (isset($this->thematicBreak)) {
+                $this->renderThematicBreak();
+            }
         }
     }
 
@@ -249,7 +255,9 @@ abstract class Renderer extends MysObject implements Rendering
      */
     public function start()
     {
-        if ($this->tag) $this->setRender("\n<{$this->tag}");
+        if ($this->tag) {
+            $this->setRender("\n<{$this->tag}");
+        }
         $this->status = "started";
         return $this;
     }
@@ -262,7 +270,9 @@ abstract class Renderer extends MysObject implements Rendering
      */
     public function pause()
     {
-        if ($this->tag) $this->setRender(">\n");
+        if ($this->tag) {
+            $this->setRender(">\n");
+        }
         return $this;
     }
 
@@ -273,7 +283,9 @@ abstract class Renderer extends MysObject implements Rendering
      */
     public function end()
     {
-        if ($this->tag) $this->setRender("\n</{$this->tag}>");
+        if ($this->tag) {
+            $this->setRender("\n</{$this->tag}>");
+        }
         $this->status = "ended";
     }
 }

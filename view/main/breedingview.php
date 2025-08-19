@@ -15,7 +15,6 @@ use Resource\GUI\Document\Comment;
 
 class BreedingView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -55,7 +54,9 @@ class BreedingView extends View
             $female = new DropdownList("female");
             $female->add(new Option("None Selected", "none"));
             $female->fill($femaleMap);
-        } else $female = new Comment($this->lang->female, false);
+        } else {
+            $female = new Comment($this->lang->female, false);
+        }
         $breedingForm->add($female);
 
         $breedingForm->add(new Comment("Male: ", false));
@@ -63,7 +64,9 @@ class BreedingView extends View
             $male = new DropdownList("male");
             $male->add(new Option("None Selected", "none"));
             $male->fill($maleMap);
-        } else $male = new Comment($this->lang->male, false);
+        } else {
+            $male = new Comment($this->lang->male, false);
+        }
 
         $breedingForm->add($male);
         $breedingForm->add(new PasswordField("hidden", "breed", "yes"));

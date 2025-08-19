@@ -9,7 +9,6 @@
  */
 class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
 {
-
     /**
      * @param $negative Bool indicating whether or not negative values are allowed
      * @param $zero Bool indicating whether or not zero is allowed
@@ -31,8 +30,7 @@ class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
          * @type bool
          */
         protected $positive = true
-    )
-    {
+    ) {
     }
 
     /**

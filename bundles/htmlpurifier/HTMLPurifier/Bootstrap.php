@@ -24,7 +24,6 @@ if (!defined('PHP_EOL')) {
  */
 class HTMLPurifier_Bootstrap
 {
-
     /**
      * Autoload function for HTML Purifier
      * @param string $class Class to load

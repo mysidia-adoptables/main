@@ -19,7 +19,6 @@ namespace Resource\Core;
  */
 final class SystemSettings extends Settings
 {
-
     /**
      * The site property, defines if the main site is turned on/off.
      * @access public

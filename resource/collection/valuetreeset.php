@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class ValueTreeSet extends ValueMapSet
 {
-
     /**
      * Constructor of ValueTreeSet Class, it simply calls parent constructor.
      * @param TreeMap $map

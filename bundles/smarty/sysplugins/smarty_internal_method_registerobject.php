@@ -44,9 +44,14 @@ class Smarty_Internal_Method_RegisterObject
      * @return \Smarty|\Smarty_Internal_Template
      * @throws \SmartyException
      */
-    public function registerObject(Smarty_Internal_TemplateBase $obj, $object_name, $object,
-                                   $allowed_methods_properties = [], $format = true, $block_methods = [])
-    {
+    public function registerObject(
+        Smarty_Internal_TemplateBase $obj,
+        $object_name,
+        $object,
+        $allowed_methods_properties = [],
+        $format = true,
+        $block_methods = []
+    ) {
         $smarty = $obj->smarty ?? $obj;
         // test if allowed methods callable
         if (!empty($allowed_methods_properties)) {
@@ -66,7 +71,7 @@ class Smarty_Internal_Method_RegisterObject
         }
         // register the object
         $smarty->registered_objects[ $object_name ] =
-            [$object, (array) $allowed_methods_properties, (boolean) $format, (array) $block_methods];
+            [$object, (array) $allowed_methods_properties, (bool) $format, (array) $block_methods];
         return $obj;
     }
 }

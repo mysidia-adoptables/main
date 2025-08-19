@@ -3,26 +3,27 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/template.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, [
   'version' => '3.1.30',
   'unifunc' => 'content_610d90f4a7fa50_37694815',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
    [
-    '3a3566ccbf790c60b9160619febe0d234dcb3123' => 
+    '3a3566ccbf790c60b9160619febe0d234dcb3123' =>
      [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/template.tpl',
       1 => 1628279019,
       2 => 'file',
     ],
   ],
-  'includes' => 
+  'includes' =>
    [
   ],
-],false)) {
-function content_610d90f4a7fa50_37694815 (Smarty_Internal_Template $_smarty_tpl) {
-$_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
-?>
+], false)) {
+    function content_610d90f4a7fa50_37694815(Smarty_Internal_Template $_smarty_tpl)
+    {
+        $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
+        ?>
 
 
     <body>
@@ -58,4 +59,4 @@ index"><?php echo $_smarty_tpl->tpl_vars['site_name']->value;?>
     </body>
 
 </html> <?php }
-}
+    }

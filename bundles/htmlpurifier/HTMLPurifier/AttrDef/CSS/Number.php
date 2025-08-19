@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
 {
-
     /**
      * @param bool $non_negative indicates whether negatives are forbidden
      */
@@ -39,6 +38,7 @@ class HTMLPurifier_AttrDef_CSS_Number extends HTMLPurifier_AttrDef
                     return false;
                 }
                 $sign = '-';
+                // no break
             case '+':
                 $number = substr((string) $number, 1);
         }

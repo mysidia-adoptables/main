@@ -18,12 +18,11 @@ use Service\Helper\TableHelper;
 
 class LinksView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $linksTable = new TableBuilder("links");
         $linksTable->setAlign(new Align("center", "middle"));
         $linksTable->buildHeaders("ID", "Link Type", "Link Text", "Link Url", "Link Parent", "Link Order", "Edit", "Delete");
@@ -33,7 +32,7 @@ class LinksView extends View
         $iterator = $links->iterator();
         while ($iterator->hasNext()) {
             $link = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($link->getID()));
             $cells->add(new TCell($link->getType()));
             $cells->add(new TCell($link->getText()));
@@ -62,7 +61,7 @@ class LinksView extends View
 
         $document->setTitle($this->lang->add_title);
         $document->addLangvar($this->lang->add);
-        $linkTypes = new LinkedHashMap;
+        $linkTypes = new LinkedHashMap();
         $linkTypes->put(new MysString("Navlink"), new MysString("navlink"));
         $linkTypes->put(new MysString("Sidelink"), new MysString("sidelink"));
 
@@ -88,14 +87,15 @@ class LinksView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $link = $this->getField("link");
-        if (!$link) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$link) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
             $document->setTitle($this->lang->edit_title);
             $document->addLangvar($this->lang->edit);
-            $linkTypes = new LinkedHashMap;
+            $linkTypes = new LinkedHashMap();
             $linkTypes->put(new MysString("Navlink"), new MysString("navlink"));
             $linkTypes->put(new MysString("Sidelink"), new MysString("sidelink"));
 
@@ -121,8 +121,9 @@ class LinksView extends View
     {
         $document = $this->document;
         $link = $this->getField("link");
-        if (!$link) $this->index();
-        else {
+        if (!$link) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

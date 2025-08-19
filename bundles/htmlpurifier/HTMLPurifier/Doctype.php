@@ -45,8 +45,7 @@ class HTMLPurifier_Doctype
          * @type string
          */
         public $dtdSystem = null
-    )
-    {
+    ) {
     }
 }
 

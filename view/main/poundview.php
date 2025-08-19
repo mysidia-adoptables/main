@@ -19,7 +19,6 @@ use Service\Helper\AdoptTableHelper;
 
 class PoundView extends View
 {
-
     public function index()
     {
         $document = $this->document;
@@ -31,7 +30,7 @@ class PoundView extends View
         $readoptHeader->setHeading(3);
         $readoptForm->add($readoptHeader);
 
-        $helper = new AdoptTableHelper;
+        $helper = new AdoptTableHelper();
         $readoptTable = new TableBuilder("readopttable");
         $readoptTable->setAlign(new Align("center", "middle"));
         $readoptTable->buildHeaders("Select", "Image", "Basic Info", "Additional Info");
@@ -44,7 +43,7 @@ class PoundView extends View
             $adopt = $entry->getKey();
             $cost = $entry->getValue();
 
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($helper->getPoundButton($adopt->getAdoptID())));
             $cells->add(new TCell($adopt->getImage(Model::GUI)));
             $cells->add(new TCell($helper->getBasicInfo($adopt->getName(), $cost->getValue())));
@@ -97,7 +96,9 @@ class PoundView extends View
             $document->setTitle($this->lang->global_action_complete);
             $document->addLangvar($this->lang->readopt_success);
             $cost = $this->getField("cost");
-            if ($cost) $document->addLangvar(" at a cost of {$cost->getValue()} {$mysidia->settings->cost}");
+            if ($cost) {
+                $document->addLangvar(" at a cost of {$cost->getValue()} {$mysidia->settings->cost}");
+            }
         }
     }
 }

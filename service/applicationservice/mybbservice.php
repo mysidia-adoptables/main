@@ -7,7 +7,6 @@ use Resource\Native\MysObject;
 
 class MyBBService extends MysObject
 {
-
     private $enabled = false;
     private $forumDB;
     private $forumPrefix;
@@ -36,8 +35,11 @@ class MyBBService extends MysObject
         $md5pass = md5((string) $password);
         $fpass = md5(md5((string) $salty) . $md5pass);
         $ip = $_SERVER['REMOTE_ADDR'];
-        if ($_SERVER['HTTPS'] && !str_contains((string) $avatar, "https://")) $avatar = "https://" . DOMAIN . SCRIPTPATH . "/" . $avatar;
-        elseif (!$_SERVER['HTTPS'] && !str_contains((string) $avatar, "http://")) $avatar = "http://" . DOMAIN . SCRIPTPATH . "/" . $avatar;
+        if ($_SERVER['HTTPS'] && !str_contains((string) $avatar, "https://")) {
+            $avatar = "https://" . DOMAIN . SCRIPTPATH . "/" . $avatar;
+        } elseif (!$_SERVER['HTTPS'] && !str_contains((string) $avatar, "http://")) {
+            $avatar = "http://" . DOMAIN . SCRIPTPATH . "/" . $avatar;
+        }
         $query = "INSERT INTO {$this->forumPrefix}users (uid, username, password, salt, loginkey, email, postnum, threadnum, avatar, avatardimensions, avatartype, usergroup, additionalgroups, displaygroup, usertitle, regdate, lastactive, lastvisit, lastpost, website, icq, skype, google, birthday, birthdayprivacy, signature, allownotices, hideemail, subscriptionmethod, invisible, receivepms, receivefrombuddy, pmnotice, pmnotify, buddyrequestspm, buddyrequestsauto, threadmode, showimages, showvideos, showsigs, showavatars, showquickreply, showredirect, ppp, tpp, daysprune, dateformat, timeformat, timezone, dst, dstcorrection, buddylist, ignorelist, style, away, awaydate, returndate, awayreason, pmfolders, notepad, referrer, referrals, reputation, regip, lastip, language, timeonline, showcodebuttons, totalpms, unreadpms, warningpoints, moderateposts, moderationtime, suspendposting, suspensiontime, suspendsignature, suspendsigtime, coppauser, classicpostbit, loginattempts, usernotes, sourceeditor) VALUES ('', '$username', '$fpass','$salty','$loginkey', '$email', '1', '1', '$avatar', '', '0', '2', '', '0', '', 'time()', 'time()', 'time()', 'time()', '0', '', '', '', '$birthday', 'all', '', '1', '0', '0', '0', '1', '0', '1', '1', '1', '0', '', '1', '1', '1', '1', '1', '1', '0', '0', '0', '', '', '0', '0', '0', '', '', '0', '0', '0', '', '', '1**Inbox$%%$2**Sent Items$%%$3**Drafts$%%$4**Trash Can', '', '0', '0', '0', '$ip', '$ip', '', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '', '0')";
         $this->forumDB->query($query) or die("Failed to create forum account");
 
@@ -75,12 +77,16 @@ class MyBBService extends MysObject
 
     public function rebuildStats($username = null)
     {
-        if (!$username) return false;
+        if (!$username) {
+            return false;
+        }
         $oldstats = $this->forumDB->select("datacache", ["cache"], "title = 'stats'")->fetchColumn();
         $stats = unserialize($oldstats);
         $uid = $this->forumDB->select("users", ["uid"], "username = :username", ["username" => $username])->fetchColumn();
 
-        if ($stats['lastuid'] == $uid) return false;
+        if ($stats['lastuid'] == $uid) {
+            return false;
+        }
         $stats['numusers']++;
         $stats['lastuid'] = $uid;
         $stats['lastusername'] = $username;
@@ -94,11 +100,18 @@ class MyBBService extends MysObject
 
     private function setCookie($name, $value = "", $expires = "", $httponly = false, $cookiesettings = [])
     {
-        if (!isset($cookiesettings['cookiepath'])) $cookiesettings['cookiepath'] = "/";
+        if (!isset($cookiesettings['cookiepath'])) {
+            $cookiesettings['cookiepath'] = "/";
+        }
 
-        if ($expires == -1) $expires = 0;
-        elseif ($expires == "" || $expires == null) $expires = time() + (60 * 60 * 24 * 365); // Make the cookie expire in a years time
-        else $expires = time() + intval($expires);
+        if ($expires == -1) {
+            $expires = 0;
+        } elseif ($expires == "" || $expires == null) {
+            $expires = time() + (60 * 60 * 24 * 365);
+        } // Make the cookie expire in a years time
+        else {
+            $expires = time() + intval($expires);
+        }
 
         $cookiesettings['cookiepath'] = str_replace(["\n", "\r"], "", $cookiesettings['cookiepath']);
         $cookiesettings['cookiedomain'] = str_replace(["\n", "\r"], "", $cookiesettings['cookiedomain'] ?? "");
@@ -107,10 +120,18 @@ class MyBBService extends MysObject
         // Versions of PHP prior to 5.2 do not support HttpOnly cookies and IE is buggy when specifying a blank domain so set the cookie manually
         $cookie = "Set-Cookie: {$cookiesettings['cookieprefix']}{$name}=" . urlencode((string) $value);
 
-        if ($expires > 0) $cookie .= "; expires=" . @gmdate('D, d-M-Y H:i:s \\G\\M\\T', $expires);
-        if (!empty($cookiesettings['cookiepath'])) $cookie .= "; path={$cookiesettings['cookiepath']}";
-        if (!empty($cookiesettings['cookiedomain'])) $cookie .= "; domain={$cookiesettings['cookiedomain']}";
-        if ($httponly == true) $cookie .= "; HttpOnly";
+        if ($expires > 0) {
+            $cookie .= "; expires=" . @gmdate('D, d-M-Y H:i:s \\G\\M\\T', $expires);
+        }
+        if (!empty($cookiesettings['cookiepath'])) {
+            $cookie .= "; path={$cookiesettings['cookiepath']}";
+        }
+        if (!empty($cookiesettings['cookiedomain'])) {
+            $cookie .= "; domain={$cookiesettings['cookiedomain']}";
+        }
+        if ($httponly == true) {
+            $cookie .= "; HttpOnly";
+        }
 
         $cookiesettings[$name] = $value;
         header($cookie, false);
@@ -155,13 +176,18 @@ class MyBBService extends MysObject
             $this->seeded = true;
             $this->obfuscator = abs((int)($this->seedRNG()));
             // Ensure that $obfuscator is <= mt_getrandmax() for 64 bit systems.
-            if ($this->obfuscator > mt_getrandmax()) $this->obfuscator -= mt_getrandmax();
+            if ($this->obfuscator > mt_getrandmax()) {
+                $this->obfuscator -= mt_getrandmax();
+            }
         }
 
         if ($min !== null && $max !== null) {
             $distance = $max - $min;
-            if ($distance > 0) return $min + (int)((float)($distance + 1) * (float)(mt_rand() ^ $this->obfuscator) / (mt_getrandmax() + 1));
-            else return mt_rand($min, $max);
+            if ($distance > 0) {
+                return $min + (int)((float)($distance + 1) * (float)(mt_rand() ^ $this->obfuscator) / (mt_getrandmax() + 1));
+            } else {
+                return mt_rand($min, $max);
+            }
         } else {
             $val = mt_rand() ^ $this->obfuscator;
             return $val;

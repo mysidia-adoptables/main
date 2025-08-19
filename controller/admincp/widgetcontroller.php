@@ -15,7 +15,6 @@ use Resource\Exception\NoPermissionException;
 
 class WidgetController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -32,7 +31,7 @@ class WidgetController extends AppController
         $total = $mysidia->db->select("widgets")->rowCount();
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/widget", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("widgets", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $widgets = new ArrayList;
+        $widgets = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $widgets->add(new Widget($dto->wid, $dto));
         }
@@ -44,7 +43,9 @@ class WidgetController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
-            if (!$mysidia->input->post("name")) throw new BlankFieldException("global_blank");
+            if (!$mysidia->input->post("name")) {
+                throw new BlankFieldException("global_blank");
+            }
             $controller = $mysidia->input->post("controllers") ?: "main";
             $mysidia->db->insert("widgets", ["wid" => null, "name" => $mysidia->input->post("name"), "controller" => $controller,
                 "order" => (int)$mysidia->input->post("order"), "status" => $mysidia->input->post("status")]);
@@ -54,11 +55,15 @@ class WidgetController extends AppController
     public function edit($wid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$wid) return $this->index();
+        if (!$wid) {
+            return $this->index();
+        }
         try {
             $widget = new Widget($wid);
             if ($mysidia->input->post("submit")) {
-                if (!$mysidia->input->post("name")) throw new BlankFieldException("global_blank");
+                if (!$mysidia->input->post("name")) {
+                    throw new BlankFieldException("global_blank");
+                }
                 $controller = $mysidia->input->post("controllers") ?: "main";
                 $mysidia->db->update("widgets", ["name" => $mysidia->input->post("name"), "controller" => $controller, "order" => (int)$mysidia->input->post("order"),
                     "status" => $mysidia->input->post("status")], "wid='{$widget->getID()}'");
@@ -74,9 +79,12 @@ class WidgetController extends AppController
     public function delete($wid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$wid) $this->index();
-        else {
-            if ($wid < 6) throw new InvalidActionException("internal");
+        if (!$wid) {
+            $this->index();
+        } else {
+            if ($wid < 6) {
+                throw new InvalidActionException("internal");
+            }
             $widget = new Widget($wid);
             $mysidia->db->delete("widgets", "wid = '{$widget->getID()}'");
         }

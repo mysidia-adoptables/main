@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 class ListIterator extends CollectionIterator
 {
-
     /**
      * The list property, it stores a reference to the list object.
      * @access protected
@@ -153,9 +152,13 @@ class ListIterator extends CollectionIterator
      */
     public function remove()
     {
-        if ($this->last < 0) throw new IllegalStateException;
+        if ($this->last < 0) {
+            throw new IllegalStateException();
+        }
         $this->list->delete($this->last);
-        if ($this->last < $this->cursor) $this->cursor--;
+        if ($this->last < $this->cursor) {
+            $this->cursor--;
+        }
         $this->last = -1;
     }
 
@@ -167,7 +170,9 @@ class ListIterator extends CollectionIterator
      */
     public function set(Objective $object)
     {
-        if ($this->last < 0) throw new IllegalStateException;
+        if ($this->last < 0) {
+            throw new IllegalStateException();
+        }
         $this->list->set($this->last, $object);
     }
 }

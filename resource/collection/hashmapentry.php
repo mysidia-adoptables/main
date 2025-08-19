@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class HashMapEntry extends MapEntry
 {
-
     /**
      * The next property, it stores the next entry adjacent to this one.
      * @access protected
@@ -39,8 +38,11 @@ class HashMapEntry extends MapEntry
      * The hash property, it specifies the hash of this HashMapEntry.
      * @access protected
      */
-    protected $hash = 0, Objective $key = null, Objective $value = null, MapEntry $entry = null)
-    {
+        protected $hash = 0,
+        Objective $key = null,
+        Objective $value = null,
+        MapEntry $entry = null
+    ) {
         parent::__construct($key, $value);
         $this->next = $entry;
     }
@@ -53,14 +55,18 @@ class HashMapEntry extends MapEntry
      */
     public function equals(Objective $object)
     {
-        if (!($object instanceof HashMapEntry)) return false;
+        if (!($object instanceof HashMapEntry)) {
+            return false;
+        }
         $key = $this->getKey();
         $key2 = $object->getKey();
 
         if ($key == $key2 or ($key != null and $key->equals($key2))) {
             $value = $this->getValue();
             $value2 = $object->getValue();
-            if ($value == $value2 or ($value != null and $value->equals($value2))) return true;
+            if ($value == $value2 or ($value != null and $value->equals($value2))) {
+                return true;
+            }
         }
         return false;
     }

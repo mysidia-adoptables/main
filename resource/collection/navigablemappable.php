@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface NavigableMappable extends SortedMappable
 {
-
     /**
      * The ceilingEntry method, returns an entry associated with the least key greater than or equal to the given key.
      * @param Objective $key

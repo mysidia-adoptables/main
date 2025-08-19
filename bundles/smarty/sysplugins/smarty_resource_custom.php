@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Plugin
  *

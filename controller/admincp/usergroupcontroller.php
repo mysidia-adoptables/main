@@ -14,7 +14,6 @@ use Resource\Exception\NoPermissionException;
 
 class UsergroupController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,7 +30,7 @@ class UsergroupController extends AppController
         $total = $mysidia->db->select("groups")->rowCount();
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/usergroup", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("groups", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $usergroups = new ArrayList;
+        $usergroups = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $usergroups->add(new Usergroup($dto->gid, $dto));
         }
@@ -44,7 +43,9 @@ class UsergroupController extends AppController
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit") && $mysidia->input->post("group")) {
             $groupExist = $mysidia->db->select("groups", ["groupname"], "groupname = :groupname", ["groupname" => $mysidia->input->post("group")])->fetchColumn();
-            if ($groupExist) throw new DuplicateIDException("duplicate");
+            if ($groupExist) {
+                throw new DuplicateIDException("duplicate");
+            }
             $mysidia->db->insert("groups", ["gid" => null, "groupname" => $mysidia->input->post("group"), "canadopt" => 'yes', "canpm" => 'yes', "cancp" => 'no',
                 "canmanageadopts" => 'no', "canmanagecontent" => 'no', "canmanageads" => 'no', "canmanagesettings" => 'no', "canmanageusers" => 'no']);
         }
@@ -53,9 +54,13 @@ class UsergroupController extends AppController
     public function edit($gid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$gid) return $this->index();
+        if (!$gid) {
+            return $this->index();
+        }
         $usergroup = new Usergroup($gid);
-        if (!is_object($usergroup)) throw new InvalidIDException("global_id");
+        if (!is_object($usergroup)) {
+            throw new InvalidIDException("global_id");
+        }
         $permissions = ["canadopt", "canpm", "cancp", "canmanageusers", "canmanageadopts", "canmanagecontent", "canmanagesettings", "canmanageads"];
         if ($mysidia->input->post("submit")) {
             foreach ($permissions as $permKey) {
@@ -69,8 +74,9 @@ class UsergroupController extends AppController
     public function delete($gid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$gid) $this->index();
-        else {
+        if (!$gid) {
+            $this->index();
+        } else {
             $usergroup = new Usergroup($gid);
             $mysidia->db->delete("groups", "gid = '{$usergroup->getID()}'");
         }

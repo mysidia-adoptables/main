@@ -31,8 +31,8 @@ class HTMLPurifier_ChildDef_Custom extends HTMLPurifier_ChildDef
      * Allowed child pattern as defined by the DTD.
      * @type string
      */
-    public $dtd_regex)
-    {
+        public $dtd_regex
+    ) {
         $this->_compileRegex();
     }
 

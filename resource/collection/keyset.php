@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class KeySet extends KeyMapSet
 {
-
     /**
      * Constructor of KeySet Class, it simply calls parent constructor.
      * @param HashMap $map

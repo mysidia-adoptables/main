@@ -17,7 +17,6 @@ use Service\ApplicationService\TradeService;
 
 class TradeController extends AppController
 {
-
     private $settings;
 
     public function __construct()
@@ -35,10 +34,12 @@ class TradeController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("trade")->rowCount();
-        if ($total == 0) throw new InvalidIDException("default_none");
+        if ($total == 0) {
+            throw new InvalidIDException("default_none");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/trade", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("trade", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $tradeOffers = new ArrayList;
+        $tradeOffers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $tradeOffers->add(new TradeOffer($dto->tid, $dto));
         }
@@ -60,7 +61,9 @@ class TradeController extends AppController
     public function edit($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) return $this->index();
+        if (!$tid) {
+            return $this->index();
+        }
         try {
             $tradeOffer = new TradeOffer($tid);
             if ($mysidia->input->post("submit")) {
@@ -80,13 +83,16 @@ class TradeController extends AppController
     public function delete($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) $this->index();
-        else {
+        if (!$tid) {
+            $this->index();
+        } else {
             $tradeOffer = new TradeOffer($tid);
             $mysidia->db->delete("trade", "tid = '{$tradeOffer->getID()}'");
             if ($tradeOffer->getType() == "public") {
                 $mysidia->db->delete("trade_associations", "publicid = '{$tradeOffer->getID()}'");
-            } else $mysidia->db->delete("trade_associations", "privateid = '{$tradeOffer->getID()}'");
+            } else {
+                $mysidia->db->delete("trade_associations", "privateid = '{$tradeOffer->getID()}'");
+            }
         }
         $this->setField("tradeOffer", $tid ? $tradeOffer : null);
     }
@@ -107,7 +113,7 @@ class TradeController extends AppController
             return;
         }
         $stmt = $mysidia->db->select("trade", [], "status = 'moderate'");
-        $tradeOffers = new ArrayList;
+        $tradeOffers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $tradeOffers->add(new TradeOffer($dto->tid, $dto));
         }
@@ -131,9 +137,17 @@ class TradeController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("sender")) throw new BlankFieldException("sender");
-        if (!$mysidia->input->post("recipient") && $mysidia->input->post("type") != "public") throw new BlankFieldException("recipient");
-        if ($mysidia->input->post("recipient") && $mysidia->input->post("type") == "public") throw new BlankFieldException("public");
-        if (!$mysidia->input->post("adoptOffered") && !$mysidia->input->post("adoptWanted") && !$mysidia->input->post("itemOffered") and !$mysidia->input->post("itemWanted") and !$mysidia->input->post("cashOffered")) throw new BlankFieldException("blank");
+        if (!$mysidia->input->post("sender")) {
+            throw new BlankFieldException("sender");
+        }
+        if (!$mysidia->input->post("recipient") && $mysidia->input->post("type") != "public") {
+            throw new BlankFieldException("recipient");
+        }
+        if ($mysidia->input->post("recipient") && $mysidia->input->post("type") == "public") {
+            throw new BlankFieldException("public");
+        }
+        if (!$mysidia->input->post("adoptOffered") && !$mysidia->input->post("adoptWanted") && !$mysidia->input->post("itemOffered") and !$mysidia->input->post("itemWanted") and !$mysidia->input->post("cashOffered")) {
+            throw new BlankFieldException("blank");
+        }
     }
 }

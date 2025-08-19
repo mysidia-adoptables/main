@@ -20,7 +20,6 @@ use Resource\GUI\Component;
  */
 abstract class InputComponent extends Component
 {
-
     /**
      * The value property, specifies the value of this input component.
      * @access protected
@@ -56,8 +55,12 @@ abstract class InputComponent extends Component
             $this->setName($name);
             $this->setID($name);
         }
-        if (!empty($value) || $value == 0) $this->setValue($value);
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($value) || $value == 0) {
+            $this->setValue($value);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
     }
 
     /**

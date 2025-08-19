@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin
  *
@@ -110,8 +111,14 @@ abstract class Smarty_CacheResource_Custom extends Smarty_CacheResource
             return;
         }
         $timestamp = null;
-        $this->fetch($cached->filepath, $cached->source->name, $cached->cache_id, $cached->compile_id, $cached->content,
-                     $timestamp);
+        $this->fetch(
+            $cached->filepath,
+            $cached->source->name,
+            $cached->cache_id,
+            $cached->compile_id,
+            $cached->content,
+            $timestamp
+        );
         $cached->timestamp = $timestamp ?? false;
         $cached->exists = !!$cached->timestamp;
     }
@@ -125,17 +132,25 @@ abstract class Smarty_CacheResource_Custom extends Smarty_CacheResource
      *
      * @return boolean                 true or false if the cached content does not exist
      */
-    public function process(Smarty_Internal_Template $_smarty_tpl, Smarty_Template_Cached $cached = null,
-                            $update = false)
-    {
+    public function process(
+        Smarty_Internal_Template $_smarty_tpl,
+        Smarty_Template_Cached $cached = null,
+        $update = false
+    ) {
         if (!$cached) {
             $cached = $_smarty_tpl->cached;
         }
         $content = $cached->content ?: null;
         $timestamp = $cached->timestamp ?: null;
         if ($content === null || !$timestamp) {
-            $this->fetch($_smarty_tpl->cached->filepath, $_smarty_tpl->source->name, $_smarty_tpl->cache_id,
-                         $_smarty_tpl->compile_id, $content, $timestamp);
+            $this->fetch(
+                $_smarty_tpl->cached->filepath,
+                $_smarty_tpl->source->name,
+                $_smarty_tpl->cache_id,
+                $_smarty_tpl->compile_id,
+                $content,
+                $timestamp
+            );
         }
         if (isset($content)) {
             eval("?>" . $content);
@@ -156,8 +171,14 @@ abstract class Smarty_CacheResource_Custom extends Smarty_CacheResource
      */
     public function writeCachedContent(Smarty_Internal_Template $_template, $content)
     {
-        return $this->save($_template->cached->filepath, $_template->source->name, $_template->cache_id,
-                           $_template->compile_id, $_template->cache_lifetime, $content);
+        return $this->save(
+            $_template->cached->filepath,
+            $_template->source->name,
+            $_template->cache_id,
+            $_template->compile_id,
+            $_template->cache_lifetime,
+            $content
+        );
     }
 
     /**
@@ -173,8 +194,14 @@ abstract class Smarty_CacheResource_Custom extends Smarty_CacheResource
         $timestamp = null;
         if ($content === null) {
             $timestamp = null;
-            $this->fetch($_template->cached->filepath, $_template->source->name, $_template->cache_id,
-                         $_template->compile_id, $content, $timestamp);
+            $this->fetch(
+                $_template->cached->filepath,
+                $_template->source->name,
+                $_template->cache_id,
+                $_template->compile_id,
+                $content,
+                $timestamp
+            );
         }
         return $content ?? false;
     }

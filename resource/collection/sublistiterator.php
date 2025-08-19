@@ -16,7 +16,6 @@ namespace Resource\Collection;
  */
 class SubListIterator extends ListIterator
 {
-
     /**
      * The size property, it specifies the current size of the ArrayList.
      * @access private
@@ -35,7 +34,7 @@ class SubListIterator extends ListIterator
      * The offset property, it determines the offset between fromIndex and toIndex
      * @access private
      */
-    private $offset, $toIndex)
+        private $offset, $toIndex)
     {
         $this->size = $toIndex - $this->offset;
         parent::__construct($this->offset, $list);

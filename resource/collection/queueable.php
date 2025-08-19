@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface Queueable extends Collective
 {
-
     /**
      * The element method, retrieves but not remove the head of the queue.
      * This method throws an Exception if the Queue is empty.

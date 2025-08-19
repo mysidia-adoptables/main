@@ -15,7 +15,6 @@ use Resource\Exception\NoPermissionException;
 
 class InventoryController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -30,11 +29,13 @@ class InventoryController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("inventory")->rowCount();
-        if ($total == 0) throw new InvalidIDException("default_none");
+        if ($total == 0) {
+            throw new InvalidIDException("default_none");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/inventory", $mysidia->input->get("page"));
         $stmt = $mysidia->db->join("items", "items.id = inventory.item")
             ->select("inventory", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $ownedItems = new ArrayList;
+        $ownedItems = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $ownedItems->add(new OwnedItem($dto->iid, null, $dto));
         }
@@ -48,8 +49,9 @@ class InventoryController extends AppController
         if ($mysidia->input->post("submit")) {
             $this->dataValidate();
             $ownedItem = new OwnedItem($mysidia->input->post("item"), $mysidia->input->post("owner"));
-            if ($ownedItem->inInventory()) $ownedItem->add((int)$mysidia->input->post("quantity"));
-            else {
+            if ($ownedItem->inInventory()) {
+                $ownedItem->add((int)$mysidia->input->post("quantity"));
+            } else {
                 $mysidia->db->insert("inventory", ["iid" => null, "item" => $mysidia->input->post("item"), "owner" => $mysidia->input->post("owner"),
                     "quantity" => (int)$mysidia->input->post("quantity"), "status" => 'Available']);
             }
@@ -59,7 +61,9 @@ class InventoryController extends AppController
     public function edit($iid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$iid) return $this->index();
+        if (!$iid) {
+            return $this->index();
+        }
         try {
             $ownedItem = new OwnedItem($iid);
             if ($mysidia->input->post("submit")) {
@@ -77,8 +81,9 @@ class InventoryController extends AppController
     public function delete($iid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$iid) $this->index();
-        else {
+        if (!$iid) {
+            $this->index();
+        } else {
             $ownedItem = new OwnedItem($iid);
             $mysidia->db->delete("inventory", "iid='{$ownedItem->getInventoryID()}'");
         }
@@ -88,8 +93,14 @@ class InventoryController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("item")) throw new BlankFieldException("item");
-        if (!$mysidia->input->post("owner")) throw new BlankFieldException("owner");
-        if (!is_numeric($mysidia->input->post("quantity")) || $mysidia->input->post("quantity") < 1) throw new BlankFieldException("quantity");
+        if (!$mysidia->input->post("item")) {
+            throw new BlankFieldException("item");
+        }
+        if (!$mysidia->input->post("owner")) {
+            throw new BlankFieldException("owner");
+        }
+        if (!is_numeric($mysidia->input->post("quantity")) || $mysidia->input->post("quantity") < 1) {
+            throw new BlankFieldException("quantity");
+        }
     }
 }

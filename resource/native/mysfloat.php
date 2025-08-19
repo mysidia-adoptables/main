@@ -21,36 +21,35 @@ use Resource\Exception\ClassCastException;
  */
 final class MysFloat extends Number
 {
-
     /**
      * Size constant, specifies the size a float value occupies.
      */
-    const Size = 32;
+    public const Size = 32;
 
     /**
      * Base constant, stores the base used for exponent.
      */
-    const Base = 10;
+    public const Base = 10;
 
     /**
      * MinCoeff constant, specifies the coefficient for minimum exponent.
      */
-    const MinCoeff = 1.4;
+    public const MinCoeff = 1.4;
 
     /**
      * MaxCoeff constant, specifies the coefficient for maximum exponent.
      */
-    const MaxCoeff = 3.4;
+    public const MaxCoeff = 3.4;
 
     /**
      * MinExp constant, defines the minimum allowable exponent.
      */
-    const MinExp = -45;
+    public const MinExp = -45;
 
     /**
      * MaxExp constant, defines the maximum allowable exponent.
      */
-    const MaxExp = 38;
+    public const MaxExp = 38;
 
 
     /**
@@ -62,7 +61,9 @@ final class MysFloat extends Number
      */
     public function __construct($num)
     {
-        if (!is_float($num)) $num = (float)$num;
+        if (!is_float($num)) {
+            $num = (float)$num;
+        }
         parent::__construct($num);
         $this->value = $num;
     }
@@ -157,9 +158,14 @@ final class MysFloat extends Number
      */
     public function verify($num)
     {
-        if ($num > $this->getMax()) throw new Exception('Supplied value cannot be greater than 3.4*10e+38 for Float type.');
-        elseif ($num < $this->getMin()) throw new Exception('Supplied value cannot be smaller than -3.4*10e+38 for Float type.');
-        elseif ($this->getExp($num) < self::MinExp) throw new Exception('Supplied value with exponent cannot be less than 1.4*10e-45 for Float type.');
-        else return true;
+        if ($num > $this->getMax()) {
+            throw new Exception('Supplied value cannot be greater than 3.4*10e+38 for Float type.');
+        } elseif ($num < $this->getMin()) {
+            throw new Exception('Supplied value cannot be smaller than -3.4*10e+38 for Float type.');
+        } elseif ($this->getExp($num) < self::MinExp) {
+            throw new Exception('Supplied value with exponent cannot be less than 1.4*10e-45 for Float type.');
+        } else {
+            return true;
+        }
     }
 }

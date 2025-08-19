@@ -11,7 +11,6 @@ use Resource\Utility\Date;
 
 class Member extends User
 {
-
     protected $salt;
     protected $password;
     protected $session;
@@ -29,7 +28,9 @@ class Member extends User
     public function __construct($userinfo, $dto = null, $loadProfile = false)
     {
         $mysidia = Registry::get("mysidia");
-        if ($userinfo instanceof MysString) $userinfo = $userinfo->getValue();
+        if ($userinfo instanceof MysString) {
+            $userinfo = $userinfo->getValue();
+        }
         if (!$dto) {
             $prefix = constant("PREFIX");
             $userinfo = ($userinfo == "SYSTEM") ? $mysidia->settings->systemuser : $userinfo;
@@ -38,10 +39,14 @@ class Member extends User
             $stmt = $loadProfile ? $mysidia->db->join("users_profile", "users_profile.uid = users.uid")->select("users", [], $whereclause, $values)
                 : $mysidia->db->select("users", [], $whereclause, $values);
             $dto = $stmt->fetchObject();
-            if (!is_object($dto)) throw new MemberNotfoundException("The specified user {$userinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user {$userinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
-        if ($loadProfile) $this->createProfileFromDTO($dto);
+        if ($loadProfile) {
+            $this->createProfileFromDTO($dto);
+        }
     }
 
     protected function createFromDTO($dto)
@@ -68,7 +73,9 @@ class Member extends User
 
     public function setPassword($password, $assignMode = "")
     {
-        if ($assignMode == Model::UPDATE) $this->save("password", $password);
+        if ($assignMode == Model::UPDATE) {
+            $this->save("password", $password);
+        }
         $this->password = $password;
     }
 
@@ -84,7 +91,9 @@ class Member extends User
 
     public function setEmail($email, $assignMode = "")
     {
-        if ($assignMode == Model::UPDATE) $this->save("email", $email);
+        if ($assignMode == Model::UPDATE) {
+            $this->save("email", $email);
+        }
         $this->email = $email;
     }
 
@@ -110,25 +119,33 @@ class Member extends User
 
     public function getProfile()
     {
-        if (!$this->profile) $this->profile = new UserProfile($this->uid, null, $this);
+        if (!$this->profile) {
+            $this->profile = new UserProfile($this->uid, null, $this);
+        }
         return $this->profile;
     }
 
     public function getContact()
     {
-        if (!$this->contact) $this->contact = new UserContact($this->uid, null, $this);
+        if (!$this->contact) {
+            $this->contact = new UserContact($this->uid, null, $this);
+        }
         return $this->contact;
     }
 
     public function getOption()
     {
-        if (!$this->option) $this->option = new UserOption($this->uid, null, $this);
+        if (!$this->option) {
+            $this->option = new UserOption($this->uid, null, $this);
+        }
         return $this->option;
     }
 
     public function getPermission()
     {
-        if (!$this->permission) $this->permission = new UserPermission($this->uid, null, $this);
+        if (!$this->permission) {
+            $this->permission = new UserPermission($this->uid, null, $this);
+        }
         return $this->permission;
     }
 
@@ -150,8 +167,12 @@ class Member extends User
 
     public function isAdmin()
     {
-        if ($this->usergroup == 1 || $this->usergroup == 2) return true;
-        if ($this->usergroup == 0 || $this->usergroup == 3 || $this->usergroup == 4 || $this->usergroup == 5) return false;
+        if ($this->usergroup == 1 || $this->usergroup == 2) {
+            return true;
+        }
+        if ($this->usergroup == 0 || $this->usergroup == 3 || $this->usergroup == 4 || $this->usergroup == 5) {
+            return false;
+        }
         return ($this->getUsergroup(Model::MODEL)->getPermission("cancp") == "yes");
     }
 
@@ -162,7 +183,9 @@ class Member extends User
 
     public function ban()
     {
-        if ($this->isAdmin()) return;
+        if ($this->isAdmin()) {
+            return;
+        }
         $mysidia = Registry::get("mysidia");
         $this->usergroup = 5;
         $this->save("usergroup", $this->usergroup);
@@ -200,19 +223,25 @@ class Member extends User
     public function getVotes(Date $time = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$time) $time = new Date;
+        if (!$time) {
+            $time = new Date();
+        }
         $numVotes = $mysidia->db->select("vote_voters", ["void"], "userid = '{$this->uid}' and date = '{$time->format('Y-m-d')}'")->rowCount();
         return $numVotes;
     }
 
     public function changeMoney($amount)
     {
-        if (!is_numeric($amount)) throw new InvalidActionException('Cannot change user money by a non-numeric value!');
+        if (!is_numeric($amount)) {
+            throw new InvalidActionException('Cannot change user money by a non-numeric value!');
+        }
         $this->money += $amount;
         if ($this->money >= 0) {
             $this->save("money", $this->money);
             return true;
-        } else throw new InvalidActionException("It seems that {$this->username} cannot afford this transaction.");
+        } else {
+            throw new InvalidActionException("It seems that {$this->username} cannot afford this transaction.");
+        }
     }
 
     public function payMoney($amount)
@@ -232,7 +261,7 @@ class Member extends User
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->join("adoptables", "adoptables.id = owned_adoptables.adopt")
             ->select("owned_adoptables", [], "owner = '{$this->uid}'");
-        $adopts = new ArrayObject;
+        $adopts = new ArrayObject();
         while ($dto = $stmt->fetchObject()) {
             $adopts[] = new OwnedAdoptable($dto->aid, $dto);
         }
@@ -241,7 +270,9 @@ class Member extends User
 
     public function countFriends()
     {
-        if (!$this->friends) return 0;
+        if (!$this->friends) {
+            return 0;
+        }
         return count($this->getFriendsList());
     }
 
@@ -252,18 +283,22 @@ class Member extends User
 
     public function isFriend(User $user = null)
     {
-        if (!$user || !$this->friends) return false;
+        if (!$user || !$this->friends) {
+            return false;
+        }
         $friends = explode(",", (string) $this->friends);
         return in_array($user->getID(), $friends);
     }
 
     public function getFriendsList($fetchMode = "")
     {
-        if (!$this->friends) return null;
+        if (!$this->friends) {
+            return null;
+        }
         if ($fetchMode == Model::MODEL) {
             $mysidia = Registry::get("mysidia");
             $prefix = constant("PREFIX");
-            $friendsList = new ArrayObject;
+            $friendsList = new ArrayObject();
             $stmt = $mysidia->db->join("users_profile", "users_profile.uid = users.uid")
                 ->select("users", [], "{$prefix}users.uid IN ({$this->friends})");
             while ($dto = $stmt->fetchObject()) {
@@ -276,7 +311,9 @@ class Member extends User
 
     public function addFriend($uid = null)
     {
-        if (!$uid || $uid == $this->uid) return;
+        if (!$uid || $uid == $this->uid) {
+            return;
+        }
         $friends = $this->getFriendsList();
         $friends[] = $uid;
         sort($friends);
@@ -286,10 +323,14 @@ class Member extends User
 
     public function removeFriend($uid = null)
     {
-        if (!$uid || $uid == $this->uid) return;
+        if (!$uid || $uid == $this->uid) {
+            return;
+        }
         $friends = $this->getFriendsList();
         $index = array_search($uid, $friends);
-        if ($index === false) return;
+        if ($index === false) {
+            return;
+        }
         unset($friends[$index]);
         $this->friends = implode(",", $friends);
         $this->save("friends", $this->friends);
@@ -310,7 +351,7 @@ class Member extends User
         $table = ($folder == "inbox") ? "messages" : "folders_messages";
         $whereclause = ($folder == "inbox") ? "touser='{$this->uid}'" : "touser='{$this->uid}' AND folder='{$folder}' ORDER BY mid DESC";
         $stmt = $mysidia->db->select($table, [], $whereclause);
-        $messages = new ArrayObject;
+        $messages = new ArrayObject();
         while ($dto = $stmt->fetchObject()) {
             $messages[] = new PrivateMessage($dto->mid, $folder, $dto);
         }
@@ -323,11 +364,13 @@ class Member extends User
         $this->changeMoney(-$amount);
         $recipient->changeMoney($amount);
 
-        $donateMessage = new PrivateMessage;
+        $donateMessage = new PrivateMessage();
         $donateMessage->setSender($this);
         $donateMessage->setRecipient($recipient);
-        $donateMessage->setMessage("Donation from {$this->username}",
-            "{$this->username} has donated {$amount} {$mysidia->settings->cost} to you, you may use this money immediately for any purposes.");
+        $donateMessage->setMessage(
+            "Donation from {$this->username}",
+            "{$this->username} has donated {$amount} {$mysidia->settings->cost} to you, you may use this money immediately for any purposes."
+        );
         $donateMessage->post();
     }
 
@@ -335,7 +378,7 @@ class Member extends User
     {
         $mysidia = Registry::get("mysidia");
         $resetCode = $this->generateCode();
-        $today = new Date;
+        $today = new Date();
         $mysidia->db->insert("passwordresets", ["id" => null, "username" => $this->username, "email" => $this->email, "code" => $resetCode, "ip" => $_SERVER['REMOTE_ADDR'], "date" => $today->format('Y-m-d')]);
         return new PasswordReset(null, $this->username);
     }

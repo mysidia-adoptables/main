@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        Smarty.class.php
@@ -121,101 +122,101 @@ class Smarty extends Smarty_Internal_TemplateBase
     /**
      * smarty version
      */
-    const SMARTY_VERSION = '3.1.30';
+    public const SMARTY_VERSION = '3.1.30';
 
     /**
      * define variable scopes
      */
-    const SCOPE_LOCAL = 1;
+    public const SCOPE_LOCAL = 1;
 
-    const SCOPE_PARENT = 2;
+    public const SCOPE_PARENT = 2;
 
-    const SCOPE_TPL_ROOT = 4;
+    public const SCOPE_TPL_ROOT = 4;
 
-    const SCOPE_ROOT = 8;
+    public const SCOPE_ROOT = 8;
 
-    const SCOPE_SMARTY = 16;
+    public const SCOPE_SMARTY = 16;
 
-    const SCOPE_GLOBAL = 32;
+    public const SCOPE_GLOBAL = 32;
 
     /**
      * define caching modes
      */
-    const CACHING_OFF = 0;
+    public const CACHING_OFF = 0;
 
-    const CACHING_LIFETIME_CURRENT = 1;
+    public const CACHING_LIFETIME_CURRENT = 1;
 
-    const CACHING_LIFETIME_SAVED = 2;
+    public const CACHING_LIFETIME_SAVED = 2;
 
     /**
      * define constant for clearing cache files be saved expiration dates
      */
-    const CLEAR_EXPIRED = -1;
+    public const CLEAR_EXPIRED = -1;
 
     /**
      * define compile check modes
      */
-    const COMPILECHECK_OFF = 0;
+    public const COMPILECHECK_OFF = 0;
 
-    const COMPILECHECK_ON = 1;
+    public const COMPILECHECK_ON = 1;
 
-    const COMPILECHECK_CACHEMISS = 2;
+    public const COMPILECHECK_CACHEMISS = 2;
 
     /**
      * define debug modes
      */
-    const DEBUG_OFF = 0;
+    public const DEBUG_OFF = 0;
 
-    const DEBUG_ON = 1;
+    public const DEBUG_ON = 1;
 
-    const DEBUG_INDIVIDUAL = 2;
+    public const DEBUG_INDIVIDUAL = 2;
 
     /**
      * modes for handling of "<?php ... ?>" tags in templates.
      */
-    const PHP_PASSTHRU = 0; //-> print tags as plain text
+    public const PHP_PASSTHRU = 0; //-> print tags as plain text
 
-    const PHP_QUOTE = 1; //-> escape tags as entities
+    public const PHP_QUOTE = 1; //-> escape tags as entities
 
-    const PHP_REMOVE = 2; //-> escape tags as entities
+    public const PHP_REMOVE = 2; //-> escape tags as entities
 
-    const PHP_ALLOW = 3; //-> escape tags as entities
+    public const PHP_ALLOW = 3; //-> escape tags as entities
 
     /**
      * filter types
      */
-    const FILTER_POST = 'post';
+    public const FILTER_POST = 'post';
 
-    const FILTER_PRE = 'pre';
+    public const FILTER_PRE = 'pre';
 
-    const FILTER_OUTPUT = 'output';
+    public const FILTER_OUTPUT = 'output';
 
-    const FILTER_VARIABLE = 'variable';
+    public const FILTER_VARIABLE = 'variable';
 
     /**
      * plugin types
      */
-    const PLUGIN_FUNCTION = 'function';
+    public const PLUGIN_FUNCTION = 'function';
 
-    const PLUGIN_BLOCK = 'block';
+    public const PLUGIN_BLOCK = 'block';
 
-    const PLUGIN_COMPILER = 'compiler';
+    public const PLUGIN_COMPILER = 'compiler';
 
-    const PLUGIN_MODIFIER = 'modifier';
+    public const PLUGIN_MODIFIER = 'modifier';
 
-    const PLUGIN_MODIFIERCOMPILER = 'modifiercompiler';
+    public const PLUGIN_MODIFIERCOMPILER = 'modifiercompiler';
 
     /**
      * Resource caching modes
      * (not used since 3.1.30)
      */
-    const RESOURCE_CACHE_OFF = 0;
+    public const RESOURCE_CACHE_OFF = 0;
 
-    const RESOURCE_CACHE_AUTOMATIC = 1; // cache template objects by rules
+    public const RESOURCE_CACHE_AUTOMATIC = 1; // cache template objects by rules
 
-    const RESOURCE_CACHE_TEMPLATE = 2; // cache all template objects
+    public const RESOURCE_CACHE_TEMPLATE = 2; // cache all template objects
 
-    const RESOURCE_CACHE_ON = 4;    // cache source and compiled resources
+    public const RESOURCE_CACHE_ON = 4;    // cache source and compiled resources
 
     /**#@-*/
 
@@ -1109,7 +1110,7 @@ class Smarty extends Smarty_Internal_TemplateBase
             $tpl = $do_clone ? clone $this->_cache['isCached'][$_templateId] :
                 $this->_cache['isCached'][$_templateId];
             $tpl->tpl_vars = $tpl->config_vars = [];
-        } else if (!$do_clone && isset($this->_cache['tplObjects'][$_templateId])) {
+        } elseif (!$do_clone && isset($this->_cache['tplObjects'][$_templateId])) {
             $tpl = clone $this->_cache['tplObjects'][$_templateId];
         } else {
             /* @var Smarty_Internal_Template $tpl */
@@ -1164,9 +1165,13 @@ class Smarty extends Smarty_Internal_TemplateBase
      *
      * @return string
      */
-    public function _getTemplateId($template_name, $cache_id = null, $compile_id = null, $caching = null,
-                                   Smarty_Internal_Template $template = null)
-    {
+    public function _getTemplateId(
+        $template_name,
+        $cache_id = null,
+        $compile_id = null,
+        $caching = null,
+        Smarty_Internal_Template $template = null
+    ) {
         $template_name = (!str_contains($template_name, ':')) ? "{$this->default_resource_type}:{$template_name}" :
             $template_name;
         $cache_id ??= $this->cache_id;
@@ -1203,8 +1208,11 @@ class Smarty extends Smarty_Internal_TemplateBase
         $nds = DS == '/' ? '\\' : '/';
         // normalize DS
         $path = str_replace($nds, DS, $path);
-        preg_match('%^(?<root>(?:[[:alpha:]]:[\\\\]|/|[\\\\]{2}[[:alpha:]]+|[[:print:]]{2,}:[/]{2}|[\\\\])?)(?<path>(?:[[:print:]]*))$%',
-            $path, $parts);
+        preg_match(
+            '%^(?<root>(?:[[:alpha:]]:[\\\\]|/|[\\\\]{2}[[:alpha:]]+|[[:print:]]{2,}:[/]{2}|[\\\\])?)(?<path>(?:[[:print:]]*))$%',
+            $path,
+            $parts
+        );
         $path = $parts['path'];
         if ($parts['root'] == '\\') {
             $parts['root'] = substr(getcwd(), 0, 2) . $parts['root'];
@@ -1225,9 +1233,12 @@ class Smarty extends Smarty_Internal_TemplateBase
             }
             sort($counts);
             foreach ($counts as $count) {
-                $path = preg_replace('#(([\\\\/]([.]?[\\\\/])*[^\\\\/.]+){' . $count .
+                $path = preg_replace(
+                    '#(([\\\\/]([.]?[\\\\/])*[^\\\\/.]+){' . $count .
                     '}[\\\\/]([.]?[\\\\/])*([.][.][\\\\/]([.]?[\\\\/])*){' . $count . '})(?=[^.])#',
-                    DS, (string) $path);
+                    DS,
+                    (string) $path
+                );
             }
         }
 
@@ -1476,8 +1487,14 @@ class Smarty extends Smarty_Internal_TemplateBase
         // or the error was within smarty but masked to be ignored
         if (!$_is_muted_directory || ($errno && $errno & error_reporting())) {
             if (Smarty::$_previous_error_handler) {
-                return call_user_func(Smarty::$_previous_error_handler, $errno, $errstr, $errfile, $errline,
-                    $errcontext);
+                return call_user_func(
+                    Smarty::$_previous_error_handler,
+                    $errno,
+                    $errstr,
+                    $errfile,
+                    $errline,
+                    $errcontext
+                );
             } else {
                 return false;
             }

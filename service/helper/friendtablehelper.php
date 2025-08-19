@@ -24,7 +24,6 @@ use Resource\Utility\URL;
  */
 class FriendTableHelper extends UserTableHelper
 {
-
     /**
      * The getAcceptLink method, wraps up the table cell with an accept friend request link.
      * @param String $param
@@ -97,7 +96,7 @@ class FriendTableHelper extends UserTableHelper
      */
     public function getFriendInfo(Member $friend)
     {
-        $info = new ArrayList;
+        $info = new ArrayList();
         $info->add(new Link("profile/view/{$friend->getID()}", "<strong>{$friend->getUsername()}</strong>"));
         $info->add($this->getFriendGender($friend->getProfile()->getGender()));
         $info->add(new Comment($friend->getProfile()->getnickname()));

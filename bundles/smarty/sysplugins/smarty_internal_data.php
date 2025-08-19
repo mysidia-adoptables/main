@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Data
  * This file contains the basic classes and methods for template and variable creation
@@ -199,9 +200,12 @@ class Smarty_Internal_Data
      * @return Smarty_Variable|Smarty_Undefined_Variable the object of the variable
      * @deprecated since 3.1.28 please use Smarty_Internal_Data::getTemplateVars() instead.
      */
-    public function getVariable($variable = null, Smarty_Internal_Data $_ptr = null, $searchParents = true,
-                                $error_enable = true)
-    {
+    public function getVariable(
+        $variable = null,
+        Smarty_Internal_Data $_ptr = null,
+        $searchParents = true,
+        $error_enable = true
+    ) {
         return $this->ext->getTemplateVars->_getVariable($this, $variable, $_ptr, $searchParents, $error_enable);
     }
 

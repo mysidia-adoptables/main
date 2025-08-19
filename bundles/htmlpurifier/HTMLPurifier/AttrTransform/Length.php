@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrTransform_Length extends HTMLPurifier_AttrTransform
 {
-
     /**
      * @type string
      */
@@ -14,8 +13,9 @@ class HTMLPurifier_AttrTransform_Length extends HTMLPurifier_AttrTransform
     public function __construct(/**
      * @type string
      */
-    protected $name, $css_name = null)
-    {
+        protected $name,
+        $css_name = null
+    ) {
         $this->cssName = $css_name ?: $this->name;
     }
 

@@ -22,7 +22,6 @@ use Resource\Utility\URL;
  */
 class UserTableHelper extends TableHelper
 {
-
     /**
      * The getUsername method, wraps up the table cell with the appropriate Username.
      * @param String $param
@@ -31,8 +30,11 @@ class UserTableHelper extends TableHelper
      */
     public function getUsername($param)
     {
-        if (!$param) return "Guest";
-        else return $param;
+        if (!$param) {
+            return "Guest";
+        } else {
+            return $param;
+        }
     }
 
     /**
@@ -45,7 +47,9 @@ class UserTableHelper extends TableHelper
     public function getProfileLink($uid, $username = null)
     {
         $path = Registry::get("path");
-        if (!$username) $username = $uid;
+        if (!$username) {
+            $username = $uid;
+        }
         $url = new URL("{$path->getAbsolute()}profile/view/{$uid}");
         return new Link($url, $username);
     }
@@ -58,7 +62,9 @@ class UserTableHelper extends TableHelper
      */
     public function getProfileImage($param)
     {
-        if (!$param || $param == "Guest") return new Comment("N/A", false);
+        if (!$param || $param == "Guest") {
+            return new Comment("N/A", false);
+        }
         $path = Registry::get("path");
         $url = new URL("{$path->getAbsolute()}profile/view/{$param}");
         $image = new Image("templates/buttons/profile.gif");
@@ -73,7 +79,9 @@ class UserTableHelper extends TableHelper
      */
     public function getPMImage($param)
     {
-        if (!$param || $param == "Guest") return new Comment("N/A", false);
+        if (!$param || $param == "Guest") {
+            return new Comment("N/A", false);
+        }
         $url = new URL("messages/newpm/{$param}");
         $image = new Image("templates/buttons/pm.gif");
         return new Link($url, $image);

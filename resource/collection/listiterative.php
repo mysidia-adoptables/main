@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface ListIterative extends Iterative
 {
-
     /**
      * The add method, append an object to the end of the iterator.
      * @param Objective $object

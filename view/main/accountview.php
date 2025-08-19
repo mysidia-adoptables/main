@@ -21,7 +21,6 @@ use Service\Builder\FormBuilder;
 
 class AccountView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -32,7 +31,7 @@ class AccountView extends View
         $settings = new Comment("Account Settings");
         $settings->setBold();
         $settings->setUnderlined();
-        $document->add(new Comment);
+        $document->add(new Comment());
         $document->add($settings);
 
         //$document->addLangvar($this->addTemplate("accountlinks"));

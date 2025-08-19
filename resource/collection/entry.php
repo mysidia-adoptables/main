@@ -21,7 +21,6 @@ use Resource\Native\Objective;
  */
 abstract class Entry extends MysObject
 {
-
     /**
      * The key property, it defines the key of this entry.
      * @access protected
@@ -57,9 +56,13 @@ abstract class Entry extends MysObject
      */
     public function equals(Objective $object)
     {
-        if (!($object instanceof Entry)) return false;
-        elseif ($this == $object) return true;
-        else return ($this->key->equals($object->getKey()) and $this->value->equals($object->getValue()));
+        if (!($object instanceof Entry)) {
+            return false;
+        } elseif ($this == $object) {
+            return true;
+        } else {
+            return ($this->key->equals($object->getKey()) and $this->value->equals($object->getValue()));
+        }
     }
 
     /**
@@ -96,7 +99,7 @@ abstract class Entry extends MysObject
             $this->value = $entry->getValue();
             return true;
         }
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 
     /**

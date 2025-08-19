@@ -15,7 +15,6 @@ use Service\ApplicationService\MessageService;
 
 class MessagesController extends AppController
 {
-
     private $message;
     private $messageService;
 
@@ -23,11 +22,13 @@ class MessagesController extends AppController
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->messages != "enabled") throw new NoPermissionException("The admin has turned off private message feature for this site, please contact him/her for detailed information.");
+        if ($mysidia->systems->messages != "enabled") {
+            throw new NoPermissionException("The admin has turned off private message feature for this site, please contact him/her for detailed information.");
+        }
         if (!$mysidia->user->hasPermission("canpm")) {
             throw new NoPermissionException("banned");
         }
-        $this->messageService = new MessageService;
+        $this->messageService = new MessageService();
     }
 
     public function index()
@@ -58,7 +59,9 @@ class MessagesController extends AppController
             $this->setFlags("nopermission_title", "nopermission");
             return;
         }
-        if (!$this->message->isRead()) $this->message->markRead();
+        if (!$this->message->isRead()) {
+            $this->message->markRead();
+        }
         $this->setField("message", new PrivateMessageViewModel($this->message));
     }
 

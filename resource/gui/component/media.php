@@ -19,7 +19,6 @@ use Resource\GUI\Resizable;
  */
 class Media extends Accessory implements Resizable
 {
-
     /**
      * The type property, specifies the type of this media.
      * @access protected
@@ -60,12 +59,16 @@ class Media extends Accessory implements Resizable
     public function __construct($data = "", $name = "", $dimension = "", $event = "")
     {
         parent::__construct($name);
-        if ($data instanceof Link) $this->setData($data);
+        if ($data instanceof Link) {
+            $this->setData($data);
+        }
         if (is_numeric($dimension)) {
             $this->setWidth($dimension);
             $this->setHeight($dimension);
         }
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
     }
 
     /**

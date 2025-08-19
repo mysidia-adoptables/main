@@ -9,7 +9,6 @@ use Resource\Native\MysString;
 
 class UploadedFile extends Model
 {
-
     protected $id;
     protected $serverpath;
     protected $wwwpath;
@@ -18,11 +17,15 @@ class UploadedFile extends Model
     public function __construct($fileinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($fileinfo instanceof MysString) $fileinfo = $fileinfo->getValue();
+        if ($fileinfo instanceof MysString) {
+            $fileinfo = $fileinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($fileinfo) ? "id = :fileinfo" : "friendlyname = :fileinfo";
             $dto = $mysidia->db->select("filesmap", [], $whereClause, ["fileinfo" => $fileinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Uploaded File {$fileinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Uploaded File {$fileinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }

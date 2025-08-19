@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Filter Handler
  * Smarty filter handler class

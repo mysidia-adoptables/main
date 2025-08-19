@@ -20,7 +20,6 @@ use Resource\Utility\Comparable;
  */
 abstract class Number extends MysObject implements Comparable, Primitive
 {
-
     /**
      * The value property, which stores the primitive numeric value.
      * @access protected
@@ -77,7 +76,7 @@ abstract class Number extends MysObject implements Comparable, Primitive
      */
     public function doubleValue()
     {
-        return (double)$this->value;
+        return (float)$this->value;
     }
 
     /**
@@ -108,7 +107,9 @@ abstract class Number extends MysObject implements Comparable, Primitive
      */
     public function compareTo(Objective $target)
     {
-        if (!($target instanceof Number)) throw new InvalidArgumentException("Supplied argument must be a numeric value!");
+        if (!($target instanceof Number)) {
+            throw new InvalidArgumentException("Supplied argument must be a numeric value!");
+        }
         return ($this->equals($target)) ? 0 : ($this->value - $target->getValue());
     }
 
@@ -201,5 +202,5 @@ abstract class Number extends MysObject implements Comparable, Primitive
      * @return bool
      * @abstract
      */
-    public abstract function verify($num);
+    abstract public function verify($num);
 }

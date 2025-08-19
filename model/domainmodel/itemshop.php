@@ -7,7 +7,6 @@ use Resource\Exception\NoPermissionException;
 
 class Itemshop extends Shop
 {
-
     protected $items;
 
     public function __construct($shopinfo, $dto = null, $loadItems = false)
@@ -35,14 +34,18 @@ class Itemshop extends Shop
 
     public function getItem($itemname, $owner)
     {
-        if (!$this->hasItem($itemname)) throw new ShopException("The item is not sold from this shop.");
+        if (!$this->hasItem($itemname)) {
+            throw new ShopException("The item is not sold from this shop.");
+        }
         return new OwnedItem($itemname, $owner);
     }
 
     public function hasItem($itemname)
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->sid == 0 || empty($this->shopname)) return false;
+        if ($this->sid == 0 || empty($this->shopname)) {
+            return false;
+        }
         $stmt = $mysidia->db->select("items", [], "itemname = '{$itemname}' AND shop ='{$this->sid}'");
         $exist = ($row = $stmt->fetchObject());
         return $exist;
@@ -57,8 +60,12 @@ class Itemshop extends Shop
     {
         $mysidia = Registry::get("mysidia");
         $item = new OwnedItem($iteminfo, $mysidia->user->getID());
-        if ($item->getShop() != $this->sid) throw new NoPermissionException("shop_belong");
-        if ($item->isOverCap($quantity)) throw new ItemException("full_quantity");
+        if ($item->getShop() != $this->sid) {
+            throw new NoPermissionException("shop_belong");
+        }
+        if ($item->isOverCap($quantity)) {
+            throw new ItemException("full_quantity");
+        }
         $totalcost = $this->getTotalCost($item, $quantity);
         $mysidia->user->payMoney($totalcost);
         $item->add($quantity, $mysidia->user->getID());

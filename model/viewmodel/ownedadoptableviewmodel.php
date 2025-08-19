@@ -12,7 +12,6 @@ use Resource\GUI\Document\Division;
 
 class OwnedAdoptableViewModel extends ViewModel
 {
-
     public function getType()
     {
         return $this->type;
@@ -65,7 +64,9 @@ class OwnedAdoptableViewModel extends ViewModel
             $level = $this->model->getNextLevel();
             $levelupClicks = $this->model->getLevelupClicks();
             $nextLevel = $level->getLevel() . $mysidia->lang->clicks . $levelupClicks;
-        } else $nextLevel = $mysidia->lang->maximum;
+        } else {
+            $nextLevel = $mysidia->lang->maximum;
+        }
 
         $adoptStats = "<br>Trade Status: {$this->model->getTradeStatus()}<br>
 				       Current Level: {$this->model->getCurrentLevel()}<br>Next Level: {$nextLevel}</b>";

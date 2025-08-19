@@ -2,7 +2,6 @@
 
 class HTMLPurifier_HTMLModuleManager
 {
-
     /**
      * @type HTMLPurifier_DoctypeRegistry
      */
@@ -299,7 +298,7 @@ class HTMLPurifier_HTMLModuleManager
             foreach ($module->info_injector as $injector) {
                 if (!is_object($injector)) {
                     $class = "HTMLPurifier_Injector_$injector";
-                    $injector = new $class;
+                    $injector = new $class();
                 }
                 $n[$injector->name] = $injector;
             }
@@ -318,8 +317,8 @@ class HTMLPurifier_HTMLModuleManager
 
         // note the different choice
         $this->contentSets = new HTMLPurifier_ContentSets(
-        // content set assembly deals with all possible modules,
-        // not just ones deemed to be "safe"
+            // content set assembly deals with all possible modules,
+            // not just ones deemed to be "safe"
             $this->modules
         );
         $this->attrCollections = new HTMLPurifier_AttrCollections(

@@ -17,7 +17,6 @@ use Service\ApplicationService\PoundService;
 
 class PoundController extends AppController
 {
-
     private $poundService;
     private $settings;
 
@@ -25,11 +24,15 @@ class PoundController extends AppController
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->user->hasPermission("canpound")) throw new NoPermissionException("denied");
+        if (!$mysidia->user->hasPermission("canpound")) {
+            throw new NoPermissionException("denied");
+        }
 
         $this->settings = new PoundSettings($mysidia->db);
         $this->poundService = new PoundService($this->settings);
-        if ($this->settings->system == "no") throw new InvalidActionException("pound_disabled");
+        if ($this->settings->system == "no") {
+            throw new InvalidActionException("pound_disabled");
+        }
         if ($this->settings->adopt == "no" && $mysidia->input->action() == "index") {
             throw new InvalidActionException("readopt_disabled");
         }
@@ -37,7 +40,7 @@ class PoundController extends AppController
 
     public function index()
     {
-        $poundMap = new HashMap;
+        $poundMap = new HashMap();
         $poundAdopts = $this->poundService->getPoundedAdopts();
         $poundIterator = $poundAdopts->iterator();
         while ($poundIterator->hasNext()) {

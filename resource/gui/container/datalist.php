@@ -22,7 +22,6 @@ use Resource\GUI\Renderer\ListRenderer;
  */
 class DataList extends Container
 {
-
     /**
      * Constructor of DataList Class, which assigns basic property to this list
      * @param String $name
@@ -51,7 +50,9 @@ class DataList extends Container
      */
     public function add(Option $option, $index = -1)
     {
-        if (!$option->getValue()) throw new GUIException("Cannot add an option without a value to DataList!");
+        if (!$option->getValue()) {
+            throw new GUIException("Cannot add an option without a value to DataList!");
+        }
         parent::add($option, $index);
     }
 
@@ -68,13 +69,19 @@ class DataList extends Container
      */
     public function fill($texts, $values = "", $identity = "", $index = -1)
     {
-        if ($index != -1) $this->currentIndex = $index;
-        elseif (!is_array($values)) $values = $texts;
-        elseif (count($texts) != count($values)) throw new GUIException("Cannot fill option objects inside this selectlist");
+        if ($index != -1) {
+            $this->currentIndex = $index;
+        } elseif (!is_array($values)) {
+            $values = $texts;
+        } elseif (count($texts) != count($values)) {
+            throw new GUIException("Cannot fill option objects inside this selectlist");
+        }
 
         for ($i = 0; $i < count($texts); $i++) {
             $option = new Option($texts[$i], $values[$i]);
-            if ($option->getValue() == $identity) $option->setSelected(true);
+            if ($option->getValue() == $identity) {
+                $option->setSelected(true);
+            }
             $this->add($option, $index);
         }
     }

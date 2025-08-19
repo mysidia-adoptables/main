@@ -19,13 +19,12 @@ use Service\Helper\TableHelper;
 
 class ContentView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
         $contents = $this->getField("contents");
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $contentsTable = new TableBuilder("ads");
         $contentsTable->setAlign(new Align("center", "middle"));
         $contentsTable->buildHeaders("Page ID", "Page URL", "Title", "Edit", "Delete");
@@ -34,7 +33,7 @@ class ContentView extends View
         $iterator = $contents->iterator();
         while ($iterator->hasNext()) {
             $content = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($content->getID()));
             $cells->add(new TCell(($content->getID() > 2) ? "pages/view/{$content->getPage()}" : $content->getPage()));
             $cells->add(new TCell($content->getTitle()));
@@ -63,7 +62,7 @@ class ContentView extends View
         $pageForm = new Form("addpage", "add", "post");
         $editor = new CKEditorBuilder("full");
 
-        $basic = new FieldSet;
+        $basic = new FieldSet();
         $basic->add(new Legend("Basic Info"));
         $basic->add(new Comment("Page URL: ", false));
         $basic->add(new TextField("page"));
@@ -94,14 +93,15 @@ class ContentView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $content = $this->getField("content");
-        if (!$content) $this->index();
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$content) {
+            $this->index();
+        } elseif (!$mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edit_title);
             $document->addLangvar($this->lang->edit);
             $pageForm = new Form("editpage", $content->getID(), "post");
             $editor = new CKEditorBuilder("full");
 
-            $basic = new FieldSet;
+            $basic = new FieldSet();
             $basic->add(new Legend("Basic Info"));
             $basic->add(new Comment("{$this->lang->editing} {$content->getPage()}"));
             $basic->add(new Comment("Page Title: ", false));
@@ -133,8 +133,9 @@ class ContentView extends View
     {
         $document = $this->document;
         $content = $this->getField("content");
-        if (!$content) $this->index();
-        else {
+        if (!$content) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

@@ -18,7 +18,6 @@ use Resource\Native\MysObject;
  */
 final class Hash extends MysObject
 {
-
     /**
      * The algorithm property, it defines the algorithm for hash function.
      * This value is set at Hash object instantiation, the default value is md5.
@@ -42,7 +41,9 @@ final class Hash extends MysObject
      */
     public function __construct($algorithm = "")
     {
-        if ($algorithm) $this->algorithm = $algorithm;
+        if ($algorithm) {
+            $this->algorithm = $algorithm;
+        }
         $this->init($this->algorithm);
     }
 

@@ -12,7 +12,6 @@ use Resource\Native\MysString;
 
 class InventoryController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct("member");
@@ -21,11 +20,15 @@ class InventoryController extends AppController
     public function index()
     {
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->items != "enabled") throw new NoPermissionException("The admin has turned off item/inventory feature for this site, please contact him/her for detailed information.");
+        if ($mysidia->systems->items != "enabled") {
+            throw new NoPermissionException("The admin has turned off item/inventory feature for this site, please contact him/her for detailed information.");
+        }
         $stmt = $mysidia->db->join("items", "items.id = inventory.item")
             ->select("inventory", [], "owner = '{$mysidia->user->getID()}'");
-        if ($stmt->rowCount() == 0) throw new InvalidIDException("inventory_empty");
-        $inventory = new ArrayList;
+        if ($stmt->rowCount() == 0) {
+            throw new InvalidIDException("inventory_empty");
+        }
+        $inventory = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $inventory->add(new OwnedItem($dto->item, $dto->owner, $dto));
         }
@@ -36,7 +39,9 @@ class InventoryController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $item = new OwnedItem($mysidia->input->post("item"), $mysidia->user->getID());
-        if (!$item->inInventory()) throw new ItemException("use_none");
+        if (!$item->inInventory()) {
+            throw new ItemException("use_none");
+        }
 
         if ($mysidia->input->post("aid")) {
             if (!$item->checkTarget($mysidia->input->post("aid")) || $mysidia->input->post("validation") != "valid") {
@@ -61,11 +66,17 @@ class InventoryController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $item = new OwnedItem($mysidia->input->post("item"), $mysidia->user->getID());
-        if (!$item->inInventory()) throw new ItemException("sell_none");
+        if (!$item->inInventory()) {
+            throw new ItemException("sell_none");
+        }
 
-        if (!$mysidia->input->post("quantity")) throw new ItemException("sell_empty");
-        elseif (!$item->isSellable((int)$mysidia->input->post("quantity"))) throw new ItemException("sell_quantity");
-        else $item->sell((int)$mysidia->input->post("quantity"));
+        if (!$mysidia->input->post("quantity")) {
+            throw new ItemException("sell_empty");
+        } elseif (!$item->isSellable((int)$mysidia->input->post("quantity"))) {
+            throw new ItemException("sell_quantity");
+        } else {
+            $item->sell((int)$mysidia->input->post("quantity"));
+        }
         $this->setField("item", $item);
     }
 
@@ -73,7 +84,9 @@ class InventoryController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $item = new OwnedItem($mysidia->input->post("item"), $mysidia->user->getID());
-        if (!$item->inInventory()) throw new ItemException("toss_none");
+        if (!$item->inInventory()) {
+            throw new ItemException("toss_none");
+        }
 
         if ($confirm) {
             $item->toss();

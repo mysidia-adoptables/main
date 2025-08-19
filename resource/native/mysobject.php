@@ -18,7 +18,6 @@ namespace Resource\Native;
  */
 abstract class MysObject implements Objective
 {
-
     /**
      * Magic method __clone() for Object Class, returns a copy of Object.
      * @access public

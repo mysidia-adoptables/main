@@ -17,15 +17,18 @@ use Service\ApplicationService\FriendService;
 
 class FriendsController extends AppController
 {
-
     private $friendService;
 
     public function __construct()
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->friends != "enabled") throw new NoPermissionException("The admin has turned off friend feature for this site, please contact him/her for detailed information.");
-        if (!$mysidia->user->hasPermission("canfriend")) throw new NoPermissionException("banned");
+        if ($mysidia->systems->friends != "enabled") {
+            throw new NoPermissionException("The admin has turned off friend feature for this site, please contact him/her for detailed information.");
+        }
+        if (!$mysidia->user->hasPermission("canfriend")) {
+            throw new NoPermissionException("banned");
+        }
         $this->friendService = new FriendService($mysidia->user);
     }
 
@@ -37,8 +40,12 @@ class FriendsController extends AppController
     public function request($uid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$uid) throw new InvalidIDException("friend_id");
-        if ($uid == $mysidia->user->getID()) throw new InvalidIDException("friend_self");
+        if (!$uid) {
+            throw new InvalidIDException("friend_id");
+        }
+        if ($uid == $mysidia->user->getID()) {
+            throw new InvalidIDException("friend_self");
+        }
         $recipient = new Member($uid);
 
         if (!$this->friendService->isFriendWith($recipient)) {
@@ -47,7 +54,9 @@ class FriendsController extends AppController
             }
             $this->friendService->sendRequest($recipient);
             $this->setField("recipient", $recipient);
-        } else throw new InvalidIDException("<br>Invalid Action! The user {$recipient->getUsername()} is already on your friendlist.");
+        } else {
+            throw new InvalidIDException("<br>Invalid Action! The user {$recipient->getUsername()} is already on your friendlist.");
+        }
     }
 
     public function option()
@@ -66,7 +75,9 @@ class FriendsController extends AppController
         $mysidia = Registry::get("mysidia");
         switch ($confirm) {
             case "accept":
-                if (!$fid) throw new InvalidIDException("request_invalid");
+                if (!$fid) {
+                    throw new InvalidIDException("request_invalid");
+                }
                 $friendrequest = $this->friendService->getValidRequest($fid);
                 $friendrequest->setStatus("accepted");
                 $sender = $friendrequest->getSender(Model::MODEL);
@@ -74,7 +85,9 @@ class FriendsController extends AppController
                 $this->setField("sender", $sender);
                 break;
             case "decline":
-                if (!$fid) throw new InvalidIDException("request_invalid");
+                if (!$fid) {
+                    throw new InvalidIDException("request_invalid");
+                }
                 $friendrequest = $this->friendService->getValidRequest($fid);
                 $sender = $friendrequest->getSender(Model::MODEL);
                 $friendrequest->setStatus("declined");
@@ -82,8 +95,10 @@ class FriendsController extends AppController
                 break;
             default:
                 $stmt = $mysidia->db->select("friend_requests", [], "touser = '{$mysidia->user->getID()}' AND status = 'pending'");
-                if ($stmt->rowCount() == 0) throw new InvalidIDException("request_empty");
-                $requests = new ArrayList;
+                if ($stmt->rowCount() == 0) {
+                    throw new InvalidIDException("request_empty");
+                }
+                $requests = new ArrayList();
                 while ($dto = $stmt->fetchObject()) {
                     $requests->add(new FriendRequest($dto->fid, $dto));
                 }
@@ -95,7 +110,9 @@ class FriendsController extends AppController
 
     public function delete($uid)
     {
-        if (!$uid) throw new InvalidIDException("friend_id");
+        if (!$uid) {
+            throw new InvalidIDException("friend_id");
+        }
         $this->friendService->removeFriend(new Member($uid));
     }
 }

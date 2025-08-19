@@ -22,13 +22,12 @@ use Service\Helper\ShopTableHelper;
 
 class ShopView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
         $shops = $this->getField("shops");
-        $helper = new ShopTableHelper;
+        $helper = new ShopTableHelper();
         $shopTable = new TableBuilder("shop");
         $shopTable->setAlign(new Align("center", "middle"));
         $shopTable->buildHeaders("Image", "Shop", "Description", "Status", "Edit", "Delete");
@@ -37,7 +36,7 @@ class ShopView extends View
         $iterator = $shops->iterator();
         while ($iterator->hasNext()) {
             $shop = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($shop->getImageURL(Model::GUI)));
             $cells->add(new TCell($shop->getShopname()));
             $cells->add(new TCell($shop->getDescription()));
@@ -111,8 +110,9 @@ class ShopView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $shop = $this->getField("shop");
-        if (!$shop) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$shop) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar("{$this->lang->edited} {$mysidia->input->post("shopname")},{$this->lang->edited2}");
             return;
@@ -160,8 +160,9 @@ class ShopView extends View
     {
         $document = $this->document;
         $shop = $this->getField("shop");
-        if (!$shop) $this->index();
-        else {
+        if (!$shop) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

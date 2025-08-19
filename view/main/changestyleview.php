@@ -9,7 +9,6 @@ use Resource\GUI\Document\Paragraph;
 
 class ChangeStyleView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -20,7 +19,7 @@ class ChangeStyleView extends View
             return;
         }
         $document->addLangvar($this->lang->select);
-        $paragraph = new Paragraph;
+        $paragraph = new Paragraph();
         $themes = $this->getField("themes");
         $iterator = $themes->iterator();
         while ($iterator->hasNext()) {

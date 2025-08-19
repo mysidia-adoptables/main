@@ -19,7 +19,6 @@ use Resource\GUI\GUIException;
  */
 class SelectionList extends DropdownList
 {
-
     /**
      * The size property, determines how many options are viewable in SelectList at the same time.
      * @access protected
@@ -47,7 +46,9 @@ class SelectionList extends DropdownList
     public function __construct($name = "", $multiple = false, $components = "", $identity = "", $event = "")
     {
         parent::__construct($name, $components, $identity, $event);
-        if ($multiple) $this->setMultiple(true);
+        if ($multiple) {
+            $this->setMultiple(true);
+        }
     }
 
     /**
@@ -68,7 +69,9 @@ class SelectionList extends DropdownList
      */
     public function setSize($size)
     {
-        if (!is_numeric($size)) throw new GUIException("The specified size is not numeric!");
+        if (!is_numeric($size)) {
+            throw new GUIException("The specified size is not numeric!");
+        }
         $this->size = $size;
         $this->setAttributes("Size");
     }

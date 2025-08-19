@@ -13,12 +13,11 @@ use Service\Helper\TableHelper;
 
 class WidgetView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $widgetTable = new TableBuilder("widgets");
         $widgetTable->setAlign(new Align("center", "middle"));
         $widgetTable->buildHeaders("ID", "Widget", "Controller", "Order", "Status", "Edit", "Delete");
@@ -28,7 +27,7 @@ class WidgetView extends View
         $iterator = $widgets->iterator();
         while ($iterator->hasNext()) {
             $widget = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($widget->getID()));
             $cells->add(new TCell($widget->getName()));
             $cells->add(new TCell($widget->getController()));
@@ -71,8 +70,9 @@ class WidgetView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $widget = $this->getField("widget");
-        if (!$widget) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$widget) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
@@ -93,8 +93,9 @@ class WidgetView extends View
     {
         $document = $this->document;
         $widget = $this->getField("widget");
-        if (!$widget) $this->index();
-        else {
+        if (!$widget) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

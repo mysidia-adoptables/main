@@ -2,7 +2,8 @@
 
 namespace Resource\Core;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 
 /**
  * The Path Class, it is one of Mysidia system core classes.
@@ -20,7 +21,6 @@ use ArrayObject, Exception;
  */
 class Path extends Core implements Initializable
 {
-
     /**
      * The protocol property, which specifies the protocol of the path(http or https).
      * @access private
@@ -86,7 +86,9 @@ class Path extends Core implements Initializable
      */
     public function initialize()
     {
-        if (empty($this->dir) or empty($this->path)) throw new Exception('Cannot set basic include paths.');
+        if (empty($this->dir) or empty($this->path)) {
+            throw new Exception('Cannot set basic include paths.');
+        }
         foreach ($this->path as $path) {
             $this->setIncludePath($path);
         }
@@ -155,8 +157,11 @@ class Path extends Core implements Initializable
      */
     public function includes($file, $mode = null)
     {
-        if ($mode = "once") include_once $file;
-        else include $file;
+        if ($mode = "once") {
+            include_once $file;
+        } else {
+            include $file;
+        }
     }
 
     /**
@@ -166,8 +171,11 @@ class Path extends Core implements Initializable
      */
     public function requires($file)
     {
-        if ($mode = "once") require_once $file;
-        else require $file;
+        if ($mode = "once") {
+            require_once $file;
+        } else {
+            require $file;
+        }
     }
 
     /**

@@ -18,7 +18,6 @@ use Service\ApplicationService\MyBBService;
 
 class SettingsController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -63,7 +62,9 @@ class SettingsController extends AppController
             $mysidia->db->insert("themes", ["id" => null, "themename" => $mysidia->input->post("themename"), "themefolder" => $mysidia->input->post("themefolder")]);
         } elseif ($mysidia->input->post("submit") == "update" && $mysidia->input->post("theme") != "none") {
             $dto = $mysidia->db->select("themes", [], "themefolder = :theme", ["theme" => $mysidia->input->post("theme")]);
-            if (!$dto) throw new InvalidIDException("themes_update_failed");
+            if (!$dto) {
+                throw new InvalidIDException("themes_update_failed");
+            }
             $mysidia->db->update("settings", ["value" => $mysidia->input->post("theme")], "name = 'theme'");
         }
     }
@@ -88,14 +89,18 @@ class SettingsController extends AppController
         $mysidia = Registry::get("mysidia");
         if ($id && $actionMethod) {
             $plugin = new ACPHook($id);
-            if (!in_array($actionMethod, ["enable", "disable"])) throw new InvalidActionException("plugins_action");
+            if (!in_array($actionMethod, ["enable", "disable"])) {
+                throw new InvalidActionException("plugins_action");
+            }
             $plugin->$actionMethod();
             $this->setField("action", new MysString($actionMethod));
             return;
         }
         $stmt = $mysidia->db->select("acp_hooks");
-        if ($stmt->rowCount() == 0) throw new InvalidIDException("no_plugins");
-        $plugins = new ArrayList;
+        if ($stmt->rowCount() == 0) {
+            throw new InvalidIDException("no_plugins");
+        }
+        $plugins = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $plugins->add(new ACPHook($dto->id, $dto));
         }
@@ -107,9 +112,13 @@ class SettingsController extends AppController
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
             try {
-                $forumDB = new Database($mysidia->input->post("mybbname"), $mysidia->input->post("mybbhost"),
-                    $mysidia->input->post("mybbuser"), $mysidia->input->post("mybbpass"),
-                    $mysidia->input->post("mybbprefix"));
+                $forumDB = new Database(
+                    $mysidia->input->post("mybbname"),
+                    $mysidia->input->post("mybbhost"),
+                    $mysidia->input->post("mybbuser"),
+                    $mysidia->input->post("mybbpass"),
+                    $mysidia->input->post("mybbprefix")
+                );
                 if ($mysidia->db->nextAutoID("users") != $forumDB->nextAutoID("users")) {
                     throw new InvalidIDException("forum_integration_idsync");
                 }
@@ -135,7 +144,7 @@ define('MYBB_REMEMBER', -1);
                 throw new InvalidActionException("forum_integration_invalid");
             }
         }
-        $mybbService = new MyBBService;
+        $mybbService = new MyBBService();
         $this->setField("enabled", new bool($mybbService->isEnabled()));
     }
 }

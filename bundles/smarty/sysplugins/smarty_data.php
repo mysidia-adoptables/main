@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Plugin Data
  * This file contains the data object
@@ -22,7 +23,7 @@ class Smarty_Data extends Smarty_Internal_Data
      *
      * @var int
      */
-    static $count = 0;
+    public static $count = 0;
 
     /**
      * Data block name
@@ -43,10 +44,10 @@ class Smarty_Data extends Smarty_Internal_Data
     public function __construct($_parent = null, /**
      * Smarty object
      */
-    public $smarty = null, $name = null)
+        public $smarty = null, $name = null)
     {
         parent::__construct();
-        self::$count ++;
+        self::$count++;
         $this->dataObjectName = 'Data_object ' . (isset($name) ? "'{$name}'" : self::$count);
         if (is_object($_parent)) {
             // when object set up back pointer

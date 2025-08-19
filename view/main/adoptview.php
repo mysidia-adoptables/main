@@ -19,7 +19,6 @@ use Resource\GUI\Element\Align;
 
 class AdoptView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -55,7 +54,7 @@ class AdoptView extends View
 
         $adopts = $this->getField("adopts");
         for ($i = 0; $i < $adopts->length(); $i++) {
-            $row = new TRow;
+            $row = new TRow();
             $idCell = new TCell(new RadioButton("", "id", $adopts[$i]->getID()));
             $imageCell = new TCell(new Image($adopts[$i]->getEggImage(), $adopts[$i]->getType()));
             $imageCell->setAlign(new Align("center"));
@@ -63,7 +62,7 @@ class AdoptView extends View
             $type = new Comment($adopts[$i]->getType());
             $type->setBold();
             $description = new Comment($adopts[$i]->getDescription(), false);
-            $typeCell = new TCell;
+            $typeCell = new TCell();
             $typeCell->add($type);
             $typeCell->add($description);
 

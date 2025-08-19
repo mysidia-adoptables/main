@@ -19,7 +19,6 @@ use Resource\Utility\URL;
  */
 class IFrame extends Accessory
 {
-
     /**
      * The width property, defines the width of this iframe.
      * @access protected
@@ -61,14 +60,25 @@ class IFrame extends Accessory
     public function __construct($name = "", $src = "", $width = "", $height = "", $event = "")
     {
         parent::__construct($name);
-        if (!empty($name)) $this->name = $name;
-        if (!empty($src)) {
-            if ($src instanceof URL) $this->setSrc($src);
-            else $this->setSrc(new URL($src));
+        if (!empty($name)) {
+            $this->name = $name;
         }
-        if (!empty($width)) $this->setWidth($width);
-        if (!empty($height)) $this->setHeight($height);
-        if (!empty($event)) $this->event = $event;
+        if (!empty($src)) {
+            if ($src instanceof URL) {
+                $this->setSrc($src);
+            } else {
+                $this->setSrc(new URL($src));
+            }
+        }
+        if (!empty($width)) {
+            $this->setWidth($width);
+        }
+        if (!empty($height)) {
+            $this->setHeight($height);
+        }
+        if (!empty($event)) {
+            $this->event = $event;
+        }
     }
 
     /**
@@ -111,9 +121,14 @@ class IFrame extends Accessory
      */
     public function setWidth($width)
     {
-        if (!$this->inline) $this->inline = true;
-        if (is_numeric($width)) $this->width = "{$width}px";
-        else $this->width = $width;
+        if (!$this->inline) {
+            $this->inline = true;
+        }
+        if (is_numeric($width)) {
+            $this->width = "{$width}px";
+        } else {
+            $this->width = $width;
+        }
         $this->setAttributes("Width");
     }
 
@@ -135,9 +150,14 @@ class IFrame extends Accessory
      */
     public function setHeight($height)
     {
-        if (!$this->inline) $this->inline = true;
-        if (is_numeric($height)) $this->height = "{$height}px";
-        else $this->height = $height;
+        if (!$this->inline) {
+            $this->inline = true;
+        }
+        if (is_numeric($height)) {
+            $this->height = "{$height}px";
+        } else {
+            $this->height = $height;
+        }
         $this->setAttributes("Height");
     }
 

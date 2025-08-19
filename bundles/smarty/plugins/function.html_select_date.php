@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -58,7 +59,7 @@ function smarty_function_html_select_date($params)
     if ($_month_timestamps === null) {
         $_current_year = date('Y');
         $_month_timestamps = [];
-        for ($i = 1; $i <= 12; $i ++) {
+        for ($i = 1; $i <= 12; $i++) {
             $_month_timestamps[ $i ] = mktime(0, 0, 0, $i, 1, 2000);
         }
     }
@@ -299,7 +300,7 @@ function smarty_function_html_select_date($params)
                              $option_separator;
         }
 
-        for ($i = 1; $i <= 12; $i ++) {
+        for ($i = 1; $i <= 12; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = isset($month_names) ? smarty_function_escape_special_chars($month_names[ $i ]) :
                 ($month_format == "%m" ? $_val : strftime($month_format, $_month_timestamps[ $i ]));
@@ -338,7 +339,7 @@ function smarty_function_html_select_date($params)
                            $option_separator;
         }
 
-        for ($i = 1; $i <= 31; $i ++) {
+        for ($i = 1; $i <= 31; $i++) {
             $_val = sprintf('%02d', $i);
             $_text = $day_format == '%02d' ? $_val : sprintf($day_format, $i);
             $_value = $day_value_format == '%02d' ? $_val : sprintf($day_value_format, $i);
@@ -351,7 +352,7 @@ function smarty_function_html_select_date($params)
 
     // order the fields for output
     $_html = '';
-    for ($i = 0; $i <= 2; $i ++) {
+    for ($i = 0; $i <= 2; $i++) {
         switch ($field_order[ $i ]) {
             case 'Y':
             case 'y':

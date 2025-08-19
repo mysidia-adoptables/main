@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 class SubList extends Lists
 {
-
     /**
      * The list property, it stores a reference to the original list object.
      * @access private
@@ -51,7 +50,9 @@ class SubList extends Lists
      */
     public function __construct(Lists $list, $fromIndex, $toIndex)
     {
-        if ($fromIndex < 0 or $toIndex > $list->size() or $fromIndex > $toIndex) throw new IndexOutOfBoundsException;
+        if ($fromIndex < 0 or $toIndex > $list->size() or $fromIndex > $toIndex) {
+            throw new IndexOutOfBoundsException();
+        }
         $this->list = $list;
         $this->offset = $fromIndex;
         $this->size = $toIndex - $fromIndex;

@@ -9,8 +9,7 @@ use Resource\Utility\Date;
 
 class ItemFunction extends Model
 {
-
-    const IDKEY = "ifid";
+    public const IDKEY = "ifid";
     protected $function;
     protected $intent;
     protected $description;
@@ -20,11 +19,15 @@ class ItemFunction extends Model
     {
         // Fetch the database info into object property
         $mysidia = Registry::get("mysidia");
-        if ($functioninfo instanceof MysString) $functioninfo = $functioninfo->getValue();
+        if ($functioninfo instanceof MysString) {
+            $functioninfo = $functioninfo->getValue();
+        }
         if (!$dto) {
             $whereclause = is_numeric($functioninfo) ? "ifid = :functioninfo" : "function = :functioninfo";
             $dto = $mysidia->db->select("items_functions", [], $whereclause, ["functioninfo" => $functioninfo])->fetchObject();
-            if (!is_object($dto)) throw new ItemException("The item function specified is invalid...");
+            if (!is_object($dto)) {
+                throw new ItemException("The item function specified is invalid...");
+            }
         }
         parent::__construct($dto);
     }
@@ -125,7 +128,7 @@ class ItemFunction extends Model
     protected function applyClick3(OwnedItem $item, OwnedAdoptable $adopt)
     {
         $mysidia = Registry::get("mysidia");
-        $date = new Date;
+        $date = new Date();
         $mysidia->db->delete("vote_voters", "adoptableid = '{$adopt->getAdoptID()}' and date='{$date}'");
         return "By using item {$item->getItemname()}, you have make your adoptables eligible for clicking by everyone again!";
     }

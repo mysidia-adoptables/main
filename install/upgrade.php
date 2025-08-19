@@ -372,7 +372,7 @@ if ($step == 3) {
     rename("../inc/config.php", "../config.php");
     rename("../inc/config_forums.php", "../config_forums.php");
 
-// All done, cheers!
+    // All done, cheers!
     ?>
     <table border='0' cellpadding='0' cellspacing='0'>
         <tr>
@@ -399,7 +399,7 @@ if ($step == 3) {
     </table>
 
     <?php
-} else if ($step == 2) {
+} elseif ($step == 2) {
     $flag = 0;
     ?>
 
@@ -442,35 +442,35 @@ if ($step == 3) {
                     $flag = 1;
                 }
 
-                if (is_dir("../controller/main")) {
-                    echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your main site directory exists and is accessible.<br></p>";
-                } else {
-                    echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> Something is very very wrong with your main site file. Please make sure it exists and CHMOD the directory to 644.<br></p>";
-                    $flag = 1;
-                }
+    if (is_dir("../controller/main")) {
+        echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your main site directory exists and is accessible.<br></p>";
+    } else {
+        echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> Something is very very wrong with your main site file. Please make sure it exists and CHMOD the directory to 644.<br></p>";
+        $flag = 1;
+    }
 
-                if (is_dir("../controller/admincp")) {
-                    echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your new admincp directory exists and is accessible.<br></p>";
-                } else {
-                    echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> Something is very very wrong with your new admincp directory. Please make sure it exists and CHMOD the directory to 644.<br></p>";
-                    $flag = 1;
-                }
+    if (is_dir("../controller/admincp")) {
+        echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your new admincp directory exists and is accessible.<br></p>";
+    } else {
+        echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> Something is very very wrong with your new admincp directory. Please make sure it exists and CHMOD the directory to 644.<br></p>";
+        $flag = 1;
+    }
 
-                if (!is_dir("../admincp")) {
-                    echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your old admincp directory is already removed.<br></p>";
-                } else {
-                    echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> You still have the old admincp directory. Please make sure it is deleted before proceeding or you will not be able to access ACP after upgrading.<br></p>";
-                    $flag = 1;
-                }
+    if (!is_dir("../admincp")) {
+        echo "<p align='left'><img src='../templates/icons/yes.gif'> <b>PASS:</b>  Your old admincp directory is already removed.<br></p>";
+    } else {
+        echo "<b><p align='left'><img src='../templates/icons/warning.gif'> WARNING:</b> You still have the old admincp directory. Please make sure it is deleted before proceeding or you will not be able to access ACP after upgrading.<br></p>";
+        $flag = 1;
+    }
 
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                //END THE FILE PERMISSIONS CHECKS
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //END THE FILE PERMISSIONS CHECKS
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                if ($flag == 0){
-                ?>
+    if ($flag == 0) {
+        ?>
 
                 <br>
                 <p align='right'>
@@ -480,8 +480,8 @@ if ($step == 3) {
             </td>
 
             <?php
-            }
-            ?>
+    }
+    ?>
 
         </tr>
     </table>

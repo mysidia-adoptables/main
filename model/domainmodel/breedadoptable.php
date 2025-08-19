@@ -7,8 +7,7 @@ use Resource\Core\Registry;
 
 class BreedAdoptable extends Adoptable
 {
-
-    const IDKEY = "bid";
+    public const IDKEY = "bid";
     protected $bid;
     protected $offspring;
     protected $parent;
@@ -25,7 +24,9 @@ class BreedAdoptable extends Adoptable
         if (!$dto) {
             $dto = $mysidia->db->join("adoptables", "adoptables.id = breeding.offspring")
                 ->select("breeding", [], "bid = :bid", ["bid" => $bid])->fetchObject();
-            if (!is_object($dto)) throw new AdoptNotfoundException("Adoptable's breeding scenario does not exist...");
+            if (!is_object($dto)) {
+                throw new AdoptNotfoundException("Adoptable's breeding scenario does not exist...");
+            }
         }
         $this->createFromDTO($dto);
     }
@@ -37,7 +38,9 @@ class BreedAdoptable extends Adoptable
 
     public function getOffspring($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Adoptable($this->offspring);
+        if ($fetchMode == Model::MODEL) {
+            return new Adoptable($this->offspring);
+        }
         return $this->offspring;
     }
 
@@ -49,8 +52,11 @@ class BreedAdoptable extends Adoptable
 
     public function getParent($fetchMode = "")
     {
-        if ($this->parent && $fetchMode == Model::MODEL) return new Adoptable($this->parent);
-        else return $this->parent;
+        if ($this->parent && $fetchMode == Model::MODEL) {
+            return new Adoptable($this->parent);
+        } else {
+            return $this->parent;
+        }
     }
 
     public function getParentType()
@@ -61,8 +67,11 @@ class BreedAdoptable extends Adoptable
 
     public function getMother($fetchMode = "")
     {
-        if ($this->mother && $fetchMode == Model::MODEL) return new Adoptable($this->mother);
-        else return $this->mother;
+        if ($this->mother && $fetchMode == Model::MODEL) {
+            return new Adoptable($this->mother);
+        } else {
+            return $this->mother;
+        }
     }
 
     public function getMotherType()
@@ -73,8 +82,11 @@ class BreedAdoptable extends Adoptable
 
     public function getFather($fetchMode = "")
     {
-        if ($this->father && $fetchMode == Model::MODEL) return new Adoptable($this->father);
-        else return $this->father;
+        if ($this->father && $fetchMode == Model::MODEL) {
+            return new Adoptable($this->father);
+        } else {
+            return $this->father;
+        }
     }
 
     public function getFatherType()

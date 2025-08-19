@@ -68,8 +68,7 @@ class Smarty_Internal_Block
          * Inheritance Template index
          */
         public $tplIndex
-    )
-    {
+    ) {
     }
 
     /**

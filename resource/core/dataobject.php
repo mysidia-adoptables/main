@@ -17,7 +17,6 @@ use Resource\Native\MysObject;
  */
 class DataObject extends MysObject
 {
-
     /**
      * The constructor for DataObject Class, it creates a DataObject object and initialize the context.
      * @param Object $data
@@ -30,8 +29,7 @@ class DataObject extends MysObject
          * @access protected
          */
         protected $data = null
-    )
-    {
+    ) {
     }
 
     /**

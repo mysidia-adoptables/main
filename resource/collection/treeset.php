@@ -19,11 +19,10 @@ use Resource\Utility\Comparative;
  */
 class TreeSet extends MapSet implements NavigableSettable
 {
-
     /**
      * serialID constant, it serves as identifier of the object being TreeSet.
      */
-    const SERIALID = "-2479143000061671589L";
+    public const SERIALID = "-2479143000061671589L";
 
     /**
      * Constructor of LinkedHashSet Class, it initializes the TreeSet given its capacity or another Collection Object.
@@ -34,10 +33,13 @@ class TreeSet extends MapSet implements NavigableSettable
      */
     public function __construct(Collective $collection = null, Comparative $comparator = null)
     {
-        if ($collection instanceof NavigableMappable) parent::__construct($collection);
-        else {
+        if ($collection instanceof NavigableMappable) {
+            parent::__construct($collection);
+        } else {
             $this->map = new TreeMap($collection, $comparator);
-            if ($collection != null) $this->addAll($collection);
+            if ($collection != null) {
+                $this->addAll($collection);
+            }
         }
     }
 

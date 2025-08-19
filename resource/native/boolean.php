@@ -21,21 +21,20 @@ use Resource\Utility\Comparable;
  */
 final class Boolean extends MysObject implements Comparable, Primitive
 {
-
     /**
      * Size constant, specifies the size a boolean value occupies.
      */
-    const Size = 8;
+    public const Size = 8;
 
     /**
      * boolTrue constant, defines the True value for bool.
      */
-    const booltrue = true;
+    public const booltrue = true;
 
     /**
      * boolfalse constant, defines the False value for bool.
      */
-    const boolfalse = false;
+    public const boolfalse = false;
 
     /**
      * The value property, which stores the primitive value for this bool object.
@@ -53,7 +52,9 @@ final class Boolean extends MysObject implements Comparable, Primitive
      */
     public function __construct($param)
     {
-        if (!is_bool($param)) $param = (bool)$param;
+        if (!is_bool($param)) {
+            $param = (bool)$param;
+        }
         $this->value = $param;
     }
 
@@ -75,7 +76,9 @@ final class Boolean extends MysObject implements Comparable, Primitive
      */
     public function compareTo(Objective $target)
     {
-        if (!($target instanceof bool)) throw new InvalidArgumentException("Supplied argument must be a boolean value!");
+        if (!($target instanceof bool)) {
+            throw new InvalidArgumentException("Supplied argument must be a boolean value!");
+        }
         return ($this->equals($target)) ? 0 : ($this->value ? 1 : -1);
     }
 

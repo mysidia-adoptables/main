@@ -20,7 +20,6 @@ use Resource\GUI\Renderer\ListRenderer;
  */
 class LinksList extends Container
 {
-
     /**
      * The type property, determines the type of the Comment list.
      * @access protected
@@ -45,8 +44,12 @@ class LinksList extends Container
             $this->setName($name);
             $this->setID($name);
         }
-        if (!empty($type)) $this->setType($type);
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($type)) {
+            $this->setType($type);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
         $this->lineBreak = false;
         $this->renderer = new ListRenderer($this);
     }

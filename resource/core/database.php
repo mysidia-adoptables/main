@@ -2,7 +2,9 @@
 
 namespace Resource\Core;
 
-use Exception, PDO, PDOStatement;
+use Exception;
+use PDO;
+use PDOStatement;
 use Resource\Collection\LinkedHashMap;
 use Resource\Collection\LinkedList;
 use Resource\Native\MysString;
@@ -22,7 +24,6 @@ use Resource\Native\Objective;
  */
 class Database extends PDO implements Objective
 {
-
     /**
      * Database's name
      *
@@ -62,7 +63,7 @@ class Database extends PDO implements Objective
      *
      * @access private
      */
-    private $prefix = "adopts_")
+        private $prefix = "adopts_")
     {
         parent::__construct("mysql:host={$host};dbname={$dbname}", $user, $password);
         $this->dbname = $dbname;
@@ -233,8 +234,12 @@ class Database extends PDO implements Objective
         //The comments can be removed for debugging purposes.
         //if($values) echo $query;
         $stmt = $this->prepare($query);
-        if ($operation != "select") $this->bindData($stmt, $data);
-        if (!empty($values)) $this->bindData($stmt, $values);
+        if ($operation != "select") {
+            $this->bindData($stmt, $data);
+        }
+        if (!empty($values)) {
+            $this->bindData($stmt, $values);
+        }
 
         if (!$stmt->execute()) {
             $error = $stmt->errorInfo();
@@ -342,7 +347,7 @@ class Database extends PDO implements Objective
      */
     public function fetchList(PDOStatement $stmt)
     {
-        $list = new LinkedList;
+        $list = new LinkedList();
         while ($field = $stmt->fetchColumn()) {
             $list->add(new MysString($field));
         }
@@ -357,9 +362,11 @@ class Database extends PDO implements Objective
      */
     public function fetchMap(PDOStatement $stmt)
     {
-        $map = new LinkedHashMap;
+        $map = new LinkedHashMap();
         while ($fields = $stmt->fetch(PDO::FETCH_NUM)) {
-            if (count($fields) == 1) $fields[1] = $fields[0];
+            if (count($fields) == 1) {
+                $fields[1] = $fields[0];
+            }
             $map->put(new MysString($fields[0]), new MysString($fields[1]));
         }
         return $map;

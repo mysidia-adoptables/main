@@ -21,11 +21,10 @@ use Resource\Native\Objective;
  */
 final class AscendingSubMap extends SubMap
 {
-
     /**
      * serialID constant, it serves as identifier of the object being AscendingSubMap.
      */
-    const SERIALID = "919286545866124006L";
+    public const SERIALID = "919286545866124006L";
 
     /**
      * The comparator method, returns the comparator object used to order the keys in this AscendingSubMap.
@@ -79,7 +78,9 @@ final class AscendingSubMap extends SubMap
      */
     public function headMaps(Objective $toKey, $inclusive = false)
     {
-        if (!$this->inRanges($toKey, $inclusive)) throw new IllegalArgumentException("toKey out of range");
+        if (!$this->inRanges($toKey, $inclusive)) {
+            throw new IllegalArgumentException("toKey out of range");
+        }
         return new AscendingSubMap($this->map, $this->fromStart, $this->low, $this->lowInclusive, false, $toKey, $inclusive);
     }
 
@@ -106,8 +107,12 @@ final class AscendingSubMap extends SubMap
      */
     public function subMaps(Objective $fromKey, $fromInclusive, Objective $toKey, $toInclusive)
     {
-        if (!$this->inRanges($fromKey, $fromInclusive)) throw new IllegalArgumentException("fromKey out of range");
-        if (!$this->inRanges($toKey, $toInclusive)) throw new IllegalArgumentException("toKey out of range");
+        if (!$this->inRanges($fromKey, $fromInclusive)) {
+            throw new IllegalArgumentException("fromKey out of range");
+        }
+        if (!$this->inRanges($toKey, $toInclusive)) {
+            throw new IllegalArgumentException("toKey out of range");
+        }
         return new AscendingSubMap($this->map, false, $fromKey, $fromInclusive, false, $toKey, $toInclusive);
     }
 
@@ -121,7 +126,9 @@ final class AscendingSubMap extends SubMap
      */
     public function tailMaps(Objective $fromKey, $inclusive)
     {
-        if (!$this->inRanges($fromKey, $inclusive)) throw new IllegalArgumentException("fromKey out of range");
+        if (!$this->inRanges($fromKey, $inclusive)) {
+            throw new IllegalArgumentException("fromKey out of range");
+        }
         return new AscendingSubMap($this->map, false, $fromKey, $inclusive, $this->toEnd, $this->high, $this->highInclusive);
     }
 

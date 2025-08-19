@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Debug
  * Class to collect data for the Smarty Debugging Console
@@ -53,8 +54,8 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data
     public function start_template(Smarty_Internal_Template $template, $mode = null)
     {
         if (isset($mode)) {
-            $this->index ++;
-            $this->offset ++;
+            $this->index++;
+            $this->offset++;
             $this->template_data[ $this->index ] = null;
         }
         $key = $this->get_key($template);
@@ -197,7 +198,7 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data
     public function display_debug($obj, $full = false)
     {
         if (!$full) {
-            $this->offset ++;
+            $this->offset++;
             $savedIndex = $this->index;
             $this->index = 9999;
         }
@@ -255,7 +256,7 @@ class Smarty_Internal_Debug extends Smarty_Internal_Data
         $_template->assign('offset', $this->offset * 50);
         echo $_template->fetch();
         if (isset($full)) {
-            $this->index --;
+            $this->index--;
         }
         if (!$full) {
             $this->index = $savedIndex;

@@ -2,7 +2,8 @@
 
 namespace Model\ViewModel;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 use Resource\Core\Initializable;
 use Resource\Core\Registry;
 use Resource\GUI\Component;
@@ -24,7 +25,6 @@ use Resource\Utility\URL;
  */
 class Menu extends WidgetViewModel implements Initializable
 {
-
     /**
      * The categories property, stores a list of link categories.
      * @access protected
@@ -46,8 +46,8 @@ class Menu extends WidgetViewModel implements Initializable
      */
     public function __construct()
     {
-        $this->categories = new ArrayObject;
-        $this->links = new ArrayObject;
+        $this->categories = new ArrayObject();
+        $this->links = new ArrayObject();
         $this->initialize();
     }
 
@@ -60,18 +60,22 @@ class Menu extends WidgetViewModel implements Initializable
     public function initialize()
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->categories->count() != 0) throw new Exception("Initialization process already completed.");
+        if ($this->categories->count() != 0) {
+            throw new Exception("Initialization process already completed.");
+        }
         $menuList = new LinksList("ul");
 
         $stmt = $mysidia->db->select("links", [], "linktype = 'navlink' AND linkparent < 1 ORDER BY linkorder ASC");
         while ($category = $stmt->fetchObject()) {
-            $menu = new LinksList;
+            $menu = new LinksList();
             $this->setCategories($menu, $category);
 
             $stmt2 = $mysidia->db->select("links", [], "linktype = 'navlink' AND linkparent='{$category->id}' ORDER BY linkorder ASC");
             if ($stmt2->rowCount() > 0) {
                 $linksList = new LinksList("ul");
-                while ($item = $stmt2->fetchObject()) $this->setLinks($linksList, $item);
+                while ($item = $stmt2->fetchObject()) {
+                    $this->setLinks($linksList, $item);
+                }
                 $menu->add($linksList);
             }
             $menuList->add($menu);
@@ -88,7 +92,7 @@ class Menu extends WidgetViewModel implements Initializable
      */
     protected function setDivision(Component $menuList)
     {
-        $this->division = new Division;
+        $this->division = new Division();
         $this->division->setClass("ddmenu");
         $this->division->add($menuList);
     }

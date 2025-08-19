@@ -22,11 +22,10 @@ use Resource\Native\Objective;
  */
 class ArrayList extends Lists
 {
-
     /**
      * serialID constant, it serves as identifier of the object being ArrayList.
      */
-    const SERIALID = "8683452581122892189L";
+    public const SERIALID = "8683452581122892189L";
 
     /**
      * The array property, it stores the data passed to this ArrayList.
@@ -50,15 +49,18 @@ class ArrayList extends Lists
      */
     public function __construct($param = 10)
     {
-        if (is_int($param)) $this->array = new MysArray($param);
-        elseif ($param instanceof Collective) {
+        if (is_int($param)) {
+            $this->array = new MysArray($param);
+        } elseif ($param instanceof Collective) {
             $this->size = $param->size();
             $this->array = new MysArray($this->size);
             $iterator = $param->iterator();
             for ($i = 0; $i < $this->size; $i++) {
                 $this->array[$i] = $iterator->next();
             }
-        } else throw new IllegalArgumentException;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -115,8 +117,11 @@ class ArrayList extends Lists
     {
         if ($capacity > $this->array->length()) {
             $default = $this->array->length() * 2;
-            if ($capacity > $default) $this->grow($capacity);
-            else $this->grow($default);
+            if ($capacity > $default) {
+                $this->grow($capacity);
+            } else {
+                $this->grow($default);
+            }
         }
     }
 
@@ -163,11 +168,15 @@ class ArrayList extends Lists
     {
         if ($object == null) {
             for ($i = 0; $i < $this->size; $i++) {
-                if ($this->array[$i] == null) return $i;
+                if ($this->array[$i] == null) {
+                    return $i;
+                }
             }
         } else {
             for ($i = 0; $i < $this->size; $i++) {
-                if ($object->equals($this->array[$i])) return $i;
+                if ($object->equals($this->array[$i])) {
+                    return $i;
+                }
             }
         }
         return -1;
@@ -268,11 +277,15 @@ class ArrayList extends Lists
     {
         if ($object == null) {
             for ($i = $this->size - 1; $i >= 0; $i--) {
-                if ($this->array[$i] == null) return $i;
+                if ($this->array[$i] == null) {
+                    return $i;
+                }
             }
         } else {
             for ($i = $this->size - 1; $i >= 0; $i--) {
-                if ($object->equals($this->array[$i])) return $i;
+                if ($object->equals($this->array[$i])) {
+                    return $i;
+                }
             }
         }
         return -1;
@@ -333,6 +346,8 @@ class ArrayList extends Lists
      */
     public function trimSize(): void
     {
-        if ($this->size < $this->array->length()) $this->array->setSize($this->size);
+        if ($this->size < $this->array->length()) {
+            $this->array->setSize($this->size);
+        }
     }
 }

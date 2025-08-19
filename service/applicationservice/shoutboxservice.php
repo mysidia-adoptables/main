@@ -12,19 +12,20 @@ use Resource\Utility\Date;
 
 class ShoutboxService extends MysObject
 {
-
     private $htmlPurifier;
 
     public function __construct($htmlPurifier = true, private $limit = 10)
     {
-        if ($htmlPurifier) $this->htmlPurifier = new HTMLPurifier;
+        if ($htmlPurifier) {
+            $this->htmlPurifier = new HTMLPurifier();
+        }
     }
 
     public function getMessages()
     {
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("shoutbox", [], "1 ORDER BY id DESC LIMIT 0, {$this->limit}");
-        $messages = new ArrayList;
+        $messages = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $messages->add(new ShoutComment($dto->id, $dto));
         }
@@ -39,9 +40,13 @@ class ShoutboxService extends MysObject
     public function postMessage($comment)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->user->isLoggedIn()) throw new GuestNoaccessException("guest");
-        $today = new Date;
-        if ($this->htmlPurifier) $comment = $this->htmlPurifier->purify($this->format($comment));
+        if (!$mysidia->user->isLoggedIn()) {
+            throw new GuestNoaccessException("guest");
+        }
+        $today = new Date();
+        if ($this->htmlPurifier) {
+            $comment = $this->htmlPurifier->purify($this->format($comment));
+        }
         $mysidia->db->insert("shoutbox", ["id" => null, "user" => $mysidia->user->getID(), "date" => $today->format("Y-m-d H:i:s"), "comment" => $comment]);
     }
 }

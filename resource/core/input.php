@@ -22,7 +22,6 @@ use Resource\Utility\Autoboxer;
  */
 final class Input extends Core implements Initializable
 {
-
     /**
      * The action property, which specifies users action.
      * @access private
@@ -83,10 +82,10 @@ final class Input extends Core implements Initializable
      */
     public function initialize()
     {
-        $this->autoboxer = new Autoboxer;
+        $this->autoboxer = new Autoboxer();
         $post = filter_input_array(INPUT_POST);
         if ($post) {
-            $this->post = new HashMap;
+            $this->post = new HashMap();
             foreach ($post as $key => $value) {
                 $this->post->put(new MysString($key), $this->autoboxer->wrap($value));
             }
@@ -101,9 +100,11 @@ final class Input extends Core implements Initializable
      */
     public function post($key = "", $secure = true)
     {
-        if (!$this->post) return null;
-        elseif (empty($key)) return $this->post;
-        else {
+        if (!$this->post) {
+            return null;
+        } elseif (empty($key)) {
+            return $this->post;
+        } else {
             $value = $this->post->get(new MysString($key));
             $rawValue = ($value == null) ? null : $this->autoboxer->unwrap($value);
             return $secure ? $this->secure($rawValue) : $rawValue;
@@ -129,7 +130,9 @@ final class Input extends Core implements Initializable
      */
     public function get($key = "")
     {
-        if (empty($key) and $this->get instanceof HashMap) return $this->get;
+        if (empty($key) and $this->get instanceof HashMap) {
+            return $this->get;
+        }
         return $this->get->get(new MysString($key));
     }
 
@@ -152,7 +155,9 @@ final class Input extends Core implements Initializable
      */
     public function action()
     {
-        if (!$this->action) return null;
+        if (!$this->action) {
+            return null;
+        }
         return $this->action->getValue();
     }
 
@@ -163,7 +168,9 @@ final class Input extends Core implements Initializable
      */
     public function params()
     {
-        if (!$this->params) return [];
+        if (!$this->params) {
+            return [];
+        }
         return $this->params;
     }
 
@@ -192,7 +199,9 @@ final class Input extends Core implements Initializable
         } elseif ($_SERVER['REQUEST_METHOD'] == "GET") {
             $this->request = "get";
             return true;
-        } else $this->request = false;
+        } else {
+            $this->request = false;
+        }
     }
 
     /**
@@ -204,7 +213,9 @@ final class Input extends Core implements Initializable
      */
     public function selected($key)
     {
-        if (!$this->post || empty($key)) return false;
+        if (!$this->post || empty($key)) {
+            return false;
+        }
         $value = $this->post($key);
         return ($value && $value != "none");
     }

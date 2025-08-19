@@ -8,8 +8,7 @@ use Resource\GUI\Component\Image;
 
 class Level extends Model
 {
-
-    const IDKEY = "lvid";
+    public const IDKEY = "lvid";
     protected $lvid;
     protected $adopt;
     protected $level;
@@ -25,15 +24,20 @@ class Level extends Model
         if (!$dto) {
             $values = ["adopt" => $adopt, "level" => $level];
             $dto = $mysidia->db->select("levels", [], "adopt = :adopt AND level = :level", $values)->fetchObject();
-            if (!is_object($dto)) throw new LevelNotfoundException("The level {$level} for {$adopt} does not exist...");
+            if (!is_object($dto)) {
+                throw new LevelNotfoundException("The level {$level} for {$adopt} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
 
     public function getAdopt($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Adoptable($this->adopt);
-        else return $this->adopt;
+        if ($fetchMode == Model::MODEL) {
+            return new Adoptable($this->adopt);
+        } else {
+            return $this->adopt;
+        }
     }
 
     public function getLevel()
@@ -48,20 +52,27 @@ class Level extends Model
 
     public function getPrimaryImage($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->primaryimage);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->primaryimage);
+        }
         return $this->primaryimage;
     }
 
     public function getAlternateImage($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->alternateimage);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->alternateimage);
+        }
         return $this->alternateimage;
     }
 
     public function getNextLevel($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new static($this->adopt, $this->level + 1);
-        else return ($this->level + 1);
+        if ($fetchMode == Model::MODEL) {
+            return new static($this->adopt, $this->level + 1);
+        } else {
+            return ($this->level + 1);
+        }
     }
 
     public function getRewardUser()

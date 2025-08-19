@@ -19,7 +19,6 @@ use Resource\GUI\GUIException;
  */
 class TextField extends TextComponent
 {
-
     /**
      * The autocomplete property, determines if autocmplete feature is turned on/off for this text field.
      * @access protected
@@ -42,7 +41,9 @@ class TextField extends TextComponent
     public function __construct($name = "", $value = "", $length = "", $event = "")
     {
         parent::__construct($name, $value, $event);
-        if (is_numeric($length)) $this->setMaxLength($length);
+        if (is_numeric($length)) {
+            $this->setMaxLength($length);
+        }
     }
 
     /**
@@ -85,7 +86,9 @@ class TextField extends TextComponent
      */
     public function setSize($size)
     {
-        if (!is_numeric($size)) throw new GUIException("The supplied size is not numeric!");
+        if (!is_numeric($size)) {
+            throw new GUIException("The supplied size is not numeric!");
+        }
         $this->size = $size;
         $this->setAttributes("Size");
     }

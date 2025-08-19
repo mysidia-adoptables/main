@@ -2,7 +2,8 @@
 
 namespace Resource\Core;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 use Resource\Native\MysObject;
 
 /**
@@ -19,7 +20,6 @@ use Resource\Native\MysObject;
  */
 class Loader extends MysObject
 {
-
     /**
      * The classes property, stores a list of classes already loaded.
      * @access protected
@@ -41,7 +41,7 @@ class Loader extends MysObject
      */
     public function __construct()
     {
-        $this->classes = new ArrayObject;
+        $this->classes = new ArrayObject();
         $this->dir = "";
         spl_autoload_register($this->load(...));
     }
@@ -73,7 +73,9 @@ class Loader extends MysObject
      */
     public function load($class)
     {
-        if (str_contains((string) $class, "Smarty")) return;
+        if (str_contains((string) $class, "Smarty")) {
+            return;
+        }
 
         $this->classes->append($class);
         $classPath = strtolower((string) $class);
@@ -81,7 +83,10 @@ class Loader extends MysObject
             $classPath = strtolower(str_replace("\\", "/", $classPath));
         }
 
-        if (file_exists("{$this->dir}{$classPath}.php")) require("{$this->dir}{$classPath}.php");
-        else throw new Exception("Fatal Error: Class {$class} either does not exist, or has its include path misconfigured!");
+        if (file_exists("{$this->dir}{$classPath}.php")) {
+            require("{$this->dir}{$classPath}.php");
+        } else {
+            throw new Exception("Fatal Error: Class {$class} either does not exist, or has its include path misconfigured!");
+        }
     }
 }

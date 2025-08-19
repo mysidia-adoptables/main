@@ -16,7 +16,6 @@ use Resource\Exception\NoPermissionException;
 
 class ItemController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,10 +30,12 @@ class ItemController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("items")->rowCount();
-        if ($total == 0) throw new InvalidIDException("default_none");
+        if ($total == 0) {
+            throw new InvalidIDException("default_none");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/item", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("items", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $items = new ArrayList;
+        $items = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $items->add(new Item($dto->id, $dto));
         }
@@ -56,7 +57,9 @@ class ItemController extends AppController
     public function edit($id = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$id) return $this->index();
+        if (!$id) {
+            return $this->index();
+        }
         try {
             $item = new Item($id);
             if ($mysidia->input->post("submit")) {
@@ -74,8 +77,9 @@ class ItemController extends AppController
     public function delete($id = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$id) $this->index();
-        else {
+        if (!$id) {
+            $this->index();
+        } else {
             $item = new Item($id);
             $mysidia->db->delete("items", "id = '{$item->getID()}'");
             $mysidia->db->delete("inventory", "item = '{$item->getID()}'");
@@ -87,7 +91,7 @@ class ItemController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("items_functions");
-        $itemFunctions = new ArrayList;
+        $itemFunctions = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $itemFunctions->add(new ItemFunction($dto->ifid, $dto));
         }
@@ -97,12 +101,20 @@ class ItemController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("category")) throw new BlankFieldException("category");
-        if (!$mysidia->input->post("itemname")) throw new BlankFieldException("itemname");
-        if (!$mysidia->input->post("imageurl") and $mysidia->input->post("existingimageurl") == "none") throw new BlankFieldException("images");
+        if (!$mysidia->input->post("category")) {
+            throw new BlankFieldException("category");
+        }
+        if (!$mysidia->input->post("itemname")) {
+            throw new BlankFieldException("itemname");
+        }
+        if (!$mysidia->input->post("imageurl") and $mysidia->input->post("existingimageurl") == "none") {
+            throw new BlankFieldException("images");
+        }
         if ($this->action == "add") {
             $itemExist = $mysidia->db->select("items", ["id"], "itemname = :itemname", ["itemname" => $mysidia->input->post("itemname")])->fetchObject();
-            if ($itemExist) throw new DuplicateIDException("duplicate");
+            if ($itemExist) {
+                throw new DuplicateIDException("duplicate");
+            }
         }
     }
 }

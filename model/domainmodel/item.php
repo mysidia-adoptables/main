@@ -9,7 +9,6 @@ use Resource\Native\MysString;
 
 class Item extends Model
 {
-
     protected $id;
     protected $category;
     protected $itemname;
@@ -29,11 +28,15 @@ class Item extends Model
     {
         // Fetch the database info into object property
         $mysidia = Registry::get("mysidia");
-        if ($iteminfo instanceof MysString) $iteminfo = $iteminfo->getValue();
+        if ($iteminfo instanceof MysString) {
+            $iteminfo = $iteminfo->getValue();
+        }
         if (!$dto) {
             $whereclause = (is_numeric($iteminfo)) ? "id = :iteminfo" : "itemname = :iteminfo";
             $dto = $mysidia->db->select("items", [], $whereclause, ["iteminfo" => $iteminfo])->fetchObject();
-            if (!is_object($dto)) throw new ItemException("The item specified is invalid...");
+            if (!is_object($dto)) {
+                throw new ItemException("The item specified is invalid...");
+            }
         }
         parent::__construct($dto);
     }
@@ -55,13 +58,17 @@ class Item extends Model
 
     public function getImageURL($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->imageurl);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->imageurl);
+        }
         return $this->imageurl;
     }
 
     public function getFunction($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new ItemFunction($this->function);
+        if ($fetchMode == Model::MODEL) {
+            return new ItemFunction($this->function);
+        }
         return $this->function;
     }
 
@@ -77,8 +84,11 @@ class Item extends Model
 
     public function getShop($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new ItemShop($this->shop);
-        else return $this->shop;
+        if ($fetchMode == Model::MODEL) {
+            return new ItemShop($this->shop);
+        } else {
+            return $this->shop;
+        }
     }
 
     public function getPrice()
@@ -140,7 +150,9 @@ class Item extends Model
                 break;
             default:
                 $target = explode(",", (string) $this->target);
-                if (in_array($id, $target)) $usable = true;
+                if (in_array($id, $target)) {
+                    $usable = true;
+                }
         }
         return $usable;
     }

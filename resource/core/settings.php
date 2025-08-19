@@ -2,7 +2,8 @@
 
 namespace Resource\Core;
 
-use Exception, SplFileInfo;
+use Exception;
+use SplFileInfo;
 
 abstract class Settings extends Core
 {
@@ -39,9 +40,13 @@ abstract class Settings extends Core
 
     private function getMode($object)
     {
-        if ($object instanceof SplFileInfo) return "config";
-        elseif ($object instanceof Database) return "database";
-        else return null;
+        if ($object instanceof SplFileInfo) {
+            return "config";
+        } elseif ($object instanceof Database) {
+            return "database";
+        } else {
+            return null;
+        }
     }
 
     abstract public function fetch($object);

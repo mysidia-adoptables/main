@@ -17,7 +17,6 @@ namespace Resource\GUI\Component;
  */
 class Option extends Accessory
 {
-
     /**
      * The text property, stores the text visible to the user from this option.
      * @access protected
@@ -64,13 +63,21 @@ class Option extends Accessory
     public function __construct($text = "", $value = "", $event = "")
     {
         parent::__construct($value);
-        if (!empty($text)) $this->setText($text);
+        if (!empty($text)) {
+            $this->setText($text);
+        }
 
-        if (!empty($value)) $this->setValue($value);
-        elseif (!empty($text) and empty($value)) $this->setValue($text);
-        else $this->value = "";
+        if (!empty($value)) {
+            $this->setValue($value);
+        } elseif (!empty($text) and empty($value)) {
+            $this->setValue($text);
+        } else {
+            $this->value = "";
+        }
 
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
         $this->setLineBreak(false);
         $this->containers = ["DataList", "DropdownList", "SelectList"];
     }

@@ -14,7 +14,6 @@ use Resource\Exception\NoPermissionException;
 
 class LinksController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -32,7 +31,7 @@ class LinksController extends AppController
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/links", $mysidia->input->get("page"));
         $prefix = constant("PREFIX");
         $stmt = $mysidia->db->query("SELECT subcat.*,parentcat.linktext as parentname FROM {$prefix}links as subcat LEFT JOIN {$prefix}links as parentcat ON parentcat.id=subcat.linkparent ORDER BY subcat.id ASC LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $links = new ArrayList;
+        $links = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $links->add(new Link($dto->id, $dto));
         }
@@ -44,7 +43,9 @@ class LinksController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
-            if (!$mysidia->input->post("linktext") || !$mysidia->input->post("linkurl")) throw new BlankFieldException("global_blank");
+            if (!$mysidia->input->post("linktext") || !$mysidia->input->post("linkurl")) {
+                throw new BlankFieldException("global_blank");
+            }
             $mysidia->db->insert("links", ["id" => null, "linktype" => $mysidia->input->post("linktype"), "linktext" => $mysidia->input->post("linktext"), "linkurl" => $mysidia->input->post("linkurl"), "linkparent" => (int)$mysidia->input->post("linkparent"), "linkorder" => (int)$mysidia->input->post("linkorder")]);
         }
     }
@@ -52,7 +53,9 @@ class LinksController extends AppController
     public function edit($lid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$lid) return $this->index();
+        if (!$lid) {
+            return $this->index();
+        }
         try {
             $link = new Link($lid);
             if ($mysidia->input->post("submit")) {
@@ -68,8 +71,9 @@ class LinksController extends AppController
     public function delete($lid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$lid) $this->index();
-        else {
+        if (!$lid) {
+            $this->index();
+        } else {
             $link = new Link($lid);
             $mysidia->db->delete("links", "id = '{$link->getID()}'");
         }

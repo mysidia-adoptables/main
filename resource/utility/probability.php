@@ -20,7 +20,6 @@ use Resource\Native\MysObject;
  */
 final class Probability extends MysObject
 {
-
     /**
      * This will hold our possible outcomes along with their probabilities.
      * I store them with the key being the name of the event, and the value. it's probability to show up. $this->events['name'] = probability
@@ -37,7 +36,9 @@ final class Probability extends MysObject
      */
     public function __construct($events = "")
     {
-        if ($events instanceof ArrayObject) $this->events = $events->getArrayCopy();
+        if ($events instanceof ArrayObject) {
+            $this->events = $events->getArrayCopy();
+        }
     }
 
     /**
@@ -63,7 +64,9 @@ final class Probability extends MysObject
      */
     public function removeEvent($value)
     {
-        if (array_key_exists($value, $this->events)) unset($this->events[$value]);
+        if (array_key_exists($value, $this->events)) {
+            unset($this->events[$value]);
+        }
     }
 
     /**
@@ -86,7 +89,9 @@ final class Probability extends MysObject
 
             // Loop through probabilities, greatest to lowest.
             foreach ($events as $event => $probability) {
-                if ($probability <= $rand) return $event;
+                if ($probability <= $rand) {
+                    return $event;
+                }
             }
         } else {
             // Set up an empty array to hold the values.

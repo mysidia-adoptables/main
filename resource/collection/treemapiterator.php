@@ -20,7 +20,6 @@ use Resource\Exception\NosuchElementException;
  */
 abstract class TreeMapIterator extends CollectionIterator
 {
-
     /**
      * The current property, it specifies the current Entry to return.
      * @access private
@@ -46,8 +45,7 @@ abstract class TreeMapIterator extends CollectionIterator
          * @access private
          */
         private MapEntry $next
-    )
-    {
+    ) {
     }
 
     /**
@@ -67,7 +65,7 @@ abstract class TreeMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function hasNext()
+    final public function hasNext()
     {
         return ($this->next != null);
     }
@@ -79,10 +77,12 @@ abstract class TreeMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function nextEntry()
+    final public function nextEntry()
     {
         $entry = $this->next;
-        if ($entry == null) throw new NosuchElementException;
+        if ($entry == null) {
+            throw new NosuchElementException();
+        }
         $this->next = $this->map->successor($entry);
         $this->current = $entry;
         return $entry;
@@ -95,10 +95,12 @@ abstract class TreeMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function prevEntry()
+    final public function prevEntry()
     {
         $entry = $this->next;
-        if ($entry == null) throw new NosuchElementException;
+        if ($entry == null) {
+            throw new NosuchElementException();
+        }
         $this->next = $this->map->predecessor($entry);
         $this->current = $entry;
         return $entry;
@@ -111,8 +113,12 @@ abstract class TreeMapIterator extends CollectionIterator
      */
     public function remove()
     {
-        if ($this->current == null) throw new IllegalStateException;
-        if ($this->current->getLeft() != null and $this->current->getRight() != null) $this->next = $this->current;
+        if ($this->current == null) {
+            throw new IllegalStateException();
+        }
+        if ($this->current->getLeft() != null and $this->current->getRight() != null) {
+            $this->next = $this->current;
+        }
         $this->map->deleteEntry($this->current);
         $this->current = null;
     }

@@ -8,7 +8,7 @@ $lang['default'] = "Here you can edit the content that appears on your site.
 					You can also create new pages as needed below.<br /><br />
 					<b><a href='add'><img src='../../templates/icons/add.gif' border=0> Add a new page</a></b>
 					<p><b><u>Your Existing Pages:</u></b></p>";
-$lang['default_none'] = "Currently there is no custom pages created.";					
+$lang['default_none'] = "Currently there is no custom pages created.";
 $lang['add_title'] = "Create a new page";
 $lang['add'] = "Here you can create a new page for your site.  You can use the buttons above the textarea below to insert BBCODE into the form.<br />";
 $lang['explain'] = "<br /><u>Pages will appear at:</u><br />";
@@ -22,7 +22,7 @@ $lang['edit'] = "Here you can edit an existing page.  Use the text editor below 
 				 You may use some limited BBCodes in the box below.<br />";
 $lang['editing'] = "<b><u>Currently Editing Page:</u></b>";
 $lang['edited_title'] = "Page Updated Successfully";
-$lang['edited'] = "<a href='../edit'>Click Here</a> to return to the content manager.";		
+$lang['edited'] = "<a href='../edit'>Click Here</a> to return to the content manager.";
 $lang['delete_title'] = "Page Deleted Successfully";
 $lang['delete'] = "The page has been deleted.<br /><br /><a href='../../index'>ACP Home</a>";
 $lang['url'] = "You have yet to enter a url for the page, please go back and fill in the blank.";

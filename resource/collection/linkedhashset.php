@@ -16,11 +16,10 @@ namespace Resource\Collection;
  */
 class LinkedHashSet extends HashSet
 {
-
     /**
      * serialID constant, it serves as identifier of the object being LinkedHashSet.
      */
-    const SERIALID = "-2851667679971038690L";
+    public const SERIALID = "-2851667679971038690L";
 
     /**
      * Constructor of LinkedHashSet Class, it initializes the LinkedHashSet given its capacity or another Collection Object.
@@ -32,6 +31,8 @@ class LinkedHashSet extends HashSet
     public function __construct($param = HashMap::DEFAULTCAPACITY, $loadFactor = HashMap::DEFAULTLOAD)
     {
         parent::__construct($param, $loadFactor, true);
-        if ($param instanceof Collective) $this->addAll($param);
+        if ($param instanceof Collective) {
+            $this->addAll($param);
+        }
     }
 }

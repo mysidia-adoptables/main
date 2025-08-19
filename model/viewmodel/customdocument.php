@@ -17,7 +17,6 @@ use Service\Validator\PromocodeValidator;
 
 class CustomDocument extends WidgetViewModel implements Initializable
 {
-
     /**
      * Constructor of Menu Class, it initializes basic custom document properties.
      * @param Content $content
@@ -51,7 +50,7 @@ class CustomDocument extends WidgetViewModel implements Initializable
      */
     protected function setDivision(Component $document)
     {
-        $this->division = new Division;
+        $this->division = new Division();
         $this->division->setName("document");
         $this->division->add($document);
     }
@@ -108,19 +107,25 @@ class CustomDocument extends WidgetViewModel implements Initializable
 
     protected function checkAccess()
     {
-        if (!$this->model->hasDisplayConditions()) return true;
+        if (!$this->model->hasDisplayConditions()) {
+            return true;
+        }
         $mysidia = Registry::get("mysidia");
         if ($this->model->getCode()) {
             if ($mysidia->input->post("promocode")) {
                 // A promocode has been entered, now process the request.
                 $code = $this->model->getCode();
-                if ($code != $mysidia->input->post("promocode")) throw new NoPermissionException("wrongcode");
+                if ($code != $mysidia->input->post("promocode")) {
+                    throw new NoPermissionException("wrongcode");
+                }
 
                 $promo = new Promocode($code);
                 $validator = new PromocodeValidator($promo, new ArrayObject(["user", "number", "date"]));
                 $validator->validate();
                 // Now execute the action of using this promocode.
-                if (!$mysidia->input->post("item")) $promo->execute();
+                if (!$mysidia->input->post("item")) {
+                    $promo->execute();
+                }
             } else {
                 // Show a basic form for user to enter promocode.
                 $promoform = "<br><form name='form1' method='post' action='{$this->getPage()}'><p>Your Promo Code: 
@@ -132,24 +137,34 @@ class CustomDocument extends WidgetViewModel implements Initializable
         }
         if ($this->model->getTime()) {
             $time = $this->model->getTime();
-            $current = new Date;
-            if ($current < $time) throw new NoPermissionException("wrongtime");
+            $current = new Date();
+            if ($current < $time) {
+                throw new NoPermissionException("wrongtime");
+            }
         }
         if ($this->model->getGroup()) {
             $group = $mysidia->user->getUsergroup();
-            if ($group != $this->model->getGroup()) throw new NoPermissionException("notgroup");
+            if ($group != $this->model->getGroup()) {
+                throw new NoPermissionException("notgroup");
+            }
         }
         if ($this->model->getItem()) {
             if ($mysidia->input->post("item")) {
                 // An item has been selected, now process the request.
                 $itemID = $this->model->getItem();
-                if ($mysidia->input->post("item") != $itemID) throw new NoPermissionException("wrongitem");
+                if ($mysidia->input->post("item") != $itemID) {
+                    throw new NoPermissionException("wrongitem");
+                }
 
                 $item = new OwnedItem($itemID, $mysidia->user->getID());
-                if ($item->getQuantity() < 1) throw new NoPermissionException("noitem");
+                if ($item->getQuantity() < 1) {
+                    throw new NoPermissionException("noitem");
+                }
 
                 // Consume one quantity of this item if it is consumable.
-                if ($item->isConsumable()) $item->remove();
+                if ($item->isConsumable()) {
+                    $item->remove();
+                }
             } else {
                 // Show a basic form for user to choose an item.
                 $itemform = "<form name='form1' method='post' action='{$this->getPage()}'><br>

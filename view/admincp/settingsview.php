@@ -19,7 +19,6 @@ use Service\Helper\PluginTableHelper;
 
 class SettingsView extends View
 {
-
     public function globals()
     {
         $mysidia = Registry::get("mysidia");
@@ -59,7 +58,7 @@ class SettingsView extends View
 
         $document->setTitle($this->lang->system_title);
         $document->addLangvar($this->lang->system);
-        $enabled = new LinkedHashMap;
+        $enabled = new LinkedHashMap();
         $enabled->put(new MysString(" Yes"), new MysString("enabled"));
         $enabled->put(new MysString(" No"), new MysString("disabled"));
 
@@ -132,16 +131,16 @@ class SettingsView extends View
         $document->setTitle($this->lang->pound_title);
         $document->addLangvar($this->lang->pound);
         $poundsettings = $this->getField("poundsettings");
-        $enabled = new LinkedHashMap;
+        $enabled = new LinkedHashMap();
         $enabled->put(new MysString(" Yes"), new MysString("yes"));
         $enabled->put(new MysString(" No"), new MysString("no"));
-        $cost = new LinkedHashMap;
+        $cost = new LinkedHashMap();
         $cost->put(new MysString(" Increment"), new MysString("increment"));
         $cost->put(new MysString(" Percent"), new MysString("percent"));
-        $level = new LinkedHashMap;
+        $level = new LinkedHashMap();
         $level->put(new MysString(" Increment"), new MysString("increment"));
         $level->put(new MysString(" Multiply"), new MysString("multiply"));
-        $rename = new LinkedHashMap;
+        $rename = new LinkedHashMap();
         $rename->put(new MysString(" Original Owner Only"), new MysString("yes"));
         $rename->put(new MysString(" Everyone"), new MysString("no"));
 
@@ -188,7 +187,7 @@ class SettingsView extends View
         }
 
         $document->addLangvar($this->lang->plugins);
-        $helper = new PluginTableHelper;
+        $helper = new PluginTableHelper();
         $pluginTable = new TableBuilder("plugins");
         $pluginTable->setAlign(new Align("center", "middle"));
         $pluginTable->buildHeaders("ID", "Name", "Link", "Status", "Action");
@@ -198,7 +197,7 @@ class SettingsView extends View
         $iterator = $plugins->iterator();
         while ($iterator->hasNext()) {
             $plugin = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($plugin->getID()));
             $cells->add(new TCell($plugin->getPluginName()));
             $cells->add(new Link($plugin->getLinkURL(), $plugin->getLinkText()));

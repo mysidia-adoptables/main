@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Config
  *
@@ -19,8 +20,8 @@
  * @property Smarty_Config_Compiled $compiled
  * @ignore
  */
-class Smarty_Internal_Config {
-
+class Smarty_Internal_Config
+{
     /**
      * Compiled config file
      *
@@ -71,8 +72,7 @@ class Smarty_Internal_Config {
          * Object of config var storage
          */
         public $data = null
-    )
-    {
+    ) {
     }
 
     /**
@@ -130,7 +130,7 @@ class Smarty_Internal_Config {
      */
     public function mustCompile()
     {
-        return $this->mustCompile ?? $this->mustCompile = ($this->smarty->force_compile || $this->getCompiledTimestamp () === false || $this->smarty->compile_check && $this->getCompiledTimestamp () < $this->source->timestamp);
+        return $this->mustCompile ?? $this->mustCompile = ($this->smarty->force_compile || $this->getCompiledTimestamp() === false || $this->smarty->compile_check && $this->getCompiledTimestamp() < $this->source->timestamp);
     }
 
     /**
@@ -285,5 +285,3 @@ class Smarty_Internal_Config {
     }
 
 }
-
-?>

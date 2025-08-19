@@ -21,21 +21,20 @@ use Resource\Utility\Comparative;
  */
 class TreeMap extends Map implements NavigableMappable
 {
-
     /**
      * serialID constant, it serves as identifier of the object being TreeMap.
      */
-    const SERIALID = "919286545866124006L";
+    public const SERIALID = "919286545866124006L";
 
     /**
      * red constant, it defines the red constant for red-black mechanism.
      */
-    const RED = false;
+    public const RED = false;
 
     /**
      * black constant, it defines the black constant for red-black mechanism.
      */
-    const BLACK = true;
+    public const BLACK = true;
 
     /**
      * The comparator property, it specifies the comparator object used to maintain order in this TreeMap.
@@ -88,12 +87,16 @@ class TreeMap extends Map implements NavigableMappable
      */
     public function __construct(Mappable $map = null, Comparative $comparator = null)
     {
-        if ($comparator != null) $this->comparator = $comparator;
+        if ($comparator != null) {
+            $this->comparator = $comparator;
+        }
         if ($map != null) {
             if ($map instanceof SortedMappable) {
                 $this->comparator = $map->comparator();
                 $this->build($map->size(), $map->iterator());
-            } else $this->putAll($map);
+            } else {
+                $this->putAll($map);
+            }
         }
     }
 
@@ -137,7 +140,9 @@ class TreeMap extends Map implements NavigableMappable
      */
     private function buildTree($level = 0, $lower = 0, $higher = 0, $redLevel = 0, Iterator $iterator = null, Objective $default = null)
     {
-        if ($lower > $higher) return null;
+        if ($lower > $higher) {
+            return null;
+        }
         $mid = ($lower + $higher) >> 1;
         $left = null;
         if ($lower < $mid) {
@@ -153,10 +158,14 @@ class TreeMap extends Map implements NavigableMappable
                 $key = $iterator->next();
                 $value = $default;
             }
-        } else throw new UnsupportedOperationException;
+        } else {
+            throw new UnsupportedOperationException();
+        }
 
         $middle = new TreeMapEntry($key, $value, null);
-        if ($level == $redLevel) $middle->setColor(self::RED);
+        if ($level == $redLevel) {
+            $middle->setColor(self::RED);
+        }
         if ($left != null) {
             $middle->setLeft($left);
             $left->setParent($middle);
@@ -232,7 +241,7 @@ class TreeMap extends Map implements NavigableMappable
      * @return int
      * @final
      */
-    public final function compare(Objective $key, Objective $key2)
+    final public function compare(Objective $key, Objective $key2)
     {
         return (($this->comparator == null) ? $key->compareTo($key2) : $this->comparator->compare($key, $key2));
     }
@@ -246,7 +255,9 @@ class TreeMap extends Map implements NavigableMappable
     private function computeRedLevel($size = 0)
     {
         $level = 0;
-        for ($m = $size - 1; $m >= 0; $m = (int)($m / 2 - 1)) $level++;
+        for ($m = $size - 1; $m >= 0; $m = (int)($m / 2 - 1)) {
+            $level++;
+        }
         return $level;
     }
 
@@ -270,7 +281,9 @@ class TreeMap extends Map implements NavigableMappable
     public function containsValue(Objective $value = null)
     {
         for ($entry = $this->getFirstEntry(); $entry != null; $entry = $this->successor($entry)) {
-            if ($this->valueEquals($value, $entry->getValue())) return true;
+            if ($this->valueEquals($value, $entry->getValue())) {
+                return true;
+            }
         }
         return false;
     }
@@ -294,20 +307,32 @@ class TreeMap extends Map implements NavigableMappable
 
         if ($replacement != null) {
             $replacement->setParent($entry->getParent());
-            if ($entry->getParent() == null) $this->root = $replacement;
-            elseif ($entry == $entry->getParent()->getLeft()) $entry->getParent()->setLeft($replacement);
-            else $entry->getParent()->setRight($replacement);
+            if ($entry->getParent() == null) {
+                $this->root = $replacement;
+            } elseif ($entry == $entry->getParent()->getLeft()) {
+                $entry->getParent()->setLeft($replacement);
+            } else {
+                $entry->getParent()->setRight($replacement);
+            }
 
             $entry->setLeft(null);
             $entry->setRight(null);
             $entry->setParent(null);
-            if ($entry->getColor() == self::BLACK) $this->fixDeletion($replacement);
-        } elseif ($entry->getParent() == null) $this->root = null;
-        else {
-            if ($entry->getColor() == self::BLACK) $this->fixDeletion($entry);
+            if ($entry->getColor() == self::BLACK) {
+                $this->fixDeletion($replacement);
+            }
+        } elseif ($entry->getParent() == null) {
+            $this->root = null;
+        } else {
+            if ($entry->getColor() == self::BLACK) {
+                $this->fixDeletion($entry);
+            }
             if ($entry->getParent() != null) {
-                if ($entry == $entry->getParent()->getLeft()) $entry->getParent()->setLeft(null);
-                elseif ($entry == $entry->getParent()->getRight()) $entry->getParent()->setRight(null);
+                if ($entry == $entry->getParent()->getLeft()) {
+                    $entry->getParent()->setLeft(null);
+                } elseif ($entry == $entry->getParent()->getRight()) {
+                    $entry->getParent()->setRight(null);
+                }
                 $entry->setParent(null);
             }
         }
@@ -553,11 +578,15 @@ class TreeMap extends Map implements NavigableMappable
         while ($entry != null) {
             $comparison = $this->compare($key, $entry->getKey());
             if ($comparison < 0) {
-                if ($entry->getLeft() != null) $entry = $entry->getLeft();
-                else return $entry;
+                if ($entry->getLeft() != null) {
+                    $entry = $entry->getLeft();
+                } else {
+                    return $entry;
+                }
             } elseif ($comparison > 0) {
-                if ($entry->getRight() != null) $entry = $entry->getRight();
-                else {
+                if ($entry->getRight() != null) {
+                    $entry = $entry->getRight();
+                } else {
                     $parent = $entry->getParent();
                     $child = $entry;
                     while ($parent != null and $child == $parent->getRight()) {
@@ -566,7 +595,9 @@ class TreeMap extends Map implements NavigableMappable
                     }
                     return $parent;
                 }
-            } else return $entry;
+            } else {
+                return $entry;
+            }
         }
         return null;
     }
@@ -579,15 +610,21 @@ class TreeMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function getEntry(Objective $key)
+    final public function getEntry(Objective $key)
     {
-        if ($this->comparator != null) return $this->getEntryComparator();
+        if ($this->comparator != null) {
+            return $this->getEntryComparator();
+        }
         $entry = $this->root;
         while ($entry != null) {
             $comparison = $key->compareTo($entry->getKey());
-            if ($comparison < 0) $entry = $entry->getLeft();
-            elseif ($comparison > 0) $entry = $entry->getRight();
-            else return $entry;
+            if ($comparison < 0) {
+                $entry = $entry->getLeft();
+            } elseif ($comparison > 0) {
+                $entry = $entry->getRight();
+            } else {
+                return $entry;
+            }
         }
         return null;
     }
@@ -600,15 +637,19 @@ class TreeMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function getEntryComparator(Objective $key)
+    final public function getEntryComparator(Objective $key)
     {
         $comparator = $this->comparator;
         if ($comparator instanceof Comparative) {
             $entry = $this->root;
             $comparison = $comparator->compare($key, $entry->getKey());
-            if ($comparison < 0) $entry = $entry->getLeft();
-            elseif ($comparison > 0) $entry = $entry->getRight();
-            else return $entry;
+            if ($comparison < 0) {
+                $entry = $entry->getLeft();
+            } elseif ($comparison > 0) {
+                $entry = $entry->getRight();
+            } else {
+                return $entry;
+            }
         }
         return null;
     }
@@ -621,11 +662,13 @@ class TreeMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function getFirstEntry(Objective $key = null)
+    final public function getFirstEntry(Objective $key = null)
     {
         $entry = $this->root;
         if ($entry != null) {
-            while ($entry->getLeft() != null) $entry = $entry->getLeft();
+            while ($entry->getLeft() != null) {
+                $entry = $entry->getLeft();
+            }
         }
         return $entry;
     }
@@ -642,11 +685,15 @@ class TreeMap extends Map implements NavigableMappable
         while ($entry != null) {
             $comparison = $this->compare($key, $entry->getKey());
             if ($comparison > 0) {
-                if ($entry->getRight() != null) $entry = $entry->getRight();
-                else return $entry;
+                if ($entry->getRight() != null) {
+                    $entry = $entry->getRight();
+                } else {
+                    return $entry;
+                }
             } elseif ($comparison < 0) {
-                if ($entry->getLeft() != null) $entry = $entry->getLeft();
-                else {
+                if ($entry->getLeft() != null) {
+                    $entry = $entry->getLeft();
+                } else {
                     $parent = $entry->getParent();
                     $child = $entry;
                     while ($parent != null and $child == $parent->getLeft()) {
@@ -655,7 +702,9 @@ class TreeMap extends Map implements NavigableMappable
                     }
                     return $parent;
                 }
-            } else return $entry;
+            } else {
+                return $entry;
+            }
         }
         return null;
     }
@@ -672,11 +721,15 @@ class TreeMap extends Map implements NavigableMappable
         while ($entry != null) {
             $comparison = $this->compare($key, $entry->getKey());
             if ($comparison < 0) {
-                if ($entry->getLeft() != null) $entry = $entry->getLeft();
-                else return $entry;
+                if ($entry->getLeft() != null) {
+                    $entry = $entry->getLeft();
+                } else {
+                    return $entry;
+                }
             } else {
-                if ($entry->getRight() != null) $entry = $entry->getRight();
-                else {
+                if ($entry->getRight() != null) {
+                    $entry = $entry->getRight();
+                } else {
                     $parent = $entry->getParent();
                     $child = $entry;
                     while ($parent != null and $child == $parent->getRight()) {
@@ -697,11 +750,13 @@ class TreeMap extends Map implements NavigableMappable
      * @return MapEntry
      * @final
      */
-    public final function getLastEntry()
+    final public function getLastEntry()
     {
         $entry = $this->root;
         if ($entry != null) {
-            while ($entry->getRight() != null) $entry = $entry->getRight();
+            while ($entry->getRight() != null) {
+                $entry = $entry->getRight();
+            }
         }
         return $entry;
     }
@@ -718,11 +773,15 @@ class TreeMap extends Map implements NavigableMappable
         while ($entry != null) {
             $comparison = $this->compare($key, $entry->getKey());
             if ($comparison > 0) {
-                if ($entry->getRight() != null) $entry = $entry->getRight();
-                else return $entry;
+                if ($entry->getRight() != null) {
+                    $entry = $entry->getRight();
+                } else {
+                    return $entry;
+                }
             } else {
-                if ($entry->getLeft() != null) $entry = $entry->getLeft();
-                else {
+                if ($entry->getLeft() != null) {
+                    $entry = $entry->getLeft();
+                } else {
                     $parent = $entry->getParent();
                     $child = $entry;
                     while ($parent != null and $child == $parent->getLeft()) {
@@ -791,9 +850,12 @@ class TreeMap extends Map implements NavigableMappable
      */
     public function key(Entry $entry = null, $null = false)
     {
-        if ($null) return (($entry == null) ? null : $entry->getKey());
-        else {
-            if ($entry == null) throw new NosuchElementException;
+        if ($null) {
+            return (($entry == null) ? null : $entry->getKey());
+        } else {
+            if ($entry == null) {
+                throw new NosuchElementException();
+            }
             return $entry->getKey();
         }
     }
@@ -902,7 +964,9 @@ class TreeMap extends Map implements NavigableMappable
     {
         $entry = $this->getFirstEntry();
         $exportEntry = $this->exportEntry($entry);
-        if ($entry != null) $this->deleteEntry($entry);
+        if ($entry != null) {
+            $this->deleteEntry($entry);
+        }
         return $exportEntry;
     }
 
@@ -915,7 +979,9 @@ class TreeMap extends Map implements NavigableMappable
     {
         $entry = $this->getLastEntry();
         $exportEntry = $this->exportEntry($entry);
-        if ($entry != null) $this->deleteEntry($entry);
+        if ($entry != null) {
+            $this->deleteEntry($entry);
+        }
         return $exportEntry;
     }
 
@@ -927,10 +993,14 @@ class TreeMap extends Map implements NavigableMappable
      */
     public function predecessor(Entry $entry = null)
     {
-        if ($entry == null) return null;
+        if ($entry == null) {
+            return null;
+        }
         if ($entry->getLeft() != null) {
             $parent = $entry->getLeft();
-            while ($parent->getRight() != null) $parent = $parent->getRight();
+            while ($parent->getRight() != null) {
+                $parent = $parent->getRight();
+            }
         } else {
             $parent = $entry->getParent();
             $child = $entry;
@@ -963,23 +1033,34 @@ class TreeMap extends Map implements NavigableMappable
             do {
                 $parent = $entry;
                 $comparison = $comparator->compare($key, $entry->getKey());
-                if ($comparison < 0) $entry = $entry->getLeft();
-                elseif ($comparison > 0) $entry = $entry->getRight();
-                else $entry->setValue($value);
+                if ($comparison < 0) {
+                    $entry = $entry->getLeft();
+                } elseif ($comparison > 0) {
+                    $entry = $entry->getRight();
+                } else {
+                    $entry->setValue($value);
+                }
             } while ($entry != null);
         } else {
             do {
                 $parent = $entry;
                 $comparison = $key->compareTo($entry->getKey());
-                if ($comparison < 0) $entry = $entry->getLeft();
-                elseif ($comparison > 0) $entry = $entry->getRight();
-                else $entry->setValue($value);
+                if ($comparison < 0) {
+                    $entry = $entry->getLeft();
+                } elseif ($comparison > 0) {
+                    $entry = $entry->getRight();
+                } else {
+                    $entry->setValue($value);
+                }
             } while ($entry != null);
         }
 
         $newEntry = new TreeMapEntry($key, $value, $parent);
-        if ($comparison < 0) $parent->setLeft($newEntry);
-        else $parent->setRight($newEntry);
+        if ($comparison < 0) {
+            $parent->setLeft($newEntry);
+        } else {
+            $parent->setRight($newEntry);
+        }
         $this->fixInsertion($newEntry);
         $this->size++;
         return null;
@@ -1009,7 +1090,9 @@ class TreeMap extends Map implements NavigableMappable
     public function remove(Objective $key = null): bool
     {
         $entry = $this->getEntry($key);
-        if ($entry == null) return null;
+        if ($entry == null) {
+            return null;
+        }
         $oldValue = $entry->getValue();
         $this->deleteEntry($entry);
         return $oldValue;
@@ -1036,14 +1119,22 @@ class TreeMap extends Map implements NavigableMappable
     {
         if ($entry != null) {
             $right = $entry->getRight();
-            if (!$right) return;
+            if (!$right) {
+                return;
+            }
             $entry->setRight($right->getLeft());
-            if ($right->getLeft() != null) $right->getLeft()->setParent($entry);
+            if ($right->getLeft() != null) {
+                $right->getLeft()->setParent($entry);
+            }
             $right->setParent($entry->getParent());
 
-            if ($entry->getParent() == null) $this->root = $right;
-            elseif ($entry->getParent()->getLeft() == $entry) $entry->getParent()->setLeft($right);
-            else $entry->getParent()->setRight($right);
+            if ($entry->getParent() == null) {
+                $this->root = $right;
+            } elseif ($entry->getParent()->getLeft() == $entry) {
+                $entry->getParent()->setLeft($right);
+            } else {
+                $entry->getParent()->setRight($right);
+            }
             $right->setLeft($entry);
             $entry->setParent($right);
         }
@@ -1059,14 +1150,22 @@ class TreeMap extends Map implements NavigableMappable
     {
         if ($entry != null) {
             $left = $entry->getLeft();
-            if (!$left) return;
+            if (!$left) {
+                return;
+            }
             $entry->setLeft($left->getRight());
-            if ($left->getRight() != null) $left->getRight()->setParent($entry);
+            if ($left->getRight() != null) {
+                $left->getRight()->setParent($entry);
+            }
             $left->setParent($entry->getParent());
 
-            if ($entry->getParent() == null) $this->root = $left;
-            elseif ($entry->getParent()->getRight() == $entry) $entry->getParent()->setRight($left);
-            else $entry->getParent()->setLeft($left);
+            if ($entry->getParent() == null) {
+                $this->root = $left;
+            } elseif ($entry->getParent()->getRight() == $entry) {
+                $entry->getParent()->setRight($left);
+            } else {
+                $entry->getParent()->setLeft($left);
+            }
             $left->setRight($entry);
             $entry->setParent($left);
         }
@@ -1080,7 +1179,9 @@ class TreeMap extends Map implements NavigableMappable
      */
     private function setColor(Entry $entry = null, $color = self::BLACK)
     {
-        if ($entry != null) $entry->setColor($color);
+        if ($entry != null) {
+            $entry->setColor($color);
+        }
     }
 
     /**
@@ -1128,10 +1229,13 @@ class TreeMap extends Map implements NavigableMappable
      */
     public function successor(Entry $entry = null)
     {
-        if ($entry == null) return null;
-        elseif ($entry->getRight() != null) {
+        if ($entry == null) {
+            return null;
+        } elseif ($entry->getRight() != null) {
             $parent = $entry->getRight();
-            while ($parent->getLeft() != null) $parent = $parent->getLeft();
+            while ($parent->getLeft() != null) {
+                $parent = $parent->getLeft();
+            }
         } else {
             $parent = $entry->getParent();
             $child = $entry;

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile ForeachSection
  * Shared methods for {foreach} {section} tags
@@ -16,7 +17,6 @@
  */
 class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_CompileBase
 {
-
     /**
      * Preg search pattern
      *
@@ -176,8 +176,11 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
                     if ((isset($nextCompiler->smarty->autoload_filters[ 'pre' ]) ||
                          isset($nextCompiler->smarty->registered_filters[ 'pre' ]))
                     ) {
-                        $_content = $nextCompiler->smarty->ext->_filterHandler->runFilter('pre', $_content,
-                                                                                          $nextCompiler->template);
+                        $_content = $nextCompiler->smarty->ext->_filterHandler->runFilter(
+                            'pre',
+                            $_content,
+                            $nextCompiler->template
+                        );
                     }
                     $this->matchProperty($_content);
                 }

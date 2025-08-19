@@ -11,7 +11,6 @@
  */
 class HTMLPurifier_Node_Text extends HTMLPurifier_Node
 {
-
     /**
      * PCDATA tag name compatible with DTD, see
      * HTMLPurifier_ChildDef_Custom for details.
@@ -30,13 +29,14 @@ class HTMLPurifier_Node_Text extends HTMLPurifier_Node
     public function __construct(public $data, /**
      * @type bool
      */
-    public $is_whitespace, $line = null, $col = null)
+        public $is_whitespace, $line = null, $col = null)
     {
         $this->line = $line;
         $this->col = $col;
     }
 
-    public function toTokenPair() {
+    public function toTokenPair()
+    {
         return [new HTMLPurifier_Token_Text($this->data, $this->line, $this->col), null];
     }
 }

@@ -17,7 +17,6 @@ use Resource\Native\MysObject;
  */
 final class MetaProperty extends MysObject
 {
-
     /**
      * The type property, it stores the type of a property/variable.
      * @access private

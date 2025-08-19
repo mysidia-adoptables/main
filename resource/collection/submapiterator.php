@@ -21,7 +21,6 @@ use Resource\Native\Objective;
  */
 abstract class SubMapIterator extends CollectionIterator
 {
-
     /**
      * The map property, it holds a reference to the SubMap object.
      * @access protected
@@ -82,7 +81,7 @@ abstract class SubMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function hasNext()
+    final public function hasNext()
     {
         return ($this->next != null and $this->next->getKey() != $this->fenceKey);
     }
@@ -94,10 +93,12 @@ abstract class SubMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function nextEntry()
+    final public function nextEntry()
     {
         $entry = $this->next;
-        if ($entry == null or $entry->getKey() == $this->fenceKey) throw new NosuchElementException;
+        if ($entry == null or $entry->getKey() == $this->fenceKey) {
+            throw new NosuchElementException();
+        }
         $map = $this->map->getMap();
         $this->next = $map->successor($entry);
         $this->current = $entry;
@@ -111,10 +112,12 @@ abstract class SubMapIterator extends CollectionIterator
      * @return Entry
      * @final
      */
-    public final function prevEntry()
+    final public function prevEntry()
     {
         $entry = $this->next;
-        if ($entry == null or $entry->getKey() == $this->fenceKey) throw new NosuchElementException;
+        if ($entry == null or $entry->getKey() == $this->fenceKey) {
+            throw new NosuchElementException();
+        }
         $map = $this->map->getMap();
         $this->next = $map->predecessor($entry);
         $this->current = $entry;
@@ -138,10 +141,14 @@ abstract class SubMapIterator extends CollectionIterator
      * @return void
      * @final
      */
-    public final function removeAscending()
+    final public function removeAscending()
     {
-        if ($this->current == null) throw new IllegalStateException;
-        if ($this->current->getLeft() != null and $this->current->getRight() != null) $this->next = $this->current;
+        if ($this->current == null) {
+            throw new IllegalStateException();
+        }
+        if ($this->current->getLeft() != null and $this->current->getRight() != null) {
+            $this->next = $this->current;
+        }
         $map = $this->map->getMap();
         $map->deleteEntry($this->current);
         $this->current = null;
@@ -154,9 +161,11 @@ abstract class SubMapIterator extends CollectionIterator
      * @return void
      * @final
      */
-    public final function removeDescending()
+    final public function removeDescending()
     {
-        if ($this->current == null) throw new IllegalStateException;
+        if ($this->current == null) {
+            throw new IllegalStateException();
+        }
         $map = $this->map->getMap();
         $map->deleteEntry($this->current);
         $this->current = null;

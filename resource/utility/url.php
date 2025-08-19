@@ -19,11 +19,10 @@ use Resource\Native\MysObject;
  */
 final class URL extends MysObject
 {
-
     /**
      * REGEX constant, it is used to identify valid and invalid url.
      */
-    const REGEX = "/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i";
+    public const REGEX = "/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i";
 
     /**
      * The scheme property, stores the scheme of the url.
@@ -82,7 +81,9 @@ final class URL extends MysObject
         }
 
         $this->url = (!preg_match(self::REGEX, $url)) ? $mysidia->path->getAbsolute() . $url : $url;
-        if ($parse) $this->parseURL();
+        if ($parse) {
+            $this->parseURL();
+        }
     }
 
     /**
@@ -154,9 +155,13 @@ final class URL extends MysObject
      */
     private function isValid($url)
     {
-        if (preg_match(self::REGEX, $url)) return true;
-        elseif (file_exists($url)) return true;
-        else return false;
+        if (preg_match(self::REGEX, $url)) {
+            return true;
+        } elseif (file_exists($url)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -170,9 +175,15 @@ final class URL extends MysObject
         $this->scheme = $url['scheme'];
         $this->host = $url['host'];
 
-        if (isset($url['path'])) $this->path = $url['path'];
-        if (isset($url['query'])) $this->query = $url['query'];
-        if (isset($url['fragment'])) $this->fragment = $url['fragment'];
+        if (isset($url['path'])) {
+            $this->path = $url['path'];
+        }
+        if (isset($url['query'])) {
+            $this->query = $url['query'];
+        }
+        if (isset($url['fragment'])) {
+            $this->fragment = $url['fragment'];
+        }
     }
 
     /**
@@ -193,7 +204,7 @@ final class URL extends MysObject
         }
         $queryString = ($this->queryString === null) ? trim($queryString, '&') : $this->queryString . $queryString;
         $url = $this->scheme . '://' . $this->host . $this->path . '?' . $query;
-        return new Self($url);
+        return new self($url);
     }
 
     /**

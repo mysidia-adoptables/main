@@ -7,8 +7,7 @@ use Resource\Utility\Date;
 
 abstract class User extends Model
 {
-
-    const IDKEY = "uid";
+    public const IDKEY = "uid";
     protected $uid;
     protected $username;
     protected $ip;
@@ -27,13 +26,18 @@ abstract class User extends Model
 
     public function getUsergroup($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Usergroup($this->usergroup);
-        else return $this->usergroup;
+        if ($fetchMode == Model::MODEL) {
+            return new Usergroup($this->usergroup);
+        } else {
+            return $this->usergroup;
+        }
     }
 
     public function getUsergroupName()
     {
-        if (!$this->usergroup) return null;
+        if (!$this->usergroup) {
+            return null;
+        }
         return $this->getUsergroup(Model::MODEL)->getGroupname();
     }
 

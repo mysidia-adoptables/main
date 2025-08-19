@@ -20,7 +20,6 @@ use Resource\Native\Objective;
  */
 abstract class SequentialList extends Lists
 {
-
     /**
      * The delete method, removes an Object at the supplied index and returns the deleted object.
      * @param int $index

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Config File Compiler
  * This is the config file compiler class. It calls the lexer and parser to
@@ -69,11 +70,12 @@ class Smarty_Internal_Config_File_Compiler
     public function __construct(/**
      * Lexer class name
      */
-    public $lexer_class, /**
+        public $lexer_class, /**
      * Parser class name
      */
-    public $parser_class, Smarty $smarty)
-    {
+        public $parser_class,
+        Smarty $smarty
+    ) {
         $this->smarty = $smarty;
         $this->smarty = $smarty;
         $this->config_data[ 'sections' ] = [];
@@ -94,15 +96,17 @@ class Smarty_Internal_Config_File_Compiler
             [$this->template->source->filepath, $this->template->source->getTimeStamp(),
                   $this->template->source->type];
         if ($this->smarty->debugging) {
-            if (!isset( $this->smarty->_debug)) {
+            if (!isset($this->smarty->_debug)) {
                 $this->smarty->_debug  = new Smarty_Internal_Debug();
             }
             $this->smarty->_debug->start_compile($this->template);
         }
         // init the lexer/parser to compile the config file
         /* @var Smarty_Internal_ConfigFileLexer $lex */
-        $lex = new $this->lexer_class(str_replace(["\r\n", "\r"], "\n", $template->source->getContent()) . "\n",
-                                      $this);
+        $lex = new $this->lexer_class(
+            str_replace(["\r\n", "\r"], "\n", $template->source->getContent()) . "\n",
+            $this
+        );
         /* @var Smarty_Internal_ConfigFileParser $parser */
         $parser = new $this->parser_class($lex, $this);
 

@@ -11,7 +11,6 @@
  */
 class Smarty_Internal_Undefined
 {
-
     /**
      * This function is executed automatically when a compiled or cached template file is included
      * - Decode saved properties from compiled template and cache files

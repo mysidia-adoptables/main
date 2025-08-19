@@ -10,7 +10,6 @@ use Resource\Native\MysString;
 
 class Adoptable extends Model
 {
-
     protected $id;
     protected $type;
     protected $class;
@@ -28,11 +27,15 @@ class Adoptable extends Model
     public function __construct($adoptinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($adoptinfo instanceof MysString) $adoptinfo = $adoptinfo->getValue();
+        if ($adoptinfo instanceof MysString) {
+            $adoptinfo = $adoptinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($adoptinfo) ? "id = :adoptinfo" : "type = :adoptinfo";
             $dto = $mysidia->db->select("adoptables", [], $whereClause, ["adoptinfo" => $adoptinfo])->fetchObject();
-            if (!is_object($dto)) throw new AdoptNotfoundException("Adoptable {$adoptinfo} does not exist...");
+            if (!is_object($dto)) {
+                throw new AdoptNotfoundException("Adoptable {$adoptinfo} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -59,7 +62,9 @@ class Adoptable extends Model
 
     public function getEggImage($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->eggimage);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->eggimage);
+        }
         return $this->eggimage;
     }
 
@@ -80,8 +85,11 @@ class Adoptable extends Model
 
     public function getShop($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new AdoptShop($this->shop);
-        else return $this->shop;
+        if ($fetchMode == Model::MODEL) {
+            return new AdoptShop($this->shop);
+        } else {
+            return $this->shop;
+        }
     }
 
     public function getCost()
@@ -91,13 +99,17 @@ class Adoptable extends Model
 
     public function getConditions()
     {
-        if (!$this->conditions) $this->conditions = new AdoptCondition($this);
+        if (!$this->conditions) {
+            $this->conditions = new AdoptCondition($this);
+        }
         return $this->conditions;
     }
 
     public function getLevel($level)
     {
-        if (!$this->levels) return new Level($this->id, $level);
+        if (!$this->levels) {
+            return new Level($this->id, $level);
+        }
         return $this->levels->get($level);
     }
 
@@ -105,9 +117,11 @@ class Adoptable extends Model
     {
         if (!$this->levels) {
             $mysidia = Registry::get("mysidia");
-            $this->levels = new ArrayList;
+            $this->levels = new ArrayList();
             $whereClause = "adopt = '{$this->id}'";
-            if (!$includeEgg) $whereClause .= " AND level != 0";
+            if (!$includeEgg) {
+                $whereClause .= " AND level != 0";
+            }
             $whereClause .= " ORDER BY level ASC";
             $num = $mysidia->db->select("levels", ["level"], $whereClause)->rowCount();
             $i = $includeEgg ? 0 : 1;
@@ -122,7 +136,7 @@ class Adoptable extends Model
     public function getAlternatesForLevel($level)
     {
         $mysidia = Registry::get("mysidia");
-        $alternateModels = new ArrayList;
+        $alternateModels = new ArrayList();
         $stmt = $mysidia->db->select("alternates", [], "adopt = :adopt AND level = :level", ["adopt" => $this->id, "level" => $level]);
         while ($alternate = $stmt->fetchObject()) {
             $alternateModels->add(new AdoptAlternate($alternate));
@@ -139,8 +153,12 @@ class Adoptable extends Model
 
     protected function canUseAlternate($level)
     {
-        if ($this->alternates == "enabled" && $level >= $this->altoutlevel) return true;
-        if ($this->countAlternatesForLevel($level) > 0) return true;
+        if ($this->alternates == "enabled" && $level >= $this->altoutlevel) {
+            return true;
+        }
+        if ($this->countAlternatesForLevel($level) > 0) {
+            return true;
+        }
         return false;
     }
 
@@ -158,14 +176,18 @@ class Adoptable extends Model
     public function makeOwnedAdopt($owner, $name = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$name) $name = $this->type;
+        if (!$name) {
+            $name = $this->type;
+        }
         $code = $this->generateCode();
         $gender = $this->getGender();
         $mysidia->db->insert("owned_adoptables", ["aid" => null, "adopt" => $this->id, "name" => $name, "owner" => $owner, "currentlevel" => 0,
             "totalclicks" => 0, "code" => $code, "imageurl" => "", "alternate" => 0, "tradestatus" => "fortrade",
             "isfrozen" => "no", "gender" => $gender, "offsprings" => 0, "lastbred" => 0]);
         $aid = $mysidia->db->lastInsertId();
-        if (!$aid) return null;
+        if (!$aid) {
+            return null;
+        }
         return new OwnedAdoptable($aid);
     }
 

@@ -20,21 +20,20 @@ use Exception;
  */
 final class Byte extends Number
 {
-
     /**
      * Size constant, specifies the size a byte value occupies.
      */
-    const Size = 8;
+    public const Size = 8;
 
     /**
      * MinValue constant, a byte cannot contain number less than -128.
      */
-    const MinValue = -128;
+    public const MinValue = -128;
 
     /**
      * MaxValue constant, a byte cannot contain number greater than 127.
      */
-    const MaxValue = 127;
+    public const MaxValue = 127;
 
     /**
      * Constructor of Byte Class, initializes the Byte wrapper class.
@@ -45,7 +44,9 @@ final class Byte extends Number
      */
     public function __construct($num)
     {
-        if (!is_int($num)) $num = (int)$num;
+        if (!is_int($num)) {
+            $num = (int)$num;
+        }
         parent::__construct($num);
         $this->value = $num;
     }
@@ -68,8 +69,12 @@ final class Byte extends Number
      */
     public function verify($num)
     {
-        if ($num > self::MaxValue) throw new Exception('Supplied value cannot be greater than 127 for Byte type.');
-        elseif ($num < self::MinValue) throw new Exception('Supplied value cannot be smaller than -128 for Byte type.');
-        else return true;
+        if ($num > self::MaxValue) {
+            throw new Exception('Supplied value cannot be greater than 127 for Byte type.');
+        } elseif ($num < self::MinValue) {
+            throw new Exception('Supplied value cannot be smaller than -128 for Byte type.');
+        } else {
+            return true;
+        }
     }
 }

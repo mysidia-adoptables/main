@@ -8,8 +8,7 @@ use Resource\GUI\Component\Image;
 
 class UserProfile extends Model
 {
-
-    const IDKEY = "uid";
+    public const IDKEY = "uid";
     protected $uid;
     protected $avatar;
     protected $bio;
@@ -28,7 +27,9 @@ class UserProfile extends Model
             $prefix = constant("PREFIX");
             $dto = $mysidia->db->join("users", "users.uid = users_profile.uid")
                 ->select("users_profile", [], "{$prefix}users.uid = :uid", ["uid" => $uid])->fetchObject();
-            if (!is_object($dto)) throw new MemberNotfoundException("The specified user profile {$uid} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user profile {$uid} does not exist...");
+            }
         }
         parent::__construct($dto);
         $this->user = $user ?: new Member($uid, $dto);
@@ -36,7 +37,9 @@ class UserProfile extends Model
 
     public function getAvatar($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->avatar);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->avatar);
+        }
         return $this->avatar;
     }
 
@@ -57,9 +60,13 @@ class UserProfile extends Model
 
     public function getFavpet($fetchMode = "")
     {
-        if (!$this->favpet) return null;
-        elseif ($fetchMode == Model::MODEL) return new OwnedAdoptable($this->favpet);
-        else return $this->getFavpetID();
+        if (!$this->favpet) {
+            return null;
+        } elseif ($fetchMode == Model::MODEL) {
+            return new OwnedAdoptable($this->favpet);
+        } else {
+            return $this->getFavpetID();
+        }
     }
 
     public function getFavpetID()
@@ -89,7 +96,9 @@ class UserProfile extends Model
 
     public function isUser(User $user = null)
     {
-        if (!$user || !($user instanceof Member)) return false;
+        if (!$user || !($user instanceof Member)) {
+            return false;
+        }
         return ($this->uid == $user->getID());
     }
 

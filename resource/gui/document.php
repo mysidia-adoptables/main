@@ -24,7 +24,6 @@ use Resource\GUI\Renderer\DocumentRenderer;
  */
 final class Document extends Container
 {
-
     /**
      * The title property, holds the information of the document title.
      * @access protected
@@ -59,7 +58,9 @@ final class Document extends Container
      */
     public function getTitle()
     {
-        if (!$this->title) throw new GUIException("This document has no title yet.");
+        if (!$this->title) {
+            throw new GUIException("This document has no title yet.");
+        }
         return $this->title;
     }
 
@@ -81,7 +82,9 @@ final class Document extends Container
      */
     public function getContent()
     {
-        if (!$this->content) $this->content = $this->render();
+        if (!$this->content) {
+            $this->content = $this->render();
+        }
         return $this->content;
     }
 

@@ -18,7 +18,9 @@ class HTMLPurifier_Node_Element extends HTMLPurifier_Node
      */
     public $empty = false;
 
-    public $endCol = null, $endLine = null, $endArmor = [];
+    public $endCol = null;
+    public $endLine = null;
+    public $endArmor = [];
 
     public function __construct(/**
      * The lower-case name of the tag, like 'a', 'b' or 'blockquote'.
@@ -28,17 +30,22 @@ class HTMLPurifier_Node_Element extends HTMLPurifier_Node
      * insensitive.
      * @type string
      */
-    public $name, /**
+        public $name, /**
      * Associative array of the node's attributes.
      * @type array
      */
-    public $attr = [], $line = null, $col = null, $armor = []) {
+        public $attr = [],
+        $line = null,
+        $col = null,
+        $armor = []
+    ) {
         $this->line = $line;
         $this->col = $col;
         $this->armor = $armor;
     }
 
-    public function toTokenPair() {
+    public function toTokenPair()
+    {
         // XXX inefficiency here, normalization is not necessary
         if ($this->empty) {
             return [new HTMLPurifier_Token_Empty($this->name, $this->attr, $this->line, $this->col, $this->armor), null];
@@ -50,4 +57,3 @@ class HTMLPurifier_Node_Element extends HTMLPurifier_Node
         }
     }
 }
-

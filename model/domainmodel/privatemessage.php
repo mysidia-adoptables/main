@@ -8,8 +8,7 @@ use Resource\Utility\Date;
 
 class PrivateMessage extends Message
 {
-
-    const IDKEY = "mid";
+    public const IDKEY = "mid";
     protected $mid;
     protected $fromuser;
     protected $touser;
@@ -32,10 +31,14 @@ class PrivateMessage extends Message
             // The private message is not being composed, so fetch the information from database
             $table = ($folder == "inbox") ? "messages" : "folders_messages";
             $dto = $mysidia->db->select($table, [], "mid = :mid", ["mid" => $mid])->fetchObject();
-            if (!is_object($dto)) throw new MessageNotfoundException("The message does not exist in database.");
+            if (!is_object($dto)) {
+                throw new MessageNotfoundException("The message does not exist in database.");
+            }
         }
         parent::__construct($dto);
-        if ($notifier == true) $this->getNotifier();
+        if ($notifier == true) {
+            $this->getNotifier();
+        }
     }
 
     protected function createFromDTO($dto)
@@ -46,20 +49,29 @@ class PrivateMessage extends Message
 
     public function getTitle()
     {
-        if (!empty($this->messagetitle)) return $this->messagetitle;
-        else return false;
+        if (!empty($this->messagetitle)) {
+            return $this->messagetitle;
+        } else {
+            return false;
+        }
     }
 
     public function getContent()
     {
-        if (!empty($this->messagetext)) return $this->messagetext;
-        else return false;
+        if (!empty($this->messagetext)) {
+            return $this->messagetext;
+        } else {
+            return false;
+        }
     }
 
     public function getNotifier()
     {
-        if (is_object($this->notifier)) throw new MessageException("A PM Notifier already exists...");
-        else $this->notifier = new PMNotifier;
+        if (is_object($this->notifier)) {
+            throw new MessageException("A PM Notifier already exists...");
+        } else {
+            $this->notifier = new PMNotifier();
+        }
     }
 
     public function getFolder()
@@ -79,8 +91,9 @@ class PrivateMessage extends Message
 
     public function setMessage($title, $text)
     {
-        if (empty($title) or empty($text)) throw new InvalidActionException("Cannot set an empty private message");
-        else {
+        if (empty($title) or empty($text)) {
+            throw new InvalidActionException("Cannot set an empty private message");
+        } else {
             $this->messagetitle = $title;
             $this->messagetext = $this->format($text);
         }
@@ -96,9 +109,13 @@ class PrivateMessage extends Message
     public function post()
     {
         $mysidia = Registry::get("mysidia");
-        $date = new Date;
-        if (!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-        if (!$this->messagetext) $this->messagetext = $this->format($mysidia->input->rawPost("mtext"));
+        $date = new Date();
+        if (!$this->messagetitle) {
+            $this->messagetitle = $mysidia->input->post("mtitle");
+        }
+        if (!$this->messagetext) {
+            $this->messagetext = $this->format($mysidia->input->rawPost("mtext"));
+        }
         $mysidia->db->insert("messages", ["mid" => null, "fromuser" => $this->fromuser, "touser" => $this->touser, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext]);
 
         if ($mysidia->input->post("outbox") == "yes") {
@@ -113,11 +130,17 @@ class PrivateMessage extends Message
     public function postDraft($recipient, $title = null, $content = null)
     {
         $mysidia = Registry::get("mysidia");
-        $date = new Date;
-        if (!is_numeric($recipient)) $recipient = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $recipient])->fetchColumn();
+        $date = new Date();
+        if (!is_numeric($recipient)) {
+            $recipient = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $recipient])->fetchColumn();
+        }
         $this->recipient = $recipient;
-        if ($title) $this->messagetitle = $title;
-        if ($content) $this->messagetext = $this->format($content);
+        if ($title) {
+            $this->messagetitle = $title;
+        }
+        if ($content) {
+            $this->messagetext = $this->format($content);
+        }
         $mysidia->db->insert("folders_messages", ["mid" => null, "fromuser" => $mysidia->user->getID(), "touser" => $this->recipient, "folder" => "draft", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->format($this->messagetext)]);
         return true;
     }
@@ -125,9 +148,13 @@ class PrivateMessage extends Message
     public function editDraft()
     {
         $mysidia = Registry::get("mysidia");
-        $date = new DateTime;
-        if (!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-        if (!$this->messagetext) $this->messagetext = $this->format($mysidia->input->rawPost("mtext"));
+        $date = new DateTime();
+        if (!$this->messagetitle) {
+            $this->messagetitle = $mysidia->input->post("mtitle");
+        }
+        if (!$this->messagetext) {
+            $this->messagetext = $this->format($mysidia->input->rawPost("mtext"));
+        }
         $mysidia->db->update("folders_messages", ["fromuser" => $this->fromuser, "touser" => $this->touser, "folder" => "draft", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext], "fromuser='{$mysidia->user->getID()}' AND mid = :mid", ["mid" => $mysidia->input->post("id")]);
         return true;
     }
@@ -135,19 +162,28 @@ class PrivateMessage extends Message
     public function remove()
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->mid == 0) return false;
-        if ($this->folder == "inbox") $mysidia->db->delete("messages", "mid = '{$this->mid}'");
-        else $mysidia->db->delete("folders_messages", "mid = '{$this->mid}' AND folder = '{$this->folder}'");
+        if ($this->mid == 0) {
+            return false;
+        }
+        if ($this->folder == "inbox") {
+            $mysidia->db->delete("messages", "mid = '{$this->mid}'");
+        } else {
+            $mysidia->db->delete("folders_messages", "mid = '{$this->mid}' AND folder = '{$this->folder}'");
+        }
         return true;
     }
 
     public function report()
     {
         $mysidia = Registry::get("mysidia");
-        $date = new Date;
+        $date = new Date();
         $recipient = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $mysidia->settings->systemuser])->fetchColumn();
-        if (!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-        if (!$this->messagetext) $this->messagetext = $this->format($mysidia->input->post("mtext"));
+        if (!$this->messagetitle) {
+            $this->messagetitle = $mysidia->input->post("mtitle");
+        }
+        if (!$this->messagetext) {
+            $this->messagetext = $this->format($mysidia->input->post("mtext"));
+        }
         $mysidia->db->insert("messages", ["mid" => null, "fromuser" => $mysidia->user->getID(), "touser" => $recipient, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => "A user has reported private message ID: {$this->mid}", "messagetext" => $this->messagetext]);
         return true;
     }

@@ -21,11 +21,10 @@ use Resource\Native\Objective;
  */
 class HashSet extends MapSet
 {
-
     /**
      * serialID constant, it serves as identifier of the object being HashSet.
      */
-    const SERIALID = "-5024744406713321676L";
+    public const SERIALID = "-5024744406713321676L";
 
     /**
      * Constructor of HashSet Class, it initializes the HashSet given its capacity or another Collection Object.
@@ -37,13 +36,17 @@ class HashSet extends MapSet
      */
     public function __construct($param = HashMap::DEFAULTCAPACITY, $loadFactor = HashMap::DEFAULTLOAD, $linked = false)
     {
-        if ($linked) $this->map = new LinkedHashMap($param, $loadFactor);
-        elseif (is_int($param)) $this->map = new HashMap($param, $loadFactor);
-        elseif ($param instanceof Collective) {
+        if ($linked) {
+            $this->map = new LinkedHashMap($param, $loadFactor);
+        } elseif (is_int($param)) {
+            $this->map = new HashMap($param, $loadFactor);
+        } elseif ($param instanceof Collective) {
             $capacity = (int)($param->size() / self::DEFAULTLOAD + 1);
             $this->map = new HashMap($capacity);
             $this->addAll($param);
-        } else throw new IllegalArgumentException("Invalid Argument specified.");
+        } else {
+            throw new IllegalArgumentException("Invalid Argument specified.");
+        }
     }
 
     /**
@@ -98,6 +101,6 @@ class HashSet extends MapSet
      */
     public function subSet(Objective $fromElement, Objective $toElement): never
     {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 }

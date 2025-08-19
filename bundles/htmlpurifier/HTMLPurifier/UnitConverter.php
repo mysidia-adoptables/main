@@ -6,10 +6,9 @@
  */
 class HTMLPurifier_UnitConverter
 {
-
-    const ENGLISH = 1;
-    const METRIC = 2;
-    const DIGITAL = 3;
+    public const ENGLISH = 1;
+    public const METRIC = 2;
+    public const DIGITAL = 3;
 
     /**
      * Units information array. Units are grouped into measuring systems
@@ -45,12 +44,13 @@ class HTMLPurifier_UnitConverter
      * Minimum bcmath precision for output.
      * @type int
      */
-    protected $outputPrecision = 4, /**
+        protected $outputPrecision = 4, /**
      * Bcmath precision for internal calculations.
      * @type int
      */
-    protected $internalPrecision = 10, $force_no_bcmath = false)
-    {
+        protected $internalPrecision = 10,
+        $force_no_bcmath = false
+    ) {
         $this->bcmath = !$force_no_bcmath && function_exists('bcmul');
     }
 

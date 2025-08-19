@@ -27,7 +27,6 @@ use Service\Builder\FormBuilder;
  */
 class ShopTableHelper extends TableHelper
 {
-
     /**
      * The getSalestax method, formats and retrieves the salestax of a shop.
      * @param int $salestax
@@ -47,8 +46,11 @@ class ShopTableHelper extends TableHelper
      */
     public function getShopStatus(Shop $shop)
     {
-        if ($shop->isOpen()) return new Link("shop/browse/{$shop->getID()}", new Image("templates/icons/next.gif"));
-        else return "Closed";
+        if ($shop->isOpen()) {
+            return new Link("shop/browse/{$shop->getID()}", new Image("templates/icons/next.gif"));
+        } else {
+            return "Closed";
+        }
     }
 
     /**

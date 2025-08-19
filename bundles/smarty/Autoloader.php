@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Autoloader
  *
@@ -96,7 +97,7 @@ class Smarty_Autoloader
         $file = self::$SMARTY_SYSPLUGINS_DIR . $_class . '.php';
         if (is_file($file)) {
             include $file;
-        } else if (isset(self::$rootClasses[ $_class ])) {
+        } elseif (isset(self::$rootClasses[ $_class ])) {
             $file = self::$SMARTY_DIR . self::$rootClasses[ $_class ];
             if (is_file($file)) {
                 include $file;

@@ -16,15 +16,15 @@ class HTMLPurifier_ConfigSchema_ValidatorAtom
     public function __construct(/**
      * @type string
      */
-    protected $context, /**
+        protected $context, /**
      * @type object
      */
-    protected $obj, /**
+        protected $obj, /**
      * @type string
      */
-    protected $member)
-    {
-        $this->contents =& $this->obj->{$this->member};
+        protected $member
+    ) {
+        $this->contents = & $this->obj->{$this->member};
     }
 
     /**

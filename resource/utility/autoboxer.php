@@ -18,7 +18,6 @@ use Resource\Native;
  */
 final class Autoboxer extends Native\MysObject
 {
-
     /**
      * The var property, it stores the last supplied variable for autoboxing/autounboxing.
      * @access private

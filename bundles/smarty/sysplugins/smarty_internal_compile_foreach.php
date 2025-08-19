@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Foreach
  * Compiles the {foreach} {foreachelse} {/foreach} tags
@@ -87,7 +88,7 @@ class Smarty_Internal_Compile_Foreach extends Smarty_Internal_Compile_Private_Fo
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        $compiler->loopNesting ++;
+        $compiler->loopNesting++;
         // init
         $this->isNamed = false;
         // check and get attributes
@@ -119,14 +120,17 @@ class Smarty_Internal_Compile_Foreach extends Smarty_Internal_Compile_Private_Fo
         if ($fromName) {
             foreach (['item', 'key'] as $a) {
                 if (isset($attributes[ $a ]) && $attributes[ $a ] == $fromName) {
-                    $compiler->trigger_template_error("'{$a}' and 'from' may not have same variable name '{$fromName}'",
-                                                      null, true);
+                    $compiler->trigger_template_error(
+                        "'{$a}' and 'from' may not have same variable name '{$fromName}'",
+                        null,
+                        true
+                    );
                 }
             }
         }
 
         $itemVar = "\$_smarty_tpl->tpl_vars['{$item}']";
-        $local = '$__foreach_' . $attributes[ 'item' ] . '_' . $this->counter ++ . '_';
+        $local = '$__foreach_' . $attributes[ 'item' ] . '_' . $this->counter++ . '_';
         // search for used tag attributes
         $itemAttr = [];
         $namedAttr = [];
@@ -187,8 +191,11 @@ class Smarty_Internal_Compile_Foreach extends Smarty_Internal_Compile_Private_Fo
         }
         $needTotal = isset($itemAttr[ 'total' ]);
         // Register tag
-        $this->openTag($compiler, 'foreach',
-                       ['foreach', $compiler->nocache, $local, $itemVar, empty($itemAttr) ? 1 : 2]);
+        $this->openTag(
+            $compiler,
+            'foreach',
+            ['foreach', $compiler->nocache, $local, $itemVar, empty($itemAttr) ? 1 : 2]
+        );
         // maybe nocache because of nocache variables
         $compiler->nocache = $compiler->nocache | $compiler->tag_nocache;
         // generate output code
@@ -306,7 +313,7 @@ class Smarty_Internal_Compile_Foreachclose extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        $compiler->loopNesting --;
+        $compiler->loopNesting--;
         // must endblock be nocache?
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;

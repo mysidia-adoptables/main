@@ -7,12 +7,11 @@ use Resource\Native\MysString;
 
 class Plugins extends Core implements Initializable
 {
-
     private $pluginSet;
 
     public function __construct()
     {
-        $this->pluginSet = new HashSet;
+        $this->pluginSet = new HashSet();
         $this->initialize();
     }
 
@@ -42,7 +41,9 @@ class Plugins extends Core implements Initializable
 
     public function isEnabled($pluginName)
     {
-        if ($this->pluginSet->isEmpty()) return false;
+        if ($this->pluginSet->isEmpty()) {
+            return false;
+        }
         return $this->pluginSet->contains(new MysString($pluginName));
     }
 

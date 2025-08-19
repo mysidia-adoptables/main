@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class KeyTreeSet extends KeyMapSet implements NavigableSettable
 {
-
     /**
      * Constructor of KeyTreeSet Class, it simply calls parent constructor.
      * @param TreeMap $map

@@ -6,10 +6,11 @@ use Resource\Native\MysObject;
 
 final class Password extends MysObject
 {
-
     public function getInfo($hash)
     {
-        if (function_exists("password_get_info")) return password_get_info($hash);
+        if (function_exists("password_get_info")) {
+            return password_get_info($hash);
+        }
         $return = ['algo' => 0, 'algoName' => 'unknown', 'options' => []];
         if (str_starts_with((string) $hash, '$2y$') && strlen((string) $hash) == 60) {
             $return['algo'] = PASSWORD_BCRYPT;
@@ -22,7 +23,9 @@ final class Password extends MysObject
 
     public function hash($password, $algo = PASSWORD_DEFAULT, array $options = [])
     {
-        if (function_exists("password_hash")) return password_hash((string) $password, $algo, $options);
+        if (function_exists("password_hash")) {
+            return password_hash((string) $password, $algo, $options);
+        }
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_hash to function", E_USER_WARNING);
             return null;
@@ -77,6 +80,7 @@ final class Password extends MysObject
                         $salt = (string)$options['salt'];
                         break;
                     }
+                    // no break
                 case 'array':
                 case 'resource':
                 default:
@@ -151,13 +155,19 @@ final class Password extends MysObject
 
     public function needsRehash($hash, $algo = PASSWORD_DEFAULT, array $options = [])
     {
-        if (function_exists("password_needs_rehash")) return password_needs_rehash($hash, $algo, $options);
+        if (function_exists("password_needs_rehash")) {
+            return password_needs_rehash($hash, $algo, $options);
+        }
         $info = $this->getInfo($hash);
-        if ($info['algo'] !== (int)$algo) return true;
+        if ($info['algo'] !== (int)$algo) {
+            return true;
+        }
         switch ($algo) {
             case PASSWORD_BCRYPT:
                 $cost = isset($options['cost']) ? (int)$options['cost'] : PASSWORD_BCRYPT_DEFAULT_COST;
-                if ($cost !== $info['options']['cost']) return true;
+                if ($cost !== $info['options']['cost']) {
+                    return true;
+                }
                 break;
         }
         return false;
@@ -165,7 +175,9 @@ final class Password extends MysObject
 
     public function verify($password, $hash)
     {
-        if (function_exists("password_verify")) return password_verify((string) $password, (string) $hash);
+        if (function_exists("password_verify")) {
+            return password_verify((string) $password, (string) $hash);
+        }
         if (!function_exists('crypt')) {
             trigger_error("Crypt must be loaded for password_verify to function", E_USER_WARNING);
             return false;

@@ -3,25 +3,26 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/header.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, [
   'version' => '3.1.30',
   'unifunc' => 'content_610d90f4abe808_45210551',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
    [
-    'eb9ba7a28cd5dcf6a8a52b57182fed3284ffda68' => 
+    'eb9ba7a28cd5dcf6a8a52b57182fed3284ffda68' =>
      [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/header.tpl',
       1 => 1628279019,
       2 => 'file',
     ],
   ],
-  'includes' => 
+  'includes' =>
    [
   ],
-],false)) {
-function content_610d90f4abe808_45210551 (Smarty_Internal_Template $_smarty_tpl) {
-?>
+], false)) {
+    function content_610d90f4abe808_45210551(Smarty_Internal_Template $_smarty_tpl)
+    {
+        ?>
 <html>
     <head>
         <title><?php echo $_smarty_tpl->tpl_vars['browser_title']->value;?>
@@ -43,4 +44,4 @@ function content_610d90f4abe808_45210551 (Smarty_Internal_Template $_smarty_tpl)
         <?php echo $_smarty_tpl->tpl_vars['header']->value->loadAdditionalScript();?>
 
     </head> <?php }
-}
+    }

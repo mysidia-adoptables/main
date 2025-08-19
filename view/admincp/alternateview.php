@@ -23,7 +23,6 @@ use Service\Builder\TableBuilder;
 
 class AlternateView extends View
 {
-
     public function add()
     {
         $mysidia = Registry::get("mysidia");
@@ -165,8 +164,9 @@ class AlternateView extends View
     {
         $document = $this->document;
         $alternate = $this->getField("alternate");
-        if (!$alternate) $this->edit();
-        else {
+        if (!$alternate) {
+            $this->edit();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }
@@ -174,7 +174,7 @@ class AlternateView extends View
 
     private function buildPrimaryCells(Level $level)
     {
-        $primaryCells = new LinkedList;
+        $primaryCells = new LinkedList();
         $primaryCells->add(new TCell("N/A"));
         $primaryCells->add(new TCell($level->getPrimaryImage(Model::GUI)));
         $primaryCells->add(new TCell($level->getLevel()));
@@ -187,7 +187,7 @@ class AlternateView extends View
 
     private function buildAlternateCells(AdoptAlternate $alternate)
     {
-        $alternateCells = new LinkedList;
+        $alternateCells = new LinkedList();
         $alternateCells->add(new TCell($alternate->getID()));
         $alternateCells->add(new TCell($alternate->getImage(Model::GUI)));
         $alternateCells->add(new TCell($alternate->getLevel()));

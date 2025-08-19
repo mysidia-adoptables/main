@@ -16,7 +16,6 @@ use Resource\GUI\Element\Align;
 
 class LevelupView extends View
 {
-
     public function click()
     {
         $mysidia = Registry::get("mysidia");
@@ -27,7 +26,7 @@ class LevelupView extends View
 
         $image = $adopt->getImage(Model::GUI);
         $image->setLineBreak(true);
-        $summary = new Division;
+        $summary = new Division();
         $summary->setAlign(new Align("center"));
         $summary->add($image);
         $summary->add(new Comment("{$this->lang->gave}{$adopt->getName()} one {$this->lang->unit}."));
@@ -60,20 +59,24 @@ class LevelupView extends View
             $daycareRow = new TRow("row{$row}");
             for ($column = 0; $column < $daycare->getTotalColumns(); $column++) {
                 $adopt = $adopts->get($index);
-                $cell = new ArrayList;
+                $cell = new ArrayList();
                 $cell->add(new Link("levelup/click/{$adopt->getAdoptID()}", $adopt->getImage(Model::GUI), true));
                 $cell->add(new Comment($daycare->getStats($adopt)));
                 $daycareCell = new TCell($cell, "cell{$index}");
                 $daycareCell->setAlign(new Align("center", "center"));
                 $daycareRow->add($daycareCell);
                 $index++;
-                if ($index == $total) break;
+                if ($index == $total) {
+                    break;
+                }
             }
             $daycareTable->add($daycareRow);
         }
 
         $document->add($daycareTable);
         $pagination = $daycare->getPagination();
-        if ($pagination) $document->addLangvar($pagination->showPage());
+        if ($pagination) {
+            $document->addLangvar($pagination->showPage());
+        }
     }
 }

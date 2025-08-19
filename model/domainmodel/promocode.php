@@ -11,8 +11,7 @@ use Resource\Utility\Date;
 
 class Promocode extends Model
 {
-
-    const IDKEY = "pid";
+    public const IDKEY = "pid";
     protected $pid = 0;
     protected $type;
     protected $user;
@@ -26,11 +25,15 @@ class Promocode extends Model
     public function __construct($promoinfo = "", $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($promoinfo instanceof MysString) $promoinfo = $promoinfo->getValue();
+        if ($promoinfo instanceof MysString) {
+            $promoinfo = $promoinfo->getValue();
+        }
         if (!$dto) {
             $whereClause = is_numeric($promoinfo) ? "pid = :promoinfo" : "code = :promoinfo";
             $dto = $mysidia->db->select("promocodes", [], $whereClause, ["promoinfo" => $promoinfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("The promocode does not exist.");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("The promocode does not exist.");
+            }
         }
         parent::__construct($dto);
     }
@@ -49,13 +52,18 @@ class Promocode extends Model
 
     public function getUser($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Member($this->user);
-        else return $this->user;
+        if ($fetchMode == Model::MODEL) {
+            return new Member($this->user);
+        } else {
+            return $this->user;
+        }
     }
 
     public function getUsername()
     {
-        if (!$this->user) return null;
+        if (!$this->user) {
+            return null;
+        }
         return $this->getUser(Model::MODEL)->getUsername();
     }
 
@@ -76,13 +84,17 @@ class Promocode extends Model
 
     public function getDateFrom($format = null)
     {
-        if (!$this->fromdate) return null;
+        if (!$this->fromdate) {
+            return null;
+        }
         return $format ? $this->fromdate->format($format) : $this->fromdate;
     }
 
     public function getDateTo($format = null)
     {
-        if (!$this->todate) return null;
+        if (!$this->todate) {
+            return null;
+        }
         return $format ? $this->todate->format($format) : $this->todate;
     }
 
@@ -104,7 +116,9 @@ class Promocode extends Model
             case "Item":
                 // The user will receive an item from the promocode now.
                 $item = new OwnedItem($this->reward, $this->user);
-                if ($item->isOverCap(1)) throw new NoPermissionException("It appears that you cannot add one more of item {$item->getItemname()} to your inventory, its quantity has already exceeded the upper limit.");
+                if ($item->isOverCap(1)) {
+                    throw new NoPermissionException("It appears that you cannot add one more of item {$item->getItemname()} to your inventory, its quantity has already exceeded the upper limit.");
+                }
                 $item->add(1, $this->user);
                 $this->usePromo();
                 return $item->getItemname();

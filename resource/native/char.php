@@ -21,21 +21,20 @@ use Resource\Utility\Comparable;
  */
 final class Char extends MysObject implements Comparable, Primitive
 {
-
     /**
      * Size constant, specifies the size a byte value occupies.
      */
-    const Size = 8;
+    public const Size = 8;
 
     /**
      * MinValue constant, a byte cannot contain number less than -128.
      */
-    const MinValue = '\u0000';
+    public const MinValue = '\u0000';
 
     /**
      * MaxValue constant, a byte cannot contain number greater than 127.
      */
-    const MaxValue = '\uFFFF';
+    public const MaxValue = '\uFFFF';
 
     /**
      * The value property, which stores the primitive char value.
@@ -65,7 +64,9 @@ final class Char extends MysObject implements Comparable, Primitive
      */
     public function verify($char)
     {
-        if (strlen(string($char)) > 1) throw new Exception('Cannot supply a character with longer than length 1.');
+        if (strlen(string($char)) > 1) {
+            throw new Exception('Cannot supply a character with longer than length 1.');
+        }
         return true;
     }
 

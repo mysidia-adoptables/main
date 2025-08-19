@@ -22,11 +22,10 @@ use Resource\Native\Objective;
  */
 class ArrayDeque extends Collection implements Dequeable
 {
-
     /**
      * serialID constant, it serves as identifier of the object being PriorityQueue.
      */
-    const SERIALID = "2340985798034038923L";
+    public const SERIALID = "2340985798034038923L";
 
     /**
      * The array property, it stores the data passed to this ArrayDeque.
@@ -64,11 +63,14 @@ class ArrayDeque extends Collection implements Dequeable
      */
     public function __construct($param = 16)
     {
-        if (is_int($param)) $this->allocateElements($param);
-        elseif ($param instanceof Collective) {
+        if (is_int($param)) {
+            $this->allocateElements($param);
+        } elseif ($param instanceof Collective) {
             $this->allocateElements($param->size());
             $this->addAll($param);
-        } else throw new IllegalArgumentException;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -93,7 +95,9 @@ class ArrayDeque extends Collection implements Dequeable
     {
         $this->head = ($this->head - 1) & ($this->array->length() - 1);
         $this->array[$this->head] = $object;
-        if ($this->head == $this->tail) $this->doubleCapacity();
+        if ($this->head == $this->tail) {
+            $this->doubleCapacity();
+        }
     }
 
     /**
@@ -106,7 +110,9 @@ class ArrayDeque extends Collection implements Dequeable
     {
         $this->array[$this->tail] = $object;
         $tail = ($this->tail = $this->tail + 1) & ($this->array->length() - 1);
-        if ($this->head == $tail) $this->doubleCapacity();
+        if ($this->head == $tail) {
+            $this->doubleCapacity();
+        }
     }
 
     /**
@@ -120,7 +126,9 @@ class ArrayDeque extends Collection implements Dequeable
         $initialCapacity = 8;
         if ($initialCapacity < $capacity) {
             $initialCapacity = $capacity;
-            if ($initialCapacity < 0) $initialCapacity = 1;
+            if ($initialCapacity < 0) {
+                $initialCapacity = 1;
+            }
         }
         $this->array = new MysArray($initialCapacity);
     }
@@ -167,11 +175,15 @@ class ArrayDeque extends Collection implements Dequeable
      */
     public function contains(Objective $object): bool
     {
-        if ($object == null) return false;
+        if ($object == null) {
+            return false;
+        }
         $max = $this->array->length() - 1;
         $head = $this->head;
         while (($element = $this->array[$head]) != null) {
-            if ($object->equals($element)) return true;
+            if ($object->equals($element)) {
+                return true;
+            }
             $head = ($head + 1) & $max;
         }
         return false;
@@ -190,17 +202,23 @@ class ArrayDeque extends Collection implements Dequeable
         $tail = $this->tail;
         $front = ($index - $head) & $max;
         $back = ($tail - $index) & $max;
-        if ($front >= (($tail - $head) & $max)) throw new IllegalStateException;
+        if ($front >= (($tail - $head) & $max)) {
+            throw new IllegalStateException();
+        }
         $this->array[$index] = null;
 
         if ($front < $back) {
             $end = ($head < $tail) ? $head : $tail;
-            for ($i = $index; $i > $end; $i--) $this->array[$i] = $this->array[$i - 1];
+            for ($i = $index; $i > $end; $i--) {
+                $this->array[$i] = $this->array[$i - 1];
+            }
             $this->head = ($head + 1) & $max;
             return false;
         } else {
             $end = ($head > $tail) ? $head : $tail;
-            for ($i = $index; $i < $end; $i++) $this->array[$i] = $this->array[$i + 1];
+            for ($i = $index; $i < $end; $i++) {
+                $this->array[$i] = $this->array[$i + 1];
+            }
             $this->tail = ($tail - 1) & $max;
             return true;
         }
@@ -229,7 +247,9 @@ class ArrayDeque extends Collection implements Dequeable
         $total = $this->array->length();
         $right = $total - $position;
         $newCapacity = $total << 1;
-        if ($newCapacity < 0) throw new IllegalStateException("Sorry, Deque is way too big.");
+        if ($newCapacity < 0) {
+            throw new IllegalStateException("Sorry, Deque is way too big.");
+        }
         $this->array->setSize($newCapacity);
         $this->head = 0;
         $this->tail = $total;
@@ -265,7 +285,9 @@ class ArrayDeque extends Collection implements Dequeable
     public function eraseFirst()
     {
         $object = $this->pollFirst();
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 
@@ -278,7 +300,9 @@ class ArrayDeque extends Collection implements Dequeable
     public function eraseLast()
     {
         $object = $this->pollLast();
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 
@@ -301,7 +325,9 @@ class ArrayDeque extends Collection implements Dequeable
     public function getFirst()
     {
         $object = $this->array[$this->head];
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 
@@ -325,7 +351,9 @@ class ArrayDeque extends Collection implements Dequeable
     {
         $tail = ($this->tail - 1) & ($this->array->length() - 1);
         $object = $this->array[$tail];
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 
@@ -448,7 +476,9 @@ class ArrayDeque extends Collection implements Dequeable
     {
         $head = $this->head;
         $object = $this->array[$head];
-        if ($object == null) return null;
+        if ($object == null) {
+            return null;
+        }
         $this->array[$head] = null;
         $this->head = ($head + 1) & ($this->array->length() - 1);
         return $object;
@@ -464,7 +494,9 @@ class ArrayDeque extends Collection implements Dequeable
     {
         $tail = ($this->tail - 1) & ($this->array->length() - 1);
         $object = $this->array[$tail];
-        if ($object == null) return null;
+        if ($object == null) {
+            return null;
+        }
         $this->array[$tail] = null;
         $this->tail = $tail;
         return $object;
@@ -512,7 +544,9 @@ class ArrayDeque extends Collection implements Dequeable
      */
     public function removeFirst(Objective $object = null)
     {
-        if ($object == null) return false;
+        if ($object == null) {
+            return false;
+        }
         $max = $this->array->length() - 1;
         $head = $this->head;
         while (($element = $this->array[$head]) != null) {
@@ -533,7 +567,9 @@ class ArrayDeque extends Collection implements Dequeable
      */
     public function removeLast(Objective $object = null)
     {
-        if ($object == null) return false;
+        if ($object == null) {
+            return false;
+        }
         $max = $this->array->length() - 1;
         $head = ($this->tail - 1) & $max;
         while (($element = $this->array[$head]) != null) {

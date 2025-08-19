@@ -25,7 +25,6 @@ use Resource\GUI\Renderer\ListRenderer;
  */
 class DropdownList extends Container
 {
-
     /**
      * The autofocus property, checks if the input component is autofocused.
      * @access protected
@@ -55,8 +54,12 @@ class DropdownList extends Container
             $this->setName($name);
             $this->setID($name);
         }
-        if (!empty($identity)) $this->select($identity);
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($identity)) {
+            $this->select($identity);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
 
         parent::__construct($components);
         $this->renderer = new ListRenderer($this);
@@ -115,7 +118,9 @@ class DropdownList extends Container
      */
     public function add($option, $index = -1)
     {
-        if (!($option instanceof Option) and !($option instanceof OptGroup)) throw new GUIException("Cannot add a non-option type component to dropdown list.");
+        if (!($option instanceof Option) and !($option instanceof OptGroup)) {
+            throw new GUIException("Cannot add a non-option type component to dropdown list.");
+        }
         parent::add($option, $index);
     }
 
@@ -128,7 +133,9 @@ class DropdownList extends Container
     public function select($identity)
     {
         foreach ($this->components as $components) {
-            if ($components->getValue() == $identity) $components->setSelected(true);
+            if ($components->getValue() == $identity) {
+                $components->setSelected(true);
+            }
         }
     }
 
@@ -143,10 +150,16 @@ class DropdownList extends Container
      */
     public function fill(Collective $collection, $identity = "", $index = -1)
     {
-        if ($index != -1) $this->currentIndex = $index;
-        if ($collection instanceof Listable) $this->fillList($collection, $identity, $index);
-        elseif ($collection instanceof Mappable) $this->fillMap($collection, $identity, $index);
-        else throw new GUIException("Cannot fill option objects inside this dropdownlist");
+        if ($index != -1) {
+            $this->currentIndex = $index;
+        }
+        if ($collection instanceof Listable) {
+            $this->fillList($collection, $identity, $index);
+        } elseif ($collection instanceof Mappable) {
+            $this->fillMap($collection, $identity, $index);
+        } else {
+            throw new GUIException("Cannot fill option objects inside this dropdownlist");
+        }
     }
 
     /**
@@ -163,9 +176,13 @@ class DropdownList extends Container
         while ($iterator->hasNext()) {
             $field = (string)$iterator->next();
             $option = new Option($field, $field);
-            if ($option->getValue() == $identity) $option->setSelected(true);
+            if ($option->getValue() == $identity) {
+                $option->setSelected(true);
+            }
             $this->add($option, $index);
-            if ($index != -1) $index++;
+            if ($index != -1) {
+                $index++;
+            }
         }
     }
 
@@ -183,9 +200,13 @@ class DropdownList extends Container
         while ($iterator->hasNext()) {
             $field = $iterator->next();
             $option = new Option((string)$field->getKey(), (string)$field->getValue());
-            if ($option->getValue() == $identity) $option->setSelected(true);
+            if ($option->getValue() == $identity) {
+                $option->setSelected(true);
+            }
             $this->add($option, $index);
-            if ($index != -1) $index++;
+            if ($index != -1) {
+                $index++;
+            }
         }
     }
 
@@ -203,9 +224,13 @@ class DropdownList extends Container
         while ($iterator->hasNext()) {
             $field = $iterator->next();
             $option = new Option((string)$field->getValue(), (string)$field->getKey());
-            if ($option->getValue() == $identity) $option->setSelected(true);
+            if ($option->getValue() == $identity) {
+                $option->setSelected(true);
+            }
             $this->add($option, $index);
-            if ($index != -1) $index++;
+            if ($index != -1) {
+                $index++;
+            }
         }
     }
 

@@ -16,7 +16,6 @@ use Resource\Exception\NoPermissionException;
 
 class ShopController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -31,10 +30,12 @@ class ShopController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("shops")->rowCount();
-        if ($total == 0) throw new InvalidIDException("default_none");
+        if ($total == 0) {
+            throw new InvalidIDException("default_none");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/shop", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("shops", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $shops = new ArrayList;
+        $shops = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $shops->add($this->fetchShop($dto));
         }
@@ -56,7 +57,9 @@ class ShopController extends AppController
     public function edit($sid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$sid) return $this->index();
+        if (!$sid) {
+            return $this->index();
+        }
         try {
             $dto = $mysidia->db->select("shops", [], "sid = :sid", ["sid" => $sid])->fetchObject();
             $shop = $this->fetchShop($dto);
@@ -75,8 +78,9 @@ class ShopController extends AppController
     public function delete($sid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$sid) $this->index();
-        else {
+        if (!$sid) {
+            $this->index();
+        } else {
             $dto = $mysidia->db->select("shops", [], "sid = :sid", ["sid" => $sid])->fetchObject();
             $shop = $this->fetchShop($dto);
             $mysidia->db->delete("shops", "sid = '{$shop->getID()}'");
@@ -86,21 +90,35 @@ class ShopController extends AppController
 
     private function fetchShop($dto = null)
     {
-        if (!$dto) throw new InvalidIDException("nonexist");
+        if (!$dto) {
+            throw new InvalidIDException("nonexist");
+        }
         return ($dto->shoptype == "adoptshop") ? new Adoptshop($dto->sid, $dto) : new Itemshop($dto->sid, $dto);
     }
 
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("category")) throw new BlankFieldException("category");
-        if (!$mysidia->input->post("shopname")) throw new BlankFieldException("shopname");
-        if (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") throw new BlankFieldException("images");
-        if (!$mysidia->input->post("status")) throw new BlankFieldException("status");
-        if (!is_numeric($mysidia->input->post("salestax")) || $mysidia->input->post("salestax") < 0) throw new InvalidActionException("salestax");
+        if (!$mysidia->input->post("category")) {
+            throw new BlankFieldException("category");
+        }
+        if (!$mysidia->input->post("shopname")) {
+            throw new BlankFieldException("shopname");
+        }
+        if (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") {
+            throw new BlankFieldException("images");
+        }
+        if (!$mysidia->input->post("status")) {
+            throw new BlankFieldException("status");
+        }
+        if (!is_numeric($mysidia->input->post("salestax")) || $mysidia->input->post("salestax") < 0) {
+            throw new InvalidActionException("salestax");
+        }
         if ($this->action == "add") {
             $shopExist = $mysidia->db->select("shops", ["sid"], "shopname = :shopname", ["shopname" => $mysidia->input->post("shopname")])->fetchObject();
-            if ($shopExist) throw new DuplicateIDException("duplicate");
+            if ($shopExist) {
+                throw new DuplicateIDException("duplicate");
+            }
         }
     }
 }

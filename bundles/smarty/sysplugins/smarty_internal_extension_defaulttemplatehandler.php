@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Extension
  *
@@ -16,7 +17,6 @@
  */
 class Smarty_Internal_Extension_DefaultTemplateHandler
 {
-
     /**
      * get default content from template of config resource handler
      *
@@ -24,7 +24,7 @@ class Smarty_Internal_Extension_DefaultTemplateHandler
      * @param Smarty_Internal_Template_Source $source
      * @param  Smarty_Resource                $resObj
      */
-    static function _getDefault(Smarty_Internal_Template $_template, &$source, &$resObj)
+    public static function _getDefault(Smarty_Internal_Template $_template, &$source, &$resObj)
     {
         if ($source->isConfig) {
             $default_handler = $_template->smarty->default_config_handler_func;
@@ -32,8 +32,10 @@ class Smarty_Internal_Extension_DefaultTemplateHandler
             $default_handler = $_template->smarty->default_template_handler_func;
         }
         $_content = $_timestamp = null;
-        $_return = call_user_func_array($default_handler,
-                                        [$source->type, $source->name, &$_content, &$_timestamp, $source->smarty]);
+        $_return = call_user_func_array(
+            $default_handler,
+            [$source->type, $source->name, &$_content, &$_timestamp, $source->smarty]
+        );
         if (is_string($_return)) {
             $source->exists = is_file($_return);
             if ($source->exists) {
@@ -57,7 +59,7 @@ class Smarty_Internal_Extension_DefaultTemplateHandler
      *
      * @throws SmartyException
      */
-    static function registerDefaultTemplateHandler(Smarty $smarty, $callback)
+    public static function registerDefaultTemplateHandler(Smarty $smarty, $callback)
     {
         if (is_callable($callback)) {
             $smarty->default_template_handler_func = $callback;
@@ -74,7 +76,7 @@ class Smarty_Internal_Extension_DefaultTemplateHandler
      *
      * @throws SmartyException
      */
-    static function registerDefaultConfigHandler(Smarty $smarty, $callback)
+    public static function registerDefaultConfigHandler(Smarty $smarty, $callback)
     {
         if (is_callable($callback)) {
             $smarty->default_config_handler_func = $callback;

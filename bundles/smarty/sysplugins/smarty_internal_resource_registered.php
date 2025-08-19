@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Resource Registered
  *
@@ -58,8 +59,10 @@ class Smarty_Internal_Resource_Registered extends Smarty_Resource
     {
         // return timestamp
         $time_stamp = false;
-        call_user_func_array($source->smarty->registered_resources[ $source->type ][ 0 ][ 1 ],
-                             [$source->name, &$time_stamp, $source->smarty]);
+        call_user_func_array(
+            $source->smarty->registered_resources[ $source->type ][ 0 ][ 1 ],
+            [$source->name, &$time_stamp, $source->smarty]
+        );
 
         return is_numeric($time_stamp) ? (int) $time_stamp : $time_stamp;
     }
@@ -76,8 +79,10 @@ class Smarty_Internal_Resource_Registered extends Smarty_Resource
     {
         // return template string
         $content = null;
-        $t = call_user_func_array($source->smarty->registered_resources[ $source->type ][ 0 ][ 0 ],
-                                  [$source->name, &$content, $source->smarty]);
+        $t = call_user_func_array(
+            $source->smarty->registered_resources[ $source->type ][ 0 ][ 0 ],
+            [$source->name, &$content, $source->smarty]
+        );
         if (is_bool($t) && !$t) {
             throw new SmartyException("Unable to read template {$source->type} '{$source->name}'");
         }

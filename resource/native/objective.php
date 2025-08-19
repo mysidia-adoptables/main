@@ -18,7 +18,6 @@ namespace Resource\Native;
  */
 interface Objective
 {
-
     /**
      * The equals method, checks whether target object is equivalent to this one.
      * @param Objective $object

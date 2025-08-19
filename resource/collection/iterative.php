@@ -19,7 +19,6 @@ use ReturnTypeWillChange;
  */
 interface Iterative extends Iterator
 {
-
     /**
      * The hasNext method, checks if the iterator has not reached the end of its iteration yet.
      * @access public

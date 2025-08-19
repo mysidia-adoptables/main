@@ -21,7 +21,6 @@ use Resource\GUI\Renderer\AccessoryRenderer;
  */
 abstract class Accessory extends Component
 {
-
     /**
      * The containers property, specifies which containers can hold this accessory object.
      * @access protected
@@ -36,7 +35,9 @@ abstract class Accessory extends Component
      */
     public function __construct($id)
     {
-        if (!empty($id)) $this->setID($id);
+        if (!empty($id)) {
+            $this->setID($id);
+        }
         $this->setLineBreak(false);
         $this->renderer = new AccessoryRenderer($this);
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Registered Function
  * Compiles code for the execution of a registered function
@@ -70,9 +71,12 @@ class Smarty_Internal_Compile_Private_Registered_Function extends Smarty_Interna
             $output = "{$function[0]}::{$function[1]}({$_params},\$_smarty_tpl)";
         }
         if (!empty($parameter[ 'modifierlist' ])) {
-            $output = $compiler->compileTag('private_modifier', [],
-                                            ['modifierlist' => $parameter[ 'modifierlist' ],
-                                                  'value' => $output]);
+            $output = $compiler->compileTag(
+                'private_modifier',
+                [],
+                ['modifierlist' => $parameter[ 'modifierlist' ],
+                                                  'value' => $output]
+            );
         }
         //Does tag create output
         $compiler->has_output = isset($_attr[ 'assign' ]) ? false : true;

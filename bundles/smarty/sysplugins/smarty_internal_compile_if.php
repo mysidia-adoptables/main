@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile If
  * Compiles the {if} {else} {elseif} {/if} tags
@@ -53,8 +54,11 @@ class Smarty_Internal_Compile_If extends Smarty_Internal_CompileBase
             $assignAttr[][ 'value' ] = $parameter[ 'if condition' ][ 'value' ];
             if (is_array($parameter[ 'if condition' ][ 'var' ])) {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ][ 'var' ];
-                $_output = $assignCompiler->compile($assignAttr, $compiler,
-                                                    ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]);
+                $_output = $assignCompiler->compile(
+                    $assignAttr,
+                    $compiler,
+                    ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]
+                );
             } else {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ];
                 $_output = $assignCompiler->compile($assignAttr, $compiler, []);
@@ -139,8 +143,11 @@ class Smarty_Internal_Compile_Elseif extends Smarty_Internal_CompileBase
             $assignAttr[][ 'value' ] = $parameter[ 'if condition' ][ 'value' ];
             if (is_array($parameter[ 'if condition' ][ 'var' ])) {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ][ 'var' ];
-                $assignCode = $assignCompiler->compile($assignAttr, $compiler,
-                                                       ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]);
+                $assignCode = $assignCompiler->compile(
+                    $assignAttr,
+                    $compiler,
+                    ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]
+                );
             } else {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ];
                 $assignCode = $assignCompiler->compile($assignAttr, $compiler, []);
@@ -154,8 +161,10 @@ class Smarty_Internal_Compile_Elseif extends Smarty_Internal_CompileBase
             if ($condition_by_assign) {
                 $this->openTag($compiler, 'elseif', [$nesting + 1, $compiler->tag_nocache]);
                 $_output = $compiler->appendCode("<?php } else {\n?>", $assignCode);
-                return $compiler->appendCode($_output,
-                                             "<?php if (" . $parameter[ 'if condition' ][ 'value' ] . ") {\n?>");
+                return $compiler->appendCode(
+                    $_output,
+                    "<?php if (" . $parameter[ 'if condition' ][ 'value' ] . ") {\n?>"
+                );
             } else {
                 $this->openTag($compiler, 'elseif', [$nesting, $compiler->tag_nocache]);
                 return "<?php } elseif ({$parameter['if condition']}) {?>";
@@ -165,8 +174,10 @@ class Smarty_Internal_Compile_Elseif extends Smarty_Internal_CompileBase
             $this->openTag($compiler, 'elseif', [$nesting + 1, $compiler->tag_nocache]);
             if ($condition_by_assign) {
                 $_output = $compiler->appendCode($_output, $assignCode);
-                return $compiler->appendCode($_output,
-                                             "<?php if (" . $parameter[ 'if condition' ][ 'value' ] . ") {\n?>");
+                return $compiler->appendCode(
+                    $_output,
+                    "<?php if (" . $parameter[ 'if condition' ][ 'value' ] . ") {\n?>"
+                );
             } else {
                 return $compiler->appendCode($_output, "<?php if ({$parameter['if condition']}) {?>");
             }
@@ -199,7 +210,7 @@ class Smarty_Internal_Compile_Ifclose extends Smarty_Internal_CompileBase
         }
         [$nesting, $compiler->nocache] = $this->closeTag($compiler, ['if', 'else', 'elseif']);
         $tmp = '';
-        for ($i = 0; $i < $nesting; $i ++) {
+        for ($i = 0; $i < $nesting; $i++) {
             $tmp .= '}';
         }
 

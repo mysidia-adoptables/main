@@ -14,15 +14,16 @@ use Service\Validator\RegistrationValidator;
 
 class RegisterController extends AppController
 {
-
     private $accountService;
 
     public function __construct()
     {
         parent::__construct("guest");
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->systems->register != "enabled") throw new NoPermissionException("The admin has turned off registration for this site, please contact him/her for detailed information.");
-        $this->accountService = new AccountService(new Password);
+        if ($mysidia->systems->register != "enabled") {
+            throw new NoPermissionException("The admin has turned off registration for this site, please contact him/her for detailed information.");
+        }
+        $this->accountService = new AccountService(new Password());
     }
 
     public function index()

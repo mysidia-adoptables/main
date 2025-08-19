@@ -8,8 +8,7 @@ use Resource\Utility\Date;
 
 class AdoptCondition extends Model
 {
-
-    const IDKEY = "id";
+    public const IDKEY = "id";
     protected $id;
     protected $adopt;
     protected $freqcond;
@@ -29,7 +28,9 @@ class AdoptCondition extends Model
         if (!$dto) {
             $fields = ["freqcond", "number", "datecond", "date", "adoptscond", "moreless", "morelessnum", "levelgrle", "grlelevel"];
             $dto = $mysidia->db->select("adoptables_conditions", $fields, "id = '{$adopt->getID()}'")->fetchObject();
-            if (!is_object($dto)) throw new AdoptConditionException("Adoptable condition does not exist...");
+            if (!is_object($dto)) {
+                throw new AdoptConditionException("Adoptable condition does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -60,7 +61,9 @@ class AdoptCondition extends Model
         if ($this->freqcond == "enabled") {
             $mysidia = Registry::get("mysidia");
             $freq = $mysidia->db->select("owned_adoptables", ["aid"], "adopt = '{$this->adopt->getID()}'")->rowCount();
-            if ($freq >= $this->number) throw new AdoptConditionException("Freq Condition Not met.");
+            if ($freq >= $this->number) {
+                throw new AdoptConditionException("Freq Condition Not met.");
+            }
         }
     }
 
@@ -71,15 +74,19 @@ class AdoptCondition extends Model
 
     public function getDateCondition($format = null)
     {
-        if (!$this->date) return null;
+        if (!$this->date) {
+            return null;
+        }
         return $format ? $this->date->format($format) : $this->date;
     }
 
     protected function checkDateCondition()
     {
         if ($this->datecond == "enabled") {
-            $today = new Date;
-            if ($this->getDateCondition('Y-m-d') != $today->format('Y-m-d')) throw new AdoptConditionException("Date Condition Not met.");
+            $today = new Date();
+            if ($this->getDateCondition('Y-m-d') != $today->format('Y-m-d')) {
+                throw new AdoptConditionException("Date Condition Not met.");
+            }
         }
     }
 
@@ -103,7 +110,9 @@ class AdoptCondition extends Model
         if ($this->moreless == "enabled") {
             $mysidia = Registry::get("mysidia");
             $num = $mysidia->db->select("owned_adoptables", ["aid"], "owner = '{$mysidia->user->getID()}' AND adopt = '{$this->adopt->getID()}'")->rowCount();
-            if ($num >= $this->morelessnum) throw new AdoptConditionException("Number Condition Not met.");
+            if ($num >= $this->morelessnum) {
+                throw new AdoptConditionException("Number Condition Not met.");
+            }
         }
     }
 
@@ -121,16 +130,22 @@ class AdoptCondition extends Model
     {
         if ($this->levelgrle == "enabled") {
             $mysidia = Registry::get("mysidia");
-            if ($mysidia->user->getUsergroup() != $this->grlelevel) throw new AdoptConditionException("Group Condition Not met.");
+            if ($mysidia->user->getUsergroup() != $this->grlelevel) {
+                throw new AdoptConditionException("Group Condition Not met.");
+            }
         }
     }
 
     public function checkConditions()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->user->isLoggedIn()) return false;
+        if (!$mysidia->user->isLoggedIn()) {
+            return false;
+        }
         $usergroup = $mysidia->user->getUsergroup(Model::MODEL);
-        if (!$usergroup->hasPermission("canadopt")) return false;
+        if (!$usergroup->hasPermission("canadopt")) {
+            return false;
+        }
 
         switch ($this->adopt->getWhenAvailable()) {
             case "always":

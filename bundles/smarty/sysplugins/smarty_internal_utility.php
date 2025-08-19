@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Project:     Smarty: the PHP compiling template engine
  * File:        smarty_internal_utility.php
@@ -87,17 +88,16 @@ class Smarty_Internal_Utility
                     $_tpl = $smarty->createTemplate($_template_file, null, null, null, false);
                     if ($_tpl->mustCompile()) {
                         $_tpl->compileTemplateSource();
-                        $_count ++;
+                        $_count++;
                         echo ' compiled in  ', microtime(true) - $_start_time, ' seconds';
                         flush();
                     } else {
                         echo ' is up to date';
                         flush();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     echo 'Error: ', $e->getMessage(), "<br><br>";
-                    $_error_count ++;
+                    $_error_count++;
                 }
                 // free memory
                 $smarty->template_objects = [];
@@ -157,17 +157,16 @@ class Smarty_Internal_Utility
                     $_config = new Smarty_Internal_Config($_config_file, $smarty);
                     if ($_config->mustCompile()) {
                         $_config->compileConfigSource();
-                        $_count ++;
+                        $_count++;
                         echo ' compiled in  ', microtime(true) - $_start_time, ' seconds';
                         flush();
                     } else {
                         echo ' is up to date';
                         flush();
                     }
-                }
-                catch (Exception $e) {
+                } catch (Exception $e) {
                     echo 'Error: ', $e->getMessage(), "<br><br>";
-                    $_error_count ++;
+                    $_error_count++;
                 }
                 if ($max_errors !== null && $_error_count == $max_errors) {
                     echo '<br><br>too many errors';
@@ -237,8 +236,7 @@ class Smarty_Internal_Utility
         try {
             $_compileDirs = new RecursiveDirectoryIterator($_dir);
             // NOTE: UnexpectedValueException thrown for PHP >= 5.3
-        }
-        catch (Exception) {
+        } catch (Exception) {
             return 0;
         }
         $_compile = new RecursiveIteratorIterator($_compileDirs, RecursiveIteratorIterator::CHILD_FIRST);
@@ -273,7 +271,7 @@ class Smarty_Internal_Utility
                 }
 
                 if ($unlink && @unlink($_filepath)) {
-                    $_count ++;
+                    $_count++;
                 }
             }
         }

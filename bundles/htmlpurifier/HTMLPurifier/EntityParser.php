@@ -9,7 +9,6 @@
  */
 class HTMLPurifier_EntityParser
 {
-
     /**
      * Reference to entity lookup table.
      * @type HTMLPurifier_EntityLookup

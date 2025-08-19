@@ -41,14 +41,14 @@ class Smarty_Internal_Runtime_TplFunction
             }
             if (function_exists($function)) {
                 $this->saveTemplateVariables($tpl, $name);
-                $function ($tpl, $params);
+                $function($tpl, $params);
                 $this->restoreTemplateVariables($tpl, $name);
                 return;
             }
             // try to load template function dynamically
             if ($this->addTplFuncToCache($tpl, $name, $function)) {
                 $this->saveTemplateVariables($tpl, $name);
-                $function ($tpl, $params);
+                $function($tpl, $params);
                 $this->restoreTemplateVariables($tpl, $name);
                 return;
             }
@@ -128,11 +128,17 @@ class Smarty_Internal_Runtime_TplFunction
                             if (!preg_match("/'{$funcParam['uid']}'(.*?)'nocache_hash'/", (string) $content, $match2)) {
                                 $content = preg_replace("/('file_dependency'(.*?)\()/", "\\1{$match1[0]}", (string) $content);
                             }
-                            $tplPtr->smarty->ext->_updateCache->write($cache, $tplPtr,
-                                                                      preg_replace('/\s*\?>\s*$/', "\n", (string) $content) .
-                                                                      "\n" . preg_replace(['/^\s*<\?php\s+/',
-                                                                                                '/\s*\?>\s*$/',], "\n",
-                                                                                          $match[ 0 ]));
+                            $tplPtr->smarty->ext->_updateCache->write(
+                                $cache,
+                                $tplPtr,
+                                preg_replace('/\s*\?>\s*$/', "\n", (string) $content) .
+                                                                      "\n" . preg_replace(
+                                                                          ['/^\s*<\?php\s+/',
+                                                                                                '/\s*\?>\s*$/',],
+                                                                          "\n",
+                                                                          $match[ 0 ]
+                                                                      )
+                            );
                         }
                     }
                     return true;

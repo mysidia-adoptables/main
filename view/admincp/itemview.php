@@ -19,13 +19,12 @@ use Service\Helper\TableHelper;
 
 class ItemView extends View
 {
-
     public function index()
     {
         parent::index();
         $items = $this->getField("items");
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $itemTable = new TableBuilder("item");
         $itemTable->setAlign(new Align("center", "middle"));
         $itemTable->buildHeaders("Image", "Item", "Description", "Function", "Edit", "Delete");
@@ -34,7 +33,7 @@ class ItemView extends View
         $iterator = $items->iterator();
         while ($iterator->hasNext()) {
             $item = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($item->getImageURL(Model::GUI)));
             $cells->add(new TCell($item->getItemname()));
             $cells->add(new TCell($item->getDescription()));
@@ -116,8 +115,9 @@ class ItemView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $item = $this->getField("item");
-        if (!$item) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$item) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar("{$this->lang->edited} {$mysidia->input->post("itemname")}, {$this->lang->edited2}");
             return;
@@ -178,8 +178,9 @@ class ItemView extends View
     {
         $document = $this->document;
         $item = $this->getField("item");
-        if (!$item) $this->index();
-        else {
+        if (!$item) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }
@@ -195,12 +196,12 @@ class ItemView extends View
         $functionsTable = new TableBuilder("functions");
         $functionsTable->setAlign(new Align("center", "middle"));
         $functionsTable->buildHeaders("ID", "Function", "Intent", "Description");
-        $functionsTable->setHelper(new TableHelper);
+        $functionsTable->setHelper(new TableHelper());
 
         $iterator = $itemFunctions->iterator();
         while ($iterator->hasNext()) {
             $itemFunction = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($itemFunction->getID()));
             $cells->add(new TCell($itemFunction->getFunction()));
             $cells->add(new TCell($itemFunction->getIntent()));

@@ -18,11 +18,10 @@ use Resource\Native\Objective;
  */
 class MapEntry extends Entry
 {
-
     /**
      * serialID constant, it serves as identifier of the object being MapEntry.
      */
-    const SERIALID = "-8499721149061103585L";
+    public const SERIALID = "-8499721149061103585L";
 
     /**
      * Constructor of MapEntry Class, it initializes an MapEntry with a key and a value.

@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class EntryTreeSet extends MapSet
 {
-
     /**
      * Constructor of EntryTreeSet Class, it simply calls parent constructor.
      * @param TreeMap $map
@@ -38,7 +37,9 @@ class EntryTreeSet extends MapSet
      */
     public function contains(Objective $object): bool
     {
-        if (!($object instanceof MapEntry)) return false;
+        if (!($object instanceof MapEntry)) {
+            return false;
+        }
         $entry = $object;
         $value = $entry->getValue();
         $parent = $this->map->getEntry($entry->getKey());
@@ -63,7 +64,9 @@ class EntryTreeSet extends MapSet
      */
     public function remove(Objective $object): bool
     {
-        if (!($object instanceof MapEntry)) return false;
+        if (!($object instanceof MapEntry)) {
+            return false;
+        }
         $entry = $object;
         $value = $entry->getValue();
         $parent = $this->map->getEntry($entry->getKey());

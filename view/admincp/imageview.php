@@ -20,7 +20,6 @@ use Resource\GUI\Element\Align;
 
 class ImageView extends View
 {
-
     public function index()
     {
         $document = $this->document;
@@ -44,12 +43,14 @@ class ImageView extends View
                 $fileImage->setLineBreak(true);
                 $action = new RadioButton("Delete this Image", "iid", $file->getID());
                 $action->setLineBreak(true);
-                $cell = new ArrayList;
+                $cell = new ArrayList();
                 $cell->add($fileImage);
                 $cell->add($action);
                 $imageRow->add(new TCell($cell, "cell{$index}"));
                 $index++;
-                if ($index == $total) break;
+                if ($index == $total) {
+                    break;
+                }
             }
             $imagesTable->add($imageRow);
         }
@@ -58,7 +59,9 @@ class ImageView extends View
         $imageForm->add(new Button("Submit", "submit", "submit"));
         $document->add($imageForm);
         $pagination = $this->getField("pagination");
-        if ($pagination) $document->addLangvar($pagination->showPage());
+        if ($pagination) {
+            $document->addLangvar($pagination->showPage());
+        }
     }
 
     public function upload()
@@ -91,8 +94,9 @@ class ImageView extends View
     {
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
-        if (!$mysidia->input->post("iid")) $this->index();
-        else {
+        if (!$mysidia->input->post("iid")) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

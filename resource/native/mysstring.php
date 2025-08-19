@@ -7,7 +7,6 @@ use Resource\Exception\BadFunctionCallException;
 use Resource\Exception\BadMethodCallException;
 use ReturnTypeWillChange;
 
-
 /**
  * The String Class, extending from the abstract Object class.
  * This class serves as a wrapper class for primitive data type string.
@@ -24,26 +23,25 @@ use ReturnTypeWillChange;
  */
 final class MysString extends MysObject implements Iterator, Primitive
 {
-
     /**
      * Alpha constant, wraps a string literal of available alphabetic chars.
      */
-    const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    public const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
     /**
      * Alnum constant, specifies a collection of available alphanumeric chars.
      */
-    const ALNUM = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    public const ALNUM = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
     /**
      * Numeric constant, contains a list of available number chars.
      */
-    const NUMERIC = '0123456789';
+    public const NUMERIC = '0123456789';
 
     /**
      * Space constant, defines the space char.
      */
-    const SPACE = ' ';
+    public const SPACE = ' ';
     /**
      * Default string encoding. Will be used if no encoding is specified.
      * Value can changed at run-time with the static method {@link setDefaultEncoding()}.
@@ -108,7 +106,7 @@ final class MysString extends MysObject implements Iterator, Primitive
         $this->_string = (string)$string;
         if ($encoding !== null) {
             $this->_encoding = strtoupper(str_replace(' ', '-', (string)$encoding));
-        } else if (self::$_defaultEncoding !== null) {
+        } elseif (self::$_defaultEncoding !== null) {
             $this->_encoding = self::$_defaultEncoding;
         }
     }
@@ -301,9 +299,9 @@ final class MysString extends MysObject implements Iterator, Primitive
         if ($this->_length === null) {
             if (function_exists('mb_strlen')) {
                 $this->_length = (int)mb_strlen($this->_string, $this->getEncoding());
-            } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strlen')) {
+            } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strlen')) {
                 $this->_length = (int)utf8_strlen($this->_string);
-            } else if (function_exists('iconv_strlen')) {
+            } elseif (function_exists('iconv_strlen')) {
                 $this->_length = (int)iconv_strlen($this->_string, $this->getEncoding());
             } else {
                 $this->_length = (int)strlen($this->_string);
@@ -319,9 +317,13 @@ final class MysString extends MysObject implements Iterator, Primitive
     public function getEncoding()
     {
         if ($this->_encoding === null) {
-            if (function_exists('mb_detect_encoding')) $this->_encoding = mb_detect_encoding($this->_string);
-            else if (function_exists('utf8_compliant') && utf8_compliant($this->_string)) $this->_encoding = 'UTF-8';
-            else $this->_encoding = false;
+            if (function_exists('mb_detect_encoding')) {
+                $this->_encoding = mb_detect_encoding($this->_string);
+            } elseif (function_exists('utf8_compliant') && utf8_compliant($this->_string)) {
+                $this->_encoding = 'UTF-8';
+            } else {
+                $this->_encoding = false;
+            }
         }
         return $this->_encoding;
     }
@@ -356,7 +358,9 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function callback($name, array $args = [])
     {
-        if (!is_callable($name)) throw new BadFunctionCallException('$name is not a valid callback.');
+        if (!is_callable($name)) {
+            throw new BadFunctionCallException('$name is not a valid callback.');
+        }
         array_unshift($args, $this->_string);
         $result = call_user_func_array($name, $args);
         if (!is_string($result)) {
@@ -405,8 +409,11 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function capitalize()
     {
-        if (function_exists('mb_ucfirst')) $string = mb_ucfirst($this->_string, $this->getEncoding());
-        else $string = ucfirst($this->_string);
+        if (function_exists('mb_ucfirst')) {
+            $string = mb_ucfirst($this->_string, $this->getEncoding());
+        } else {
+            $string = ucfirst($this->_string);
+        }
         return new self($string);
     }
 
@@ -431,9 +438,9 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_strpos')) {
             $pos = mb_strpos($this->_string, (string)$substr, (int)$offset, $this->getEncoding());
-        } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strpos')) {
+        } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strpos')) {
             $pos = utf8_strpos($this->_string, (string)$substr, ($offset === 0 ? null : $offset));
-        } else if (function_exists('iconv_strpos')) {
+        } elseif (function_exists('iconv_strpos')) {
             $pos = iconv_strpos($this->_string, (string)$substr, (int)$offset, $this->getEncoding());
         } else {
             $pos = strpos($this->_string, (string)$substr, (int)$offset);
@@ -490,9 +497,9 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_substr')) {
             $string = mb_substr($this->_string, $start, $length, $this->getEncoding());
-        } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_substr')) {
+        } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_substr')) {
             $string = utf8_substr($this->_string, $start, $length);
-        } else if (function_exists('iconv_substr')) {
+        } elseif (function_exists('iconv_substr')) {
             $string = iconv_substr($this->_string, $start, $length, $this->getEncoding());
         } else {
             $string = substr($this->_string, $start, $length);
@@ -522,9 +529,9 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_strrpos')) {
             $pos = mb_strrpos($this->_string, (string)$substr, (int)$offset, $this->getEncoding());
-        } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strrpos')) {
+        } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strrpos')) {
             $pos = utf8_strrpos($this->_string, (string)$substr, ($offset === 0 ? null : $offset));
-        } else if (function_exists('iconv_strrpos')) {
+        } elseif (function_exists('iconv_strrpos')) {
             $pos = iconv_strrpos($this->_string, (string)$substr, (int)$offset);
         } else {
             $pos = strrpos($this->_string, (string)$substr, (int)$offset);
@@ -550,7 +557,9 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function compareToIgnoreCase($string, $characters = null)
     {
-        if ($characters === null) return strncasecmp($this->_string, (string)$string);
+        if ($characters === null) {
+            return strncasecmp($this->_string, (string)$string);
+        }
         return strncasecmp($this->_string, (string)$string, (int)$characters);
     }
 
@@ -625,11 +634,12 @@ final class MysString extends MysObject implements Iterator, Primitive
         // Length handling (positive values measure from $offset; negative, from end of string; omitted = end of string)
         if ($length === null) {
             $length = $count;
-        } else if ($length < 0) {
+        } elseif ($length < 0) {
             $length += $count - $offset;
         }
 
-        return new self($this->substring(0, $offset) .
+        return new self(
+            $this->substring(0, $offset) .
             (string)$replacement .
             $this->substring($offset + $length)
         );
@@ -719,7 +729,9 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function compareTo($string, $characters = null)
     {
-        if ($characters === null) return strcmp($this->_string, (string)$string);
+        if ($characters === null) {
+            return strcmp($this->_string, (string)$string);
+        }
         return strncmp($this->_string, (string)$string, (int)$characters);
     }
 
@@ -780,7 +792,7 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_strtolower')) {
             $string = mb_strtolower($this->_string, $this->getEncoding());
-        } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strtolower')) {
+        } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strtolower')) {
             $string = utf8_strtolower($this->_string);
         } else {
             $string = strtolower($this->_string);
@@ -803,7 +815,7 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_strtoupper')) {
             $string = mb_strtoupper($this->_string, $this->getEncoding());
-        } else if ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strtoupper')) {
+        } elseif ($this->getEncoding() === 'UTF-8' && function_exists('utf8_strtoupper')) {
             $string = utf8_strtoupper($this->_string);
         } else {
             $string = strtoupper($this->_string);
@@ -908,7 +920,7 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function offsetSet($offset, $value): never
     {
-        throw new BadMethodCallException;
+        throw new BadMethodCallException();
     }
 
     /**
@@ -919,7 +931,7 @@ final class MysString extends MysObject implements Iterator, Primitive
      */
     public function offsetUnset($offset): never
     {
-        throw new BadMethodCallException;
+        throw new BadMethodCallException();
     }
 
     /**
@@ -1004,7 +1016,7 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if ($multiplier === 0) {
             $string = '';
-        } else if ($separator === null) {
+        } elseif ($separator === null) {
             $string = str_repeat($this->_string, $multiplier);
         } else {
             $string = str_repeat($this->_string . (string)$separator, $multiplier - 1) . $this->_string;
@@ -1208,7 +1220,7 @@ final class MysString extends MysObject implements Iterator, Primitive
         }
         if ($left === null) {
             $left = $right;
-        } else if ($right === null) {
+        } elseif ($right === null) {
             $right = $left;
         }
 
@@ -1271,7 +1283,9 @@ final class MysString extends MysObject implements Iterator, Primitive
             $char = $this->charAt($i);
             if ($char->isLowerCase()) {
                 $string .= $char->toUpperCase();
-            } else $string .= $char->toLowerCase();
+            } else {
+                $string .= $char->toLowerCase();
+            }
         }
         return new self($string);
     }
@@ -1365,11 +1379,11 @@ final class MysString extends MysObject implements Iterator, Primitive
     {
         if (function_exists('mb_lcfirst')) {
             $string = mb_lcfirst($this->_string, $this->getEncoding());
-        } else if (function_exists('mb_substr')) {
+        } elseif (function_exists('mb_substr')) {
             $encoding = $this->getEncoding();
             $string = mb_strtolower(mb_substr($this->_string, 0, 1, $encoding), $encoding) .
                 mb_substr($this->_string, 1, null, $encoding);
-        } else if (function_exists('lcfirst')) {
+        } elseif (function_exists('lcfirst')) {
             $string = lcfirst($this->_string);
         } else {
             $string = strtolower(substr($this->_string, 0, 1)) .

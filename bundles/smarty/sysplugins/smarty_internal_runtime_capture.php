@@ -65,7 +65,7 @@ class Smarty_Internal_Runtime_Capture
             $this->register($_template);
         }
         $this->captureStack[] = [$buffer, $assign, $append];
-        $this->captureCount ++;
+        $this->captureCount++;
         ob_start();
     }
 
@@ -104,7 +104,7 @@ class Smarty_Internal_Runtime_Capture
     {
         if ($this->captureCount) {
             [$buffer, $assign, $append] = array_pop($this->captureStack);
-            $this->captureCount --;
+            $this->captureCount--;
             if (isset($assign)) {
                 $_template->assign($assign, ob_get_contents());
             }

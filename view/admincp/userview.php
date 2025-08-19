@@ -15,12 +15,11 @@ use Service\Helper\UserTableHelper;
 
 class UserView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new UserTableHelper;
+        $helper = new UserTableHelper();
         $userTable = new TableBuilder("user");
         $userTable->setAlign(new Align("center", "middle"));
         $userTable->buildHeaders("User ID", "Username", "Email", "IP", "Usergroup", "Edit", "Delete");
@@ -30,7 +29,7 @@ class UserView extends View
         $iterator = $users->iterator();
         while ($iterator->hasNext()) {
             $user = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($user->getID()));
             $cells->add(new TCell($helper->getProfileLink($user->getID(), $user->getUsername())));
             $cells->add(new TCell($user->getEmail()));
@@ -51,8 +50,9 @@ class UserView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $user = $this->getField("user");
-        if (!$user) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$user) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
@@ -84,8 +84,9 @@ class UserView extends View
     {
         $document = $this->document;
         $user = $this->getField("user");
-        if (!$user) $this->index();
-        else {
+        if (!$user) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
             header("Refresh:3; URL='../../index'");

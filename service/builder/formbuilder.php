@@ -24,7 +24,6 @@ use Service\Helper\FormHelper;
  */
 class FormBuilder extends Container\Form
 {
-
     /**
      * The Helper property, determines the helper class used to process form content.
      * @access protected
@@ -151,7 +150,7 @@ class FormBuilder extends Container\Form
      */
     public function buildRadioList($name, Mappable $radioMap, $identity = "")
     {
-        $radioButtons = new ArrayList;
+        $radioButtons = new ArrayList();
         $iterator = $radioMap->iterator();
         while ($iterator->hasNext()) {
             $radio = $iterator->next();
@@ -171,10 +170,14 @@ class FormBuilder extends Container\Form
      */
     public function buildDropdownList($name, $type, $identity = "")
     {
-        if (!$this->helper) $this->helper = new FormHelper;
+        if (!$this->helper) {
+            $this->helper = new FormHelper();
+        }
         $method = "build{$type}";
         $dropdownList = $this->helper->$method($name);
-        if (!empty($identity)) $dropdownList->select($identity);
+        if (!empty($identity)) {
+            $dropdownList->select($identity);
+        }
         $this->add($dropdownList);
         return $this;
     }
@@ -201,7 +204,9 @@ class FormBuilder extends Container\Form
      */
     public function buildParagraph($comment, $name = "")
     {
-        if (!($comment instanceof Document\Comment)) $comment = new Document\Comment($comment);
+        if (!($comment instanceof Document\Comment)) {
+            $comment = new Document\Comment($comment);
+        }
         $this->add(new Document\Paragraph($comment, $name));
         return $this;
     }
@@ -215,7 +220,9 @@ class FormBuilder extends Container\Form
      */
     public function buildDivision($comment, $name = "")
     {
-        if (!($comment instanceof Document\Comment)) $comment = new Document\Comment($comment);
+        if (!($comment instanceof Document\Comment)) {
+            $comment = new Document\Comment($comment);
+        }
         $this->add(new Document\Division($comment, $name));
         return $this;
     }

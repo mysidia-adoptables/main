@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile PHP Expression
  * Compiles any tag which will output an expression or variable
@@ -16,7 +17,6 @@
  */
 class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
 {
-
     /**
      * Attribute definition: Overwrites base class.
      *
@@ -44,12 +44,18 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
             $compiler->tag_nocache = true;
             $save = $compiler->template->compiled->has_nocache_code;
             $output = addcslashes((string) $_attr[ 'code' ], "'\\");
-            $compiler->parser->current_buffer->append_subtree($compiler->parser,
-                                                              new Smarty_Internal_ParseTree_Tag($compiler->parser,
-                                                                                                $compiler->processNocacheCode("<?php echo '" .
+            $compiler->parser->current_buffer->append_subtree(
+                $compiler->parser,
+                new Smarty_Internal_ParseTree_Tag(
+                    $compiler->parser,
+                    $compiler->processNocacheCode(
+                        "<?php echo '" .
                                                                                                                               $output .
                                                                                                                               "';?>",
-                                                                                                                              true)));
+                        true
+                    )
+                )
+            );
             $compiler->template->compiled->has_nocache_code = $save;
             return '';
         }
@@ -58,27 +64,41 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
                 return '';
             } elseif ($compiler->php_handling == Smarty::PHP_QUOTE) {
                 $output =
-                    preg_replace_callback('#(<\?(?:php|=)?)|(<%)|(<script\s+language\s*=\s*["\']?\s*php\s*["\']?\s*>)|(\?>)|(%>)|(<\/script>)#i',
-                                          [$this, 'quote'], (string) $_attr[ 'code' ]);
-                $compiler->parser->current_buffer->append_subtree($compiler->parser,
-                                                                  new Smarty_Internal_ParseTree_Text($output));
+                    preg_replace_callback(
+                        '#(<\?(?:php|=)?)|(<%)|(<script\s+language\s*=\s*["\']?\s*php\s*["\']?\s*>)|(\?>)|(%>)|(<\/script>)#i',
+                        [$this, 'quote'],
+                        (string) $_attr[ 'code' ]
+                    );
+                $compiler->parser->current_buffer->append_subtree(
+                    $compiler->parser,
+                    new Smarty_Internal_ParseTree_Text($output)
+                );
                 return '';
             } elseif ($compiler->php_handling == Smarty::PHP_PASSTHRU || $_attr[ 'type' ] == 'unmatched') {
                 $compiler->tag_nocache = true;
                 $save = $compiler->template->compiled->has_nocache_code;
                 $output = addcslashes((string) $_attr[ 'code' ], "'\\");
-                $compiler->parser->current_buffer->append_subtree($compiler->parser,
-                                                                  new Smarty_Internal_ParseTree_Tag($compiler->parser,
-                                                                                                    $compiler->processNocacheCode("<?php echo '" .
+                $compiler->parser->current_buffer->append_subtree(
+                    $compiler->parser,
+                    new Smarty_Internal_ParseTree_Tag(
+                        $compiler->parser,
+                        $compiler->processNocacheCode(
+                            "<?php echo '" .
                                                                                                                                   $output .
                                                                                                                                   "';?>",
-                                                                                                                                  true)));
+                            true
+                        )
+                    )
+                );
                 $compiler->template->compiled->has_nocache_code = $save;
                 return '';
             } elseif ($compiler->php_handling == Smarty::PHP_ALLOW) {
                 if (!($compiler->smarty instanceof SmartyBC)) {
-                    $compiler->trigger_template_error('$smarty->php_handling PHP_ALLOW not allowed. Use SmartyBC to enable it',
-                                                      null, true);
+                    $compiler->trigger_template_error(
+                        '$smarty->php_handling PHP_ALLOW not allowed. Use SmartyBC to enable it',
+                        null,
+                        true
+                    );
                 }
                 $compiler->has_code = true;
                 return $_attr[ 'code' ];
@@ -88,8 +108,11 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
         } else {
             $compiler->has_code = true;
             if (!($compiler->smarty instanceof SmartyBC)) {
-                $compiler->trigger_template_error('{php}{/php} tags not allowed. Use SmartyBC to enable them', null,
-                                                  true);
+                $compiler->trigger_template_error(
+                    '{php}{/php} tags not allowed. Use SmartyBC to enable them',
+                    null,
+                    true
+                );
             }
             $ldel = preg_quote($compiler->smarty->left_delimiter, '#');
             $rdel = preg_quote($compiler->smarty->right_delimiter, '#');
@@ -101,8 +124,11 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
                     $compiler->trigger_template_error("illegal value of option flag \"{$match[2]}\"", null, true);
                 }
             }
-            return preg_replace(["#^{$ldel}\\s*php\\s*(.)*?{$rdel}#", "#{$ldel}\\s*/\\s*php\\s*{$rdel}$#"],
-                                ['<?php ', '?>'], (string) $_attr[ 'code' ]);
+            return preg_replace(
+                ["#^{$ldel}\\s*php\\s*(.)*?{$rdel}#", "#{$ldel}\\s*/\\s*php\\s*{$rdel}$#"],
+                ['<?php ', '?>'],
+                (string) $_attr[ 'code' ]
+            );
         }
     }
 
@@ -167,8 +193,13 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
             $lex->compiler->trigger_template_error("missing closing tag '{$closeTag}'");
         }
         while ($body) {
-            if (preg_match('~([/][*])|([/][/][^\n]*)|(\'[^\'\\\\]*(?:\\.[^\'\\\\]*)*\')|("[^"\\\\]*(?:\\.[^"\\\\]*)*")~',
-                           (string) $lex->data, $match, PREG_OFFSET_CAPTURE, $start)) {
+            if (preg_match(
+                '~([/][*])|([/][/][^\n]*)|(\'[^\'\\\\]*(?:\\.[^\'\\\\]*)*\')|("[^"\\\\]*(?:\\.[^"\\\\]*)*")~',
+                (string) $lex->data,
+                $match,
+                PREG_OFFSET_CAPTURE,
+                $start
+            )) {
                 $value = $match[ 0 ][ 0 ];
                 $from = $pos = $match[ 0 ][ 1 ];
                 if ($pos > $close) {
@@ -184,8 +215,13 @@ class Smarty_Internal_Compile_Private_Php extends Smarty_Internal_CompileBase
                         }
                     }
                     while ($close > $pos && $close < $start) {
-                        if (preg_match('~' . preg_quote($closeTag, '~') . '~i', (string) $lex->data, $match, PREG_OFFSET_CAPTURE,
-                                       $from)) {
+                        if (preg_match(
+                            '~' . preg_quote($closeTag, '~') . '~i',
+                            (string) $lex->data,
+                            $match,
+                            PREG_OFFSET_CAPTURE,
+                            $from
+                        )) {
                             $close = $match[ 0 ][ 1 ];
                             $from = $close + strlen($match[ 0 ][ 0 ]);
                         } else {

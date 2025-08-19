@@ -22,12 +22,11 @@ use Service\Helper\TradeFormHelper;
 
 class TradeView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $tradeTable = new TableBuilder("trade");
         $tradeTable->setAlign(new Align("center", "middle"));
         $tradeTable->buildHeaders("ID", "Type", "Sender", "Recipient", "Status", "Edit", "Delete");
@@ -37,7 +36,7 @@ class TradeView extends View
         $iterator = $tradeOffers->iterator();
         while ($iterator->hasNext()) {
             $tradeOffer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($tradeOffer->getID()));
             $cells->add(new TCell($tradeOffer->getType()));
             $cells->add(new TCell($helper->getText($tradeOffer->getSenderName())));
@@ -66,11 +65,11 @@ class TradeView extends View
         $document->setTitle($this->lang->add_title);
         $document->addLangvar($this->lang->add);
         $tradeForm = new FormBuilder("addform", "add", "post");
-        $tradeTypes = new LinkedHashMap;
+        $tradeTypes = new LinkedHashMap();
         $tradeTypes->put(new MysString("Private"), new MysString("private"));
         $tradeTypes->put(new MysString("Public"), new MysString("public"));
         $tradeTypes->put(new MysString("Partial"), new MysString("partial"));
-        $date = new Date;
+        $date = new Date();
 
         $tradeForm->add(new Comment("<hr>Basic Information:", true, "b"));
         $tradeForm->add(new Comment("Sender: ", false, "i"));
@@ -117,15 +116,16 @@ class TradeView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $tradeOffer = $this->getField("tradeOffer");
-        if (!$tradeOffer) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$tradeOffer) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
             $document->setTitle($this->lang->edit_title);
             $document->addLangvar($this->lang->edit);
             $tradeForm = new FormBuilder("editform", $tradeOffer->getID(), "post");
-            $tradeTypes = new LinkedHashMap;
+            $tradeTypes = new LinkedHashMap();
             $tradeTypes->put(new MysString("Private"), new MysString("private"));
             $tradeTypes->put(new MysString("Public"), new MysString("public"));
             $tradeTypes->put(new MysString("Partial"), new MysString("partial"));
@@ -175,8 +175,9 @@ class TradeView extends View
     {
         $document = $this->document;
         $tradeOffer = $this->getField("tradeOffer");
-        if (!$tradeOffer) $this->index();
-        else {
+        if (!$tradeOffer) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }
@@ -215,7 +216,7 @@ class TradeView extends View
             $document->add(new Comment("<br>Message: "));
             $document->add(new Paragraph(new Comment($tradeOffer->getMessage(), true, "i"), "message"));
 
-            $statusTypes = new LinkedHashMap;
+            $statusTypes = new LinkedHashMap();
             $statusTypes->put(new MysString("Approve"), new MysString("pending"));
             $statusTypes->put(new MysString("Disapprove"), new MysString("canceled"));
             $tradeForm = new FormBuilder("moderateform", $tradeOffer->getID(), "post");
@@ -228,7 +229,7 @@ class TradeView extends View
 
         $document->setTitle($this->lang->moderate_title);
         $document->addLangvar($this->lang->moderate);
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $tradeTable = new TableBuilder("item");
         $tradeTable->setAlign(new Align("center", "middle"));
         $tradeTable->buildHeaders("ID", "Type", "Sender", "Recipient", "Status", "Moderate");
@@ -238,7 +239,7 @@ class TradeView extends View
         $iterator = $tradeOffers->iterator();
         while ($iterator->hasNext()) {
             $tradeOffer = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($tradeOffer->getID()));
             $cells->add(new TCell($tradeOffer->getType()));
             $cells->add(new TCell($helper->getText($tradeOffer->getSenderName())));
@@ -264,7 +265,7 @@ class TradeView extends View
         $document->setTitle($this->lang->settings_title);
         $document->addLangvar($this->lang->settings);
         $settingsForm = new FormBuilder("settingsform", "settings", "post");
-        $enabled = new LinkedHashMap;
+        $enabled = new LinkedHashMap();
         $enabled->put(new MysString("Enabled"), new MysString("enabled"));
         $enabled->put(new MysString("Disabled"), new MysString("disabled"));
         $settingsForm->buildComment("Trade System Enabled:   ", false)->buildRadioList("system", $enabled, $tradeSettings->system)

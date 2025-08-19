@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 class KeyMapSet extends MapSet
 {
-
     /**
      * Constructor of KeyMapSet Class, it simply calls parent constructor.
      * @param Mappable $map

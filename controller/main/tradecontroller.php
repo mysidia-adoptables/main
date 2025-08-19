@@ -18,7 +18,6 @@ use Service\ApplicationService\TradeService;
 
 class TradeController extends AppController
 {
-
     private $settings;
     private $tradeService;
 
@@ -39,11 +38,19 @@ class TradeController extends AppController
 
     public function index()
     {
-        $additional = new ArrayList;
-        if ($this->settings->moderate == "enabled") $additional->add(new MysString("moderate"));
-        if ($this->settings->multiple == "enabled") $additional->add(new MysString("multiple"));
-        if ($this->settings->partial == "enabled") $additional->add(new MysString("partial"));
-        if ($this->settings->public == "enabled") $additional->add(new MysString("public"));
+        $additional = new ArrayList();
+        if ($this->settings->moderate == "enabled") {
+            $additional->add(new MysString("moderate"));
+        }
+        if ($this->settings->multiple == "enabled") {
+            $additional->add(new MysString("multiple"));
+        }
+        if ($this->settings->partial == "enabled") {
+            $additional->add(new MysString("partial"));
+        }
+        if ($this->settings->public == "enabled") {
+            $additional->add(new MysString("public"));
+        }
         $this->setField("tax", new Integer($this->settings->tax));
         $this->setField("additional", $additional);
     }
@@ -84,7 +91,9 @@ class TradeController extends AppController
     public function publics($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->settings->public == "disabled") throw new InvalidActionException("public_disabled");
+        if ($this->settings->public == "disabled") {
+            throw new InvalidActionException("public_disabled");
+        }
         if ($mysidia->input->post("submit")) {
             $form = new ArrayObject(["public" => $mysidia->input->post("public"), "recipient" => $mysidia->input->post("recipient"), "adoptOffered" => $mysidia->input->post("adoptOffered"),
                 "adoptWanted" => $mysidia->input->post("adoptWanted"), "itemOffered" => $mysidia->input->post("itemOffered"),
@@ -115,7 +124,7 @@ class TradeController extends AppController
         }
 
         $stmt = $mysidia->db->select("trade", [], "type = 'public' AND status = 'pending'");
-        $offers = new ArrayList;
+        $offers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $offers->add(new TradeOffer($dto->tid, $dto));
         }
@@ -131,8 +140,9 @@ class TradeController extends AppController
                 "cashOffered" => $mysidia->input->post("cashOffered"), "message" => $mysidia->input->post("message")]);
             try {
                 $offer = $this->tradeService->createTrade($form, $tid);
-                if ($mysidia->input->post("cancel") == "yes") $offer->cancel();
-                else {
+                if ($mysidia->input->post("cancel") == "yes") {
+                    $offer->cancel();
+                } else {
                     $validator = $this->tradeService->getValidator($offer);
                     $validator->validate();
                     $offer->revise();
@@ -155,7 +165,7 @@ class TradeController extends AppController
             return;
         }
         $stmt = $mysidia->db->select("trade", [], "type = 'private' AND sender = '{$mysidia->user->getID()}' AND status = 'pending'");
-        $offers = new ArrayList;
+        $offers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $offers->add(new TradeOffer($dto->tid, $dto));
         }
@@ -165,7 +175,9 @@ class TradeController extends AppController
     public function partials($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($this->settings->partial == "disabled") throw new InvalidActionException("partial_disabled");
+        if ($this->settings->partial == "disabled") {
+            throw new InvalidActionException("partial_disabled");
+        }
         $this->setField("tid", $tid ? new Integer($tid) : null);
 
         if ($mysidia->input->post("submit")) {
@@ -174,8 +186,9 @@ class TradeController extends AppController
                 "itemWanted" => $mysidia->input->post("itemWanted"), "cashOffered" => $mysidia->input->post("cashOffered"), "message" => $mysidia->input->post("message")]);
             try {
                 $offer = $this->tradeService->createTrade($form, $tid);
-                if ($mysidia->input->post("decline") == "yes") $offer->decline();
-                else {
+                if ($mysidia->input->post("decline") == "yes") {
+                    $offer->decline();
+                } else {
                     $validator = $this->tradeService->getValidator($offer);
                     $validator->validate();
                     $offer->reverse(($mysidia->input->post("partial") == "yes") ? "partial" : "private");
@@ -197,7 +210,7 @@ class TradeController extends AppController
             return;
         }
         $stmt = $mysidia->db->select("trade", [], "type = 'partial' AND recipient = '{$mysidia->user->getID()}' AND status = 'pending'");
-        $offers = new ArrayList;
+        $offers = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $offers->add(new TradeOffer($dto->tid, $dto));
         }

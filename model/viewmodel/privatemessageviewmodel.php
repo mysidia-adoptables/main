@@ -13,7 +13,6 @@ use Resource\GUI\Document\Division;
 
 class PrivateMessageViewModel extends ViewModel
 {
-
     protected $postbar;
 
     public function getSender($fetchMode = "")
@@ -53,8 +52,9 @@ class PrivateMessageViewModel extends ViewModel
 
     public function getMessageBody()
     {
-        if ($this->getID() == 0) return false;
-        else {
+        if ($this->getID() == 0) {
+            return false;
+        } else {
             // We are reading this PM now!
             $mysidia = Registry::get("mysidia");
             $pmFormat = "<table width='100%' border='4' cellpadding='3' cellspacing='0' bordercolor='1'>
@@ -94,11 +94,13 @@ class PrivateMessageViewModel extends ViewModel
 
     public function getPostbar()
     {
-        if ($this->getID() == 0) return false;
+        if ($this->getID() == 0) {
+            return false;
+        }
         $sender = $this->model->getSender("model");
         $profile = $sender->getProfile();
         $this->postbar = new Table("postbar", "100%", false);
-        $postHeader = new TRow;
+        $postHeader = new TRow();
         $postHeader->add(new TCell(new Image($profile->getAvatar())));
         $postHeader->add(new TCell("<b>Member Since: </b><br>{$sender->getMemberSince('Y-m-d')}<br> <b>Bio:</b><br>{$profile->getBio()}<br> "));
         $postHeader->add(new TCell("<b>Nickname:</b> {$profile->getNickname()}<br><b>Gender:</b> {$profile->getGender()}<br><b>Cash:</b> <a href='../../donate'>{$sender->getMoney()}</a><br>"));

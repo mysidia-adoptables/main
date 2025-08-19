@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Setfilter
  * Compiles code for setfilter tag

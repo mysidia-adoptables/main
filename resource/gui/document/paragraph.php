@@ -23,7 +23,6 @@ use Resource\GUI\Renderer\DocumentRenderer;
  */
 class Paragraph extends Container
 {
-
     /**
      * The comments property, it is useful if the paragraph contains comments type GUI Component.
      * @access protected
@@ -48,9 +47,13 @@ class Paragraph extends Container
             $this->setID($name);
         }
 
-        $this->comments = new ArrayObject;
-        if ($components instanceof Comment) $this->comments->append($components);
-        if (!empty($event)) $this->setEvent($event);
+        $this->comments = new ArrayObject();
+        if ($components instanceof Comment) {
+            $this->comments->append($components);
+        }
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
         $this->lineBreak = false;
         $this->renderer = new DocumentRenderer($this);
     }
@@ -86,7 +89,9 @@ class Paragraph extends Container
     public function add(Component $component, $index = -1)
     {
         parent::add($component, $index);
-        if ($component instanceof Comment) $this->comments->append($component);
+        if ($component instanceof Comment) {
+            $this->comments->append($component);
+        }
     }
 
     /**

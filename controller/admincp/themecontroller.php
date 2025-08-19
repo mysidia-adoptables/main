@@ -2,7 +2,9 @@
 
 namespace Controller\AdminCP;
 
-use DirectoryIterator, Exception, SplFileObject;
+use DirectoryIterator;
+use Exception;
+use SplFileObject;
 use Model\DomainModel\Theme;
 use Resource\Collection\ArrayList;
 use Resource\Collection\LinkedHashMap;
@@ -16,7 +18,6 @@ use Resource\Native\MysString;
 
 class ThemeController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -33,7 +34,7 @@ class ThemeController extends AppController
         $total = $mysidia->db->select("themes")->rowCount();
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/theme", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("themes", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $themes = new ArrayList;
+        $themes = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $themes->add(new Theme($dto->id, $dto));
         }
@@ -45,7 +46,9 @@ class ThemeController extends AppController
     {
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
-            if (!$mysidia->input->post("theme") || !$mysidia->input->post("folder")) throw new BlankFieldException("global_blank");
+            if (!$mysidia->input->post("theme") || !$mysidia->input->post("folder")) {
+                throw new BlankFieldException("global_blank");
+            }
             $mysidia->db->insert("themes", ["id" => null, "themename" => $mysidia->input->post("theme"), "themefolder" => $mysidia->input->post("folder"),
                 "usergroup" => (int)$mysidia->input->post("usergroup"), "fromdate" => $mysidia->input->post("fromdate"), "todate" => $mysidia->input->post("todate")]);
             if ($mysidia->input->post("install") != "yes") {
@@ -60,7 +63,9 @@ class ThemeController extends AppController
     public function edit($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) return $this->index();
+        if (!$tid) {
+            return $this->index();
+        }
         $theme = new Theme($tid);
         if ($mysidia->input->post("submit")) {
             $mysidia->db->update("themes", ["themename" => $mysidia->input->post("theme"), "themefolder" => $mysidia->input->post("folder"), "usergroup" => (int)$mysidia->input->post("usergroup"),
@@ -79,8 +84,9 @@ class ThemeController extends AppController
     public function delete($tid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$tid) $this->index();
-        else {
+        if (!$tid) {
+            $this->index();
+        } else {
             try {
                 $theme = new Theme($tid);
                 $mysidia->db->delete("themes", "id = '{$theme->getID()}'");
@@ -97,14 +103,16 @@ class ThemeController extends AppController
         if ($mysidia->input->post("submit")) {
             $file = ($mysidia->input->post("new") == "yes") ? $mysidia->input->post("newfile") : $mysidia->input->post("file");
             $content = ($mysidia->input->post("new") == "yes") ? $mysidia->input->rawPost("newcontent") : $mysidia->input->rawPost($file);
-            if (!$file) throw new BlankFieldException("global_blank");
+            if (!$file) {
+                throw new BlankFieldException("global_blank");
+            }
             $css = new SplFileObject("{$mysidia->path->getRoot()}css/{$file}.css", "w");
             $css->fwrite($mysidia->format($content, false));
             $css->fflush();
             return;
         }
 
-        $cssMap = new LinkedHashMap;
+        $cssMap = new LinkedHashMap();
         $directory = new DirectoryIterator("{$mysidia->path->getRoot()}css");
         while ($directory->valid()) {
             if ($directory->getExtension() == "css") {

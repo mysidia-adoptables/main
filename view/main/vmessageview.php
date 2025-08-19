@@ -10,7 +10,6 @@ use Service\Builder\TableBuilder;
 
 class VmessageView extends View
 {
-
     public function view()
     {
         $document = $this->document;

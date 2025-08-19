@@ -20,7 +20,6 @@ use Resource\Utility\URL;
  */
 class Image extends Accessory implements Resizable
 {
-
     /**
      * The alt property, defines the alt text for image object.
      * @access protected
@@ -76,12 +75,16 @@ class Image extends Accessory implements Resizable
     {
         parent::__construct($alt);
         $this->setSrc(($src instanceof URL) ? $src : new URL($src));
-        if (!empty($alt)) $this->setAlt($alt);
+        if (!empty($alt)) {
+            $this->setAlt($alt);
+        }
         if (is_numeric($dimension)) {
             $this->setWidth($dimension);
             $this->setHeight($dimension);
         }
-        if (!empty($event)) $this->setEvent($event);
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
     }
 
     /**
@@ -182,7 +185,9 @@ class Image extends Accessory implements Resizable
      */
     public function setDimension($width, $height = null)
     {
-        if (!$height) $height = $width;
+        if (!$height) {
+            $height = $width;
+        }
         $this->setWidth($width);
         $this->setHeight($height);
     }

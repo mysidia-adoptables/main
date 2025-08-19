@@ -24,7 +24,6 @@ use SplFileInfo;
  */
 class File extends SplFileInfo implements Objective, Initializable
 {
-
     /**
      * The extension property, it stores the extension info of this current file.
      * @access private
@@ -58,7 +57,9 @@ class File extends SplFileInfo implements Objective, Initializable
     public function initialize()
     {
         $this->extension = "." . $this->getExtension();
-        if ($this->checkExtension()) $this->base = parent::getBasename($this->extension);
+        if ($this->checkExtension()) {
+            $this->base = parent::getBasename($this->extension);
+        }
     }
 
     /**
@@ -70,8 +71,11 @@ class File extends SplFileInfo implements Objective, Initializable
     protected function checkExtension()
     {
         $extensions = [".php", ".js", ".css", ".html", ".htm", ".xml", ".yaml", ".tpl", ".jpg", ".gif", ".png", ".txt", ".ttf", ".psd", ".db", ".htaccess"];
-        if (!in_array($this->extension, $extensions)) throw new Exception('Invalid file extension.');
-        else return true;
+        if (!in_array($this->extension, $extensions)) {
+            throw new Exception('Invalid file extension.');
+        } else {
+            return true;
+        }
     }
 
     /**

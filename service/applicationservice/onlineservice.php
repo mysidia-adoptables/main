@@ -11,7 +11,6 @@ use Resource\Utility\Date;
 
 class OnlineService extends MysObject
 {
-
     protected $members;
     protected $visitors;
 
@@ -40,7 +39,7 @@ class OnlineService extends MysObject
         $stmt = $mysidia->db->join("users", "users.username = online.username")
             ->join("users_profile", "users_profile.uid = users.uid")
             ->select("online", [], "{$prefix}online.username != 'Guest'");
-        $members = new ArrayList;
+        $members = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $members->add(new Member($dto->uid, $dto, true));
         }
@@ -74,14 +73,17 @@ class OnlineService extends MysObject
     {
         $mysidia = Registry::get("mysidia");
         $session = $mysidia->session->getid();
-        $date = new Date;
+        $date = new Date();
         $currenttime = $date->getTimestamp();
         $expiretime = $date->modify("-5 minutes")->getTimestamp();
         $username = $mysidia->user->isloggedin() ? $mysidia->user->getUsername() : "Guest";
         $ip = $_SERVER['REMOTE_ADDR'];
         $userexist = $mysidia->db->select("online", ["username"], "username = '{$username}' AND ip = '{$ip}'")->fetchColumn();
-        if (!$userexist) $mysidia->db->insert("online", ["username" => $username, "ip" => $ip, "session" => $session, "time" => $currenttime]);
-        else $mysidia->db->update("online", ["time" => $currenttime, "session" => $session, "username" => $username], "username = '{$username}' and ip = '{$ip}'");
+        if (!$userexist) {
+            $mysidia->db->insert("online", ["username" => $username, "ip" => $ip, "session" => $session, "time" => $currenttime]);
+        } else {
+            $mysidia->db->update("online", ["time" => $currenttime, "session" => $session, "username" => $username], "username = '{$username}' and ip = '{$ip}'");
+        }
         $mysidia->db->delete("online", "time < {$expiretime}");
     }
 }

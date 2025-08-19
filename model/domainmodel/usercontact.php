@@ -7,8 +7,7 @@ use Resource\Core\Registry;
 
 class UserContact extends Model
 {
-
-    const IDKEY = "uid";
+    public const IDKEY = "uid";
     protected $uid;
     protected $website;
     protected $facebook;
@@ -27,7 +26,9 @@ class UserContact extends Model
             $prefix = constant("PREFIX");
             $dto = $mysidia->db->join("users", "users.uid = users_contacts.uid")
                 ->select("users_contacts", [], "{$prefix}users.uid = :uid", ["uid" => $uid])->fetchObject();
-            if (!is_object($dto)) throw new MemberNotfoundException("The specified user contact {$uid} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user contact {$uid} does not exist...");
+            }
         }
         parent::__construct($dto);
         $this->user = $user ?: new Member($uid, $dto);

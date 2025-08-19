@@ -13,12 +13,11 @@ use Service\Helper\TableHelper;
 
 class ModuleView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $moduleTable = new TableBuilder("modules");
         $moduleTable->setAlign(new Align("center", "middle"));
         $moduleTable->buildHeaders("ID", "Widget", "Name", "Order", "Status", "Edit", "Delete");
@@ -28,7 +27,7 @@ class ModuleView extends View
         $iterator = $modules->iterator();
         while ($iterator->hasNext()) {
             $module = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($module->getID()));
             $cells->add(new TCell($module->getWidgetName()));
             $cells->add(new TCell($module->getName()));
@@ -77,8 +76,9 @@ class ModuleView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $module = $this->getField("module");
-        if (!$module) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$module) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
         } else {
@@ -105,8 +105,9 @@ class ModuleView extends View
     {
         $document = $this->document;
         $module = $this->getField("module");
-        if (!$module) $this->index();
-        else {
+        if (!$module) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
         }

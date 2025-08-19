@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Object Function
  * Compiles code for registered objects as function
@@ -71,8 +72,11 @@ class Smarty_Internal_Compile_Private_Object_Function extends Smarty_Internal_Co
             $output = "\$_smarty_tpl->smarty->registered_objects['{$tag}'][0]->{$method}";
         }
         if (!empty($parameter[ 'modifierlist' ])) {
-            $output = $compiler->compileTag('private_modifier', [],
-                                            ['modifierlist' => $parameter[ 'modifierlist' ], 'value' => $output]);
+            $output = $compiler->compileTag(
+                'private_modifier',
+                [],
+                ['modifierlist' => $parameter[ 'modifierlist' ], 'value' => $output]
+            );
         }
         //Does tag create output
         $compiler->has_output = isset($_attr[ 'assign' ]) ? false : true;

@@ -20,7 +20,6 @@ use Resource\Native\MysObject;
  */
 abstract class GUI extends MysObject
 {
-
     /**
      * The id property, specifies the id of this component.
      * @access protected
@@ -141,7 +140,9 @@ abstract class GUI extends MysObject
      */
     public function setAttributes($attributes)
     {
-        if (!$this->attributes) $this->attributes = new ArrayObject;
+        if (!$this->attributes) {
+            $this->attributes = new ArrayObject();
+        }
         $this->attributes->offsetSet($attributes, true);
     }
 

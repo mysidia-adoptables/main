@@ -8,7 +8,6 @@ use Service\Builder\FormBuilder;
 
 class PromoView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -19,8 +18,11 @@ class PromoView extends View
             $reward = (string)$this->getField("reward");
             $document->setTitle($this->lang->success);
             $document->addLangvar($this->lang->avail, true);
-            if ($type == "Adopt") $document->addLangvar("Congrats, you have acquired the adoptable {$reward} by entering promocode.");
-            elseif ($type == "Item") $document->addLangvar("Congrats, you have acquired the item {$reward} by entering promocode.");
+            if ($type == "Adopt") {
+                $document->addLangvar("Congrats, you have acquired the adoptable {$reward} by entering promocode.");
+            } elseif ($type == "Item") {
+                $document->addLangvar("Congrats, you have acquired the item {$reward} by entering promocode.");
+            }
             return;
         }
 

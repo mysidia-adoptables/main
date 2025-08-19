@@ -19,7 +19,6 @@ use Resource\GUI\GUIException;
  */
 class PasswordField extends TextField
 {
-
     /**
      * The type property, specifies the type of this PasswordField.
      * @access protected
@@ -42,7 +41,9 @@ class PasswordField extends TextField
     {
         parent::__construct($name, $value, $length, $event);
         $this->setType($type);
-        if (!$lineBreak) $this->lineBreak = false;
+        if (!$lineBreak) {
+            $this->lineBreak = false;
+        }
     }
 
     /**
@@ -64,7 +65,9 @@ class PasswordField extends TextField
     public function setType($type)
     {
         $types = ["password", "email", "hidden"];
-        if (!in_array($type, $types)) throw new GUIException("The password field type is invalid...");
+        if (!in_array($type, $types)) {
+            throw new GUIException("The password field type is invalid...");
+        }
         $this->type = $type;
         $this->setAttributes("Type");
     }

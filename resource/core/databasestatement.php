@@ -18,7 +18,6 @@ use Resource\Native\MysObject;
  */
 class DatabaseStatement extends MysObject
 {
-
     /**
      * The stmt property, it stores the wrapped PDOStatement object.
      * @access protected

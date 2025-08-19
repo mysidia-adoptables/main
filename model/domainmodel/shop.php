@@ -9,8 +9,7 @@ use Resource\Native\MysString;
 
 abstract class Shop extends Model
 {
-
-    const IDKEY = "sid";
+    public const IDKEY = "sid";
     protected $sid;
     protected $shoptype;
     protected $shopname;
@@ -25,11 +24,15 @@ abstract class Shop extends Model
     public function __construct($shopinfo, $dto = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($shopinfo instanceof MysString) $shopinfo = $shopinfo->getValue();
+        if ($shopinfo instanceof MysString) {
+            $shopinfo = $shopinfo->getValue();
+        }
         if (!$dto) {
             $whereclause = is_numeric($shopinfo) ? "sid = :shopinfo" : "shopname = :shopinfo";
             $dto = $mysidia->db->select("shops", [], $whereclause, ["shopinfo" => $shopinfo])->fetchObject();
-            if (!is_object($dto)) throw new ShopException("The shop specified is invalid...");
+            if (!is_object($dto)) {
+                throw new ShopException("The shop specified is invalid...");
+            }
         }
         parent::__construct($dto);
     }
@@ -56,7 +59,9 @@ abstract class Shop extends Model
 
     public function getImageURL($fetchMode = "")
     {
-        if ($fetchMode == Model::GUI) return new Image($this->imageurl);
+        if ($fetchMode == Model::GUI) {
+            return new Image($this->imageurl);
+        }
         return $this->imageurl;
     }
 

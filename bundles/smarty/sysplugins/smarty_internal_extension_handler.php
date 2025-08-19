@@ -32,7 +32,6 @@
  */
 class Smarty_Internal_Extension_Handler
 {
-
     public $objType = null;
 
     /**
@@ -66,10 +65,16 @@ class Smarty_Internal_Extension_Handler
             if (preg_match('/^(set|get)([A-Z].*)$/', $name, $match)) {
                 if (!isset($this->_property_info[ $prop = $match[ 2 ] ])) {
                     // convert camel case to underscored name
-                    $this->resolvedProperties[ $prop ] = $pn = strtolower(join('_',
-                                                                               preg_split('/([A-Z][^A-Z]*)/', $prop,
-                                                                                          - 1, PREG_SPLIT_NO_EMPTY |
-                                                                                               PREG_SPLIT_DELIM_CAPTURE)));
+                    $this->resolvedProperties[ $prop ] = $pn = strtolower(join(
+                        '_',
+                        preg_split(
+                            '/([A-Z][^A-Z]*)/',
+                            $prop,
+                            - 1,
+                            PREG_SPLIT_NO_EMPTY |
+                                                                                               PREG_SPLIT_DELIM_CAPTURE
+                        )
+                    ));
                     $this->_property_info[ $prop ] = property_exists($data, $pn) ? 1 :
                         ($data->_objType == 2 && property_exists($smarty, $pn) ? 2 : 0);
                 }

@@ -3,26 +3,27 @@
   from "/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/template.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
-if ($_smarty_tpl->_decodeProperties($_smarty_tpl,  [
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, [
   'version' => '3.1.30',
   'unifunc' => 'content_60fed8df38f324_76610138',
   'has_nocache_code' => false,
-  'file_dependency' => 
+  'file_dependency' =>
    [
-    '08997d28f07cccbd82132f7de712c24809017b48' => 
+    '08997d28f07cccbd82132f7de712c24809017b48' =>
      [
       0 => '/home/mysidia/public_html/adoptables/demos/mys136b/templates/main/template.tpl',
       1 => 1625500105,
       2 => 'file',
     ],
   ],
-  'includes' => 
+  'includes' =>
    [
   ],
-],false)) {
-function content_60fed8df38f324_76610138 (Smarty_Internal_Template $_smarty_tpl) {
-$_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
-?>
+], false)) {
+    function content_60fed8df38f324_76610138(Smarty_Internal_Template $_smarty_tpl)
+    {
+        $_smarty_tpl->_subTemplateRender(((string)$_smarty_tpl->tpl_vars['root']->value).((string)$_smarty_tpl->tpl_vars['temp']->value).((string)$_smarty_tpl->tpl_vars['theme']->value)."/header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, [], 0, true);
+        ?>
 
 
     <body>
@@ -53,4 +54,4 @@ index"><?php echo $_smarty_tpl->tpl_vars['site_name']->value;?>
     </body>
 
 </html><?php }
-}
+    }

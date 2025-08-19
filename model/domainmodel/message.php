@@ -6,7 +6,6 @@ use Resource\Core\Model;
 
 abstract class Message extends Model implements Messagable
 {
-
     protected $fromuser;
     protected $sender;
     protected $touser;
@@ -16,9 +15,13 @@ abstract class Message extends Model implements Messagable
     public function getSender($fetchMode = "")
     {
         if ($fetchMode == Model::MODEL) {
-            if (!$this->sender) $this->sender = new Member($this->fromuser);
+            if (!$this->sender) {
+                $this->sender = new Member($this->fromuser);
+            }
             return $this->sender;
-        } else return $this->fromuser;
+        } else {
+            return $this->fromuser;
+        }
     }
 
     public function getSenderID()
@@ -46,9 +49,13 @@ abstract class Message extends Model implements Messagable
     public function getRecipient($fetchMode = "")
     {
         if ($fetchMode == Model::MODEL) {
-            if (!$this->recipient) $this->recipient = new Member($this->touser);
+            if (!$this->recipient) {
+                $this->recipient = new Member($this->touser);
+            }
             return $this->recipient;
-        } else return $this->touser;
+        } else {
+            return $this->touser;
+        }
     }
 
     public function getRecipientID()

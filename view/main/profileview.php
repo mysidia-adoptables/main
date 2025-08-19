@@ -18,7 +18,6 @@ use Service\Builder\TabBuilder;
 
 class ProfileView extends View
 {
-
     public function index()
     {
         $pagination = $this->getField("pagination");
@@ -30,7 +29,9 @@ class ProfileView extends View
         $iterator = $users->iterator();
         while ($iterator->hasNext()) {
             $user = $iterator->next();
-            if ($user->getUsergroup() <= 2) $document->add(new Image("templates/icons/star.gif"));
+            if ($user->getUsergroup() <= 2) {
+                $document->add(new Image("templates/icons/star.gif"));
+            }
             $document->add(new Link("profile/view/{$user->getID()}", $user->getUsername(), true));
         }
         $document->addLangvar($pagination->showPage());
@@ -44,7 +45,7 @@ class ProfileView extends View
         $document = $this->document;
         $document->setTitle($user->getUsername() . $this->lang->profile);
 
-        $tabsMap = new LinkedHashMap;
+        $tabsMap = new LinkedHashMap();
         $tabsMap->put(new MysString("Visitor Message"), new MysString("visitormessage"));
         $tabsMap->put(new MysString("About Me"), new MysString("aboutme"));
         $tabsMap->put(new MysString("Adoptables"), new MysString("adopts"));
@@ -61,21 +62,25 @@ class ProfileView extends View
         $document->add($vmTitle);
         $document->add($profile->display("vmessages"));
 
-        if (!$mysidia->user->isloggedin()) $document->addLangvar($this->lang->VM_guest);
-        elseif (!$mysidia->user->hasPermission("canvm")) $document->addLangvar($this->lang->VM_banned);
-        else {
+        if (!$mysidia->user->isloggedin()) {
+            $document->addLangvar($this->lang->VM_guest);
+        } elseif (!$mysidia->user->hasPermission("canvm")) {
+            $document->addLangvar($this->lang->VM_banned);
+        } else {
             $document->addLangvar($this->lang->VM_post);
             $vmForm = new Form("vmform", "{$user->getID()}", "post");
             $vmForm->add(new PasswordField("hidden", "user", $user->getID()));
             $vmForm->add(new TextArea("vmtext", "", 4, 50));
             $vmForm->add(new Button("Post Comment", "submit", "submit"));
             if ($mysidia->input->post("vmtext")) {
-                $reminder = new Paragraph;
+                $reminder = new Paragraph();
                 $reminder->add(new Comment("You may now view your conversation with {$user->getUsername()} from ", false));
                 $reminder->add(new Link("vmessage/view/{$mysidia->input->post("touser")}/{$mysidia->input->post("fromuser")}", "Here"));
                 $document->addLangvar($this->lang->VM_complete);
                 $document->add($reminder);
-            } else $document->add($vmForm);
+            } else {
+                $document->add($vmForm);
+            }
         }
         $document->addLangvar($tabs->endTab(0));
 
@@ -86,8 +91,11 @@ class ProfileView extends View
 
         // The third tab: Adopts...
         $document->addLangvar($tabs->startTab(2));
-        if ($user->countOwnedAdopts() == 0) $document->addLangvar($user->getUsername() . $this->lang->noadopts);
-        else $document->add($profile->display("adopts"));
+        if ($user->countOwnedAdopts() == 0) {
+            $document->addLangvar($user->getUsername() . $this->lang->noadopts);
+        } else {
+            $document->add($profile->display("adopts"));
+        }
         $document->addLangvar($tabs->endTab(2));
 
         // The fourth tab: Friends...

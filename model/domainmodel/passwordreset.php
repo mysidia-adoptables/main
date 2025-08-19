@@ -9,7 +9,6 @@ use Resource\Utility\Date;
 
 class PasswordReset extends Model
 {
-
     protected $id;
     protected $username;
     protected $email;
@@ -24,7 +23,9 @@ class PasswordReset extends Model
             $whereClause = $username ? "username = :username" : "id = :id";
             $values = $username ? ["username" => $username] : ["id" => $id];
             $dto = $mysidia->db->select("passwordresets", [], $whereClause, $values)->fetchObject();
-            if (!is_object($dto)) throw new InvalidCodeException("The password reset code does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidCodeException("The password reset code does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -42,8 +43,11 @@ class PasswordReset extends Model
 
     public function getUser($fetchMode = "")
     {
-        if ($fetchMode == Model::MODEL) return new Member($this->username);
-        else return $this->username;
+        if ($fetchMode == Model::MODEL) {
+            return new Member($this->username);
+        } else {
+            return $this->username;
+        }
     }
 
     public function getEmail()
@@ -69,7 +73,9 @@ class PasswordReset extends Model
     public function sendResetEmail(Member $user = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$user) $user = $this->getUser(Model::MODEL);
+        if (!$user) {
+            $user = $this->getUser(Model::MODEL);
+        }
         $headers = "From: {$mysidia->settings->systememail}";
         $message = "Hello there {$user->getUsername()}:\n\nOur records indicate that you requested a password reset for your account.  Below is your reset code:\n
                     Reset Code: {$this->code}\n\nTo have your password changed please visit the following URL:\n

@@ -24,7 +24,6 @@ use Service\Helper\MessageTableHelper;
 
 class UserProfileViewModel extends ViewModel
 {
-
     public function getAvatarImage()
     {
         return $this->model->getAvatar(Model::GUI);
@@ -44,10 +43,13 @@ class UserProfileViewModel extends ViewModel
 
     public function display($action = "", $data = null)
     {
-        if ($action == "contactinfo") return $this->displayContactinfo($data);
-        else {
+        if ($action == "contactinfo") {
+            return $this->displayContactinfo($data);
+        } else {
             $validActions = ["vmessages", "aboutme", "adopts", "friends"];
-            if (!in_array($action, $validActions)) throw new InvalidActionException("Invalid profile tab action specified.");
+            if (!in_array($action, $validActions)) {
+                throw new InvalidActionException("Invalid profile tab action specified.");
+            }
             $method = "display" . ucfirst((string) $action);
             return $this->$method();
         }
@@ -59,15 +61,15 @@ class UserProfileViewModel extends ViewModel
         $uid = $this->model->getID();
         $stmt = $mysidia->db->select("visitor_messages", [], "touser = '{$uid}' ORDER BY vid DESC LIMIT 0, 15");
         if ($stmt->rowCount() == 0) {
-            return new Comment;
+            return new Comment();
         }
-        $helper = new MessageTableHelper;
+        $helper = new MessageTableHelper();
         $vmList = new TableBuilder("vmessages", 800, false);
         $vmList->setHelper($helper);
         while ($dto = $stmt->fetchObject()) {
             $vmessage = new VisitorMessage($dto->vid, $dto);
             $senderProfile = $vmessage->getSenderProfile();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($helper->getAvatarImage($senderProfile->getAvatar())));
             $cells->add(new TCell($helper->getVisitorMessage($vmessage)));
             if ($mysidia->user->isAdmin() || $vmessage->isSender($mysidia->user)) {
@@ -81,7 +83,7 @@ class UserProfileViewModel extends ViewModel
     protected function displayAboutme()
     {
         $mysidia = Registry::get("mysidia");
-        $division = new Division;
+        $division = new Division();
         $title = new Comment($mysidia->lang->basic . $this->model->getUser()->getUsername());
         $title->setBold();
         $title->setUnderlined();
@@ -99,7 +101,7 @@ class UserProfileViewModel extends ViewModel
 
     protected function displayAdopts()
     {
-        $division = new Division;
+        $division = new Division();
         $spotlight = new Comment(".:AdoptSpotlight:.");
         $spotlight->setHeading(2);
 
@@ -125,22 +127,24 @@ class UserProfileViewModel extends ViewModel
         $user = $this->model->getUser();
         $friendsList = $user->getFriendsList(Model::MODEL);
         $numFriends = $user->countFriends();
-        $division = new Division;
+        $division = new Division();
         $division->add(new Comment("{$user->getUsername()} currently have {$numFriends} friends."));
-        if ($numFriends == 0) return $division;
+        if ($numFriends == 0) {
+            return $division;
+        }
 
         $friendTable = new TableBuilder("friends", "", false);
-        $friendTable->setHelper(new FriendTableHelper);
+        $friendTable->setHelper(new FriendTableHelper());
         foreach ($friendsList as $friend) {
             $avatar = new TCell(new Image($friend->getProfile()->getAvatar(60)));
             $avatar->setAlign(new Align("left"));
             $info = new TCell($friendTable->getHelper()->getFriendInfo($friend));
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add($avatar);
             $cells->add($info);
 
             if ($user->isCurrentUser()) {
-                $action = new TCell;
+                $action = new TCell();
                 $action->setAlign(new Align("right"));
                 $action->add(new Comment("<br><br><br><br>"));
                 $action->add(new Link("friends/delete/{$friend->getID()}", "Break Friendship"));
@@ -156,7 +160,7 @@ class UserProfileViewModel extends ViewModel
     {
         $uid = $this->model->getID();
         $username = $this->model->getUser()->getUsername();
-        $contactInfo = new Division;
+        $contactInfo = new Division();
         $contactInfo->add(new Image("templates/icons/web.gif", "web"));
         $contactInfo->add(new Comment($contact->getWebsite() ?: "No Website Information Given"));
         $contactInfo->add(new Image("templates/icons/facebook.gif", "facebook"));

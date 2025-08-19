@@ -2,7 +2,8 @@
 
 namespace Resource\Collection;
 
-use Countable, IteratorAggregate;
+use Countable;
+use IteratorAggregate;
 use Resource\Native\Objective;
 
 /**
@@ -19,7 +20,6 @@ use Resource\Native\Objective;
  */
 interface Collective extends Objective, Countable, IteratorAggregate
 {
-
     /**
      * The add method, append an object to the end of the collection.
      * @param Objective $object

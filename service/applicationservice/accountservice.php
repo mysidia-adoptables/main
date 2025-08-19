@@ -2,7 +2,8 @@
 
 namespace Service\ApplicationService;
 
-use ArrayObject, Exception;
+use ArrayObject;
+use Exception;
 use Model\DomainModel\Member;
 use Model\DomainModel\MemberNotfoundException;
 use Resource\Core\Model;
@@ -14,18 +15,17 @@ use Service\ApplicationService\MyBBService;
 
 class AccountService extends MysObject
 {
-
     private $mybbService;
 
     public function __construct(private readonly Password $password)
     {
-        $this->mybbService = new MyBBService;
+        $this->mybbService = new MyBBService();
     }
 
     public function register(ArrayObject $form)
     {
         $mysidia = Registry::get("mysidia");
-        $today = new Date;
+        $today = new Date();
         $username = $form['username'];
         $password = $this->password->hash($form["password"]);
         $mysidia->db->insert("users", ["uid" => null, "username" => $username, "salt" => null, "password" => $password, "session" => null, "email" => $form["email"], "ip" => $form["ip"],
@@ -46,11 +46,14 @@ class AccountService extends MysObject
     public function login($username)
     {
         $mysidia = Registry::get("mysidia");
-        if ($mysidia->session->clientip != $_SERVER['REMOTE_ADDR']) throw new Exception('Your IP has changed since last session, please log in again.');
-        else {
+        if ($mysidia->session->clientip != $_SERVER['REMOTE_ADDR']) {
+            throw new Exception('Your IP has changed since last session, please log in again.');
+        } else {
             $mysidia->cookies->setcookies($username);
             $mysidia->db->update("users", ["session" => $mysidia->cookies->getcookies("myssession")], "username = :username", ["username" => $username]);
-            if ($this->mybbService->isEnabled()) $this->mybbService->login($username);
+            if ($this->mybbService->isEnabled()) {
+                $this->mybbService->login($username);
+            }
             return true;
         }
     }
@@ -63,8 +66,12 @@ class AccountService extends MysObject
         $session = $mysidia->cookies->getcookies("myssession");
         if ($uid && $session) {
             $mysidia->cookies->deletecookies();
-            if ($this->mybbService->isEnabled()) $this->mybbService->logout($uid);
-        } else throw new AuthenticationException("loggedout");
+            if ($this->mybbService->isEnabled()) {
+                $this->mybbService->logout($uid);
+            }
+        } else {
+            throw new AuthenticationException("loggedout");
+        }
     }
 
     public function authenticate($username, $password)
@@ -104,7 +111,9 @@ class AccountService extends MysObject
 
     public function isValidEmail($email)
     {
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return false;
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
         $mysidia = Registry::get("mysidia");
         $existingEmail = $mysidia->db->select("users", ["email"], "email = :email", ["email" => $email])->fetchColumn();
         return $existingEmail ? false : true;

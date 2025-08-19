@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface NavigableSettable extends SortedSettable
 {
-
     /**
      * The ceiling method, obtains the least element in this set greater than or equal to the given object.
      * @param Objective $object

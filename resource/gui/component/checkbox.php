@@ -17,7 +17,6 @@ namespace Resource\GUI\Component;
  */
 class CheckBox extends ButtonComponent
 {
-
     /**
      * The type property, which is a radio button.
      * @access protected
@@ -47,7 +46,9 @@ class CheckBox extends ButtonComponent
     public function __construct($text = "", $name = "", $value = "", $identity = "", $event = "")
     {
         parent::__construct($text, $name, $value, $event);
-        if (!empty($identity)) $this->check($identity);
+        if (!empty($identity)) {
+            $this->check($identity);
+        }
         $this->setType("checkbox");
     }
 
@@ -114,7 +115,9 @@ class CheckBox extends ButtonComponent
      */
     public function check($identity = "")
     {
-        if (in_array($identity, $this->identifier) or $identity == $this->value) $this->setChecked(true);
+        if (in_array($identity, $this->identifier) or $identity == $this->value) {
+            $this->setChecked(true);
+        }
     }
 
     /**

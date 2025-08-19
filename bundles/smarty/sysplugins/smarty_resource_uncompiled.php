@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Plugin
  *
@@ -29,7 +30,7 @@ abstract class Smarty_Resource_Uncompiled extends Smarty_Resource
      * @var bool
      */
     public $hasCompiledHandler = true;
-    
+
     /**
      * populate compiled object with compiled filepath
      *

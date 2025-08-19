@@ -25,7 +25,6 @@ use Resource\GUI\Document\Paragraph;
  */
 class Footer extends WidgetViewModel
 {
-
     /**
      * The ads property, specifies the advertisement block on the footer.
      * @access protected
@@ -60,7 +59,7 @@ class Footer extends WidgetViewModel
     protected function setDivision(Component $module)
     {
         if (!$this->division) {
-            $this->division = new Division;
+            $this->division = new Division();
             $this->division->setClass("footer");
         }
         $this->division->add($module);
@@ -85,7 +84,7 @@ class Footer extends WidgetViewModel
     protected function setAds()
     {
         $mysidia = Registry::get("mysidia");
-        $this->ads = new Division;
+        $this->ads = new Division();
         $page = $mysidia->file->getBasename();
         $text = "";
         $dto = $mysidia->db->select("ads", [], "page = '{$page}' AND status = 'active' ORDER BY RAND() LIMIT 1")->fetchObject();
@@ -117,7 +116,7 @@ class Footer extends WidgetViewModel
      */
     protected function setCredits()
     {
-        $this->credits = new Paragraph;
+        $this->credits = new Paragraph();
         $this->credits->add(new Comment("&#9733; Powered by ", false));
         $creditsLink = new Component\Link("http://www.mysidiaadoptables.com");
         $creditsLink->setText("Mysidia Adoptables v" . Mysidia::version);

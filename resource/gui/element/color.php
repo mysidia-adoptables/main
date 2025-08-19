@@ -22,7 +22,6 @@ use Resource\GUI\Helper\ColorHelper;
  */
 class Color extends Element
 {
-
     /**
      * The rgb property, stores the dec color code.
      * @access protected
@@ -86,7 +85,9 @@ class Color extends Element
         } elseif (in_array($color, $this->names)) {
             $this->name = $color;
             $this->format = "name";
-        } else throw new GUIException("The specified color property is invalid.");
+        } else {
+            throw new GUIException("The specified color property is invalid.");
+        }
     }
 
     /**
@@ -96,7 +97,9 @@ class Color extends Element
      */
     public function getRGB()
     {
-        if (!($this->rgb instanceof ArrayObject)) $this->getHelper()->getRGB();
+        if (!($this->rgb instanceof ArrayObject)) {
+            $this->getHelper()->getRGB();
+        }
         return $this->rgb;
     }
 
@@ -122,7 +125,9 @@ class Color extends Element
      */
     public function getRed()
     {
-        if (!($this->rgb instanceof ArrayObject)) $this->getHelper()->getRGB();
+        if (!($this->rgb instanceof ArrayObject)) {
+            $this->getHelper()->getRGB();
+        }
         return $this->rgb[0];
     }
 
@@ -133,7 +138,9 @@ class Color extends Element
      */
     public function getGreen()
     {
-        if (!($this->rgb instanceof ArrayObject)) $this->getHelper()->getRGB();
+        if (!($this->rgb instanceof ArrayObject)) {
+            $this->getHelper()->getRGB();
+        }
         return $this->rgb[1];
     }
 
@@ -144,7 +151,9 @@ class Color extends Element
      */
     public function getBlue()
     {
-        if (!($this->rgb instanceof ArrayObject)) $this->getHelper()->getRGB();
+        if (!($this->rgb instanceof ArrayObject)) {
+            $this->getHelper()->getRGB();
+        }
         return $this->rgb[2];
     }
 
@@ -155,7 +164,9 @@ class Color extends Element
      */
     public function getCode()
     {
-        if (!$this->code) $this->getHelper()->getCode();
+        if (!$this->code) {
+            $this->getHelper()->getCode();
+        }
         return $this->code;
     }
 
@@ -167,7 +178,9 @@ class Color extends Element
      */
     public function setCode($code = "")
     {
-        if (!str_contains(\CODE, "#")) throw new GUIException("Color code must start with the symbol #");
+        if (!str_contains(\CODE, "#")) {
+            throw new GUIException("Color code must start with the symbol #");
+        }
         $this->code = $code;
     }
 
@@ -178,7 +191,9 @@ class Color extends Element
      */
     public function getName()
     {
-        if (!$this->name) $this->getHelper()->getName();
+        if (!$this->name) {
+            $this->getHelper()->getName();
+        }
         return $this->name;
     }
 
@@ -190,7 +205,9 @@ class Color extends Element
      */
     public function setName($name = "")
     {
-        if (!in_array($name, $this->names)) throw new GUIException("The specified color name is invalid.");
+        if (!in_array($name, $this->names)) {
+            throw new GUIException("The specified color name is invalid.");
+        }
         $this->name = $name;
     }
 
@@ -221,7 +238,9 @@ class Color extends Element
      */
     public function getHelper()
     {
-        if (!$this->helper) $this->helper = new ColorHelper($this);
+        if (!$this->helper) {
+            $this->helper = new ColorHelper($this);
+        }
         return $this->helper;
     }
 
@@ -232,7 +251,9 @@ class Color extends Element
      */
     public function render()
     {
-        if ($this->renderer->getStatus() == "ready") $this->renderer->renderForeground();
+        if ($this->renderer->getStatus() == "ready") {
+            $this->renderer->renderForeground();
+        }
         return $this->renderer->getRender();
     }
 

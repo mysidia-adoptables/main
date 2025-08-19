@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Resource String
  *
@@ -104,4 +105,3 @@ class Smarty_Internal_Resource_String extends Smarty_Resource
         return false;
     }
 }
-

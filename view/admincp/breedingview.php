@@ -15,12 +15,11 @@ use Service\Helper\AdoptTableHelper;
 
 class BreedingView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new AdoptTableHelper;
+        $helper = new AdoptTableHelper();
         $breedAdopts = $this->getField("breedAdopts");
         $breedAdoptTable = new TableBuilder("breedadopt");
         $breedAdoptTable->setAlign(new Align("center", "middle"));
@@ -30,7 +29,7 @@ class BreedingView extends View
         $iterator = $breedAdopts->iterator();
         while ($iterator->hasNext()) {
             $breedAdopt = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($breedAdopt->getID()));
             $cells->add(new TCell($breedAdopt->getOffspringType()));
             $cells->add(new TCell($breedAdopt->getParentType()));
@@ -80,8 +79,9 @@ class BreedingView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $breedAdopt = $this->getField("breedAdopt");
-        if (!$breedAdopt) $this->index();
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$breedAdopt) {
+            $this->index();
+        } elseif (!$mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edit_title);
             $document->addLangvar($this->lang->edit);
             $breedAdoptForm = new FormBuilder("editform", $breedAdopt->getID(), "post");
@@ -109,8 +109,9 @@ class BreedingView extends View
     {
         $document = $this->document;
         $breedAdopt = $this->getField("breedAdopt");
-        if (!$breedAdopt) $this->index();
-        else {
+        if (!$breedAdopt) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
             header("Refresh:3; URL='../index'");
@@ -131,10 +132,10 @@ class BreedingView extends View
         $document->setTitle($this->lang->settings_title);
         $document->addLangvar($this->lang->settings);
         $settingsForm = new FormBuilder("settingsform", "settings", "post");
-        $breedingSystem = new LinkedHashMap;
+        $breedingSystem = new LinkedHashMap();
         $breedingSystem->put(new MysString("Enabled"), new MysString("enabled"));
         $breedingSystem->put(new MysString("Disabled"), new MysString("disabled"));
-        $breedingMethod = new LinkedHashMap;
+        $breedingMethod = new LinkedHashMap();
         $breedingMethod->put(new MysString("Heuristic"), new MysString("heuristic"));
         $breedingMethod->put(new MysString("Advanced"), new MysString("advanced"));
 

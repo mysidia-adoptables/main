@@ -21,36 +21,35 @@ use Resource\Exception\ClassCastException;
  */
 final class Double extends Number
 {
-
     /**
      * Size constant, specifies the size a double value occupies.
      */
-    const Size = 64;
+    public const Size = 64;
 
     /**
      * Base constant, stores the base used for exponent.
      */
-    const Base = 10;
+    public const Base = 10;
 
     /**
      * MinCoeff constant, specifies the coefficient for minimum exponent.
      */
-    const MinCoeff = 1.8;
+    public const MinCoeff = 1.8;
 
     /**
      * MaxCoeff constant, specifies the coefficient for maximum exponent.
      */
-    const MaxCoeff = 4.9;
+    public const MaxCoeff = 4.9;
 
     /**
      * MinExp constant, defines the minimum allowable exponent.
      */
-    const MinExp = -324;
+    public const MinExp = -324;
 
     /**
      * MaxExp constant, defines the maximum allowable exponent.
      */
-    const MaxExp = 308;
+    public const MaxExp = 308;
 
 
     /**
@@ -63,7 +62,9 @@ final class Double extends Number
     public function __construct($num)
     {
         parent::__construct($num);
-        if (!is_double($num)) $num = (double)$num;
+        if (!is_double($num)) {
+            $num = (float)$num;
+        }
         $this->value = $num;
     }
 
@@ -168,9 +169,14 @@ final class Double extends Number
      */
     public function verify($num)
     {
-        if ($num > $this->getMax()) throw new Exception('Supplied value cannot be greater than 4.9*10e+308 for Double type.');
-        elseif ($num < $this->getMin()) throw new Exception('Supplied value cannot be smaller than -4.9*10e+308 for Double type.');
-        elseif ($this->getExp($num) < self::MinExp) throw new Exception('Supplied value with exponent cannot be less than 1.8*10e-324 for Double type.');
-        else return true;
+        if ($num > $this->getMax()) {
+            throw new Exception('Supplied value cannot be greater than 4.9*10e+308 for Double type.');
+        } elseif ($num < $this->getMin()) {
+            throw new Exception('Supplied value cannot be smaller than -4.9*10e+308 for Double type.');
+        } elseif ($this->getExp($num) < self::MinExp) {
+            throw new Exception('Supplied value with exponent cannot be less than 1.8*10e-324 for Double type.');
+        } else {
+            return true;
+        }
     }
 }

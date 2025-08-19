@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 abstract class EntrySubSet extends MapSet
 {
-
     /**
      * The size property, defines the current size of the Set.
      * @access protected
@@ -46,10 +45,14 @@ abstract class EntrySubSet extends MapSet
      */
     public function contains(Objective $object): bool
     {
-        if (!($object instanceof MapEntry)) return false;
+        if (!($object instanceof MapEntry)) {
+            return false;
+        }
         $entry = $object;
         $key = $entry->getKey();
-        if (!$this->map->inRange($key)) return false;
+        if (!$this->map->inRange($key)) {
+            return false;
+        }
         $map = $this->map->getMap();
         $mapEntry = $map->getEntry($key);
         return ($mapEntry != null and $map->valueEquals($mapEntry->getValue(), $entry->getValue()));
@@ -74,10 +77,14 @@ abstract class EntrySubSet extends MapSet
      */
     public function remove(Objective $object): bool
     {
-        if (!($object instanceof MapEntry)) return false;
+        if (!($object instanceof MapEntry)) {
+            return false;
+        }
         $entry = $object;
         $key = $entry->getKey();
-        if (!$this->map->inRange($key)) return false;
+        if (!$this->map->inRange($key)) {
+            return false;
+        }
         $map = $this->map->getMap();
         $mapEntry = $map->getEntry($key);
         if ($mapEntry != null and $map->valueEquals($mapEntry->getValue(), $entry->getValue())) {
@@ -95,7 +102,9 @@ abstract class EntrySubSet extends MapSet
     public function size(): int
     {
         $map = $this->map->getMap();
-        if ($this->map->fromStart() and $this->map->toEnd()) return $map->size();
+        if ($this->map->fromStart() and $this->map->toEnd()) {
+            return $map->size();
+        }
         if ($this->size == -1) {
             $this->size = 0;
             $iterator = $this->iterator();

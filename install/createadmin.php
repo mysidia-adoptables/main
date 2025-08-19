@@ -34,7 +34,9 @@ VALUES (null, '{$username}', '', '{$pass1}', '{$email}', '{$_SERVER['REMOTE_ADDR
 
 $stmt = $adopts->query("SELECT uid FROM {$prefix}users WHERE username = '{$username}'");
 $uid = $stmt->fetchColumn();
-if (!$uid) die("Error creating admin user.");
+if (!$uid) {
+    die("Error creating admin user.");
+}
 $adopts->query("INSERT INTO {$prefix}users_contacts (uid, website, facebook, twitter, aim, yahoo, msn, skype)
 VALUES ({$uid}, '', '', '', '', '', '', '')");
 

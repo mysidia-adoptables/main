@@ -18,7 +18,6 @@ use Resource\GUI\Document\Comment;
 
 class RegisterView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");

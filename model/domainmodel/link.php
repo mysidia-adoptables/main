@@ -11,7 +11,6 @@ use Resource\Utility\Comparable;
 
 class Link extends Model implements Comparable
 {
-
     protected $id;
     protected $linktype;
     protected $linktext;
@@ -24,7 +23,9 @@ class Link extends Model implements Comparable
         $mysidia = Registry::get("mysidia");
         if (!$dto) {
             $dto = $mysidia->db->select("links", [], "id = :id", ["id" => $id])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("Link {$id} does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("Link {$id} does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -51,14 +52,20 @@ class Link extends Model implements Comparable
 
     public function getParent($fetchMode = "")
     {
-        if (!$this->linkparent) return null;
-        if ($fetchMode == Model::MODEL) return new static($this->linkparent);
+        if (!$this->linkparent) {
+            return null;
+        }
+        if ($fetchMode == Model::MODEL) {
+            return new static($this->linkparent);
+        }
         return $this->linkparent;
     }
 
     public function getParentText()
     {
-        if (!$this->linkparent) return "";
+        if (!$this->linkparent) {
+            return "";
+        }
         $mysidia = Registry::get("mysidia");
         return $mysidia->db->select("links", ["linktext"], "id='{$this->linkparent}'")->fetchColumn();
     }
@@ -70,7 +77,9 @@ class Link extends Model implements Comparable
 
     public function compareTo(Objective $object)
     {
-        if (!($object instanceof Link)) throw new UnsupportedOperationException("Link can only be compared with another link.");
+        if (!($object instanceof Link)) {
+            throw new UnsupportedOperationException("Link can only be compared with another link.");
+        }
         return $this->linkorder - $object->getOrder();
     }
 

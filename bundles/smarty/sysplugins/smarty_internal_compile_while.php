@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile While
  * Compiles the {while} tag
@@ -28,7 +29,7 @@ class Smarty_Internal_Compile_While extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        $compiler->loopNesting ++;
+        $compiler->loopNesting++;
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         $this->openTag($compiler, 'while', $compiler->nocache);
@@ -58,8 +59,11 @@ class Smarty_Internal_Compile_While extends Smarty_Internal_CompileBase
             if (is_array($parameter[ 'if condition' ][ 'var' ])) {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ][ 'var' ];
                 $_output = "<?php while (" . $parameter[ 'if condition' ][ 'value' ] . ") {?>";
-                $_output .= $assignCompiler->compile($assignAttr, $compiler,
-                                                     ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]);
+                $_output .= $assignCompiler->compile(
+                    $assignAttr,
+                    $compiler,
+                    ['smarty_internal_index' => $parameter[ 'if condition' ][ 'var' ][ 'smarty_internal_index' ]]
+                );
             } else {
                 $assignAttr[][ 'var' ] = $parameter[ 'if condition' ][ 'var' ];
                 $_output = "<?php while (" . $parameter[ 'if condition' ][ 'value' ] . ") {?>";
@@ -91,7 +95,7 @@ class Smarty_Internal_Compile_Whileclose extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        $compiler->loopNesting --;
+        $compiler->loopNesting--;
         // must endblock be nocache?
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;

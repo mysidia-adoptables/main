@@ -20,19 +20,22 @@ use Service\ApplicationService\BreedingService;
 
 class BreedingController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct("member");
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->user->hasPermission("canbreed")) throw new NoPermissionException("permission");
+        if (!$mysidia->user->hasPermission("canbreed")) {
+            throw new NoPermissionException("permission");
+        }
     }
 
     public function index()
     {
         $mysidia = Registry::get("mysidia");
         $settings = new BreedingSettings($mysidia->db);
-        if ($settings->system != "enabled") throw new InvalidActionException("system");
+        if ($settings->system != "enabled") {
+            throw new InvalidActionException("system");
+        }
 
         if ($mysidia->input->post("submit")) {
             if ($mysidia->input->post("female") == "none" || $mysidia->input->post("male") == "none") {
@@ -52,7 +55,9 @@ class BreedingController extends AppController
                 throw new InvalidActionException($status);
             }
 
-            if ($settings->method == "advanced") $species = $breedingService->getBabySpecies();
+            if ($settings->method == "advanced") {
+                $species = $breedingService->getBabySpecies();
+            }
             $breedingService->getBabyAdopts($species);
             $breedingService->breed();
             $num = $breedingService->countOffsprings();
@@ -60,20 +65,22 @@ class BreedingController extends AppController
             if ($num > 0) {
                 $offsprings = $breedingService->getOffsprings();
                 $offspringID = $mysidia->db->select("owned_adoptables", ["aid"], "1 ORDER BY aid DESC LIMIT 1")->fetchColumn() - $num + 1;
-                $links = new LinkedList;
+                $links = new LinkedList();
                 foreach ($offsprings as $offspring) {
                     $image = $offspring->getEggImage(Model::GUI);
                     $links->add(new Link("myadopts/manage/{$offspringID}", $image));
                     $offspringID++;
                 }
                 $this->setField("links", $links);
-            } else $this->setField("links", null);
+            } else {
+                $this->setField("links", null);
+            }
             $this->setField("numOffsprings", new Integer($num));
             return;
         }
 
         $this->setField("settings", $settings);
-        $current = new Date;
+        $current = new Date();
         $lasttime = $current->getTimestamp() - (($settings->interval) * 24 * 60 * 60);
 
         $stmt = $mysidia->db->select("owned_adoptables", ["name", "aid"], "owner = '{$mysidia->user->getID()}' AND gender = 'f' AND currentlevel >= {$settings->level} AND lastbred <= '{$lasttime}'");

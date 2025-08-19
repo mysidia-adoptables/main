@@ -18,7 +18,6 @@ use Service\Helper\TableHelper;
 
 class AdsView extends View
 {
-
     public function index()
     {
         parent::index();
@@ -28,12 +27,12 @@ class AdsView extends View
         $adsTable = new TableBuilder("ads");
         $adsTable->setAlign(new Align("center", "middle"));
         $adsTable->buildHeaders("Ad", "Page", "Impressions", "Actual Impressions", "date", "Status", "Edit", "Delete");
-        $adsTable->setHelper(new TableHelper);
+        $adsTable->setHelper(new TableHelper());
 
         $iterator = $ads->iterator();
         while ($iterator->hasNext()) {
             $ad = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($ad->getAdName()));
             $cells->add(new TCell($ad->getPage()));
             $cells->add(new TCell($ad->getImpressions()));

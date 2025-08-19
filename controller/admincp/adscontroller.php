@@ -13,8 +13,7 @@ use Resource\Utility\Date;
 
 class AdsController extends AppController
 {
-
-    const PARAM = "aid";
+    public const PARAM = "aid";
 
     public function __construct()
     {
@@ -30,8 +29,10 @@ class AdsController extends AppController
         $mysidia = Registry::get("mysidia");
         $stmt = $mysidia->db->select("ads");
         $num = $stmt->rowCount();
-        if ($num == 0) throw new InvalidIDException("default_none");
-        $ads = new ArrayList;
+        if ($num == 0) {
+            throw new InvalidIDException("default_none");
+        }
+        $ads = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $ads->add(new Advertisement($dto->id, $dto));
         }
@@ -43,7 +44,7 @@ class AdsController extends AppController
         $mysidia = Registry::get("mysidia");
         if ($mysidia->input->post("submit")) {
             $this->dataValidate();
-            $date = new Date;
+            $date = new Date();
             $mysidia->db->insert("ads", ["id" => null, "adname" => $mysidia->input->post("adname"), "text" => $mysidia->input->post("description"), "page" => $mysidia->input->post("adpage"),
                 "impressions" => (int)$mysidia->input->post("impressions"), "actualimpressions" => 0, "date" => $date->format('Y-m-d'), "status" => 'active', "user" => null, "extra" => null]);
         }
@@ -52,14 +53,17 @@ class AdsController extends AppController
     public function edit($aid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$aid) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$aid) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $this->dataValidate();
             $ad = new Advertisement($aid);
             $mysidia->db->update("ads", ["adname" => $mysidia->input->post("adname"), "text" => $mysidia->input->post("description"), "page" => $mysidia->input->post("adpage"), "impressions" => (int)$mysidia->input->post("impressions")], "id='{$ad->getID()}'");
             if ($mysidia->input->post("aimp") >= $mysidia->input->post("impressions") && $mysidia->input->post("impressions") != 0) {
                 $ad->updateStatus("inactive");
-            } else $ad->updateStatus("active");
+            } else {
+                $ad->updateStatus("active");
+            }
         } else {
             $ad = new Advertisement($aid);
             $this->setField("ad", $ad);
@@ -69,8 +73,9 @@ class AdsController extends AppController
     public function delete($aid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$aid) $this->index();
-        else {
+        if (!$aid) {
+            $this->index();
+        } else {
             $ad = new Advertisement($aid);
             $mysidia->db->delete("ads", "id='{$ad->getID()}'");
         }
@@ -79,7 +84,11 @@ class AdsController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("adname")) throw new BlankFieldException("name");
-        if (!$mysidia->input->post("description")) throw new BlankFieldException("text");
+        if (!$mysidia->input->post("adname")) {
+            throw new BlankFieldException("name");
+        }
+        if (!$mysidia->input->post("description")) {
+            throw new BlankFieldException("text");
+        }
     }
 }

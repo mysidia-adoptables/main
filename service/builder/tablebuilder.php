@@ -2,7 +2,8 @@
 
 namespace Service\Builder;
 
-use ArrayObject, PDOStatement;
+use ArrayObject;
+use PDOStatement;
 use Resource\Collection\Collective;
 use Resource\Collection\Listable;
 use Resource\Collection\Mappable;
@@ -27,7 +28,6 @@ use Service\Helper\TableHelper;
  */
 class TableBuilder extends Table
 {
-
     /**
      * The Helper property, determines the helper class used to process table content.
      * @access protected
@@ -105,7 +105,9 @@ class TableBuilder extends Table
      */
     public function setMethod($field, $method)
     {
-        if (!$this->methods) $this->methods = new ArrayObject;
+        if (!$this->methods) {
+            $this->methods = new ArrayObject();
+        }
         $this->methods->offsetSet($field, $method);
     }
 
@@ -119,10 +121,15 @@ class TableBuilder extends Table
      */
     public function setMethods($methods, $overwrite = false)
     {
-        if (!$this->methods) $this->methods = new ArrayObject;
+        if (!$this->methods) {
+            $this->methods = new ArrayObject();
+        }
         if ($overwrite) {
-            if ($methods instanceof ArrayObject) $this->methods = $methods;
-            else $this->methods = new ArrayObject($methods);
+            if ($methods instanceof ArrayObject) {
+                $this->methods = $methods;
+            } else {
+                $this->methods = new ArrayObject($methods);
+            }
         } else {
             foreach ($methods as $field => $method) {
                 $this->methods->offsetSet($field, $method);
@@ -149,7 +156,9 @@ class TableBuilder extends Table
      */
     public function setParams($field, $params)
     {
-        if (!$this->params) $this->params = new ArrayObject;
+        if (!$this->params) {
+            $this->params = new ArrayObject();
+        }
         $this->params->offsetSet($field, $params);
     }
 
@@ -164,8 +173,12 @@ class TableBuilder extends Table
     public function buildCell($cell, $method = "")
     {
         $row = $this->component[$this->currentIndex];
-        if (!($row instanceof TRow)) throw new GUIException("The current table row is invalid.");
-        if (!empty($method)) $cell = $this->helper->execMethod($cell, $method);
+        if (!($row instanceof TRow)) {
+            throw new GUIException("The current table row is invalid.");
+        }
+        if (!empty($method)) {
+            $cell = $this->helper->execMethod($cell, $method);
+        }
         $row->add($cell);
         return $this;
     }
@@ -179,11 +192,14 @@ class TableBuilder extends Table
     public function buildHeaders()
     {
         $headers = func_get_args();
-        $row = new TRow;
+        $row = new TRow();
 
         for ($i = 0; $i < count($headers); $i++) {
-            if ($headers[$i] instanceof THeader) $row->add($headers[$i]);
-            else $row->add(new THeader($headers[$i]));
+            if ($headers[$i] instanceof THeader) {
+                $row->add($headers[$i]);
+            } else {
+                $row->add(new THeader($headers[$i]));
+            }
         }
         $this->add($row);
         return $this;
@@ -198,28 +214,37 @@ class TableBuilder extends Table
      */
     public function buildRow(Collective $fields)
     {
-        $row = new TRow;
+        $row = new TRow();
         $iterator = $fields->iterator();
 
         if ($fields instanceof Listable) {
             while ($iterator->hasNext()) {
                 $field = $iterator->next();
-                if ($field instanceof TCell) $row->add($field);
-                elseif ($field instanceof String) $row->add(new TCell($field->getValue()));
-                else $row->add(new TCell($field));
+                if ($field instanceof TCell) {
+                    $row->add($field);
+                } elseif ($field instanceof String) {
+                    $row->add(new TCell($field->getValue()));
+                } else {
+                    $row->add(new TCell($field));
+                }
             }
         } elseif ($fields instanceof Mappable) {
             while ($iterator->hasNext()) {
                 $entry = $iterator->next();
                 $field = $entry->getKey();
                 $method = $entry->getValue();
-                if ($field instanceof TCell) $row->add($field->getValue());
-                elseif ($this->helper and $method) {
+                if ($field instanceof TCell) {
+                    $row->add($field->getValue());
+                } elseif ($this->helper and $method) {
                     $cell = $this->helper->execMethod($field->getValue(), $method->getValue());
                     $row->add(new TCell($cell));
-                } else $row->add(new TCell($field->getValue()));
+                } else {
+                    $row->add(new TCell($field->getValue()));
+                }
             }
-        } else throw new GUIException("Supplied Collection type is invalid!");
+        } else {
+            throw new GUIException("Supplied Collection type is invalid!");
+        }
 
         $this->add($row);
         return $this;
@@ -236,9 +261,11 @@ class TableBuilder extends Table
      */
     public function buildTable(PDOStatement $stmt, $fields = "", $methods = "")
     {
-        if (is_array($methods)) $this->methods = new ArrayObject($methods);
+        if (is_array($methods)) {
+            $this->methods = new ArrayObject($methods);
+        }
         while ($dataRow = $stmt->fetchObject()) {
-            $tableRow = new TRow;
+            $tableRow = new TRow();
             for ($i = 0; $i < count($fields); $i++) {
                 $method = ($this->methods instanceof ArrayObject) ? $this->methods->offsetGet($fields[$i]) : false;
                 if ($this->helper and $method) {

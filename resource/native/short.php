@@ -21,21 +21,20 @@ use Resource\Exception\ClassCastException;
  */
 final class Short extends Number
 {
-
     /**
      * Size constant, specifies the size a short value occupies.
      */
-    const Size = 16;
+    public const Size = 16;
 
     /**
      * MinValue constant, a Short cannot contain number less than -32768.
      */
-    const MinValue = -32768;
+    public const MinValue = -32768;
 
     /**
      * MaxValue constant, a Short cannot contain number greater than 32767.
      */
-    const MaxValue = 32767;
+    public const MaxValue = 32767;
 
     /**
      * Constructor of Short Class, initializes the Short wrapper class.
@@ -46,7 +45,9 @@ final class Short extends Number
      */
     public function __construct($num)
     {
-        if (!is_int($num)) $num = (int)$num;
+        if (!is_int($num)) {
+            $num = (int)$num;
+        }
         parent::__construct($num);
         $this->value = $num;
     }
@@ -92,8 +93,12 @@ final class Short extends Number
      */
     public function verify($num)
     {
-        if ($num > self::MaxValue) throw new Exception('Supplied value cannot be greater than 32767 for Short type.');
-        elseif ($num < self::MinValue) throw new Exception('Supplied value cannot be smaller than -32768 for Short type.');
-        else return true;
+        if ($num > self::MaxValue) {
+            throw new Exception('Supplied value cannot be greater than 32767 for Short type.');
+        } elseif ($num < self::MinValue) {
+            throw new Exception('Supplied value cannot be smaller than -32768 for Short type.');
+        } else {
+            return true;
+        }
     }
 }

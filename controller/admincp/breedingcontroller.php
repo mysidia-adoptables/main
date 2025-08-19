@@ -15,7 +15,6 @@ use Resource\Exception\NoPermissionException;
 
 class BreedingController extends AppController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -30,10 +29,12 @@ class BreedingController extends AppController
         parent::index();
         $mysidia = Registry::get("mysidia");
         $total = $mysidia->db->select("breeding")->rowCount();
-        if ($total == 0) throw new InvalidIDException("empty");
+        if ($total == 0) {
+            throw new InvalidIDException("empty");
+        }
         $pagination = new Pagination($total, $mysidia->settings->pagination, "admincp/breeding", $mysidia->input->get("page"));
         $stmt = $mysidia->db->select("breeding", [], "1 LIMIT {$pagination->getLimit()},{$pagination->getRowsperPage()}");
-        $breedAdopts = new ArrayList;
+        $breedAdopts = new ArrayList();
         while ($dto = $stmt->fetchObject()) {
             $breedAdopts->add(new BreedAdoptable($dto->bid, $dto));
         }
@@ -55,8 +56,9 @@ class BreedingController extends AppController
     public function edit($bid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$bid) $this->index();
-        elseif (!$mysidia->input->post("submit")) {
+        if (!$bid) {
+            $this->index();
+        } elseif (!$mysidia->input->post("submit")) {
             try {
                 $breedAdopt = new BreedAdoptable($bid);
             } catch (Exception) {
@@ -75,8 +77,9 @@ class BreedingController extends AppController
     public function delete($bid = null)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$bid) $this->index();
-        else {
+        if (!$bid) {
+            $this->index();
+        } else {
             $breedAdopt = new BreedAdoptable($bid);
             $mysidia->db->delete("breeding", "bid='{$breedAdopt->getID()}'");
         }
@@ -91,7 +94,9 @@ class BreedingController extends AppController
             $settings = ['system', 'method', 'species', 'interval', 'level', 'capacity',
                 'number', 'chance', 'cost', 'usergroup', 'item'];
             foreach ($settings as $name) {
-                if ($mysidia->input->post($name) != ($breedingSettings->$name)) $mysidia->db->update("breeding_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                if ($mysidia->input->post($name) != ($breedingSettings->$name)) {
+                    $mysidia->db->update("breeding_settings", ["value" => $mysidia->input->post($name)], "name = :name", ["name" => $name]);
+                }
             }
             return;
         }
@@ -101,12 +106,24 @@ class BreedingController extends AppController
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->selected("offspring")) throw new BlankFieldException("offspring");
-        if (!$mysidia->input->selected("parent") && !$mysidia->input->selected("mother") && !$mysidia->input->selected("father")) throw new BlankFieldException("parent");
-        if ($mysidia->input->selected("parent") && ($mysidia->input->selected("mother") || $mysidia->input->selected("father"))) throw new BlankFieldException("parents");
+        if (!$mysidia->input->selected("offspring")) {
+            throw new BlankFieldException("offspring");
+        }
+        if (!$mysidia->input->selected("parent") && !$mysidia->input->selected("mother") && !$mysidia->input->selected("father")) {
+            throw new BlankFieldException("parent");
+        }
+        if ($mysidia->input->selected("parent") && ($mysidia->input->selected("mother") || $mysidia->input->selected("father"))) {
+            throw new BlankFieldException("parents");
+        }
 
-        if (!is_numeric($mysidia->input->post("probability"))) throw new BlankFieldException("probability");
-        if (!is_numeric($mysidia->input->post("survival"))) throw new BlankFieldException("survival");
-        if (!is_numeric($mysidia->input->post("level"))) throw new BlankFieldException("level");
+        if (!is_numeric($mysidia->input->post("probability"))) {
+            throw new BlankFieldException("probability");
+        }
+        if (!is_numeric($mysidia->input->post("survival"))) {
+            throw new BlankFieldException("survival");
+        }
+        if (!is_numeric($mysidia->input->post("level"))) {
+            throw new BlankFieldException("level");
+        }
     }
 }

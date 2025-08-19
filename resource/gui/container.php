@@ -24,7 +24,6 @@ use Resource\Native\MysString;
  */
 abstract class Container extends Component
 {
-
     /**
      * The components property, which stores references of all components inside this container.
      * @access protected
@@ -103,7 +102,7 @@ abstract class Container extends Component
      */
     public function __construct($components = "")
     {
-        $this->components = new ArrayList;
+        $this->components = new ArrayList();
         if ($components instanceof ArrayObject) {
             foreach ($components as $component) {
                 $this->components->add($component);
@@ -234,7 +233,9 @@ abstract class Container extends Component
     public function getComponent($index)
     {
         $component = $this->components->get($index);
-        if ($component == null) throw new GUIException("There is no GUI Object at this specified index.");
+        if ($component == null) {
+            throw new GUIException("There is no GUI Object at this specified index.");
+        }
         return $component;
     }
 
@@ -246,12 +247,16 @@ abstract class Container extends Component
      */
     public function getComponents($guiComponent)
     {
-        if ($this->components->size() == 0) throw new GUIException("This container has no components yet...");
-        $components = new LinkedHashMap;
+        if ($this->components->size() == 0) {
+            throw new GUIException("This container has no components yet...");
+        }
+        $components = new LinkedHashMap();
         $iterator = $this->components->iterator();
         while ($iterator->hasNext()) {
             $component = $iterator->next();
-            if ($component instanceof $guiComponent) $components->put(new MysString($component->getID()), $component);
+            if ($component instanceof $guiComponent) {
+                $components->put(new MysString($component->getID()), $component);
+            }
         }
         return $components;
     }
@@ -264,11 +269,15 @@ abstract class Container extends Component
      */
     public function getComponentsByID($id)
     {
-        if ($this->components->size() == 0) throw new GUIException("This container has no components yet...");
+        if ($this->components->size() == 0) {
+            throw new GUIException("This container has no components yet...");
+        }
         $iterator = $this->components->iterator();
         while ($iterator->hasNext()) {
             $component = $iterator->next();
-            if ($component->getID() == $id) return $component;
+            if ($component->getID() == $id) {
+                return $component;
+            }
         }
         return false;
     }
@@ -281,11 +290,15 @@ abstract class Container extends Component
      */
     public function getComponentsByName($name)
     {
-        if ($this->components->size() == 0) throw new GUIException("This container has no components yet...");
+        if ($this->components->size() == 0) {
+            throw new GUIException("This container has no components yet...");
+        }
         $iterator = $this->components->iterator();
         while ($iterator->hasNext()) {
             $component = $iterator->next();
-            if ($component->getName() == $name) return $component;
+            if ($component->getName() == $name) {
+                return $component;
+            }
         }
         return false;
     }
@@ -298,8 +311,10 @@ abstract class Container extends Component
     public function getLinks()
     {
         if (!$this->links) {
-            $this->links = new LinkedHashMap;
-            if ($this->components->size() == 0) return $this->links;
+            $this->links = new LinkedHashMap();
+            if ($this->components->size() == 0) {
+                return $this->links;
+            }
             $this->getComponentsByType("Link");
         }
         return $this->links;
@@ -313,8 +328,10 @@ abstract class Container extends Component
     public function getImages()
     {
         if (!$this->images) {
-            $this->images = new LinkedHashMap;
-            if ($this->components->size() == 0) return $this->images;
+            $this->images = new LinkedHashMap();
+            if ($this->components->size() == 0) {
+                return $this->images;
+            }
             $this->getComponentsByType("Image");
         }
         return $this->images;
@@ -328,8 +345,10 @@ abstract class Container extends Component
     public function getForms()
     {
         if (!$this->forms) {
-            $this->forms = new LinkedHashMap;
-            if ($this->components->size() == 0) return $this->forms;
+            $this->forms = new LinkedHashMap();
+            if ($this->components->size() == 0) {
+                return $this->forms;
+            }
             $this->getComponentsByType("Form");
         }
         return $this->forms;
@@ -343,8 +362,10 @@ abstract class Container extends Component
     public function getTables()
     {
         if (!$this->tables) {
-            $this->tables = new LinkedHashMap;
-            if ($this->components->size() == 0) return $this->tables;
+            $this->tables = new LinkedHashMap();
+            if ($this->components->size() == 0) {
+                return $this->tables;
+            }
             $this->getComponentsByType("Table");
         }
         return $this->tables;
@@ -363,7 +384,9 @@ abstract class Container extends Component
         $iterator = $this->components->iterator();
         while ($iterator->hasNext()) {
             $component = $iterator->next();
-            if ($component instanceof $type) $this->$property->put(new MysString($component->getID()), $component);
+            if ($component instanceof $type) {
+                $this->$property->put(new MysString($component->getID()), $component);
+            }
             if ($component instanceof Container) {
                 $this->$property->putAll($component->$method());
             }
@@ -394,7 +417,9 @@ abstract class Container extends Component
             $this->components->add($component);
             $this->currentIndex++;
         } else {
-            if ($index > $this->components->size()) $this->components->ensureCapacity($index);
+            if ($index > $this->components->size()) {
+                $this->components->ensureCapacity($index);
+            }
             $this->components->insert($index, $component);
             $this->currentIndex = $index + 1;
         }

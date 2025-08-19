@@ -23,7 +23,6 @@ use Service\Helper\ViewHelper;
  */
 abstract class View extends MysObject
 {
-
     /**
      * The action property, it stores the view action to execute.
      * @access protected
@@ -150,7 +149,9 @@ abstract class View extends MysObject
      */
     public function getCSS()
     {
-        if (!$this->css) $this->css = $this->helper->getCSS();
+        if (!$this->css) {
+            $this->css = $this->helper->getCSS();
+        }
         return $this->css;
     }
 
@@ -161,7 +162,9 @@ abstract class View extends MysObject
      */
     public function getDocument()
     {
-        if (!$this->document) $this->document = $this->helper->getDocument();
+        if (!$this->document) {
+            $this->document = $this->helper->getDocument();
+        }
         return $this->document;
     }
 
@@ -193,7 +196,9 @@ abstract class View extends MysObject
      */
     public function getJS()
     {
-        if (!$this->js) $this->js = $this->helper->getJS();
+        if (!$this->js) {
+            $this->js = $this->helper->getJS();
+        }
         return $this->js;
     }
 
@@ -204,7 +209,9 @@ abstract class View extends MysObject
      */
     public function getLangvars()
     {
-        if (!$this->lang) $this->lang = $this->helper->getLangvars();
+        if (!$this->lang) {
+            $this->lang = $this->helper->getLangvars();
+        }
         return $this->lang;
     }
 
@@ -226,7 +233,9 @@ abstract class View extends MysObject
      */
     public function getTemplate()
     {
-        if (!$this->template) $this->template = $this->helper->getTemplate();
+        if (!$this->template) {
+            $this->template = $this->helper->getTemplate();
+        }
         return $this->template;
     }
 
@@ -237,7 +246,9 @@ abstract class View extends MysObject
      */
     public function getTheme()
     {
-        if (!$this->theme) $this->theme = $this->helper->getTheme();
+        if (!$this->theme) {
+            $this->theme = $this->helper->getTheme();
+        }
         return $this->theme;
     }
 
@@ -353,7 +364,9 @@ abstract class View extends MysObject
      */
     public function render()
     {
-        if (!$this->template) throw new ViewException("Template engine not found, view cannot be rendered.");
+        if (!$this->template) {
+            throw new ViewException("Template engine not found, view cannot be rendered.");
+        }
         $this->template->setTheme($this->theme);
         $this->template->render();
         $this->template->output();

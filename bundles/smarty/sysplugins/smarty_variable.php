@@ -24,8 +24,7 @@ class Smarty_Variable implements \Stringable
          * if true any output of this variable will be not cached
          */
         public $nocache = false
-    )
-    {
+    ) {
     }
 
     /**
@@ -38,4 +37,3 @@ class Smarty_Variable implements \Stringable
         return (string) $this->value;
     }
 }
-

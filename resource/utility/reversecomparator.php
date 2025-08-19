@@ -18,11 +18,10 @@ use Resource\Native\Objective;
  */
 class ReverseComparator extends MysObject implements Comparative
 {
-
     /**
      * serialID constant, it serves as identifier of the object being ReverseComparator.
      */
-    const SERIALID = "4374092139857L";
+    public const SERIALID = "4374092139857L";
 
     /**
      * The constructor for ReverseComparator Class, it initializes basic properties for reverse comparator.
@@ -37,8 +36,7 @@ class ReverseComparator extends MysObject implements Comparative
          * @access private
          */
         private readonly ?\Resource\Utility\Comparative $comparator = null
-    )
-    {
+    ) {
     }
 
     /**
@@ -60,8 +58,11 @@ class ReverseComparator extends MysObject implements Comparative
      */
     public function compare(Objective $object, Objective $object2)
     {
-        if ($this->comparator == null) return ($object2->compareTo($object));
-        else return $this->comparator->compare($object2, $object);
+        if ($this->comparator == null) {
+            return ($object2->compareTo($object));
+        } else {
+            return $this->comparator->compare($object2, $object);
+        }
     }
 
     /**

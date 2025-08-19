@@ -2,14 +2,14 @@
 
 namespace Model\DomainModel;
 
-use Exception, SplFileObject;
+use Exception;
+use SplFileObject;
 use Resource\Core\Model;
 use Resource\Core\Registry;
 use Resource\Utility\Date;
 
 class Theme extends Model
 {
-
     protected $id;
     protected $themename;
     protected $themefolder;
@@ -23,7 +23,9 @@ class Theme extends Model
         if (!$dto) {
             $whereClause = is_numeric($themeInfo) ? "id = :themeinfo" : "themename = :themeinfo";
             $dto = $mysidia->db->select("themes", [], $whereClause, ["themeinfo" => $themeInfo])->fetchObject();
-            if (!is_object($dto)) throw new InvalidIDException("The specified theme does not exist...");
+            if (!is_object($dto)) {
+                throw new InvalidIDException("The specified theme does not exist...");
+            }
         }
         parent::__construct($dto);
     }
@@ -31,8 +33,12 @@ class Theme extends Model
     protected function createFromDTO($dto)
     {
         parent::createFromDTO($dto);
-        if ($this->fromdate) $this->fromdate = new Date($this->fromdate);
-        if ($this->todate) $this->todate = new Date($this->todate);
+        if ($this->fromdate) {
+            $this->fromdate = new Date($this->fromdate);
+        }
+        if ($this->todate) {
+            $this->todate = new Date($this->todate);
+        }
     }
 
 
@@ -53,13 +59,17 @@ class Theme extends Model
 
     public function getDateFrom($format = null)
     {
-        if (!$this->fromdate) return null;
+        if (!$this->fromdate) {
+            return null;
+        }
         return $format ? $this->fromdate->format($format) : $this->fromdate;
     }
 
     public function getDateTo($format = null)
     {
-        if (!$this->todate) return null;
+        if (!$this->todate) {
+            return null;
+        }
         return $format ? $this->todate->format($format) : $this->todate;
     }
 
@@ -67,10 +77,16 @@ class Theme extends Model
     {
         $mysidia = Registry::get("mysidia");
         $displayable = true;
-        if ($this->usergroup && $mysidia->user->getUserGroupID() != $this->usergroup) $displayable = false;
-        $today = new Date;
-        if ($this->fromdate && $today < $this->fromdate) $displayable = false;
-        if ($this->todate && $today > $this->todate) $displayable = false;
+        if ($this->usergroup && $mysidia->user->getUserGroupID() != $this->usergroup) {
+            $displayable = false;
+        }
+        $today = new Date();
+        if ($this->fromdate && $today < $this->fromdate) {
+            $displayable = false;
+        }
+        if ($this->todate && $today > $this->todate) {
+            $displayable = false;
+        }
         return $displayable;
     }
 
@@ -88,9 +104,13 @@ class Theme extends Model
     public function updateThemeText($filename, $text, $folder = null)
     {
         $mysidia = Registry::get("mysidia");
-        if ($folder) $this->themefolder = $folder;
+        if ($folder) {
+            $this->themefolder = $folder;
+        }
         $path = "{$mysidia->path->getRoot()}templates/{$this->themefolder}";
-        if (!is_dir($path)) mkdir($path);
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
         $file = new SplFileObject("{$path}/{$filename}", "w");
         $file->fwrite($mysidia->format($text, false));
         $file->fflush();

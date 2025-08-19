@@ -17,7 +17,6 @@ namespace Resource\Collection;
  */
 abstract class MapSet extends Set
 {
-
     /**
      * The map property, it stores a reference to the source Map object.
      * @access protected

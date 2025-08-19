@@ -22,7 +22,6 @@ use Resource\GUI\Renderer\ListRenderer;
  */
 class RadioList extends Container
 {
-
     /**
      * Constructor of RadioList Class, which assigns basic property to this list
      * @access public
@@ -35,7 +34,9 @@ class RadioList extends Container
             $this->id = $name;
         }
         parent::__construct($components);
-        if (!empty($identity)) $this->check($identity);
+        if (!empty($identity)) {
+            $this->check($identity);
+        }
         $this->renderer = new ListRenderer($this);
     }
 
@@ -48,7 +49,9 @@ class RadioList extends Container
      */
     public function add(Component $radio, $index = -1)
     {
-        if ($radio->getName() != $this->name) throw new GUIException("Cannot add unrelated radiobuttons to a RadioList.");
+        if ($radio->getName() != $this->name) {
+            throw new GUIException("Cannot add unrelated radiobuttons to a RadioList.");
+        }
         parent::add($radio, $index);
     }
 
@@ -61,7 +64,9 @@ class RadioList extends Container
     public function check($identity)
     {
         foreach ($this->components as $components) {
-            if ($components->getValue() == $identity) $components->setChecked(true);
+            if ($components->getValue() == $identity) {
+                $components->setChecked(true);
+            }
         }
     }
 

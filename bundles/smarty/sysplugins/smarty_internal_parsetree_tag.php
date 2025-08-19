@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Templateparser Parse Tree
  * These are classes to build parse tree in the template parser
@@ -18,7 +19,6 @@
  */
 class Smarty_Internal_ParseTree_Tag extends Smarty_Internal_ParseTree
 {
-
     /**
      * Saved block nesting level
      *

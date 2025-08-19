@@ -122,10 +122,10 @@ class Smarty_Template_Source
     public function __construct(Smarty $smarty, /**
      * Template Resource (Smarty_Internal_Template::$template_resource)
      */
-    public $resource, $type, /**
+        public $resource, $type, /**
      * Resource Name
      */
-    public $name)
+        public $name)
     {
         $this->handler =
             $smarty->_cache[ 'resource_handlers' ][ $type ] ?? Smarty_Resource::load($smarty, $type);
@@ -144,9 +144,11 @@ class Smarty_Template_Source
      * @return Smarty_Template_Source Source Object
      * @throws SmartyException
      */
-    public static function load(Smarty_Internal_Template $_template = null, Smarty $smarty = null,
-                                $template_resource = null)
-    {
+    public static function load(
+        Smarty_Internal_Template $_template = null,
+        Smarty $smarty = null,
+        $template_resource = null
+    ) {
         if ($_template) {
             $smarty = $_template->smarty;
             $template_resource = $_template->template_resource;

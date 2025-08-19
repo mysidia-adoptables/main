@@ -20,7 +20,8 @@
 
 class HTMLPurifier_Zipper
 {
-    public $front, $back;
+    public $front;
+    public $back;
 
     public function __construct($front, $back)
     {
@@ -34,7 +35,7 @@ class HTMLPurifier_Zipper
      * @param Array to zipper-ify.
      * @return Tuple of zipper and element of first position.
      */
-    static public function fromArray($array)
+    public static function fromArray($array)
     {
         $z = new self([], array_reverse($array));
         $t = $z->delete(); // delete the "dummy hole"
@@ -49,7 +50,9 @@ class HTMLPurifier_Zipper
     public function toArray($t = null)
     {
         $a = $this->front;
-        if ($t !== null) $a[] = $t;
+        if ($t !== null) {
+            $a[] = $t;
+        }
         for ($i = count($this->back) - 1; $i >= 0; $i--) {
             $a[] = $this->back[$i];
         }
@@ -63,7 +66,9 @@ class HTMLPurifier_Zipper
      */
     public function next($t)
     {
-        if ($t !== null) array_push($this->front, $t);
+        if ($t !== null) {
+            array_push($this->front, $t);
+        }
         return empty($this->back) ? null : array_pop($this->back);
     }
 
@@ -88,7 +93,9 @@ class HTMLPurifier_Zipper
      */
     public function prev($t)
     {
-        if ($t !== null) array_push($this->back, $t);
+        if ($t !== null) {
+            array_push($this->back, $t);
+        }
         return empty($this->front) ? null : array_pop($this->front);
     }
 
@@ -117,7 +124,9 @@ class HTMLPurifier_Zipper
      */
     public function insertBefore($t)
     {
-        if ($t !== null) array_push($this->front, $t);
+        if ($t !== null) {
+            array_push($this->front, $t);
+        }
     }
 
     /**
@@ -126,7 +135,9 @@ class HTMLPurifier_Zipper
      */
     public function insertAfter($t)
     {
-        if ($t !== null) array_push($this->back, $t);
+        if ($t !== null) {
+            array_push($this->back, $t);
+        }
     }
 
     /**

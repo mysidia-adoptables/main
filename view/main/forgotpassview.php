@@ -9,7 +9,6 @@ use Service\Builder\FormBuilder;
 
 class ForgotpassView extends View
 {
-
     public function index()
     {
         $mysidia = Registry::get("mysidia");
@@ -22,7 +21,8 @@ class ForgotpassView extends View
 
         $document->setTitle($this->lang->title);
         $document->addLangvar($this->lang->default);
-        $requestForm = new FormBuilder("requestform", "forgotpass", "post");;
+        $requestForm = new FormBuilder("requestform", "forgotpass", "post");
+        ;
         $requestForm->buildComment("username: ", false)
             ->buildTextField("username")
             ->buildComment("Email Address: ", false)
@@ -49,7 +49,8 @@ class ForgotpassView extends View
 
         $document->setTitle($this->lang->reset_title);
         $document->addLangvar($this->lang->reset);
-        $resetForm = new FormBuilder("requestform", "reset", "post");;
+        $resetForm = new FormBuilder("requestform", "reset", "post");
+        ;
         $resetForm->buildComment("Username: ", false)
             ->buildTextField("username")
             ->buildComment("Email Address: ", false)

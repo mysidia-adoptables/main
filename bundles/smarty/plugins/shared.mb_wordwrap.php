@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty shared plugin
  *
@@ -36,8 +37,12 @@ if (!function_exists('smarty_mb_wordwrap')) {
             $_tokens = [$_token];
             if ($token_length > $width) {
                 if ($cut) {
-                    $_tokens = preg_split('!(.{' . $width . '})!S' . Smarty::$_UTF8_MODIFIER, $_token, - 1,
-                                          PREG_SPLIT_NO_EMPTY + PREG_SPLIT_DELIM_CAPTURE);
+                    $_tokens = preg_split(
+                        '!(.{' . $width . '})!S' . Smarty::$_UTF8_MODIFIER,
+                        $_token,
+                        - 1,
+                        PREG_SPLIT_NO_EMPTY + PREG_SPLIT_DELIM_CAPTURE
+                    );
                 }
             }
 

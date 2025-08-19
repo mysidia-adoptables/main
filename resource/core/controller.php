@@ -22,7 +22,6 @@ use Resource\Native\MysString;
  */
 abstract class Controller extends MysObject
 {
-
     /**
      * The action property, defines the action for this controller.
      * @access protected
@@ -97,7 +96,7 @@ abstract class Controller extends MysObject
     {
         if (!$this->model) {
             $modelClass = $this->model;
-            $this->model = new $modelClass;
+            $this->model = new $modelClass();
         }
         return $this->model;
     }
@@ -133,7 +132,7 @@ abstract class Controller extends MysObject
     public function loadModel($name)
     {
         $modelClass = $name;
-        $this->$modelClass = new $modelClass;
+        $this->$modelClass = new $modelClass();
     }
 
     /**
@@ -156,7 +155,9 @@ abstract class Controller extends MysObject
      */
     public function setFlags($param, $param2 = null)
     {
-        if (!$param2) $param2 = $param;
+        if (!$param2) {
+            $param2 = $param;
+        }
         $this->flags = new MapEntry(new MysString($param), new MysString($param2));
     }
 
@@ -177,7 +178,7 @@ abstract class Controller extends MysObject
      * @return void
      * @abstract
      */
-    public abstract function getView();
+    abstract public function getView();
 
     /**
      * The loadView method, it loads the corresponding view for the controller.
@@ -185,5 +186,5 @@ abstract class Controller extends MysObject
      * @access public
      * @return View
      */
-    public abstract function loadView(MysString $name);
+    abstract public function loadView(MysString $name);
 }

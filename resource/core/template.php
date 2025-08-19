@@ -21,7 +21,6 @@ use Resource\Native\Objective;
  */
 class Template extends Smarty implements Objective
 {
-
     /**
      * The scriptRoot property, it defines the root directory used for loading scripts.
      * @access private

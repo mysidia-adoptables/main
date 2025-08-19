@@ -21,7 +21,6 @@ use Resource\GUI\Renderer\TextRenderer;
  */
 abstract class TextComponent extends InputComponent
 {
-
     /**
      * The maxLength property, specifies the max length allowed for this text component.
      * @access protected
@@ -65,7 +64,9 @@ abstract class TextComponent extends InputComponent
      */
     public function setMaxLength($length)
     {
-        if (!is_numeric($length)) throw new GUIException("The supplied max length value is not numeric!");
+        if (!is_numeric($length)) {
+            throw new GUIException("The supplied max length value is not numeric!");
+        }
         $this->maxLength = $length;
         $this->setAttributes("MaxLength");
     }

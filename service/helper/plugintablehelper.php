@@ -22,7 +22,6 @@ use Resource\Utility\URL;
  */
 class PluginTableHelper extends TableHelper
 {
-
     /**
      * The getActionImage method, wraps up the table cell with a plugin action image/link.
      * @param ACPHook $plugin
@@ -31,7 +30,9 @@ class PluginTableHelper extends TableHelper
      */
     public function getActionImage(ACPHook $plugin)
     {
-        if (!$plugin) return new Comment("N/A", false);
+        if (!$plugin) {
+            return new Comment("N/A", false);
+        }
         $action = $plugin->isEnabled() ? "disable" : "enable";
         $url = new URL("admincp/settings/plugin/{$plugin->getID()}/{$action}");
         $image = new Image(($action == "enable") ? "templates/icons/unfreeze.gif" : "templates/icons/freeze.gif");

@@ -14,9 +14,8 @@ use Resource\Native\MysArray;
 
 class AlternateController extends AppController
 {
-
-    const PARAM = "type";
-    const PARAM2 = "alid";
+    public const PARAM = "type";
+    public const PARAM2 = "alid";
 
     public function __construct()
     {
@@ -87,16 +86,26 @@ class AlternateController extends AppController
             } catch (Exception) {
                 throw new InvalidIDException("global_id");
             }
-        } else $this->edit($alid);
+        } else {
+            $this->edit($alid);
+        }
     }
 
     private function dataValidate()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$mysidia->input->post("adopt")) throw new BlankFieldException("adopt");
-        if (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") throw new BlankFieldException("images");
-        if (!$mysidia->input->post("level")) throw new BlankFieldException("level");
-        if (!$mysidia->input->post("chance")) throw new BlankFieldException("chance");
+        if (!$mysidia->input->post("adopt")) {
+            throw new BlankFieldException("adopt");
+        }
+        if (!$mysidia->input->post("imageurl") && $mysidia->input->post("existingimageurl") == "none") {
+            throw new BlankFieldException("images");
+        }
+        if (!$mysidia->input->post("level")) {
+            throw new BlankFieldException("level");
+        }
+        if (!$mysidia->input->post("chance")) {
+            throw new BlankFieldException("chance");
+        }
         return true;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Ldelim
  * Compiles the {ldelim} tag

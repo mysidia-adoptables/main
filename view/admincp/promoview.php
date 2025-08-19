@@ -18,12 +18,11 @@ use Service\Helper\TableHelper;
 
 class PromoView extends View
 {
-
     public function index()
     {
         parent::index();
         $document = $this->document;
-        $helper = new TableHelper;
+        $helper = new TableHelper();
         $promoTable = new TableBuilder("promocode");
         $promoTable->setAlign(new Align("center", "middle"));
         $promoTable->buildHeaders("ID", "User", "Code", "Reward", "Edit", "Delete");
@@ -33,7 +32,7 @@ class PromoView extends View
         $iterator = $promocodes->iterator();
         while ($iterator->hasNext()) {
             $promocode = $iterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($promocode->getID()));
             $cells->add(new TCell($promocode->getUser() ? $promocode->getUsername() : "<i>All Users</i>"));
             $cells->add(new TCell($promocode->getCode()));
@@ -92,8 +91,9 @@ class PromoView extends View
         $mysidia = Registry::get("mysidia");
         $document = $this->document;
         $promocode = $this->getField("promocode");
-        if (!$promocode) $this->index();
-        elseif ($mysidia->input->post("submit")) {
+        if (!$promocode) {
+            $this->index();
+        } elseif ($mysidia->input->post("submit")) {
             $document->setTitle($this->lang->edited_title);
             $document->addLangvar($this->lang->edited);
             header("Refresh:3; URL='../edit'");
@@ -133,8 +133,9 @@ class PromoView extends View
     {
         $document = $this->document;
         $promocode = $this->getField("promocode");
-        if (!$promocode) $this->index();
-        else {
+        if (!$promocode) {
+            $this->index();
+        } else {
             $document->setTitle($this->lang->delete_title);
             $document->addLangvar($this->lang->delete);
             header("Refresh:3; URL='../index'");

@@ -7,7 +7,6 @@ use Resource\Native\MysString;
 
 class Pagination extends MysObject
 {
-
     private $website;
     private $page;
     private $symbol;
@@ -16,7 +15,9 @@ class Pagination extends MysObject
     {
         $path = Registry::get("path");
         $frame = Registry::get("frame");
-        if ($page instanceof MysString) $page = (string)$page;
+        if ($page instanceof MysString) {
+            $page = (string)$page;
+        }
         $frame->getHeader()->addStyle("{$path->getTempRoot()}css/pagination.css");
         $this->website = $path->getAbsolute() . $website;
         $this->setPage($page);
@@ -60,29 +61,40 @@ class Pagination extends MysObject
         $pagination .= "<br><br><div class='pagination'";
         if ($margin || $padding) {
             $pagination .= " style='";
-            if ($margin) $pagination .= "margin: $margin;";
-            if ($padding) $pagination .= "padding: $padding;";
+            if ($margin) {
+                $pagination .= "margin: $margin;";
+            }
+            if ($padding) {
+                $pagination .= "padding: $padding;";
+            }
             $pagination .= "'";
         }
         $pagination .= ">";
 
         if ($this->getLastPage() > 1) {
-            if ($page > 1) $pagination .= "<a href='{$this->website}{$this->symbol}page-{$prev}'><< prev</a>";
-            else $pagination .= "<span class='disabled'><< prev</span>";
+            if ($page > 1) {
+                $pagination .= "<a href='{$this->website}{$this->symbol}page-{$prev}'><< prev</a>";
+            } else {
+                $pagination .= "<span class='disabled'><< prev</span>";
+            }
 
 
             if ($this->getLastPage() < 9) {
                 for ($counter = 1; $counter <= $this->getLastPage(); $counter++) {
-                    if ($counter == $page) $pagination .= "<span class='current'>{$counter}</span>";
-                    else $pagination .= "<a href='{$this->website}{$this->symbol}page-{$counter}'>{$counter}</a>";
+                    if ($counter == $page) {
+                        $pagination .= "<span class='current'>{$counter}</span>";
+                    } else {
+                        $pagination .= "<a href='{$this->website}{$this->symbol}page-{$counter}'>{$counter}</a>";
+                    }
                 }
             } elseif ($this->getLastPage() >= 9) {
                 if ($page < 4) {
                     for ($counter = 1; $counter < 6; $counter++) {
-                        if ($counter == $page)
+                        if ($counter == $page) {
                             $pagination .= "<span class='current'>{$counter}</span>";
-                        else
+                        } else {
                             $pagination .= "<a href='{$this->website}{$this->symbol}page-{$counter}'>{$counter}</a>";
+                        }
                     }
                     $pagination .= "...";
                     $pagination .= "<a href=$this->website{$this->symbol}page-$lpm1>{$lpm1}</a>";
@@ -92,10 +104,11 @@ class Pagination extends MysObject
                     $pagination .= "<a href=$this->website{$this->symbol}page-2>2</a>";
                     $pagination .= "...";
                     for ($counter = $page - 1; $counter <= $page + 1; $counter++) {
-                        if ($counter == $page)
+                        if ($counter == $page) {
                             $pagination .= "<span class='current'>{$counter}</span>";
-                        else
+                        } else {
                             $pagination .= "<a href='{$this->website}{$this->symbol}page-{$counter}'>{$counter}</a>";
+                        }
                     }
                     $pagination .= "...";
                     $pagination .= "<a href='{$this->website}{$this->symbol}page-{$lpm1}'>$lpm1</a>";
@@ -105,18 +118,20 @@ class Pagination extends MysObject
                     $pagination .= "<a href='{$this->website}{$this->symbol}page-2'>2</a>";
                     $pagination .= "...";
                     for ($counter = $this->getLastPage() - 4; $counter <= $this->getLastPage(); $counter++) {
-                        if ($counter == $page)
+                        if ($counter == $page) {
                             $pagination .= "<span class='current'>{$counter}</span>";
-                        else
+                        } else {
                             $pagination .= "<a href='{$this->website}{$this->symbol}page-{$counter}'>{$counter}</a>";
+                        }
                     }
                 }
             }
 
-            if ($page < $counter - 1)
+            if ($page < $counter - 1) {
                 $pagination .= "<a href='{$this->website}{$this->symbol}page-{$next}'>next >></a>";
-            else
+            } else {
                 $pagination .= "<span class='disabled'>next >></span>";
+            }
             $pagination .= "</div>\n";
         }
 

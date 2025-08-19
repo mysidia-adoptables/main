@@ -18,7 +18,6 @@ use Service\Helper\SearchTableHelper;
 
 class SearchView extends View
 {
-
     public function index()
     {
         $document = $this->document;
@@ -39,7 +38,7 @@ class SearchView extends View
         if ($mysidia->input->post("submit")) {
             $userList = $this->getField("userList");
             $iterator = $userList->iterator();
-            $helper = new SearchTableHelper;
+            $helper = new SearchTableHelper();
             $searchTable = new TableBuilder("searchresult");
             $searchTable->setAlign(new Align("center"));
             $searchTable->buildHeaders("ID", "Name", "Email", "Usergroup", "Joindate", "Befriend", "Trade");
@@ -47,7 +46,7 @@ class SearchView extends View
 
             while ($iterator->hasNext()) {
                 $user = $iterator->next();
-                $cells = new LinkedList;
+                $cells = new LinkedList();
                 $cells->add(new TCell($user->getID()));
                 $cells->add(new TCell($helper->getUserProfile($user->getID(), $user->getUsername())));
                 $cells->add(new TCell($user->getEmail()));
@@ -90,7 +89,7 @@ class SearchView extends View
         if ($mysidia->input->post("submit")) {
             $adoptList = $this->getField("adoptList");
             $iterator = $adoptList->iterator();
-            $helper = new SearchTableHelper;
+            $helper = new SearchTableHelper();
             $searchTable = new TableBuilder("searchresult");
             $searchTable->setAlign(new Align("center"));
             $searchTable->buildHeaders("ID", "Name", "Type", "Owner", "Level", "Gender", "Trade");
@@ -99,7 +98,7 @@ class SearchView extends View
             while ($iterator->hasNext()) {
                 $adopt = $iterator->next();
                 $owner = $adopt->getOwner(Model::MODEL);
-                $cells = new LinkedList;
+                $cells = new LinkedList();
                 $cells->add(new TCell($adopt->getAdoptID()));
                 $cells->add(new TCell($helper->getAdoptName($adopt->getAdoptID(), $adopt->getName())));
                 $cells->add(new TCell($adopt->getType()));
@@ -137,7 +136,7 @@ class SearchView extends View
         if ($mysidia->input->post("submit")) {
             $ItemList = $this->getField("itemList");
             $iterator = $ItemList->iterator();
-            $helper = new SearchTableHelper;
+            $helper = new SearchTableHelper();
             $searchTable = new TableBuilder("searchresult");
             $searchTable->setAlign(new Align("center"));
             $searchTable->buildHeaders("ID", "Name", "Category", "Description", "Function", "Price", "Shop");
@@ -145,7 +144,7 @@ class SearchView extends View
 
             while ($iterator->hasNext()) {
                 $item = $iterator->next();
-                $cells = new LinkedList;
+                $cells = new LinkedList();
                 $cells->add(new TCell($item->getID()));
                 $cells->add(new TCell($item->getItemname()));
                 $cells->add(new TCell($item->getCategory()));

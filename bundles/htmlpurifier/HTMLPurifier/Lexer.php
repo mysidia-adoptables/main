@@ -41,7 +41,6 @@
  */
 class HTMLPurifier_Lexer
 {
-
     /**
      * Whether or not this lexer implements line-number/column-number tracking.
      * If it does, set to true.
@@ -162,11 +161,13 @@ class HTMLPurifier_Lexer
             '&#x27;' => "'"
         ];
 
-    public function parseText($string, $config) {
+    public function parseText($string, $config)
+    {
         return $this->parseData($string, false, $config);
     }
 
-    public function parseAttr($string, $config) {
+    public function parseAttr($string, $config)
+    {
         return $this->parseData($string, true, $config);
     }
 
@@ -317,7 +318,7 @@ class HTMLPurifier_Lexer
         if ($config->get('Core.ConvertDocumentToFragment')) {
             $e = false;
             if ($config->get('Core.CollectErrors')) {
-                $e =& $context->get('ErrorCollector');
+                $e = & $context->get('ErrorCollector');
             }
             $new_html = $this->extractBody($html);
             if ($e && $new_html != $html) {

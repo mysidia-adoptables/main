@@ -16,7 +16,6 @@ use Resource\GUI\Renderable;
 
 class WidgetViewModel extends ViewModel implements Renderable
 {
-
     /**
      * The division property, holds an division object of the entired rendered menu.
      * @access protected
@@ -41,8 +40,11 @@ class WidgetViewModel extends ViewModel implements Renderable
         while ($data = $stmt->fetchObject()) {
             $module = new Module($data->moid, $data);
             $method = "set{$module->getName()}";
-            if ($this->hasMethod($method)) $this->$method();
-            else $this->loadModule($module);
+            if ($this->hasMethod($method)) {
+                $this->$method();
+            } else {
+                $this->loadModule($module);
+            }
         }
     }
 
@@ -74,8 +76,10 @@ class WidgetViewModel extends ViewModel implements Renderable
      */
     public function loadModule(Module $module)
     {
-        $moduleContainer = new Paragraph;
-        if ($module->getSubtitle()) $moduleContainer->add(new Comment($module->getSubtitle(), true, "b"));
+        $moduleContainer = new Paragraph();
+        if ($module->getSubtitle()) {
+            $moduleContainer->add(new Comment($module->getSubtitle(), true, "b"));
+        }
         if ($module->getPHP()) {
             if (PHP_MAJOR_VERSION >= 7) {
                 try {
@@ -85,7 +89,9 @@ class WidgetViewModel extends ViewModel implements Renderable
                 }
             }
         }
-        if ($module->getHTML()) $moduleContainer->add(new Comment($module->getHTML()));
+        if ($module->getHTML()) {
+            $moduleContainer->add(new Comment($module->getHTML()));
+        }
         $this->setDivision($moduleContainer);
     }
 
@@ -109,7 +115,7 @@ class WidgetViewModel extends ViewModel implements Renderable
     protected function setDivision(Component $module)
     {
         if (!$this->division) {
-            $this->division = new Division;
+            $this->division = new Division();
             $this->division->setClass($this->getName());
         }
         $this->division->add($module);
@@ -122,7 +128,7 @@ class WidgetViewModel extends ViewModel implements Renderable
      */
     public function clear()
     {
-        $this->modules = new ArrayList;
+        $this->modules = new ArrayList();
     }
 
     /**
@@ -132,7 +138,9 @@ class WidgetViewModel extends ViewModel implements Renderable
      */
     public function render()
     {
-        if (!$this->division) return;
+        if (!$this->division) {
+            return;
+        }
         return $this->division->render();
     }
 }

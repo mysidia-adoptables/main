@@ -21,21 +21,20 @@ use Resource\Native\Objective;
  */
 class HashMap extends Map
 {
-
     /**
      * serialID constant, it serves as identifier of the object being HashMap.
      */
-    const SERIALID = "362498820763181265L";
+    public const SERIALID = "362498820763181265L";
 
     /**
      * defaultCapacity constant, it defines the initial capacity used if no such argument is specified.
      */
-    const DEFAULTCAPACITY = 16;
+    public const DEFAULTCAPACITY = 16;
 
     /**
      * defaultLoad constant, it specifies the initial load factor used if no such argument is specified.
      */
-    const DEFAULTLOAD = 0.75;
+    public const DEFAULTLOAD = 0.75;
 
     /**
      * The entries property, it stores an array of Entrys specified in the HashMap.
@@ -82,17 +81,25 @@ class HashMap extends Map
     public function __construct($param = self::DEFAULTCAPACITY, $loadFactor = self::DEFAULTLOAD)
     {
         if (is_int($param)) {
-            if ($param <= 0) throw new IllegalArgumentException("The initial Capacity of HashMap cannot be less than 0.");
-            if ($loadFactor <= 0 or !is_numeric($loadFactor)) throw new IllegalArgumentException("The load factor for HashMap must be a positive number.");
+            if ($param <= 0) {
+                throw new IllegalArgumentException("The initial Capacity of HashMap cannot be less than 0.");
+            }
+            if ($loadFactor <= 0 or !is_numeric($loadFactor)) {
+                throw new IllegalArgumentException("The load factor for HashMap must be a positive number.");
+            }
             $capacity = 1;
-            while ($capacity < $param) $capacity = $capacity << 1;
+            while ($capacity < $param) {
+                $capacity = $capacity << 1;
+            }
             $this->initialize($capacity, $loadFactor);
         } elseif ($param instanceof Mappable) {
             $capacity = (int)($param->size() / self::DEFAULTLOAD + 1);
             $capacity = ($capacity > self::DEFAULTCAPACITY) ? $capacity : self::DEFAULTCAPACITY;
             $this->initialize($capacity, $loadFactor);
             $this->createAll($param);
-        } else throw new IllegalArgumentException("Invalid Argument specified.");
+        } else {
+            throw new IllegalArgumentException("Invalid Argument specified.");
+        }
     }
 
     /**
@@ -240,13 +247,15 @@ class HashMap extends Map
      * @return Entry
      * @final
      */
-    public final function getEntry(Objective $key = null): ?Entry
+    final public function getEntry(Objective $key = null): ?Entry
     {
         $hash = ($key == null) ? 0 : $this->hash($key->hashCode());
         $index = $this->indexFor($hash, $this->entries->length());
         for ($entry = $this->entries[$index]; $entry != null; $entry = $entry->getNext()) {
             $object = $entry->getKey();
-            if ($entry->getHash() == $hash and ($object == $key or ($object != null and $key->equals($object)))) return $entry;
+            if ($entry->getHash() == $hash and ($object == $key or ($object != null and $key->equals($object)))) {
+                return $entry;
+            }
         }
 
         return null;
@@ -260,11 +269,15 @@ class HashMap extends Map
      */
     public function containsValue(Objective $value = null): bool
     {
-        if ($value == null) return $this->containsNull();
+        if ($value == null) {
+            return $this->containsNull();
+        }
         $entries = $this->entries;
         for ($i = 0; $i < $entries->length(); $i++) {
             for ($entry = $entries[$i]; $entry != null; $entry = $entry->getNext()) {
-                if ($value->equals($entry->getValue())) return true;
+                if ($value->equals($entry->getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -280,7 +293,9 @@ class HashMap extends Map
         $entries = $this->entries;
         for ($i = 0; $i < $entries->length(); $i++) {
             for ($entry = $entries[$i]; $entry != null; $entry = $entry->getNext()) {
-                if ($entry->getValue() == null) return true;
+                if ($entry->getValue() == null) {
+                    return true;
+                }
             }
         }
         return false;
@@ -315,12 +330,16 @@ class HashMap extends Map
      */
     public function get(Objective $key): ?Objective
     {
-        if ($key == null) return $this->getNull();
+        if ($key == null) {
+            return $this->getNull();
+        }
         $hash = $this->hash($key->hashCode());
         $index = $this->indexFor($hash, $this->entries->length());
         for ($entry = $this->entries[$index]; $entry != null; $entry = $entry->getNext()) {
             $object = $entry->getKey();
-            if ($entry->getHash() == $hash and ($object == $key or $key->equals($object))) return $entry->getValue();
+            if ($entry->getHash() == $hash and ($object == $key or $key->equals($object))) {
+                return $entry->getValue();
+            }
         }
         return null;
     }
@@ -333,7 +352,9 @@ class HashMap extends Map
     private function getNull()
     {
         for ($entry = $this->entries[0]; $entry != null; $entry = $entry->getNext()) {
-            if ($entry->getKey() == null) return $entry->getValue();
+            if ($entry->getKey() == null) {
+                return $entry->getValue();
+            }
         }
         return null;
     }
@@ -388,13 +409,19 @@ class HashMap extends Map
     public function putAll(Mappable $map): void
     {
         $size = $map->size();
-        if ($size == 0) return;
+        if ($size == 0) {
+            return;
+        }
 
         if ($size > $this->threshold) {
             $targetCapacity = (int)($size / $this->loadFactor + 1);
             $newCapacity = $this->entries->length();
-            while ($newCapacity < $targetCapacity) $newCapacity = $newCapacity << 1;
-            if ($newCapacity > $this->entries->length()) $this->resize($newCapacity);
+            while ($newCapacity < $targetCapacity) {
+                $newCapacity = $newCapacity << 1;
+            }
+            if ($newCapacity > $this->entries->length()) {
+                $this->resize($newCapacity);
+            }
         }
 
         $iterator = $map->iterator();
@@ -530,7 +557,7 @@ class HashMap extends Map
      * @return Entry
      * @final
      */
-    public final function removeKey(Objective $key = null)
+    final public function removeKey(Objective $key = null)
     {
         $hash = ($key == null) ? 0 : $this->hash($key->hashCode());
         $index = $this->indexFor($hash, $this->entries->length());
@@ -542,8 +569,11 @@ class HashMap extends Map
             $object = $entry->getKey();
             if ($entry->getHash() == $hash and ($object == $key or ($key != null and $key->equals($object)))) {
                 $this->size--;
-                if ($prev == $entry) $this->entry[$index] = $next;
-                else $prev->setNext($next);
+                if ($prev == $entry) {
+                    $this->entry[$index] = $next;
+                } else {
+                    $prev->setNext($next);
+                }
                 $entry->recordRemoval($this);
                 return $entry;
             }
@@ -561,9 +591,11 @@ class HashMap extends Map
      * @return ?Entry
      * @final
      */
-    public final function removeMapping(Entry $object = null): ?Entry
+    final public function removeMapping(Entry $object = null): ?Entry
     {
-        if ($object == null) return null;
+        if ($object == null) {
+            return null;
+        }
         $key = $object->getKey();
         $hash = ($key == null) ? 0 : $this->hash($key->hashCode());
         $index = $this->indexFor($hash, $this->entries->length());
@@ -574,8 +606,11 @@ class HashMap extends Map
             $next = $entry->getNext();
             if ($entry->getHash() == $hash and $entry->equals($object)) {
                 $this->size--;
-                if ($prev == $entry) $this->entries[$index] = $next;
-                else $prev->setNext($next);
+                if ($prev == $entry) {
+                    $this->entries[$index] = $next;
+                } else {
+                    $prev->setNext($next);
+                }
                 $entry->recordRemoval($this);
                 return $entry;
             }

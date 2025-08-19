@@ -19,11 +19,10 @@ use Resource\Native\Objective;
  */
 class ImmutableEntry extends Entry
 {
-
     /**
      * serialID constant, it serves as identifier of the object being ImmutableEntry.
      */
-    const SERIALID = "7138329143949025153L";
+    public const SERIALID = "7138329143949025153L";
 
     /**
      * Constructor of ImmutableEntry Class, it initializes an Entry with a key and a value.
@@ -58,6 +57,6 @@ class ImmutableEntry extends Entry
      */
     public function setValue(Objective $value): never
     {
-        throw new UnsupportedOperationException;
+        throw new UnsupportedOperationException();
     }
 }

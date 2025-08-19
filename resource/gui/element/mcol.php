@@ -19,7 +19,6 @@ use Resource\GUI\Element;
  */
 class MCol extends Element
 {
-
     /**
      * The browser property, specifies the browser of the user.
      * It is important for MCol since the css element is browser-dependent.
@@ -75,9 +74,15 @@ class MCol extends Element
     {
         parent::__construct();
         $this->setBrowser($_SERVER['HTTP_USER_AGENT']);
-        if (is_int($count)) $this->setCount($count);
-        if (is_array($rule) and count($rule) == 3) $this->setRule($rule[0], $rule[1], $rule[2]);
-        if (!empty($colWidth)) $this->setColWidth($colWidth);
+        if (is_int($count)) {
+            $this->setCount($count);
+        }
+        if (is_array($rule) and count($rule) == 3) {
+            $this->setRule($rule[0], $rule[1], $rule[2]);
+        }
+        if (!empty($colWidth)) {
+            $this->setColWidth($colWidth);
+        }
     }
 
     /**
@@ -103,7 +108,9 @@ class MCol extends Element
             $this->browser = "-moz-";
         } elseif (str_contains($browser, "Chrome") or str_contains($browser, "Safari")) {
             $this->browser = "-webkit-";
-        } else $this->browser = "";
+        } else {
+            $this->browser = "";
+        }
     }
 
     /**
@@ -171,9 +178,15 @@ class MCol extends Element
     public function setRule($width = "", $style = "", $color = "")
     {
         $this->rule = "";
-        if (!empty($width)) $this->rule .= $width;
-        if (!empty($style)) $this->rule .= " {$style}";
-        if ($color instanceof Color) $this->rule .= " {$color->getCode()}";
+        if (!empty($width)) {
+            $this->rule .= $width;
+        }
+        if (!empty($style)) {
+            $this->rule .= " {$style}";
+        }
+        if ($color instanceof Color) {
+            $this->rule .= " {$color->getCode()}";
+        }
         $this->setAttributes("Rule");
     }
 

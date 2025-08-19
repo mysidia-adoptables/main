@@ -19,7 +19,6 @@ use Service\ApplicationService\DaycareService;
 
 class LevelupController extends AppController
 {
-
     private $adopt;
     private $settings;
 
@@ -41,17 +40,20 @@ class LevelupController extends AppController
     public function click($aid)
     {
         $mysidia = Registry::get("mysidia");
-        $date = new Date;
+        $date = new Date();
         $ip = $mysidia->secure($_SERVER['REMOTE_ADDR']);
         $this->adopt = new OwnedAdoptable($aid);
 
-        if ($this->settings->system != "enabled") throw new NoPermissionException("disabled");
-        elseif ($this->adopt->hasVoter($mysidia->user, $date)) {
+        if ($this->settings->system != "enabled") {
+            throw new NoPermissionException("disabled");
+        } elseif ($this->adopt->hasVoter($mysidia->user, $date)) {
             $message = ($mysidia->user instanceof Member) ? "already_leveled_member" : "already_leveled_guest";
             throw new LevelupException($message);
-        } elseif ($this->adopt->isFrozen() == "yes") throw new LevelupException("frozen");
-        elseif ($mysidia->user->getVotes() > $this->settings->number) throw new LevelupException("number");
-        elseif ($this->settings->owner == "disabled" and $this->adopt->isOwner($mysidia->user)) {
+        } elseif ($this->adopt->isFrozen() == "yes") {
+            throw new LevelupException("frozen");
+        } elseif ($mysidia->user->getVotes() > $this->settings->number) {
+            throw new LevelupException("number");
+        } elseif ($this->settings->owner == "disabled" and $this->adopt->isOwner($mysidia->user)) {
             throw new LevelupException("owner");
         } else {
             $newClicks = $this->adopt->getTotalClicks() + 1;
@@ -60,7 +62,9 @@ class LevelupController extends AppController
             if ($this->adopt->hasNextLevel()) {
                 $nextLevel = $this->adopt->getNextLevel();
                 $requiredClicks = $nextLevel->getRequiredClicks();
-                if ($requiredClicks && $newClicks >= $requiredClicks) $this->adopt->setCurrentLevel($nextLevel->getLevel(), "update");
+                if ($requiredClicks && $newClicks >= $requiredClicks) {
+                    $this->adopt->setCurrentLevel($nextLevel->getLevel(), "update");
+                }
             }
 
             $this->setField("adopt", $this->adopt);
@@ -134,7 +138,9 @@ class LevelupController extends AppController
             $extList = ["image/gif", "image/jpeg", "image/jpeg", "image/png"];
             //Define the output file type
             $contentType = "Content-type: {$imageinfo['mime']}";
-            if (!in_array($imageinfo['mime'], $extList)) throw new InvalidIDException("The file Extension is not allowed!");
+            if (!in_array($imageinfo['mime'], $extList)) {
+                throw new InvalidIDException("The file Extension is not allowed!");
+            }
             header($contentType);
             $curl = new Curl($image);
             $curl->setHeader();
@@ -145,7 +151,7 @@ class LevelupController extends AppController
 
     public function daycare()
     {
-        $daycare = new DaycareService;
+        $daycare = new DaycareService();
         $adopts = $daycare->getAdopts();
         $this->setField("daycare", $daycare);
         $this->setField("adopts", $adopts);

@@ -21,7 +21,6 @@ use ReturnTypeWillChange;
  */
 class Date extends DateTime implements Objective
 {
-
     /**
      * The format property, it defines output format for the Date Object.
      * @access private
@@ -41,7 +40,9 @@ class Date extends DateTime implements Objective
     public function __construct($time = "now", DateTimeZone $timezone = null, $format = null)
     {
         parent::__construct($time, $timezone);
-        if ($format) $this->setFormat($format);
+        if ($format) {
+            $this->setFormat($format);
+        }
     }
 
     /**
@@ -52,7 +53,9 @@ class Date extends DateTime implements Objective
      */
     public function equals(Objective $object)
     {
-        if ($object instanceof Date) return ($this->hashCode() == $object->hashCode());
+        if ($object instanceof Date) {
+            return ($this->hashCode() == $object->hashCode());
+        }
         return false;
     }
 

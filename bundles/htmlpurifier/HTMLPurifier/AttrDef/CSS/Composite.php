@@ -11,7 +11,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_Composite extends HTMLPurifier_AttrDef
 {
-
     /**
      * @param HTMLPurifier_AttrDef[] $defs List of HTMLPurifier_AttrDef objects
      */

@@ -20,7 +20,6 @@ use Exception;
  */
 final class Cookies extends Core
 {
-
     /**
      * The mysuid property, which stores the id of the current user.
      * For guest, this id is 0.
@@ -67,9 +66,13 @@ final class Cookies extends Core
     {
         $keyarray = ["mysuid", "myssession", "mysactivity", "mysloginattempt"];
         $cookies = filter_input_array(INPUT_COOKIE);
-        if (!$cookies) return;
+        if (!$cookies) {
+            return;
+        }
         foreach ($cookies as $key => $val) {
-            if (in_array($key, $keyarray)) $this->$key = $val;
+            if (in_array($key, $keyarray)) {
+                $this->$key = $val;
+            }
         }
     }
 
@@ -82,7 +85,9 @@ final class Cookies extends Core
      */
     public function getcookies($prop)
     {
-        if (!property_exists($this, $prop)) throw new Exception('The specified cookie is invalid...');
+        if (!property_exists($this, $prop)) {
+            throw new Exception('The specified cookie is invalid...');
+        }
         return $this->$prop;
     }
 
@@ -155,8 +160,11 @@ final class Cookies extends Core
      */
     public function logincookies($reset = false)
     {
-        if (!$reset) $this->mysloginattempt++;
-        else $this->mysloginattempt = 0;
+        if (!$reset) {
+            $this->mysloginattempt++;
+        } else {
+            $this->mysloginattempt = 0;
+        }
         ob_start();
         $Month = 2592000 + time();
         setcookie("mysloginattempt", $this->mysloginattempt, ['expires' => $Month, 'path' => "/", 'domain' => (string) $_SERVER['HTTP_HOST']]);
@@ -170,8 +178,11 @@ final class Cookies extends Core
      */
     public function loginAdminCookies($reset = false)
     {
-        if (!$reset) $this->mysadmloginattempt++;
-        else $this->mysadmloginattempt = 0;
+        if (!$reset) {
+            $this->mysadmloginattempt++;
+        } else {
+            $this->mysadmloginattempt = 0;
+        }
         ob_start();
         $Month = 2592000 + time();
         setcookie("mysadmloginattempt", $this->mysadmloginattempt, ['expires' => $Month, 'path' => "/", 'domain' => (string) $_SERVER['HTTP_HOST']]);

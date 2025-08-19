@@ -23,7 +23,6 @@ use Resource\Native\Objective;
  */
 abstract class Queue extends Collection implements Queueable
 {
-
     /**
      * Constructor of Queue Class, it simply calls parent constructor.
      * @access public
@@ -41,8 +40,11 @@ abstract class Queue extends Collection implements Queueable
      */
     public function add(Objective $object): bool
     {
-        if ($this->offer($object)) return true;
-        else throw new IllegalStateException;
+        if ($this->offer($object)) {
+            return true;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 
     /**
@@ -53,11 +55,15 @@ abstract class Queue extends Collection implements Queueable
      */
     public function addAll(Collective $collection): bool
     {
-        if ($collection == $this) throw \ILLEGALARGUMENTEXCEPTION;
+        if ($collection == $this) {
+            throw \ILLEGALARGUMENTEXCEPTION;
+        }
         $modified = false;
         $iterator = $collection->iterator();
         while ($iterator->hasNext()) {
-            if ($this->add($iterator->getNext())) $modified = true;
+            if ($this->add($iterator->getNext())) {
+                $modified = true;
+            }
         }
         return $modified;
     }
@@ -81,7 +87,9 @@ abstract class Queue extends Collection implements Queueable
     public function element()
     {
         $object = $this->peek();
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 
@@ -94,7 +102,9 @@ abstract class Queue extends Collection implements Queueable
     public function erase()
     {
         $object = $this->poll();
-        if ($object == null) throw new NosuchElementException;
+        if ($object == null) {
+            throw new NosuchElementException();
+        }
         return $object;
     }
 }

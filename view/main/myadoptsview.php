@@ -17,7 +17,6 @@ use Service\Helper\UserTableHelper;
 
 class MyadoptsView extends View
 {
-
     public function index()
     {
         $document = $this->document;
@@ -32,7 +31,7 @@ class MyadoptsView extends View
         $ownedAdoptsIterator = $ownedAdopts->iterator();
         while ($ownedAdoptsIterator->hasNext()) {
             $ownedAdopt = $ownedAdoptsIterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($ownedAdopt->getGenderImage()));
             $cells->add(new TCell($ownedAdopt->getTypeAndName()));
             $cells->add(new TCell($ownedAdopt->getManageLink()));
@@ -80,7 +79,7 @@ class MyadoptsView extends View
         $document->add($ownedAdopt->getStats());
         $document->addLangvar("<h2>{$ownedAdopt->getName()}'s Voters:</h2><br>{$this->lang->voters}<br><br>");
 
-        $helper = new UserTableHelper;
+        $helper = new UserTableHelper();
         $voterTable = new TableBuilder("voters", 500);
         $voterTable->setAlign(new Align("center"));
         $voterTable->buildHeaders("User", "Date Voted", "Profile", "PM");
@@ -88,7 +87,7 @@ class MyadoptsView extends View
         $votesIterator = $votes->iterator();
         while ($votesIterator->hasNext()) {
             $vote = $votesIterator->next();
-            $cells = new LinkedList;
+            $cells = new LinkedList();
             $cells->add(new TCell($helper->getUsername($vote->getUsername())));
             $cells->add(new TCell($vote->getDate("Y-m-d")));
             $cells->add(new TCell($helper->getProfileImage($vote->getUserID())));
@@ -169,8 +168,9 @@ class MyadoptsView extends View
         $document->setTitle($this->lang->trade . $adopt->getName());
         $document->add($image);
 
-        if ($confirm) $document->addLangvar(($adopt->getTradeStatus() == "fortrade") ? $this->lang->trade_allow : $this->lang->trade_disallow);
-        else {
+        if ($confirm) {
+            $document->addLangvar(($adopt->getTradeStatus() == "fortrade") ? $this->lang->trade_allow : $this->lang->trade_disallow);
+        } else {
             $document->addLangvar("Are you sure you wish to change the trade status of this adoptable?
 					               <center><b><a href='{$adopt->getAdoptID()}/confirm'>Yes I'd like to change its trade status</a></b><br /><br />
 					               <b><a href='../../myadopts'>Nope I change my mind! Go back to the previous page.</a></b></center><br />");

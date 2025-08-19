@@ -21,23 +21,30 @@ use Service\Validator\TradeValidator;
 
 class TradeService extends MysObject
 {
-
     public function __construct(private readonly TradeSettings $settings)
     {
     }
 
     public function getValidator(TradeOffer $offer = null)
     {
-        if (func_num_args() == 0) throw new InvalidActionException("global_action");
-        if (!$offer) throw new InvalidIDException("invalid");
+        if (func_num_args() == 0) {
+            throw new InvalidActionException("global_action");
+        }
+        if (!$offer) {
+            throw new InvalidIDException("invalid");
+        }
         $validations = $this->getValidations($offer->getType());
         return new TradeValidator($offer, $this->settings, $validations);
     }
 
     private function getValidations($type)
     {
-        if ($type == "public") return new ArrayObject(["public", "offered", "wanted", "adoptOffered", "adoptPublic", "itemOffered", "itemPublic", "cashOffered", "species", "interval", "number", "duration", "status", "usergroup", "item"]);
-        if ($type == "partial") return new ArrayObject(["recipient", "partial", "adoptOffered", "adoptWanted", "itemOffered", "itemWanted", "cashOffered", "species", "interval", "number", "duration", "usergroup", "item"]);
+        if ($type == "public") {
+            return new ArrayObject(["public", "offered", "wanted", "adoptOffered", "adoptPublic", "itemOffered", "itemPublic", "cashOffered", "species", "interval", "number", "duration", "status", "usergroup", "item"]);
+        }
+        if ($type == "partial") {
+            return new ArrayObject(["recipient", "partial", "adoptOffered", "adoptWanted", "itemOffered", "itemWanted", "cashOffered", "species", "interval", "number", "duration", "usergroup", "item"]);
+        }
         return new ArrayObject(["recipient", "offered", "wanted", "adoptOffered", "adoptWanted", "itemOffered", "itemWanted", "cashOffered", "species", "interval", "number", "duration", "status", "usergroup", "item"]);
     }
 
@@ -45,9 +52,13 @@ class TradeService extends MysObject
     {
         $mysidia = Registry::get("mysidia");
         $offer = new TradeOffer($tid, null, ($tid == 0));
-        if ($form->offsetExists("public") && $form["public"] == "yes") $offer->setType("public");
-        elseif ($form->offsetExists("partial") && $form["partial"] == "yes") $offer->setType("partial");
-        else $offer->setType("private");
+        if ($form->offsetExists("public") && $form["public"] == "yes") {
+            $offer->setType("public");
+        } elseif ($form->offsetExists("partial") && $form["partial"] == "yes") {
+            $offer->setType("partial");
+        } else {
+            $offer->setType("private");
+        }
 
         $offer->setSender($mysidia->user->getID());
         $offer->setRecipient($form["recipient"]);
@@ -58,7 +69,7 @@ class TradeService extends MysObject
         $offer->setCashOffered((int)$form["cashOffered"]);
         $offer->setMessage($mysidia->secure($form["message"]));
         $offer->setStatus(($this->settings->moderate == "enabled") ? "moderate" : "pending");
-        $offer->setDate(new Date);
+        $offer->setDate(new Date());
         return $offer;
     }
 
@@ -66,7 +77,9 @@ class TradeService extends MysObject
     {
         $mysidia = Registry::get("mysidia");
         $publicOffer = new TradeOffer($tid);
-        if ($tid == 0 || $publicOffer->getType() != "public") throw new TradeException("invalid");
+        if ($tid == 0 || $publicOffer->getType() != "public") {
+            throw new TradeException("invalid");
+        }
         $offer = new TradeOffer(0, null, true);
         $offer->setType("private");
         $offer->setSender($mysidia->user->getID());
@@ -78,14 +91,16 @@ class TradeService extends MysObject
         $offer->setCashOffered(0);
         $offer->setMessage($mysidia->secure($form["message"]));
         $offer->setStatus(($this->settings->moderate == "enabled") ? "moderate" : "pending");
-        $offer->setDate(new Date);
+        $offer->setDate(new Date());
         return $offer;
     }
 
     public function saveTrade(TradeOffer $offer)
     {
         $mysidia = Registry::get("mysidia");
-        if (!$offer->isNew()) throw new InvalidActionException("The trade offer already exists in database.");
+        if (!$offer->isNew()) {
+            throw new InvalidActionException("The trade offer already exists in database.");
+        }
         $adoptOffered = $offer->getAdoptOfferedInfo();
         $adoptWanted = $offer->getAdoptWantedInfo();
         $itemOffered = $offer->getItemOfferedInfo();
@@ -95,8 +110,10 @@ class TradeService extends MysObject
             "cashoffered" => (int)$offer->getCashOffered(), "message" => $mysidia->secure($offer->getMessage()), "status" => $offer->getStatus(), "date" => $offer->getDate("Y-m-d")]);
         if ($this->settings->moderate != "enabled") {
             $senderName = $offer->getSenderName();
-            $offer->sendTradeMessage("You have received a trade request from {$senderName}!",
-                "You have received a trade request from {$senderName}! To see the details of this trade request and to accept or reject it, please visit your trade requests page to check out your trade offer.");
+            $offer->sendTradeMessage(
+                "You have received a trade request from {$senderName}!",
+                "You have received a trade request from {$senderName}! To see the details of this trade request and to accept or reject it, please visit your trade requests page to check out your trade offer."
+            );
         }
     }
 
@@ -119,9 +136,11 @@ class TradeService extends MysObject
                 $privateOffer = new TradeOffer($dto->tid, $dto);
                 if ($privateOffer->isPending()) {
                     $privateOffer->setStatus("canceled", Model::UPDATE);
-                    $privateOffer->sendTradeMessage("Your trade offer has been canceled.",
+                    $privateOffer->sendTradeMessage(
+                        "Your trade offer has been canceled.",
                         "The public trade you have subscribed to has become unavailable, and thus your trade offer id:{$privateOffer->getID()} has been canceled.",
-                        true);
+                        true
+                    );
                 }
             }
         }
@@ -129,11 +148,21 @@ class TradeService extends MysObject
 
     public function completeTrade(TradeOffer $offer)
     {
-        if ($offer->hasCashOffered()) $this->tradeCashOffered($offer);
-        if ($offer->hasAdoptOffered()) $this->tradeAdoptOffered($offer);
-        if ($offer->hasAdoptWanted()) $this->tradeAdoptWanted($offer);
-        if ($offer->hasItemOffered()) $this->tradeItemOffered($offer);
-        if ($offer->hasItemWanted()) $this->tradeItemWanted($offer);
+        if ($offer->hasCashOffered()) {
+            $this->tradeCashOffered($offer);
+        }
+        if ($offer->hasAdoptOffered()) {
+            $this->tradeAdoptOffered($offer);
+        }
+        if ($offer->hasAdoptWanted()) {
+            $this->tradeAdoptWanted($offer);
+        }
+        if ($offer->hasItemOffered()) {
+            $this->tradeItemOffered($offer);
+        }
+        if ($offer->hasItemWanted()) {
+            $this->tradeItemWanted($offer);
+        }
         return $offer->accept();
     }
 
@@ -151,7 +180,9 @@ class TradeService extends MysObject
         while ($adoptIterator->hasNext()) {
             $aid = $adoptIterator->next();
             $adopt = new OwnedAdoptable($aid->getValue());
-            if (!$adopt->isOwnerID($offer->getSender())) throw new TradeException("adoptoffered");
+            if (!$adopt->isOwnerID($offer->getSender())) {
+                throw new TradeException("adoptoffered");
+            }
             $adopt->setOwner($offer->getRecipient(), Model::UPDATE);
         }
     }
@@ -198,22 +229,28 @@ class TradeService extends MysObject
         $offer->setStatus($status, Model::UPDATE);
         if ($status == "pending") {
             $senderName = $offer->getSenderName();
-            $this->sendModerateMessage($offer->getSender(),
+            $this->sendModerateMessage(
+                $offer->getSender(),
                 "Your Trade Offer has been approved!",
-                "Congratulations, your trade offer has been moderated and it's approved immediately. You may now wait for the response of your recipient(s).");
-            $offer->sendTradeMessage("You have received a trade request from {$senderName}!",
-                "You have received a trade request from {$senderName}! To see the details of this trade request and to accept or reject it, please visit your trade requests page to check out your trade offer.");
+                "Congratulations, your trade offer has been moderated and it's approved immediately. You may now wait for the response of your recipient(s)."
+            );
+            $offer->sendTradeMessage(
+                "You have received a trade request from {$senderName}!",
+                "You have received a trade request from {$senderName}! To see the details of this trade request and to accept or reject it, please visit your trade requests page to check out your trade offer."
+            );
         } else {
-            $this->sendModerateMessage($offer->getSender(),
+            $this->sendModerateMessage(
+                $offer->getSender(),
                 "Your Trade Offer has been disapproved!",
-                "Unfortunately, your trade offer has been moderated and it cannot be approved. We are terribly sorry about this, perhaps you should consider modifying your trade proposal a bit?");
+                "Unfortunately, your trade offer has been moderated and it cannot be approved. We are terribly sorry about this, perhaps you should consider modifying your trade proposal a bit?"
+            );
         }
     }
 
     private function sendModerateMessage($recipient, $title, $content)
     {
         $mysidia = Registry::get("mysidia");
-        $pm = new PrivateMessage;
+        $pm = new PrivateMessage();
         $pm->setSender($mysidia->user->getID());
         $pm->setRecipient($recipient);
         $pm->setMessage($title, $content);
@@ -223,18 +260,27 @@ class TradeService extends MysObject
     public function getFormFields($action, $type = null, $id = null)
     {
         if ($type == "tid") {
-            if ($action == "publics") return $this->fetchPublicTradeFields($id);
-            elseif ($action == "partials") return $this->fetchPartialTradeFields($id);
-            else return $this->fetchPrivateTradeFields($id);
-        } elseif ($type == "user") return $this->fetchUserFields($id);
-        elseif ($type == "adopt") return $this->fetchAdoptFields($id);
-        elseif ($type == "item") return $this->fetchItemFields($id);
-        else return $this->fetchDefaultFields();
+            if ($action == "publics") {
+                return $this->fetchPublicTradeFields($id);
+            } elseif ($action == "partials") {
+                return $this->fetchPartialTradeFields($id);
+            } else {
+                return $this->fetchPrivateTradeFields($id);
+            }
+        } elseif ($type == "user") {
+            return $this->fetchUserFields($id);
+        } elseif ($type == "adopt") {
+            return $this->fetchAdoptFields($id);
+        } elseif ($type == "item") {
+            return $this->fetchItemFields($id);
+        } else {
+            return $this->fetchDefaultFields();
+        }
     }
 
     public function getParamsField($id)
     {
-        $params = new ArrayList;
+        $params = new ArrayList();
         $params->add(new Integer($id));
         return $params;
     }
@@ -293,7 +339,7 @@ class TradeService extends MysObject
         $uid = $mysidia->db->select("owned_adoptables", ["owner"], "aid = :aid", ["aid" => $aid])->fetchColumn();
         $fields = $this->fetchCommonFields($uid);
         $fields["recipient"] = new Member($uid);
-        $fields["adoptSelected"] = new ArrayList;
+        $fields["adoptSelected"] = new ArrayList();
         $fields["adoptSelected"]->add(new Integer($aid));
         return $fields;
     }
@@ -304,7 +350,7 @@ class TradeService extends MysObject
         $uid = $mysidia->db->select("inventory", ["owner"], "iid = :iid", ["iid" => $iid])->fetchColumn();
         $fields = $this->fetchCommonFields($uid);
         $fields["recipient"] = new Member($uid);
-        $fields["itemSelected"] = new ArrayList;
+        $fields["itemSelected"] = new ArrayList();
         $fields["itemSelected"]->add(new Integer($iid));
         return $fields;
     }
@@ -347,7 +393,9 @@ class TradeService extends MysObject
     private function buildPublicQueries($owner, ArrayList $list = null)
     {
         $whereClause = "owner = '{$owner}'";
-        if (!$list) return $whereClause;
+        if (!$list) {
+            return $whereClause;
+        }
 
         $whereClause .= " AND (";
         $iterator = $list->iterator();

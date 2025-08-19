@@ -1,6 +1,7 @@
 <?php
 
 namespace Resource\GUI\Element;
+
 use Resource\GUI\GUIException;
 use Resource\GUI\Renderer\ElementRenderer;
 
@@ -10,65 +11,71 @@ use Resource\GUI\Renderer\ElementRenderer;
  * @category Resource
  * @package GUI
  * @subpackage Element
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Inc
  * @link http://www.mysidiainc.com
  * @since 1.3.3
  * @todo Restructure the namespace
  *
- */  
+ */
 
-class Margin extends Spacing{
-
+class Margin extends Spacing
+{
     /**
-	 * The type property, defines this spacing element as a margin.
-	 * @access protected
-	 * @var String
+     * The type property, defines this spacing element as a margin.
+     * @access protected
+     * @var String
     */
-	protected $type;
-	
+    protected $type;
+
     /**
      * Constructor of Margin Class, it simply calls parent constructor.
      * @param String  $direction
-     * @param Int|String  $width 
+     * @param Int|String  $width
      * @access public
      * @return Void
      */
-	public function __construct($direction = "", $width = ""){
-	    parent::__construct($direction, $width);	
-		$this->type = "margin";
-	}
-	
-	/**
-     * The getType method, getter method for property $type.    
+    public function __construct($direction = "", $width = "")
+    {
+        parent::__construct($direction, $width);
+        $this->type = "margin";
+    }
+
+    /**
+     * The getType method, getter method for property $type.
      * @access public
      * @return String
      */
-	public function getType(){
-	    return $this->type;    
-	}
-	
-	/**
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * The render method for Margin class, it renders margin data field into html readable format.
      * @access public
      * @return Void
      */
-    public function render(){
-	    if(!($this->renderer instanceof ElementRenderer)) throw new GUIException("Cannot find Renderer Object..."); 
-	    
-        if(!$this->renderer->getRender()){
+    public function render()
+    {
+        if (!($this->renderer instanceof ElementRenderer)) {
+            throw new GUIException("Cannot find Renderer Object...");
+        }
+
+        if (!$this->renderer->getRender()) {
             $this->renderer->renderMargin()
                            ->renderWidth();
         }
-		return $this->renderer->getRender();	
+        return $this->renderer->getRender();
     }
 
-	/**
+    /**
      * Magic method __toString for Margin class, it reveals that it is a margin object.
      * @access public
      * @return String
      */
-    public function __toString(): string{
-	    return "This is an instance of Mysidia Margin class.";
-	}    
-} 
+    public function __toString(): string
+    {
+        return "This is an instance of Mysidia Margin class.";
+    }
+}

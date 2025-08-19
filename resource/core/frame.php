@@ -33,7 +33,6 @@ use Resource\Native\MysString;
  */
 final class Frame extends Core implements Renderable
 {
-
     /**
      * The controller property, it defines the front controller page the frame belongs to.
      * @access private
@@ -126,8 +125,11 @@ final class Frame extends Core implements Renderable
     public function getController()
     {
         if (!$this->controller) {
-            if (str_contains((string) $_SERVER['REQUEST_URI'], "admincp")) $this->controller = "admincp";
-            else $this->controller = "main";
+            if (str_contains((string) $_SERVER['REQUEST_URI'], "admincp")) {
+                $this->controller = "admincp";
+            } else {
+                $this->controller = "main";
+            }
         }
         return $this->controller;
     }
@@ -139,7 +141,9 @@ final class Frame extends Core implements Renderable
      */
     public function getHeader()
     {
-        if (!$this->header) $this->header = new Header;
+        if (!$this->header) {
+            $this->header = new Header();
+        }
         return $this->header;
     }
 
@@ -151,8 +155,11 @@ final class Frame extends Core implements Renderable
      */
     public function getDocument($document = "")
     {
-        if ($document) $this->document = new CustomDocument(new Content($document));
-        elseif (!$this->document) $this->document = new Document;
+        if ($document) {
+            $this->document = new CustomDocument(new Content($document));
+        } elseif (!$this->document) {
+            $this->document = new Document();
+        }
         return $this->document;
     }
 
@@ -164,7 +171,9 @@ final class Frame extends Core implements Renderable
     public function getSitename()
     {
         $mysidia = Registry::get("mysidia");
-        if (!$this->sitename) $this->sitename = $mysidia->settings->sitename;
+        if (!$this->sitename) {
+            $this->sitename = $mysidia->settings->sitename;
+        }
         return $this->sitename;
     }
 
@@ -175,7 +184,9 @@ final class Frame extends Core implements Renderable
      */
     public function getMenu()
     {
-        if (!$this->menu) $this->menu = new Menu;
+        if (!$this->menu) {
+            $this->menu = new Menu();
+        }
         return $this->menu;
     }
 
@@ -187,8 +198,11 @@ final class Frame extends Core implements Renderable
     public function getSidebar()
     {
         if (!$this->sidebar) {
-            if ($this->controller == "admincp") $this->sidebar = new AdminSidebar;
-            else $this->sidebar = new Sidebar;
+            if ($this->controller == "admincp") {
+                $this->sidebar = new AdminSidebar();
+            } else {
+                $this->sidebar = new Sidebar();
+            }
         }
         return $this->sidebar;
     }
@@ -200,7 +214,9 @@ final class Frame extends Core implements Renderable
      */
     public function getFooter()
     {
-        if (!$this->footer) $this->footer = new Footer;
+        if (!$this->footer) {
+            $this->footer = new Footer();
+        }
         return $this->footer;
     }
 
@@ -218,8 +234,11 @@ final class Frame extends Core implements Renderable
             ? " AND (controller = 'admincp' OR controller = 'all')"
             : " AND (controller = 'main' OR controller = 'all')";
         $stmt = $mysidia->db->select("widgets", [], $whereClause);
-        if ($stmt->rowCount() == 0) return null;
-        else $this->widgets = new ArrayList;
+        if ($stmt->rowCount() == 0) {
+            return null;
+        } else {
+            $this->widgets = new ArrayList();
+        }
         while ($dto = $stmt->fetchObject()) {
             $widget = new Widget($dto->wid, $dto);
             $this->widgets->add(new WidgetViewModel($widget));
@@ -235,7 +254,7 @@ final class Frame extends Core implements Renderable
     public function render()
     {
         $mysidia = Registry::get("mysidia");
-        $this->renders = new HashMap;
+        $this->renders = new HashMap();
         $this->renders->put(new MysString("path"), new MysString($mysidia->path->getAbsolute()));
         $this->renders->put(new MysString("action"), new MysString($mysidia->input->action()));
         $this->renders->put(new MysString("frame"), $this);

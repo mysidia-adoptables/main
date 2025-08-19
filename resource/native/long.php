@@ -21,21 +21,20 @@ use Resource\Exception\ClassCastException;
  */
 final class Long extends Number
 {
-
     /**
      * Size constant, specifies the size a long value occupies.
      */
-    const Size = 64;
+    public const Size = 64;
 
     /**
      * MinValue constant, a Long cannot contain number less than -9223372036854775808.
      */
-    const MinValue = -9223372036854775808;
+    public const MinValue = -9223372036854775808;
 
     /**
      * MaxValue constant, a Long cannot contain number greater than 9223372036854775807.
      */
-    const MaxValue = 9223372036854775807;
+    public const MaxValue = 9223372036854775807;
 
 
     /**
@@ -47,7 +46,9 @@ final class Long extends Number
      */
     public function __construct($num)
     {
-        if (!is_int($num)) $num = (int)$num;
+        if (!is_int($num)) {
+            $num = (int)$num;
+        }
         parent::__construct($num);
         $this->value = $num;
     }
@@ -60,9 +61,13 @@ final class Long extends Number
      */
     public function verify($num)
     {
-        if ($num > self::MaxValue) throw new Exception('Supplied value cannot be greater than -9223372036854775808 for Long type.');
-        elseif ($num < self::MinValue) throw new Exception('Supplied value cannot be smaller than -9223372036854775808 for Long type.');
-        else return true;
+        if ($num > self::MaxValue) {
+            throw new Exception('Supplied value cannot be greater than -9223372036854775808 for Long type.');
+        } elseif ($num < self::MinValue) {
+            throw new Exception('Supplied value cannot be smaller than -9223372036854775808 for Long type.');
+        } else {
+            return true;
+        }
     }
 
     /**

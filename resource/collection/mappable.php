@@ -18,7 +18,6 @@ use Resource\Native\Objective;
  */
 interface Mappable extends Collective
 {
-
     /**
      * The containsKey method, checks if the map contains a specific key among its key-value pairs.
      * @param Objective $key

@@ -19,7 +19,6 @@ use Resource\Native\Objective;
  */
 class Node extends MysObject
 {
-
     /**
      * Constructor of LinkedList Class, it initializes the LinkedList.
      * @param Objective $object
@@ -44,8 +43,7 @@ class Node extends MysObject
          * @access private
          */
         private ?\Resource\Collection\Node $prev = null
-    )
-    {
+    ) {
     }
 
     /**
