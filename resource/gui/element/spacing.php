@@ -1,6 +1,7 @@
 <?php
 
 namespace Resource\GUI\Element;
+
 use Resource\GUI\Element;
 use Resource\GUI\GUIException;
 
@@ -10,108 +11,124 @@ use Resource\GUI\GUIException;
  * @category Resource
  * @package GUI
  * @subpackage Element
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Inc
  * @link http://www.mysidiainc.com
  * @since 1.3.3
  * @todo Restructure the namespace
  * @abstract
  *
- */ 
+ */
 
-abstract class Spacing extends Element{
+abstract class Spacing extends Element
+{
+    /**
+     * The direction property, defines the direction(left, right, top, bottom) of the spacing attribute.
+     * @access protected
+     * @var String
+    */
+    protected $direction;
 
     /**
-	 * The direction property, defines the direction(left, right, top, bottom) of the spacing attribute.
-	 * @access protected
-	 * @var String
+     * The space property, stores the space of the spacing attribute.
+     * @access protected
+     * @var Int
     */
-	protected $direction;
-	
-	/**
-	 * The space property, stores the space of the spacing attribute.
-	 * @access protected
-	 * @var Int
+    protected $space;
+
+    /**
+     * The directions property, stores the valid spacing directions to use.
+     * @access protected
+     * @var Array
     */
-	protected $space;
-	
-	/**
-	 * The directions property, stores the valid spacing directions to use.
-	 * @access protected
-	 * @var Array
-    */
-	protected $directions = ["bottom", "left", "right", "top"];
-	
+    protected $directions = ["bottom", "left", "right", "top"];
+
     /**
      * Constructor of Margin Class, which assigns basic spacing properties.
      * @param String  $direction
-     * @param int|String  $width 
+     * @param int|String  $width
      * @access public
      * @return Void
      */
-	public function __construct($direction = "", $width = ""){
-	    parent::__construct();
-		if(!empty($direction)) $this->setDirection($direction);
-        if(!empty($width)) $this->setWidth($width);		
-	}
-	
-	/**
-     * The getDirection method, getter method for property $direction.    
+    public function __construct($direction = "", $width = "")
+    {
+        parent::__construct();
+        if (!empty($direction)) {
+            $this->setDirection($direction);
+        }
+        if (!empty($width)) {
+            $this->setWidth($width);
+        }
+    }
+
+    /**
+     * The getDirection method, getter method for property $direction.
      * @access public
      * @return String
      */
-	public function getDirection(){
-	    return $this->direction;    
-	}
-	
-	/**
+    public function getDirection()
+    {
+        return $this->direction;
+    }
+
+    /**
      * The setDirection method, setter method for property $direction.
-	 * @param String  $direction 
+     * @param String  $direction
      * @access public
      * @return Void
      */
-	public function setDirection($direction){
-	    if(!in_array($direction, $this->directions)) throw new GUIException("The specified spacing position is invalid.");
-	    $this->direction = $direction;
-		$this->setAttributes("Direction");
-	}
-	
-	/**
-     * The getWidth method, getter method for property $width.    
+    public function setDirection($direction)
+    {
+        if (!in_array($direction, $this->directions)) {
+            throw new GUIException("The specified spacing position is invalid.");
+        }
+        $this->direction = $direction;
+        $this->setAttributes("Direction");
+    }
+
+    /**
+     * The getWidth method, getter method for property $width.
      * @access public
      * @return Int
      */
-	public function getWidth(){
-	    return $this->width;    
-	}
+    public function getWidth()
+    {
+        return $this->width;
+    }
 
-	/**
+    /**
      * The setWidth method, setter method for property $width.
-	 * @param Int  $width 
+     * @param Int  $width
      * @access public
      * @return Void
      */
-	public function setWidth($width){
-        if(is_numeric($width)) $this->width = "{$width}px";
-	    else $this->width = $width;
-		$this->setAttributes("Width");
-	}
-	
-	/**
-     * The getDirections method, getter method for property $directions.    
+    public function setWidth($width)
+    {
+        if (is_numeric($width)) {
+            $this->width = "{$width}px";
+        } else {
+            $this->width = $width;
+        }
+        $this->setAttributes("Width");
+    }
+
+    /**
+     * The getDirections method, getter method for property $directions.
      * @access public
      * @return Array
      */
-	public function getDirections(){
-	    return $this->directions;    
-	}
+    public function getDirections()
+    {
+        return $this->directions;
+    }
 
-	/**
+    /**
      * Magic method __toString for Spacing class, it reveals that it is a spacing object.
      * @access public
      * @return String
      */
-    public function __toString(){
-	    return "This is an instance of Mysidia Spacing class.";
-	}    
-} 
+    public function __toString(): string
+    {
+        return "This is an instance of Mysidia Spacing class.";
+    }
+}

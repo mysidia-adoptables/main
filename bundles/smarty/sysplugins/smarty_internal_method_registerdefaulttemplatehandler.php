@@ -57,7 +57,7 @@ class Smarty_Internal_Method_RegisterDefaultTemplateHandler
         $_content = $_timestamp = null;
         $_return = call_user_func_array(
             $default_handler,
-            array($source->type, $source->name, &$_content, &$_timestamp, $source->smarty)
+            [$source->type, $source->name, &$_content, &$_timestamp, $source->smarty]
         );
         if (is_string($_return)) {
             $source->exists = is_file($_return);
@@ -75,7 +75,7 @@ class Smarty_Internal_Method_RegisterDefaultTemplateHandler
         } elseif ($_return === true) {
             $source->content = $_content;
             $source->exists = true;
-            $source->uid = $source->name = sha1($_content);
+            $source->uid = $source->name = sha1((string) $_content);
             $source->handler = Smarty_Resource::load($source->smarty, 'eval');
         } else {
             $source->exists = false;

@@ -21,8 +21,7 @@ class Smarty_Internal_Runtime_TplFunction
      */
     public function callTemplateFunction(Smarty_Internal_Template $tpl, $name, $params, $nocache)
     {
-        $funcParam = isset($tpl->tplFunctions[ $name ]) ? $tpl->tplFunctions[ $name ] :
-            (isset($tpl->smarty->tplFunctions[ $name ]) ? $tpl->smarty->tplFunctions[ $name ] : null);
+        $funcParam = $tpl->tplFunctions[ $name ] ?? $tpl->smarty->tplFunctions[ $name ] ?? null;
         if (isset($funcParam)) {
             if (!$tpl->caching || ($tpl->caching && $nocache)) {
                 $function = $funcParam[ 'call_name' ];
@@ -84,8 +83,7 @@ class Smarty_Internal_Runtime_TplFunction
     public function getTplFunction(Smarty_Internal_Template $tpl, $name = null)
     {
         if (isset($name)) {
-            return isset($tpl->tplFunctions[ $name ]) ? $tpl->tplFunctions[ $name ] :
-                (isset($tpl->smarty->tplFunctions[ $name ]) ? $tpl->smarty->tplFunctions[ $name ] : false);
+            return $tpl->tplFunctions[ $name ] ?? $tpl->smarty->tplFunctions[ $name ] ?? false;
         } else {
             return empty($tpl->tplFunctions) ? $tpl->smarty->tplFunctions : $tpl->tplFunctions;
         }
@@ -124,17 +122,17 @@ class Smarty_Internal_Runtime_TplFunction
                         $content = $tplPtr->cached->read($tplPtr);
                         if ($content) {
                             // check if we must update file dependency
-                            if (!preg_match("/'{$funcParam['uid']}'(.*?)'nocache_hash'/", $content, $match2)) {
-                                $content = preg_replace("/('file_dependency'(.*?)\()/", "\\1{$match1[0]}", $content);
+                            if (!preg_match("/'{$funcParam['uid']}'(.*?)'nocache_hash'/", (string) $content, $match2)) {
+                                $content = preg_replace("/('file_dependency'(.*?)\()/", "\\1{$match1[0]}", (string) $content);
                             }
                             $tplPtr->smarty->ext->_updateCache->write(
                                 $tplPtr,
-                                preg_replace('/\s*\?>\s*$/', "\n", $content) .
+                                preg_replace('/\s*\?>\s*$/', "\n", (string) $content) .
                                 "\n" . preg_replace(
-                                    array(
+                                    [
                                         '/^\s*<\?php\s+/',
                                         '/\s*\?>\s*$/',
-                                    ),
+                                    ],
                                     "\n",
                                     $match[ 0 ]
                                 )
@@ -157,7 +155,7 @@ class Smarty_Internal_Runtime_TplFunction
     public function saveTemplateVariables(Smarty_Internal_Template $tpl, $name)
     {
         $tpl->_cache[ 'varStack' ][] =
-            array('tpl' => $tpl->tpl_vars, 'config' => $tpl->config_vars, 'name' => "_tplFunction_{$name}");
+            ['tpl' => $tpl->tpl_vars, 'config' => $tpl->config_vars, 'name' => "_tplFunction_{$name}"];
     }
 
     /**

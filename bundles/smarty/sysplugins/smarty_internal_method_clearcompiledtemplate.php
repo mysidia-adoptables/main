@@ -69,12 +69,12 @@ class Smarty_Internal_Method_ClearCompiledTemplate
         try {
             $_compileDirs = new RecursiveDirectoryIterator($_dir);
             // NOTE: UnexpectedValueException thrown for PHP >= 5.3
-        } catch (Exception $e) {
+        } catch (Exception) {
             return 0;
         }
         $_compile = new RecursiveIteratorIterator($_compileDirs, RecursiveIteratorIterator::CHILD_FIRST);
         foreach ($_compile as $_file) {
-            if (substr(basename($_file->getPathname()), 0, 1) === '.') {
+            if (str_starts_with(basename((string) $_file->getPathname()), '.')) {
                 continue;
             }
             $_filepath = (string)$_file;
@@ -85,7 +85,7 @@ class Smarty_Internal_Method_ClearCompiledTemplate
                 }
             } else {
                 // delete only php files
-                if (substr($_filepath, -4) !== '.php') {
+                if (!str_ends_with($_filepath, '.php')) {
                     continue;
                 }
                 $unlink = false;
@@ -94,17 +94,17 @@ class Smarty_Internal_Method_ClearCompiledTemplate
                       $a = !strncmp($_filepath, $_compile_id_part, $_compile_id_part_length)))
                     && (!isset($resource_name) || (isset($_filepath[ $_resource_part_1_length ])
                                                    && substr_compare(
-                                                          $_filepath,
-                                                          $_resource_part_1,
-                                                          -$_resource_part_1_length,
-                                                          $_resource_part_1_length
-                                                      ) === 0) || (isset($_filepath[ $_resource_part_2_length ])
+                                                       $_filepath,
+                                                       $_resource_part_1,
+                                                       -$_resource_part_1_length,
+                                                       $_resource_part_1_length
+                                                   ) === 0) || (isset($_filepath[ $_resource_part_2_length ])
                                                                    && substr_compare(
-                                                                          $_filepath,
-                                                                          $_resource_part_2,
-                                                                          -$_resource_part_2_length,
-                                                                          $_resource_part_2_length
-                                                                      ) === 0))
+                                                                       $_filepath,
+                                                                       $_resource_part_2,
+                                                                       -$_resource_part_2_length,
+                                                                       $_resource_part_2_length
+                                                                   ) === 0))
                 ) {
                     if (isset($exp_time)) {
                         if (is_file($_filepath) && time() - filemtime($_filepath) >= $exp_time) {

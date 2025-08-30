@@ -10,7 +10,6 @@
  */
 class Smarty_Internal_ErrorHandler
 {
-
     /**
      * Allows {$foo} where foo is unset.
      * @var bool
@@ -40,7 +39,8 @@ class Smarty_Internal_ErrorHandler
     /**
      * Enable error handler to intercept errors
      */
-    public function activate() {
+    public function activate()
+    {
         /*
             Error muting is done because some people implemented custom error_handlers using
             https://php.net/set_error_handler and for some reason did not understand the following paragraph:
@@ -52,13 +52,14 @@ class Smarty_Internal_ErrorHandler
             Of particular note is that this value will be 0 if the statement that caused the error was
             prepended by the @ error-control operator.
         */
-        $this->previousErrorHandler = set_error_handler([$this, 'handleError']);
+        $this->previousErrorHandler = set_error_handler($this->handleError(...));
     }
 
     /**
      * Disable error handler
      */
-    public function deactivate() {
+    public function deactivate()
+    {
         restore_error_handler();
         $this->previousErrorHandler = null;
     }
@@ -80,30 +81,30 @@ class Smarty_Internal_ErrorHandler
     {
 
         if ($this->allowUndefinedVars && preg_match(
-                '/^(Attempt to read property "value" on null|Trying to get property (\'value\' )?of non-object)/',
-                $errstr
-            )) {
+            '/^(Attempt to read property "value" on null|Trying to get property (\'value\' )?of non-object)/',
+            (string) $errstr
+        )) {
             return; // suppresses this error
         }
 
         if ($this->allowUndefinedProperties && preg_match(
-                '/^(Undefined property)/',
-                $errstr
-            )) {
+            '/^(Undefined property)/',
+            (string) $errstr
+        )) {
             return; // suppresses this error
         }
 
         if ($this->allowUndefinedArrayKeys && preg_match(
             '/^(Undefined index|Undefined array key|Trying to access array offset on)/',
-            $errstr
+            (string) $errstr
         )) {
             return; // suppresses this error
         }
 
         if ($this->allowDereferencingNonObjects && preg_match(
-                '/^Attempt to read property ".+?" on/',
-                $errstr
-            )) {
+            '/^Attempt to read property ".+?" on/',
+            (string) $errstr
+        )) {
             return; // suppresses this error
         }
 

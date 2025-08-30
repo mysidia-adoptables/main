@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Resource File
  *
@@ -122,7 +123,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
             return is_file($path) ? $path : false;
         }
         // normalize DIRECTORY_SEPARATOR
-        if (strpos($file, DIRECTORY_SEPARATOR === '/' ? '\\' : '/') !== false) {
+        if (str_contains($file, DIRECTORY_SEPARATOR === '/' ? '\\' : '/')) {
             $file = str_replace(DIRECTORY_SEPARATOR === '/' ? '\\' : '/', DIRECTORY_SEPARATOR, $file);
         }
         $_directories = $source->smarty->getTemplateDir(null, $source->isConfig);
@@ -130,7 +131,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
         if ($file[ 0 ] === '[' && preg_match('#^\[([^\]]+)\](.+)$#', $file, $fileMatch)) {
             $file = $fileMatch[ 2 ];
             $_indices = explode(',', $fileMatch[ 1 ]);
-            $_index_dirs = array();
+            $_index_dirs = [];
             foreach ($_indices as $index) {
                 $index = trim($index);
                 // try string indexes
@@ -161,7 +162,7 @@ class Smarty_Internal_Resource_File extends Smarty_Resource
         foreach ($_directories as $_directory) {
             $path = $_directory . $file;
             if (is_file($path)) {
-                return (strpos($path, '.' . DIRECTORY_SEPARATOR) !== false) ? $source->smarty->_realpath($path) : $path;
+                return (str_contains($path, '.' . DIRECTORY_SEPARATOR)) ? $source->smarty->_realpath($path) : $path;
             }
         }
         if (!isset($_index_dirs)) {

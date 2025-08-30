@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_PropertyListIterator extends FilterIterator
 {
-
     /**
      * @type int
      */
@@ -22,7 +21,7 @@ class HTMLPurifier_PropertyListIterator extends FilterIterator
     public function __construct(Iterator $iterator, $filter = null)
     {
         parent::__construct($iterator);
-        $this->l = strlen($filter);
+        $this->l = strlen((string) $filter);
         $this->filter = $filter;
     }
 
@@ -32,7 +31,7 @@ class HTMLPurifier_PropertyListIterator extends FilterIterator
     public function accept()
     {
         $key = $this->getInnerIterator()->key();
-        if (strncmp($key, $this->filter, $this->l) !== 0) {
+        if (strncmp((string) $key, (string) $this->filter, $this->l) !== 0) {
             return false;
         }
         return true;

@@ -7,7 +7,7 @@ $lang['default'] = "This page allows you to manage the promo codes available to 
 				    Only admins who can edit adoptables can carry out this task.
 					Use the table below to edit a promocode, or click the following link to generate a new promocode for your member.
 					<br /><br /><b><a href='add'><img src='../../templates/icons/add.gif' border=0>Create a New Promocode</a></b>";
-$lang['default_none'] = "Currently there is no promocode created.";		
+$lang['default_none'] = "Currently there is no promocode created.";
 $lang['add_title'] = "Create a new promocode for user";
 $lang['add'] = "This page allows you to create a new promocode for your user to use.
 				Please fill in the form below and hit the <i>Create Promocode</i> button below when you're ready to complete this action.";

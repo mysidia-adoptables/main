@@ -1,13 +1,14 @@
 <?php
 
 namespace Model\DomainModel;
+
 use Resource\Core\Model;
 use Resource\Core\Registry;
 
-class UserContact extends Model{
-    
-    const IDKEY = "uid";
-    protected $uid; 
+class UserContact extends Model
+{
+    public const IDKEY = "uid";
+    protected $uid;
     protected $website;
     protected $facebook;
     protected $twitter;
@@ -15,59 +16,72 @@ class UserContact extends Model{
     protected $yahoo;
     protected $msn;
     protected $skype;
-    
+
     protected $user;
-    
-    public function __construct($uid, $dto = NULL, User|NULL $user = NULL){
-		$mysidia = Registry::get("mysidia");
-        if(!$dto){
+
+    public function __construct($uid, $dto = null, User|null $user = null)
+    {
+        $mysidia = Registry::get("mysidia");
+        if (!$dto) {
             $prefix = constant("PREFIX");
-	        $dto = $mysidia->db->join("users", "users.uid = users_contacts.uid")
+            $dto = $mysidia->db->join("users", "users.uid = users_contacts.uid")
                            ->select("users_contacts", [], "{$prefix}users.uid = :uid", ["uid" => $uid])->fetchObject();
-            if(!is_object($dto)) throw new MemberNotfoundException("The specified user contact {$uid} does not exist...");
+            if (!is_object($dto)) {
+                throw new MemberNotfoundException("The specified user contact {$uid} does not exist...");
+            }
         }
         parent::__construct($dto);
-        $this->user = $user ? $user : new Member($uid, $dto);
+        $this->user = $user ?: new Member($uid, $dto);
     }
-    
-    public function getWebsite(){
+
+    public function getWebsite()
+    {
         return $this->website;
     }
-    
-    public function getFacebook(){
+
+    public function getFacebook()
+    {
         return $this->facebook;
     }
-    
-    public function getTwitter(){
+
+    public function getTwitter()
+    {
         return $this->twitter;
     }
-    
-    public function getAIM(){
+
+    public function getAIM()
+    {
         return $this->aim;
     }
-    
-    public function getYahoo(){
+
+    public function getYahoo()
+    {
         return $this->yahoo;
     }
-    
-    public function getYIM(){ 
+
+    public function getYIM()
+    {
         return $this->getYahoo();
     }
-  
-    public function getMSN(){
+
+    public function getMSN()
+    {
         return $this->msn;
     }
-    
-    public function getSkype(){
+
+    public function getSkype()
+    {
         return $this->skype;
     }
-    
-    public function getUser(){
+
+    public function getUser()
+    {
         return $this->user;
     }
-    
-    protected function save($field, $value){
-		$mysidia = Registry::get("mysidia");
-		$mysidia->db->update("users_contacts", [$field => $value], "uid='{$this->uid}'");         
+
+    protected function save($field, $value)
+    {
+        $mysidia = Registry::get("mysidia");
+        $mysidia->db->update("users_contacts", [$field => $value], "uid='{$this->uid}'");
     }
 }

@@ -5,7 +5,6 @@
  */
 abstract class HTMLPurifier_TagTransform
 {
-
     /**
      * Tag name to transform the tag to.
      * @type string
@@ -29,7 +28,7 @@ abstract class HTMLPurifier_TagTransform
      */
     protected function prependCSS(&$attr, $css)
     {
-        $attr['style'] = isset($attr['style']) ? $attr['style'] : '';
+        $attr['style'] ??= '';
         $attr['style'] = $css . $attr['style'];
     }
 }

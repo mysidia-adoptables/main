@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -66,7 +67,7 @@ function smarty_function_html_table($params)
     foreach ($params as $_key => $_value) {
         switch ($_key) {
             case 'loop':
-                $$_key = (array)$_value;
+                ${$_key} = (array)$_value;
                 break;
             case 'cols':
                 if (is_array($_value) && !empty($_value)) {
@@ -82,7 +83,7 @@ function smarty_function_html_table($params)
                 }
                 break;
             case 'rows':
-                $$_key = (int)$_value;
+                ${$_key} = (int)$_value;
                 break;
             case 'table_attr':
             case 'trailpad':
@@ -90,12 +91,12 @@ function smarty_function_html_table($params)
             case 'vdir':
             case 'inner':
             case 'caption':
-                $$_key = (string)$_value;
+                ${$_key} = (string)$_value;
                 break;
             case 'tr_attr':
             case 'td_attr':
             case 'th_attr':
-                $$_key = $_value;
+                ${$_key} = $_value;
                 break;
         }
     }

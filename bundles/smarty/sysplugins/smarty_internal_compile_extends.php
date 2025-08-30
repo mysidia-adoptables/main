@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile extend
  * Compiles the {extends} tag
@@ -22,7 +23,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $required_attributes = array('file');
+    public $required_attributes = ['file'];
 
     /**
      * Array of names of optional attribute required by tag
@@ -30,7 +31,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      *
      * @var array
      */
-    public $optional_attributes = array();
+    public $optional_attributes = [];
 
     /**
      * Attribute definition: Overwrites base class.
@@ -38,7 +39,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $shorttag_order = array('file');
+    public $shorttag_order = ['file'];
 
     /**
      * Compiles code for the {extends} tag extends: resource
@@ -57,7 +58,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
         if ($_attr[ 'nocache' ] === true) {
             $compiler->trigger_template_error('nocache option not allowed', $compiler->parser->lex->line - 1);
         }
-        if (strpos($_attr[ 'file' ], '$_tmp') !== false) {
+        if (str_contains((string) $_attr[ 'file' ], '$_tmp')) {
             $compiler->trigger_template_error('illegal value for file attribute', $compiler->parser->lex->line - 1);
         }
         // add code to initialize inheritance
@@ -80,7 +81,7 @@ class Smarty_Internal_Compile_Extends extends Smarty_Internal_Compile_Shared_Inh
     {
         $inlineUids = '';
         if (isset($template) && $compiler->smarty->merge_compiled_includes) {
-            $code = $compiler->compileTag('include', array($template, array('scope' => 'parent')));
+            $code = $compiler->compileTag('include', [$template, ['scope' => 'parent']]);
             if (preg_match('/([,][\s]*[\'][a-z0-9]+[\'][,][\s]*[\']content.*[\'])[)]/', $code, $match)) {
                 $inlineUids = $match[ 1 ];
             }

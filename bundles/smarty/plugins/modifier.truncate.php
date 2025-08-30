@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -40,10 +41,10 @@ function smarty_modifier_truncate($string, $length = 80, $etc = '...', $break_wo
                 );
             }
             if (!$middle) {
-                return mb_substr($string, 0, $length, Smarty::$_CHARSET) . $etc;
+                return mb_substr((string) $string, 0, $length, Smarty::$_CHARSET) . $etc;
             }
-            return mb_substr($string, 0, intval($length / 2), Smarty::$_CHARSET) . $etc .
-                   mb_substr($string, -intval($length / 2), $length, Smarty::$_CHARSET);
+            return mb_substr((string) $string, 0, intval($length / 2), Smarty::$_CHARSET) . $etc .
+                   mb_substr((string) $string, -intval($length / 2), $length, Smarty::$_CHARSET);
         }
         return $string;
     }
@@ -54,9 +55,9 @@ function smarty_modifier_truncate($string, $length = 80, $etc = '...', $break_wo
             $string = preg_replace('/\s+?(\S+)?$/', '', substr($string, 0, $length + 1));
         }
         if (!$middle) {
-            return substr($string, 0, $length) . $etc;
+            return substr((string) $string, 0, $length) . $etc;
         }
-        return substr($string, 0, intval($length / 2)) . $etc . substr($string, -intval($length / 2));
+        return substr((string) $string, 0, intval($length / 2)) . $etc . substr((string) $string, -intval($length / 2));
     }
     return $string;
 }

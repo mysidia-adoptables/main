@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Resource Plugin
  *
@@ -54,7 +55,7 @@ abstract class Smarty_Resource_Custom extends Smarty_Resource
             $source->timestamp = $mtime;
         } else {
             $this->fetch($source->name, $content, $timestamp);
-            $source->timestamp = isset($timestamp) ? $timestamp : false;
+            $source->timestamp = $timestamp ?? false;
             if (isset($content)) {
                 $source->content = $content;
             }
@@ -98,7 +99,8 @@ abstract class Smarty_Resource_Custom extends Smarty_Resource
      *
      * @return string
      */
-    private function generateSafeName($name): string {
-        return substr(preg_replace('/[^A-Za-z0-9._]/', '', (string) $name), 0, 127);
+    private function generateSafeName($name): string
+    {
+        return substr((string) preg_replace('/[^A-Za-z0-9._]/', '', (string) $name), 0, 127);
     }
 }

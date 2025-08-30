@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Shared Inheritance
  * Shared methods for {extends} and {block} tags
@@ -38,8 +39,8 @@ class Smarty_Internal_Compile_Shared_Inheritance extends Smarty_Internal_Compile
     {
         if ($initChildSequence || !isset($compiler->_cache[ 'inheritanceInit' ])) {
             $compiler->registerPostCompileCallback(
-                array('Smarty_Internal_Compile_Shared_Inheritance', 'postCompile'),
-                array($initChildSequence),
+                ['Smarty_Internal_Compile_Shared_Inheritance', 'postCompile'],
+                [$initChildSequence],
                 'inheritanceInit',
                 $initChildSequence
             );

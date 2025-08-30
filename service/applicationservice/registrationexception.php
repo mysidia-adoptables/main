@@ -2,6 +2,6 @@
 
 namespace Service\ApplicationService;
 
-class RegistrationException extends AuthenticationException{
-
+class RegistrationException extends AuthenticationException
+{
 }

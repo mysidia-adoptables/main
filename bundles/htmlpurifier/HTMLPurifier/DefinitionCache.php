@@ -12,17 +12,11 @@
 abstract class HTMLPurifier_DefinitionCache
 {
     /**
-     * @type string
-     */
-    public $type;
-
-    /**
      * @param string $type Type of definition objects this instance of the
      *      cache will handle.
      */
-    public function __construct($type)
+    public function __construct(public $type)
     {
-        $this->type = $type;
     }
 
     /**
@@ -49,7 +43,7 @@ abstract class HTMLPurifier_DefinitionCache
         if (substr_count($key, ',') < 2) {
             return true;
         }
-        list($version, $hash, $revision) = explode(',', $key, 3);
+        [$version, $hash, $revision] = explode(',', $key, 3);
         $compare = version_compare($version, $config->version);
         // version mismatch, is always old
         if ($compare != 0) {

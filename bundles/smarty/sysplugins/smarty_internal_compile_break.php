@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile Break
  * Compiles the {break} tag
@@ -22,7 +23,7 @@ class Smarty_Internal_Compile_Break extends Smarty_Internal_CompileBase
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $optional_attributes = array('levels');
+    public $optional_attributes = ['levels'];
 
     /**
      * Attribute definition: Overwrites base class.
@@ -30,7 +31,7 @@ class Smarty_Internal_Compile_Break extends Smarty_Internal_CompileBase
      * @var array
      * @see Smarty_Internal_CompileBase
      */
-    public $shorttag_order = array('levels');
+    public $shorttag_order = ['levels'];
 
     /**
      * Tag name may be overloaded by Smarty_Internal_Compile_Continue
@@ -50,7 +51,7 @@ class Smarty_Internal_Compile_Break extends Smarty_Internal_CompileBase
      */
     public function compile($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        list($levels, $foreachLevels) = $this->checkLevels($args, $compiler);
+        [$levels, $foreachLevels] = $this->checkLevels($args, $compiler);
         $output = "<?php ";
         if ($foreachLevels > 0 && $this->tag === 'continue') {
             $foreachLevels--;
@@ -75,7 +76,7 @@ class Smarty_Internal_Compile_Break extends Smarty_Internal_CompileBase
      */
     public function checkLevels($args, Smarty_Internal_TemplateCompilerBase $compiler)
     {
-        static $_is_loopy = array('for' => true, 'foreach' => true, 'while' => true, 'section' => true);
+        static $_is_loopy = ['for' => true, 'foreach' => true, 'while' => true, 'section' => true];
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         if ($_attr[ 'nocache' ] === true) {
@@ -112,6 +113,6 @@ class Smarty_Internal_Compile_Break extends Smarty_Internal_CompileBase
         if ($lastTag === 'foreach' && $this->tag === 'break' && $foreachLevels > 0) {
             $foreachLevels--;
         }
-        return array($levels, $foreachLevels);
+        return [$levels, $foreachLevels];
     }
 }

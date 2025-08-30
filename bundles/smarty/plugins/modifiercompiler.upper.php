@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -21,7 +22,7 @@
 function smarty_modifiercompiler_upper($params)
 {
     if (Smarty::$_MBSTRING) {
-        return 'mb_strtoupper((string) ' . $params[ 0 ] . ' ?? \'\', \'' . addslashes(Smarty::$_CHARSET) . '\')';
+        return 'mb_strtoupper((string) ' . $params[ 0 ] . ' ?? \'\', \'' . addslashes((string) Smarty::$_CHARSET) . '\')';
     }
     // no MBString fallback
     return 'strtoupper((string) ' . $params[ 0 ] . ' ?? \'\')';

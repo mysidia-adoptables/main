@@ -5,13 +5,12 @@ define("SUBDIR", "Install");
 include("../config.php");
 
 //Now connecting to the adoptables database
-try{
+try {
     $dsn = "mysql:host=" . DBHOST . ";dbname=" . DBNAME;
     $prefix = constant("PREFIX");
     $adopts = new PDO($dsn, DBUSER, DBPASS);
-}
-catch(PDOException $pe){
-    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");  
+} catch (PDOException $pe) {
+    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");
 }
 
 
@@ -21,11 +20,11 @@ $pass2 = filter_input(INPUT_POST, "pass2");
 $birthday = filter_input(INPUT_POST, "birthday");
 $email = preg_replace("/[^a-zA-Z0-9@._-]/", "", filter_input(INPUT_POST, "email"));
 
-if($username == "" || $pass1 == "" || $pass2 == "" || $email == ""){
+if ($username == "" || $pass1 == "" || $pass2 == "" || $email == "") {
     die("Something important was left blank.  Please try again!");
 }
 
-if($pass1 != $pass2){
+if ($pass1 != $pass2) {
     die("Passwords do not match.  Please go back and correct this.");
 }
 
@@ -35,13 +34,15 @@ VALUES (NULL, '{$username}', '', '{$pass1}', '{$email}', '{$_SERVER['REMOTE_ADDR
 
 $stmt = $adopts->query("SELECT uid FROM {$prefix}users WHERE username = '{$username}'");
 $uid = $stmt->fetchColumn();
-if(!$uid) die("Error creating admin user.");
+if (!$uid) {
+    die("Error creating admin user.");
+}
 $adopts->query("INSERT INTO {$prefix}users_contacts (uid, website, facebook, twitter, aim, yahoo, msn, skype)
 VALUES ({$uid}, '', '', '', '', '', '', '')");
 
 $adopts->query("INSERT INTO {$prefix}users_options (uid, newmessagenotify, pmstatus, vmstatus, tradestatus, theme)
 VALUES ({$uid}, '1', '0', '0', '0', 'main')");
-	
+
 $adopts->query("INSERT INTO {$prefix}users_permissions (uid, canlevel, canvm, canfriend, cantrade, canbreed, canpound, canshop)
 VALUES ({$uid}, 'yes', 'yes', 'yes', 'yes', 'yes', 'yes', 'yes')");
 

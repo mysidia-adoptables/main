@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile For
  * Compiles the {for} {forelse} {/for} tags
@@ -36,13 +37,13 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
     {
         $compiler->loopNesting++;
         if ($parameter === 0) {
-            $this->required_attributes = array('start', 'to');
-            $this->optional_attributes = array('max', 'step');
+            $this->required_attributes = ['start', 'to'];
+            $this->optional_attributes = ['max', 'step'];
         } else {
-            $this->required_attributes = array('start', 'ifexp', 'var', 'step');
-            $this->optional_attributes = array();
+            $this->required_attributes = ['start', 'ifexp', 'var', 'step'];
+            $this->optional_attributes = [];
         }
-        $this->mapCache = array();
+        $this->mapCache = [];
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         $output = "<?php\n";
@@ -92,7 +93,7 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
             $output .= "\$_smarty_tpl->tpl_vars[$var]->last = \$_smarty_tpl->tpl_vars[$var]->iteration === \$_smarty_tpl->tpl_vars[$var]->total;";
         }
         $output .= '?>';
-        $this->openTag($compiler, 'for', array('for', $compiler->nocache));
+        $this->openTag($compiler, 'for', ['for', $compiler->nocache]);
         // maybe nocache because of nocache variables
         $compiler->nocache = $compiler->nocache | $compiler->tag_nocache;
         // return compiled code
@@ -121,8 +122,8 @@ class Smarty_Internal_Compile_Forelse extends Smarty_Internal_CompileBase
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-        list($openTag, $nocache) = $this->closeTag($compiler, array('for'));
-        $this->openTag($compiler, 'forelse', array('forelse', $nocache));
+        [$openTag, $nocache] = $this->closeTag($compiler, ['for']);
+        $this->openTag($compiler, 'forelse', ['forelse', $nocache]);
         return "<?php }} else { ?>";
     }
 }
@@ -153,7 +154,7 @@ class Smarty_Internal_Compile_Forclose extends Smarty_Internal_CompileBase
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;
         }
-        list($openTag, $compiler->nocache) = $this->closeTag($compiler, array('for', 'forelse'));
+        [$openTag, $compiler->nocache] = $this->closeTag($compiler, ['for', 'forelse']);
         $output = "<?php }\n";
         if ($openTag !== 'forelse') {
             $output .= "}\n";

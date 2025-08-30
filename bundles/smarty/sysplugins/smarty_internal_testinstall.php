@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal TestInstall
  * Test Smarty installation
@@ -40,7 +41,7 @@ class Smarty_Internal_TestInstall
             $template_dir = realpath($template_dir);
             // resolve include_path or fail existence
             if (!$template_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_template_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_template_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $template_dir = stream_resolve_include_path($_template_dir);
@@ -151,7 +152,7 @@ class Smarty_Internal_TestInstall
             $plugin_dir = realpath($plugin_dir);
             // resolve include_path or fail existence
             if (!$plugin_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_plugin_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_plugin_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $plugin_dir = stream_resolve_include_path($_plugin_dir);
@@ -271,7 +272,7 @@ class Smarty_Internal_TestInstall
             $_config_dir = $config_dir;
             // resolve include_path or fail existence
             if (!$config_dir) {
-                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', $_config_dir)) {
+                if ($smarty->use_include_path && !preg_match('/^([\/\\\\]|[a-zA-Z]:[\/\\\\])/', (string) $_config_dir)) {
                     // try PHP include_path
                     if ($_stream_resolve_include_path) {
                         $config_dir = stream_resolve_include_path($_config_dir);
@@ -332,7 +333,7 @@ class Smarty_Internal_TestInstall
         // test if sysplugins are available
         $source = SMARTY_SYSPLUGINS_DIR;
         if (is_dir($source)) {
-            $expectedSysplugins = array(
+            $expectedSysplugins = [
                 'smartycompilerexception.php'                               => true,
                 'smartyexception.php'                                       => true,
                 'smarty_cacheresource.php'                                  => true,
@@ -482,7 +483,7 @@ class Smarty_Internal_TestInstall
                 'smarty_template_source.php'                                => true,
                 'smarty_undefined_variable.php'                             => true,
                 'smarty_variable.php'                                       => true,
-            );
+            ];
             $iterator = new DirectoryIterator($source);
             foreach ($iterator as $file) {
                 if (!$file->isDot()) {
@@ -518,7 +519,7 @@ class Smarty_Internal_TestInstall
         // test if core plugins are available
         $source = SMARTY_PLUGINS_DIR;
         if (is_dir($source)) {
-            $expectedPlugins = array(
+            $expectedPlugins = [
                 'block.textformat.php'                  => true,
                 'function.counter.php'                  => true,
                 'function.cycle.php'                    => true,
@@ -566,7 +567,7 @@ class Smarty_Internal_TestInstall
                 'shared.mb_str_replace.php'             => true,
                 'shared.mb_unicode.php'                 => true,
                 'variablefilter.htmlspecialchars.php'   => true,
-            );
+            ];
             $iterator = new DirectoryIterator($source);
             foreach ($iterator as $file) {
                 if (!$file->isDot()) {

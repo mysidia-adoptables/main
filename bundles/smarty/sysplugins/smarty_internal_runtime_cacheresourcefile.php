@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty cache resource file clear method
  *
@@ -65,7 +66,7 @@ class Smarty_Internal_Runtime_CacheResourceFile
             $_cacheDirs = new RecursiveDirectoryIterator($_dir);
             $_cache = new RecursiveIteratorIterator($_cacheDirs, RecursiveIteratorIterator::CHILD_FIRST);
             foreach ($_cache as $_file) {
-                if (substr(basename($_file->getPathname()), 0, 1) === '.') {
+                if (str_starts_with(basename((string) $_file->getPathname()), '.')) {
                     continue;
                 }
                 $_filepath = (string)$_file;
@@ -77,7 +78,7 @@ class Smarty_Internal_Runtime_CacheResourceFile
                     }
                 } else {
                     // delete only php files
-                    if (substr($_filepath, -4) !== '.php') {
+                    if (!str_ends_with($_filepath, '.php')) {
                         continue;
                     }
                     $_parts = explode($_dir_sep, str_replace('\\', '/', substr($_filepath, $_dir_length)));

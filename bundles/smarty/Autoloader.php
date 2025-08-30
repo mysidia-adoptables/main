@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Autoloader
  *
@@ -7,7 +8,7 @@
 
 
 if (!defined('SMARTY_HELPER_FUNCTIONS_LOADED')) {
-	include __DIR__ . '/functions.php';
+    include __DIR__ . '/functions.php';
 }
 
 /**
@@ -44,7 +45,7 @@ class Smarty_Autoloader
      *
      * @var array
      */
-    public static $rootClasses = array('smarty' => 'Smarty.class.php');
+    public static $rootClasses = ['smarty' => 'Smarty.class.php'];
 
     /**
      * Registers Smarty_Autoloader backward compatible to older installations.
@@ -81,7 +82,7 @@ class Smarty_Autoloader
         self::$SMARTY_DIR = defined('SMARTY_DIR') ? SMARTY_DIR : __DIR__ . DIRECTORY_SEPARATOR;
         self::$SMARTY_SYSPLUGINS_DIR = defined('SMARTY_SYSPLUGINS_DIR') ? SMARTY_SYSPLUGINS_DIR :
             self::$SMARTY_DIR . 'sysplugins' . DIRECTORY_SEPARATOR;
-        spl_autoload_register(array(__CLASS__, 'autoload'), true, $prepend);
+        spl_autoload_register(self::autoload(...), true, $prepend);
     }
 
     /**
@@ -91,7 +92,7 @@ class Smarty_Autoloader
      */
     public static function autoload($class)
     {
-        if ($class[ 0 ] !== 'S' || strpos($class, 'Smarty') !== 0) {
+        if ($class[ 0 ] !== 'S' || !str_starts_with($class, 'Smarty')) {
             return;
         }
         $_class = smarty_strtolower_ascii($class);

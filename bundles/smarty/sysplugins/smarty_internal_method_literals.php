@@ -68,7 +68,7 @@ class Smarty_Internal_Method_Literals
     public function setLiterals(Smarty_Internal_TemplateBase $obj, $literals = null)
     {
         $smarty = $obj->_getSmartyObj();
-        $smarty->literals = array();
+        $smarty->literals = [];
         if (!empty($literals)) {
             $this->set($smarty, (array)$literals);
         }
@@ -87,7 +87,7 @@ class Smarty_Internal_Method_Literals
     private function set(Smarty $smarty, $literals)
     {
         $literals = array_combine($literals, $literals);
-        $error = isset($literals[ $smarty->left_delimiter ]) ? array($smarty->left_delimiter) : array();
+        $error = isset($literals[ $smarty->left_delimiter ]) ? [$smarty->left_delimiter] : [];
         $error = isset($literals[ $smarty->right_delimiter ]) ? $error[] = $smarty->right_delimiter : $error;
         if (!empty($error)) {
             throw new SmartyException(

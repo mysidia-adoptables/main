@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Smarty package.
  *
@@ -20,8 +21,9 @@ const SMARTY_HELPER_FUNCTIONS_LOADED = true;
  *
  * @return string
  */
-function smarty_ucfirst_ascii($string): string {
-    return smarty_strtoupper_ascii(substr($string, 0, 1)) . substr($string, 1);
+function smarty_ucfirst_ascii($string): string
+{
+    return smarty_strtoupper_ascii(substr((string) $string, 0, 1)) . substr((string) $string, 1);
 }
 
 /**
@@ -33,7 +35,8 @@ function smarty_ucfirst_ascii($string): string {
  *
  * @return string
  */
-function smarty_strtolower_ascii($string): string {
+function smarty_strtolower_ascii($string): string
+{
     return strtr($string, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 }
 
@@ -46,6 +49,7 @@ function smarty_strtolower_ascii($string): string {
  *
  * @return string
  */
-function smarty_strtoupper_ascii($string): string {
+function smarty_strtoupper_ascii($string): string
+{
     return strtr($string, 'abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 }

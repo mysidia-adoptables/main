@@ -8,51 +8,51 @@ namespace Resource\GUI\Component;
  * @category Resource
  * @package GUI
  * @subpackage Component
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Inc
  * @link http://www.mysidiainc.com
  * @since 1.3.3
  * @todo Restructure the namespace
  *
- */  
+ */
 
-class Option extends Accessory{
+class Option extends Accessory
+{
+    /**
+     * The text property, stores the text visible to the user from this option.
+     * @access protected
+     * @var String
+    */
+    protected $text;
 
     /**
-	 * The text property, stores the text visible to the user from this option.
-	 * @access protected
-	 * @var String
+     * The value property, defines the value sent to the server upon form submission.
+     * @access protected
+     * @var String
     */
-	protected $text;
+    protected $value;
 
     /**
-	 * The value property, defines the value sent to the server upon form submission.
-	 * @access protected
-	 * @var String
+     * The label property, stores a label text of this option.
+     * @access protected
+     * @var String
     */
-	protected $value;
-	
-	/**
-	 * The label property, stores a label text of this option.
-	 * @access protected
-	 * @var String
-    */
-	protected $label;
-	
+    protected $label;
+
     /**
-	 * The disabled property, specifies if the option is disabled.
-	 * @access protected
-	 * @var Boolean
+     * The disabled property, specifies if the option is disabled.
+     * @access protected
+     * @var Boolean
     */
-	protected $disabled = FALSE;
-	
-	/**
-	 * The selected property, specifies if the option is selected by default.
-	 * @access protected
-	 * @var Boolean
+    protected $disabled = false;
+
+    /**
+     * The selected property, specifies if the option is selected by default.
+     * @access protected
+     * @var Boolean
     */
-	protected $selected = FALSE;
-	
+    protected $selected = false;
+
     /**
      * Constructor of Option Class, which assigns basic option properties.
      * @param String  $text
@@ -61,138 +61,159 @@ class Option extends Accessory{
      * @access public
      * @return void
      */
-	public function __construct($text = "", $value = "", $event = ""){
-	    parent::__construct($value);
-	    if(!empty($text)) $this->setText($text);
-		
-		if(!empty($value)) $this->setValue($value);
-		elseif(!empty($text) and empty($value)) $this->setValue($text);
-		else $this->value = "";
-		
-		if(!empty($event)) $this->setEvent($event);
-		$this->setLineBreak(FALSE);
-        $this->containers = ["DataList", "DropdownList", "SelectList"];  		
-	}
-	
-	/**
-     * The getText method, getter method for property $text.    
+    public function __construct($text = "", $value = "", $event = "")
+    {
+        parent::__construct($value);
+        if (!empty($text)) {
+            $this->setText($text);
+        }
+
+        if (!empty($value)) {
+            $this->setValue($value);
+        } elseif (!empty($text) and empty($value)) {
+            $this->setValue($text);
+        } else {
+            $this->value = "";
+        }
+
+        if (!empty($event)) {
+            $this->setEvent($event);
+        }
+        $this->setLineBreak(false);
+        $this->containers = ["DataList", "DropdownList", "SelectList"];
+    }
+
+    /**
+     * The getText method, getter method for property $text.
      * @access public
      * @return String
      */
-	public function getText(){
-	    return $this->text;    
-	}
-	
-	/**
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
      * The setText method, setter method for property $text.
-	 * @param String  $text    
+     * @param String  $text
      * @access public
      * @return void
      */
-	public function setText($text){
-	    $this->text = $text;
-	}
-	
-	/**
-     * The getValue method, getter method for property $value.    
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * The getValue method, getter method for property $value.
      * @access public
      * @return String
      */
-	public function getValue(){
-	    return $this->value;    
-	}
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
+    /**
      * The setValue method, setter method for property $value.
-	 * @param String  $value       
+     * @param String  $value
      * @access public
      * @return void
      */
-	public function setValue($value){
-	    $this->value = $value;
-		$this->setAttributes("Value");
-	}
-	
-	/**
-     * The getLabel method, getter method for property $label.    
+    public function setValue($value)
+    {
+        $this->value = $value;
+        $this->setAttributes("Value");
+    }
+
+    /**
+     * The getLabel method, getter method for property $label.
      * @access public
      * @return String
      */
-	public function getLabel(){
-	    return $this->label;    
-	}
+    public function getLabel()
+    {
+        return $this->label;
+    }
 
-	/**
+    /**
      * The setLabel method, setter method for property $label.
-	 * @param String  $label       
+     * @param String  $label
      * @access public
      * @return void
      */
-	public function setLabel($label){
-	    $this->label = $label;
-		$this->setAttributes("Label");
-	}
-	
-		
-	/**
-     * The isDisabled method, getter method for property $disabled.    
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        $this->setAttributes("Label");
+    }
+
+
+    /**
+     * The isDisabled method, getter method for property $disabled.
      * @access public
      * @return Boolean
      */
-	public function isDisabled(){
-	    return $this->disabled;    
-	}
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
 
-	/**
+    /**
      * The setDisabled method, setter method for property $disabled.
-	 * @param Boolean  $disabled       
+     * @param Boolean  $disabled
      * @access public
      * @return void
      */
-	public function setDisabled($disabled = TRUE){
-	    $this->disabled = $disabled;
-		$this->setAttributes("Disabled");
-	}
-	
-	/**
-     * The isSelected method, getter method for property $selected.    
+    public function setDisabled($disabled = true)
+    {
+        $this->disabled = $disabled;
+        $this->setAttributes("Disabled");
+    }
+
+    /**
+     * The isSelected method, getter method for property $selected.
      * @access public
      * @return Boolean
-     */	
-	public function isSelected(){
-	    return $this->selected;
-	}
-	
-	/**
+     */
+    public function isSelected()
+    {
+        return $this->selected;
+    }
+
+    /**
      * The setSelected method, setter method for property $selected.
-	 * @param Boolean  $selected    
+     * @param Boolean  $selected
      * @access public
      * @return void
      */
-	public function setSelected($selected){
-	    $this->selected = $selected;
-		$this->setAttributes("Selected");
-	}
+    public function setSelected($selected)
+    {
+        $this->selected = $selected;
+        $this->setAttributes("Selected");
+    }
 
-	/**
+    /**
      * The render method for Option class, it renders option data fields into html readable format.
      * @access public
      * @return void
      */
-	public function render(){
-		if($this->renderer->getStatus() == "ready"){
-		    $this->renderer->start(); 
-		    parent::render()->renderText()->end();
-		}	
-		return $this->renderer->getRender();	
-    } 
+    public function render()
+    {
+        if ($this->renderer->getStatus() == "ready") {
+            $this->renderer->start();
+            parent::render()->renderText()->end();
+        }
+        return $this->renderer->getRender();
+    }
 
-	/**
+    /**
      * Magic method __toString for Option class, it reveals that the object is an option.
      * @access public
      * @return String
      */
-    public function __toString(){
-	    return "This is an instance of Mysidia Option class.";
-	}    
-} 
+    public function __toString(): string
+    {
+        return "This is an instance of Mysidia Option class.";
+    }
+}

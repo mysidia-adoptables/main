@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -22,14 +23,13 @@
 #[\AllowDynamicProperties]
 class Smarty_Security
 {
-
     /**
      * This is the list of template directories that are considered secure.
      * $template_dir is in this list implicitly.
      *
      * @var array
      */
-    public $secure_dir = array();
+    public $secure_dir = [];
 
     /**
      * This is an array of directories where trusted php scripts reside.
@@ -37,21 +37,21 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_dir = array();
+    public $trusted_dir = [];
 
     /**
      * List of regular expressions (PCRE) that include trusted URIs
      *
      * @var array
      */
-    public $trusted_uri = array();
+    public $trusted_uri = [];
 
     /**
      * List of trusted constants names
      *
      * @var array
      */
-    public $trusted_constants = array();
+    public $trusted_constants = [];
 
     /**
      * This is an array of trusted static classes.
@@ -60,7 +60,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $static_classes = array();
+    public $static_classes = [];
 
     /**
      * This is an nested array of trusted classes and static methods.
@@ -74,7 +74,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_static_methods = array();
+    public $trusted_static_methods = [];
 
     /**
      * This is an array of trusted static properties.
@@ -88,7 +88,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $trusted_static_properties = array();
+    public $trusted_static_properties = [];
 
     /**
      * This is an array of trusted PHP functions.
@@ -97,7 +97,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $php_functions = array('isset', 'empty', 'count', 'sizeof', 'in_array', 'is_array', 'time',);
+    public $php_functions = ['isset', 'empty', 'count', 'sizeof', 'in_array', 'is_array', 'time',];
 
     /**
      * This is an array of trusted PHP modifiers.
@@ -106,7 +106,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $php_modifiers = array('escape', 'count', 'sizeof', 'nl2br',);
+    public $php_modifiers = ['escape', 'count', 'sizeof', 'nl2br',];
 
     /**
      * This is an array of allowed tags.
@@ -114,7 +114,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $allowed_tags = array();
+    public $allowed_tags = [];
 
     /**
      * This is an array of disabled tags.
@@ -122,7 +122,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $disabled_tags = array();
+    public $disabled_tags = [];
 
     /**
      * This is an array of allowed modifier plugins.
@@ -130,7 +130,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $allowed_modifiers = array();
+    public $allowed_modifiers = [];
 
     /**
      * This is an array of disabled modifier plugins.
@@ -138,14 +138,14 @@ class Smarty_Security
      *
      * @var array
      */
-    public $disabled_modifiers = array();
+    public $disabled_modifiers = [];
 
     /**
      * This is an array of disabled special $smarty variables.
      *
      * @var array
      */
-    public $disabled_special_smarty_vars = array();
+    public $disabled_special_smarty_vars = [];
 
     /**
      * This is an array of trusted streams.
@@ -154,7 +154,7 @@ class Smarty_Security
      *
      * @var array
      */
-    public $streams = array('file');
+    public $streams = ['file'];
 
     /**
      * + flag if constants can be accessed from template
@@ -189,28 +189,28 @@ class Smarty_Security
      *
      * @var array
      */
-    protected $_resource_dir = array();
+    protected $_resource_dir = [];
 
     /**
      * Cache for $template_dir lookup
      *
      * @var array
      */
-    protected $_template_dir = array();
+    protected $_template_dir = [];
 
     /**
      * Cache for $config_dir lookup
      *
      * @var array
      */
-    protected $_config_dir = array();
+    protected $_config_dir = [];
 
     /**
      * Cache for $secure_dir lookup
      *
      * @var array
      */
-    protected $_secure_dir = array();
+    protected $_secure_dir = [];
 
     /**
      * Cache for $php_resource_dir lookup
@@ -238,7 +238,7 @@ class Smarty_Security
      *
      * @var array
      */
-    protected $_include_dir = array();
+    protected $_include_dir = [];
 
     /**
      * @param Smarty $smarty
@@ -356,12 +356,12 @@ class Smarty_Security
         // check for internal always required tags
         if (in_array(
             $tag_name,
-            array(
+            [
                 'assign', 'call', 'private_filter', 'private_block_plugin', 'private_function_plugin',
                 'private_object_block_function', 'private_object_function', 'private_registered_function',
                 'private_registered_block', 'private_special_variable', 'private_print_expression',
                 'private_modifier'
-            )
+            ]
         )
         ) {
             return true;
@@ -414,7 +414,7 @@ class Smarty_Security
     public function isTrustedModifier($modifier_name, $compiler)
     {
         // check for internal always allowed modifier
-        if (in_array($modifier_name, array('default'))) {
+        if (in_array($modifier_name, ['default'])) {
             return true;
         }
         // check security settings
@@ -452,7 +452,7 @@ class Smarty_Security
      */
     public function isTrustedConstant($const, $compiler)
     {
-        if (in_array($const, array('true', 'false', 'null'))) {
+        if (in_array($const, ['true', 'false', 'null'])) {
             return true;
         }
         if (!empty($this->trusted_constants)) {
@@ -498,7 +498,7 @@ class Smarty_Security
     {
         if ($this->_include_path_status !== $this->smarty->use_include_path) {
             $_dir =
-                $this->smarty->use_include_path ? $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty) : array();
+                $this->smarty->use_include_path ? $this->smarty->ext->_getIncludePath->getIncludePathDirs($this->smarty) : [];
             if ($this->_include_dir !== $_dir) {
                 $this->_updateResourceDir($this->_include_dir, $_dir);
                 $this->_include_dir = $_dir;
@@ -566,9 +566,9 @@ class Smarty_Security
     {
         foreach ($oldDir as $directory) {
             //           $directory = $this->smarty->_realpath($directory, true);
-            $length = strlen($directory);
+            $length = strlen((string) $directory);
             foreach ($this->_resource_dir as $dir) {
-                if (substr($dir, 0, $length) === $directory) {
+                if (substr((string) $dir, 0, $length) === $directory) {
                     unset($this->_resource_dir[ $dir ]);
                 }
             }
@@ -590,8 +590,8 @@ class Smarty_Security
      */
     private function _checkDir($filepath, $dirs)
     {
-        $directory = dirname($this->smarty->_realpath($filepath, true)) . DIRECTORY_SEPARATOR;
-        $_directory = array();
+        $directory = dirname((string) $this->smarty->_realpath($filepath, true)) . DIRECTORY_SEPARATOR;
+        $_directory = [];
         if (!preg_match('#[\\\\/][.][.][\\\\/]#', $directory)) {
             while (true) {
                 // test if the directory is trusted
@@ -599,14 +599,14 @@ class Smarty_Security
                     return $_directory;
                 }
                 // abort if we've reached root
-                if (!preg_match('#[\\\\/][^\\\\/]+[\\\\/]$#', $directory)) {
+                if (!preg_match('#[\\\\/][^\\\\/]+[\\\\/]$#', (string) $directory)) {
                     // give up
                     break;
                 }
                 // remember the directory to add it to _resource_dir in case we're successful
                 $_directory[ $directory ] = true;
                 // bubble up one level
-                $directory = preg_replace('#[\\\\/][^\\\\/]+[\\\\/]$#', DIRECTORY_SEPARATOR, $directory);
+                $directory = preg_replace('#[\\\\/][^\\\\/]+[\\\\/]$#', DIRECTORY_SEPARATOR, (string) $directory);
             }
         }
         // give up
@@ -628,7 +628,7 @@ class Smarty_Security
             $smarty->security_policy = $security_class;
             return $smarty;
         } elseif (is_object($security_class)) {
-            throw new SmartyException("Class '" . get_class($security_class) . "' must extend Smarty_Security.");
+            throw new SmartyException("Class '" . $security_class::class . "' must extend Smarty_Security.");
         }
         if ($security_class === null) {
             $security_class = $smarty->security_class;
@@ -674,7 +674,7 @@ class Smarty_Security
      */
     public function registerCallBacks(Smarty_Internal_Template $template)
     {
-        $template->startRenderCallbacks[] = array($this, 'startTemplate');
-        $template->endRenderCallbacks[] = array($this, 'endTemplate');
+        $template->startRenderCallbacks[] = $this->startTemplate(...);
+        $template->endRenderCallbacks[] = $this->endTemplate(...);
     }
 }

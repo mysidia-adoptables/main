@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  *
@@ -21,9 +22,9 @@
  *
  * @return string
  */
-function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth = 0, $objects = array())
+function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth = 0, $objects = [])
 {
-    $_replace = array("\n" => '\n', "\r" => '\r', "\t" => '\t');
+    $_replace = ["\n" => '\n', "\r" => '\r', "\t" => '\t'];
     switch (gettype($var)) {
         case 'array':
             $results = '<b>Array (' . count($var) . ')</b>';
@@ -39,7 +40,7 @@ function smarty_modifier_debug_print_var($var, $max = 10, $length = 40, $depth =
             break;
         case 'object':
             $object_vars = get_object_vars($var);
-            $results = '<b>' . get_class($var) . ' Object (' . count($object_vars) . ')</b>';
+            $results = '<b>' . $var::class . ' Object (' . count($object_vars) . ')</b>';
             if (in_array($var, $objects)) {
                 $results .= ' called recursive';
                 break;

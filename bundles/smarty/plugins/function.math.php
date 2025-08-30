@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty plugin
  * This plugin is only for Smarty2 BC
@@ -24,7 +25,7 @@
 function smarty_function_math($params, $template)
 {
     static $_allowed_funcs =
-        array(
+        [
             'int'   => true,
             'abs'   => true,
             'ceil'  => true,
@@ -54,7 +55,7 @@ function smarty_function_math($params, $template)
             'atanh'   => true,
             'tan'   => true,
             'tanh'   => true
-        );
+        ];
 
     // be sure equation parameter is present
     if (empty($params[ 'equation' ])) {
@@ -64,7 +65,7 @@ function smarty_function_math($params, $template)
     $equation = $params[ 'equation' ];
 
     // Remove whitespaces
-    $equation = preg_replace('/\s+/', '', $equation);
+    $equation = preg_replace('/\s+/', '', (string) $equation);
 
     // Adapted from https://www.php.net/manual/en/function.eval.php#107377
     $number = '-?(?:\d+(?:[,.]\d+)?|pi|π)'; // What is a number
@@ -84,20 +85,20 @@ function smarty_function_math($params, $template)
     }
 
     // disallow backticks
-    if (strpos($equation, '`') !== false) {
+    if (str_contains($equation, '`')) {
         trigger_error("math: backtick character not allowed in equation", E_USER_WARNING);
         return;
     }
 
     // also disallow dollar signs
-    if (strpos($equation, '$') !== false) {
+    if (str_contains($equation, '$')) {
         trigger_error("math: dollar signs not allowed in equation", E_USER_WARNING);
         return;
     }
     foreach ($params as $key => $val) {
         if ($key !== 'equation' && $key !== 'format' && $key !== 'assign') {
             // make sure value is not empty
-            if (strlen($val) === 0) {
+            if (strlen((string) $val) === 0) {
                 trigger_error("math: parameter '{$key}' is empty", E_USER_WARNING);
                 return;
             }

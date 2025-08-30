@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile ForeachSection
  * Shared methods for {foreach} {section} tags
@@ -28,7 +29,7 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
      *
      * @var array
      */
-    public $nameProperties = array();
+    public $nameProperties = [];
 
     /**
      * {section} tag has no item properties
@@ -47,7 +48,7 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
     /**
      * @var array
      */
-    public $matchResults = array();
+    public $matchResults = [];
 
     /**
      * Preg search pattern
@@ -61,7 +62,7 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
      *
      * @var array
      */
-    private $resultOffsets = array();
+    private $resultOffsets = [];
 
     /**
      * Start offset
@@ -82,8 +83,8 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
     {
         $this->propertyPreg = '~(';
         $this->startOffset = 1;
-        $this->resultOffsets = array();
-        $this->matchResults = array('named' => array(), 'item' => array());
+        $this->resultOffsets = [];
+        $this->matchResults = ['named' => [], 'item' => []];
         if (isset($attributes[ 'name' ])) {
             $this->buildPropertyPreg(true, $attributes);
         }
@@ -213,7 +214,7 @@ class Smarty_Internal_Compile_Private_ForeachSection extends Smarty_Internal_Com
      */
     public function compileSpecialVariable($args, Smarty_Internal_TemplateCompilerBase $compiler, $parameter)
     {
-        $tag = smarty_strtolower_ascii(trim($parameter[ 0 ], '"\''));
+        $tag = smarty_strtolower_ascii(trim((string) $parameter[ 0 ], '"\''));
         $name = isset($parameter[ 1 ]) ? $compiler->getId($parameter[ 1 ]) : false;
         if (!$name) {
             $compiler->trigger_template_error("missing or illegal \$smarty.{$tag} name attribute", null, true);

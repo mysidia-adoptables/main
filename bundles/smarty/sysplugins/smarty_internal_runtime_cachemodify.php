@@ -23,7 +23,7 @@ class Smarty_Internal_Runtime_CacheModify
     {
         $_isCached = $_template->isCached() && !$_template->compiled->has_nocache_code;
         $_last_modified_date =
-            @substr($_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ], 0, strpos($_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ], 'GMT') + 3);
+            @substr((string) $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ], 0, strpos((string) $_SERVER[ 'HTTP_IF_MODIFIED_SINCE' ], 'GMT') + 3);
         if ($_isCached && $cached->timestamp <= strtotime($_last_modified_date)) {
             switch (PHP_SAPI) {
                 case 'cgi': // php-cgi < 5.3
@@ -33,14 +33,14 @@ class Smarty_Internal_Runtime_CacheModify
                     break;
                 case 'cli':
                     if (/* ^phpunit */
-                    !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
+                        !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
                     ) {
                         $_SERVER[ 'SMARTY_PHPUNIT_HEADERS' ][] = '304 Not Modified';
                     }
                     break;
                 default:
                     if (/* ^phpunit */
-                    !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
+                        !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
                     ) {
                         $_SERVER[ 'SMARTY_PHPUNIT_HEADERS' ][] = '304 Not Modified';
                     } else {
@@ -52,7 +52,7 @@ class Smarty_Internal_Runtime_CacheModify
             switch (PHP_SAPI) {
                 case 'cli':
                     if (/* ^phpunit */
-                    !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
+                        !empty($_SERVER[ 'SMARTY_PHPUNIT_DISABLE_HEADERS' ]) /* phpunit$ */
                     ) {
                         $_SERVER[ 'SMARTY_PHPUNIT_HEADERS' ][] =
                             'Last-Modified: ' . gmdate('D, d M Y H:i:s', $cached->timestamp) . ' GMT';

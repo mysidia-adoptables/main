@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Double quoted string inside a tag.
  *

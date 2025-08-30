@@ -3,7 +3,6 @@
 #[\AllowDynamicProperties]
 class HTMLPurifier_DefinitionCache_Serializer extends HTMLPurifier_DefinitionCache
 {
-
     /**
      * @param HTMLPurifier_Definition $def
      * @param HTMLPurifier_Config $config
