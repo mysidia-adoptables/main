@@ -96,7 +96,7 @@ final class Cookies extends Core{
 	    $this->mysuid = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $username])->fetchColumn();
         setcookie("mysuid", $this->mysuid, $Month, "/", $_SERVER['HTTP_HOST']);	 
         $session = $mysidia->session->getid();
-        $this->myssession = md5($this->mysuid . $session);	 
+        $this->myssession = hash("sha512", $this->mysuid . $session);	 
         setcookie("myssession", $this->myssession, $Month, "/", $_SERVER['HTTP_HOST']);	 
 	    $this->mysactivity = time();
 	    setcookie("mysactivity", $this->mysactivity, $Month, "/", $_SERVER['HTTP_HOST']);
@@ -117,7 +117,7 @@ final class Cookies extends Core{
 		ob_start();
 		$Month = 2592000 + time();
         $session = $mysidia->session->getid();
-        $this->mysadmsession = sha1($this->mysuid . $session);	 
+        $this->myssession = hash("sha512", $this->mysuid . $session);	 
         setcookie("mysadmsession", $this->mysadmsession, $Month, "/", $_SERVER['HTTP_HOST']);	
 		$this->mysadmloginattempt = 0;
 	    setcookie("mysadmloginattempt", $this->mysadmloginattempt, $Month, "/", $_SERVER['HTTP_HOST']);

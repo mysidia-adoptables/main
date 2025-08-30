@@ -45,6 +45,7 @@ class AccountService extends MysObject{
         $mysidia = Registry::get("mysidia");
 	    if($mysidia->session->clientip != $_SERVER['REMOTE_ADDR']) throw new Exception('Your IP has changed since last session, please log in again.');
 	    else{	     
+            session_regenerate_id(true);
 	        $mysidia->cookies->setcookies($username);
             $mysidia->db->update("users", ["session" => $mysidia->cookies->getcookies("myssession")], "username = :username", ["username" => $username]);	
 		    if($this->mybbService->isEnabled()) $this->mybbService->login($username);

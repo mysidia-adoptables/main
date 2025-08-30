@@ -26,7 +26,7 @@ class TradeService extends MysObject{
         $this->settings = $settings;
     }
     
-    public function getValidator(TradeOffer $offer = NULL){
+    public function getValidator(TradeOffer|NULL $offer = NULL){
 	    if(func_num_args() == 0) throw new InvalidActionException("global_action");
         if(!$offer) throw new InvalidIDException("invalid");
         $validations = $this->getValidations($offer->getType());
@@ -319,7 +319,7 @@ class TradeService extends MysObject{
         return $fields;
     }
     
-    private function buildPublicQueries($owner, ArrayList $list = NULL){
+    private function buildPublicQueries($owner, ArrayList|NULL $list = NULL){
         $whereClause = "owner = '{$owner}'";
         if(!$list) return $whereClause;
         

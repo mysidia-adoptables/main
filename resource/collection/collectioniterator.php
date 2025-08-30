@@ -39,8 +39,9 @@ abstract class CollectionIterator extends MysObject implements Iterative{
      * The key method, returns the current index location.
      * @access public
      * @return int
-     */		
-    public function key(){
+     */	
+    public function key(): int
+    {
 	    return $this->cursor;
     }
 	
@@ -48,8 +49,9 @@ abstract class CollectionIterator extends MysObject implements Iterative{
      * The rewind method, sets the cursor of the iterator back to the beginning.
      * @access public
      * @return void
-     */			
-	public function rewind(){
+     */	
+	public function rewind(): void
+    {
 	    $this->cursor = 0;
 	}
 	
@@ -58,7 +60,8 @@ abstract class CollectionIterator extends MysObject implements Iterative{
      * @access public
      * @return Boolean
      */		
-    public function valid(){
+    public function valid(): bool
+    {
         return $this->hasNext();
     }
 }

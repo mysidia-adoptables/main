@@ -52,7 +52,7 @@ class UserController extends AppController{
                 $accountService->updatePassword($user, $mysidia->input->post("pass1"));
 				if($mysidia->input->post("emailpwchange") == "yes") $user->sendPasswordEmail($mysidia->input->post("pass1"));
 			}
-			if(is_numeric($mysidia->input->post("usergroup"))) $mysidia->db->update("users", ["usergroup" => $mysidia->input->post("usergroup")], "uid = '{$user->getID()}'");
+		if(!$user->isRootAdmin() && is_numeric($mysidia->input->post("usergroup"))) $mysidia->db->update("users", ["usergroup" => $mysidia->input->post("usergroup")], "uid = '{$user->getID()}'");
 			
             $permissions = ["canlevel", "canvm", "canfriend", "cantrade", "canbreed", "canpound", "canshop"];
             foreach($permissions as $permission){

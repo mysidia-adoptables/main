@@ -41,7 +41,7 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return void
      */	
-	public function __construct($hash = 0, Objective $key = NULL, Objective $value = NULL, MapEntry $entry = NULL){
+	public function __construct($hash = 0, ?Objective $key = NULL, ?Objective $value = NULL, ?MapEntry $entry = NULL){
 	    parent::__construct($key, $value);
 		$this->hash = $hash;
 		$this->next = $entry;
@@ -53,7 +53,8 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return Boolean
      */
-    public function equals(Objective $object){
+    public function equals(Objective $object): bool
+    {
         if(!($object instanceof HashMapEntry)) return FALSE;
 		$key = $this->getKey();
 		$key2 = $object->getKey();
@@ -71,7 +72,8 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return int
      */		
-	public function getHash(){
+	public function getHash(): int
+    {
 	    return $this->hash;
 	}	
 	
@@ -89,7 +91,8 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return void
      */		
-	public function recordAccess(HashMap $map){
+	public function recordAccess(HashMap $map): void
+    {
 	
 	}
 	
@@ -98,7 +101,8 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return void
      */		
-	public function recordRemoval(HashMap $map){
+	public function recordRemoval(HashMap $map): void
+    {
 	
 	}	
 	
@@ -108,7 +112,8 @@ class HashMapEntry extends MapEntry{
      * @access public
      * @return void
      */			
-	public function setNext(MapEntry $next = NULL){
+	public function setNext(?MapEntry $next = NULL): void
+    {
 	    $this->next = $next;
 	}	
 }

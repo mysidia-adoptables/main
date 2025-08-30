@@ -23,7 +23,7 @@ class MyadoptsView extends View{
         $pagination = $this->getField("pagination");
 		$ownedAdopts = $this->getField("ownedAdopts");
 		
-	    $adoptTable = new TableBuilder("adopttable", 650);
+	    $adoptTable = new TableBuilder("adopttable");
 		$adoptTable->setAlign(new Align("center", "middle"));
 		$adoptTable->buildHeaders("Gender", "Name/Type", "Image", "Level", "Clicks");
 		$ownedAdoptsIterator = $ownedAdopts->iterator();

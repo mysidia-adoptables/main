@@ -440,8 +440,9 @@ final class Mysidia extends Core{
      * @access public
      * @return String
      */	    
+    #[\ReturnTypeWillChange]
     public function secure($data){
-	    return strip_tags(addslashes(htmlentities($data)), '');
+	    return strip_tags(addslashes(htmlentities($data ?? '')), '');
     }
 
     /**

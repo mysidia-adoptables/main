@@ -145,7 +145,7 @@ final class Router extends Core{
      * @return String
      */	
 	private function setAction($action){
-        if(strpos($action, "page-") !== FALSE){
+        if($action && strpos($action, "page-") !== FALSE){
             $this->action = "index";
             $this->setPage($action);
         }
@@ -187,7 +187,7 @@ final class Router extends Core{
         $index = 0;
         foreach($parameters as $parameter){
             $param = isset($params[$index]) ? $params[$index] : NULL;
-            if(strpos($param, "page-") !== FALSE) $this->setPage($param);
+            if(!empty($param) && strpos($param, "page-") !== FALSE) $this->setPage($param);
             else $this->params[$parameter->getName()] = $param;
             $index++;
         }

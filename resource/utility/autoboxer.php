@@ -16,6 +16,7 @@ use Resource\Native;
  * @final
  */
 
+#[\AllowDynamicProperties]
 final class Autoboxer extends Native\MysObject{
 
 	/**
@@ -50,7 +51,8 @@ final class Autoboxer extends Native\MysObject{
 	 * @access public
 	 * @return Mixed
      */	
-	public function unwrap(Native\Objective $object){
+	public function unwrap(Native\Objective $object): mixed
+	{
 	    $this->var = $object;
 	    return $this->var->getValue();
 	}	

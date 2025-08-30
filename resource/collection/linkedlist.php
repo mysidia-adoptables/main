@@ -520,7 +520,7 @@ class LinkedList extends SequentialList implements Dequeable, Stackable{
      * @access public
      * @return Boolean
      */		
-	public function remove(Objective $object = NULL){
+	public function remove(?Objective $object = NULL){
 	    $this->removeFirst($object);	
 	}	
 	
@@ -531,7 +531,7 @@ class LinkedList extends SequentialList implements Dequeable, Stackable{
      * @access public
      * @return Objective
      */		
-	public function removeFirst(Objective $object = NULL){
+	public function removeFirst(?Objective $object = NULL){
 	    if($object == NULL){
             for($node = $this->first; $node != NULL; $node = $node->getNext()){
 			    if($node->get() == NULL){
@@ -557,7 +557,7 @@ class LinkedList extends SequentialList implements Dequeable, Stackable{
      * @access public
      * @return void
      */		
-	public function removeLast(Objective $object = NULL){
+	public function removeLast(?Objective $object = NULL){
  	    if($object == NULL){
             for($node = $this->last; $node != NULL; $node = $node->getPrev()){
 			    if($node->get() == NULL){

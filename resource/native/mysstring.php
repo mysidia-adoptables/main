@@ -270,7 +270,8 @@ final class MysString extends MysObject implements Iterator, Primitive{
      * </code>
      * @return int
      */
-    public function count(){
+    public function count(): int
+    {
         return $this->getLength();
     }
     
@@ -278,7 +279,8 @@ final class MysString extends MysObject implements Iterator, Primitive{
      * Returns the current element.
      * @return String
      */
-    public function current(){
+    public function current(): string
+    {
         return $this->charAt($this->_index);
     }
     
@@ -392,7 +394,7 @@ final class MysString extends MysObject implements Iterator, Primitive{
             }
             $this->hash = $hash;
         }
-        return $hash;
+        return intval($hash);
     }
     
     /**
@@ -493,7 +495,8 @@ final class MysString extends MysObject implements Iterator, Primitive{
      * Return the key of the current element.
      * @return int
      */
-    public function key(){
+    public function key(): int
+    {
         return $this->_index;
     }
     
@@ -544,7 +547,9 @@ final class MysString extends MysObject implements Iterator, Primitive{
     /**
      * Move forward to next element.
      */
-    public function next(){
+    #[\ReturnTypeWillChange]
+    public function next()
+    {
         ++$this->_index;
     }
     
@@ -708,7 +713,8 @@ final class MysString extends MysObject implements Iterator, Primitive{
     /**
      * Rewind the Iterator to the first element.
      */
-    public function rewind(){
+    public function rewind(): void
+    {
         $this->_index = 0;
     }
     
@@ -1146,7 +1152,8 @@ final class MysString extends MysObject implements Iterator, Primitive{
      * Checks if current position is valid.
      * @return bool
      */
-    public function valid(){
+    public function valid(): bool
+    {
         return ($this->_index >= 0 && $this->_index < $this->length());
     }
     

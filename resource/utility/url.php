@@ -78,7 +78,7 @@ final class URL extends MysObject{
         if($validate && !$this->isValid($url)){
             throw new URLException('The specified URL is invalid.');
         }
-		
+		$this->url = filter_var($url, FILTER_SANITIZE_URL);
         $this->url = (!preg_match(self::REGEX, $url)) ? $mysidia->path->getAbsolute() . $url : $url;
 		if($parse) $this->parseURL();
     }
@@ -144,7 +144,7 @@ final class URL extends MysObject{
      * @access private
      * @return String
      */
-	private function isValid($url){
+	private function isValid($url){ //could add additional php native url filtering function in here
 	    if(preg_match(self::REGEX, $url)) return TRUE;
         elseif(file_exists($url)) return TRUE;
 		else return FALSE;

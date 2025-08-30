@@ -8,6 +8,7 @@
  *       via a configuration directive
  * @todo Implement memcached
  */
+#[\AllowDynamicProperties]
 abstract class HTMLPurifier_DefinitionCache
 {
     /**

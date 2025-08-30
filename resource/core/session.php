@@ -52,11 +52,19 @@ class Session extends Core{
 	 * @var String
      */	
 	public $clientip;
-
-    public function __construct(){
-       // Start our session
      
-       if(!isset($_SESSION)) session_start();
+   public function __construct(){
+      // Start our session
+      session_set_cookie_params([
+         'lifetime' => 60*60*24*100,
+         'path' => '/',
+         'domain' => $_SERVER['HTTP_HOST'],
+         'secure' => true,
+         'httponly' => true,
+         'samesite' => 'Strict'
+      ]);
+      if (session_status() == PHP_SESSION_NONE)  session_start(['use_only_cookies' => true, 'use_trans_sid' => false]);
+      //if (session_status() == PHP_SESSION_NONE) session_start(['cookie_lifetime' => 604800, 'use_cookies' => true, 'cookie_secure' => true,'cookie_httponly' => true,'use_only_cookies' => true, 'use_trans_sid' => false, 'use_strict_mode' => true, 'cookie_samesite' => 'Strict' ]);
 	   $this->started = TRUE;
 	 
 	   // Initiate our session properties

@@ -74,7 +74,7 @@ class OwnedAdoptable extends Adoptable{
 	    $this->owner = $owner;
 	}
     
-    public function isOwner(User $user = NULL){
+    public function isOwner(User|NULL $user = NULL){
         if(!$user || !($user instanceof Member)) return FALSE;
         return ($this->owner == $user->getID());
     }
@@ -139,22 +139,21 @@ class OwnedAdoptable extends Adoptable{
         }
     }
 
-    public function updateAlternate($assignMode = ""){
-        $alternate = $this->generateAlternate();
-        if($alternate){
-            $this->imageurl = $alternate->getImage();
-            $this->alternate = $alternate->getALID();
-        }
-        else{ 
-            $this->imageurl = NULL;
-            $this->alternate = 0;
-        }
-
-		if($assignMode == Model::UPDATE){
-            $this->save("imageurl", $this->imageurl);
-            $this->save("alternate", $this->alternate);
-        }
-    }
+	public function updateAlternate($assignMode = "")
+	{
+		$alternate = $this->generateAlternate();
+		if ($alternate) {
+			$this->imageurl = $alternate->getImage();
+			$this->alternate = $alternate->getALID();
+		} else if(!$this->alternate) {
+			$this->imageurl = $this->getImage();
+			$this->alternate = 0;
+		}
+		if ($assignMode == Model::UPDATE) {
+			$this->save("imageurl", $this->imageurl);
+			$this->save("alternate", $this->alternate);
+		}
+	}
 	
 	public function getTradeStatus(){
 	    return $this->tradestatus;
@@ -254,7 +253,7 @@ class OwnedAdoptable extends Adoptable{
         return array_filter($alternateModels->toArray(), $filterClosure);
     }
 	
-	public function hasVoter($user, Date $date = NULL){
+	public function hasVoter($user, Date|NULL $date = NULL){
 	    if(!$date) $date = new Date;		
 		$mysidia = Registry::get("mysidia");
 		

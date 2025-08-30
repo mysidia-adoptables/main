@@ -28,7 +28,7 @@ class TradeFormHelper extends Helper{
 		$this->multiSelect = $multiSelect;
 	}
 	
-	public function getRecipient(Member $recipient = NULL){
+	public function getRecipient(Member|NULL $recipient = NULL){
 	    $lang = $this->lang;
         $recipientDiv = new Division(NULL, "recipient");
         $recipientDiv->add(new Image("templates/icons/warning.gif"));
@@ -41,7 +41,7 @@ class TradeFormHelper extends Helper{
         return $recipientDiv;
 	}
 	
-	public function getAdoptOffered(ArrayList $adopts = NULL, $adoptOffered = NULL){
+	public function getAdoptOffered(ArrayList|NULL $adopts = NULL, $adoptOffered = NULL){
 	    $lang = $this->lang;
         $adoptOfferedDiv = new Division(Null, "adoptoffered");
 
@@ -59,7 +59,7 @@ class TradeFormHelper extends Helper{
         return $adoptOfferedDiv;
 	}
 	
-	public function getAdoptWanted(ArrayList $adopts = NULL, $adoptWanted = NULL){
+	public function getAdoptWanted(ArrayList|NULL $adopts = NULL, $adoptWanted = NULL){
 	    $lang = $this->lang;
         $adoptWantedDiv = new Division(Null, "adoptwanted");
 
@@ -114,7 +114,7 @@ class TradeFormHelper extends Helper{
 		return $adoptWantedDiv;     		
 	}
 	
-	public function getItemOffered(ArrayList $items = NULL, $itemOffered = NULL){
+	public function getItemOffered(ArrayList|NULL $items = NULL, $itemOffered = NULL){
 	    $lang = $this->lang;
         $itemOfferedDiv = new Division(Null, "itemoffered");
 
@@ -132,7 +132,7 @@ class TradeFormHelper extends Helper{
 		return $itemOfferedDiv;
 	}
 	
-	public function getItemWanted(ArrayList $items = NULL, $itemWanted = NULL){
+	public function getItemWanted(ArrayList|NULL $items = NULL, $itemWanted = NULL){
 	    $lang = $this->lang;
         $itemWantedDiv = new Division(Null, "itemwanted");
 
@@ -211,7 +211,7 @@ class TradeFormHelper extends Helper{
         return $partialDiv;
     }
 	
-	public function getAdoptImages(ArrayList $adopts = NULL, $resize = TRUE){
+	public function getAdoptImages(ArrayList|NULL $adopts = NULL, $resize = TRUE){
 	    $adoptsDiv = new Division(NULL, "adopts");
 		if(!$adopts){
 		    $adoptsDiv->add(new Comment("N/A"));
@@ -238,7 +238,7 @@ class TradeFormHelper extends Helper{
         return $adoptsDiv;		
 	}
 	
-	public function getItemImages(ArrayList $items = NULL, $resize = TRUE){
+	public function getItemImages(ArrayList|NULL $items = NULL, $resize = TRUE){
 	    $itemsDiv = new Division(NULL, "items");
 		if(!$items){
 		    $itemsDiv->add(new Comment("N/A"));
@@ -260,7 +260,7 @@ class TradeFormHelper extends Helper{
         return $itemsDiv;		
 	}
 
-	public function getAdoptList(ArrayList $adopts = NULL){
+	public function getAdoptList(ArrayList|NULL $adopts = NULL){
 	    $adoptsDiv = new Division(NULL, "adopts");
 		if(!$adopts){
 		    $adoptsDiv->add(new Comment("N/A"));
@@ -276,7 +276,7 @@ class TradeFormHelper extends Helper{
         return $adoptsDiv;		
 	}
 	
-	public function getItemList(ArrayList $items = NULL){
+	public function getItemList(ArrayList|NULL $items = NULL){
 	    $itemsDiv = new Division(NULL, "items");
 		if(!$items){
 		    $itemsDiv->add(new Comment("N/A"));

@@ -1,0 +1,46 @@
+Promocode Fix
+
+For anyone's reference, we managed to fix it using a quick and dirty method... definitely not the cleanest so hopefully it can get a bug fix in the actual script lol.
+
+The problem: Adopt promocodes that are set for everyone (user field in DB is 0) can be redeemed by any user as intended but the owner field gets set as 0, and not actually the user's ID. This means they technically don't own the pet.
+
+In model/domainmodel/promocode.php, find public function execute and replace it with this:
+
+
+public function execute(){
+        $mysidia = Registry::get("mysidia");
+        // This method will execute the promocode and give users their desired adoptables or items, need to be used after validation is completed     
+        switch($this->type){
+            case "Adopt":
+                // The user will receive an adoptable from the promocode now.
+                $adopt = new Adoptable($this->reward);
+
+                if ($this->getUser() == 0){
+                    $adopt->makeOwnedAdopt($mysidia->user->getID());
+                }
+
+                else{
+                    $adopt->makeOwnedAdopt($this->user);
+                }
+      
+                $this->usePromo();
+                return $adopt->getType();
+            case "Item":
+                // The user will receive an item from the promocode now.           
+                $item = new OwnedItem($this->reward, $this->user);
+                if($item->isOverCap(1)) throw new NoPermissionException("It appears that you cannot add one more of item {$item->getItemname()} to your inventory, its quantity has already exceeded the upper limit.");               
+                $item->add(1, $this->user);
+                $this->usePromo();
+                return $item->getItemname();
+            case "Page":
+                $this->usePromo();
+                break;
+            default:
+                throw new PromocodeException("type");     
+        }
+    }
+	
+
+This will check if the 'user' field is set to 0 (aka no specific user is assigned to it) and if so it will get the UID of the user trying to use the code to give them the pet. 
+I'm sure there's a better way but for now this works!
+

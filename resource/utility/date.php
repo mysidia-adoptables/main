@@ -24,8 +24,7 @@ class Date extends DateTime implements Objective{
 	 * @var String
      */
     private $format = "Y-m-d";
- 
- 
+
     /**
      * The constructor for Date Class, it calls parent constructor and sets format property if necessary.
 	 * @param String  $time
@@ -34,7 +33,7 @@ class Date extends DateTime implements Objective{
      * @access public
      * @return Void
      */
-    public function __construct($time = "now", DateTimeZone $timezone = NULL, $format = NULL){
+    public function __construct($time = "now", ?DateTimeZone $timezone = NULL, $format = NULL){
         parent::__construct($time, $timezone);
 		if($format) $this->setFormat($format);
     }
@@ -113,7 +112,9 @@ class Date extends DateTime implements Objective{
      * @access public
      * @return Date
      */
-    public function add(DateInterval $interval){
+    #[\ReturnTypeWillChange]
+    public function add(DateInterval $interval)
+    {
         $cloneDate = clone $this;
         $cloneDate->addMutable($interval);
         return $cloneDate;
@@ -136,8 +137,10 @@ class Date extends DateTime implements Objective{
 	 * @param String  $modifier
      * @access public
      * @return Date
-     */    
-    public function modify($modifier){
+     */
+    #[\ReturnTypeWillChange]
+    public function modify($modifier)
+    {
         $cloneDate = clone $this;
         $cloneDate->modifyMutable($modifier);
         return $cloneDate;

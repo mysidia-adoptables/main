@@ -380,7 +380,7 @@ $query105 = "INSERT INTO {$prefix}modules VALUES (6, 5, 'Credits', '', 'user', '
 $adopts->query($query105);
 
 
-$query106 = "CREATE TABLE {$prefix}online (username varchar(40), ip varchar(60), session char(100), time int DEFAULT 0)";
+$query106 = "CREATE TABLE {$prefix}online (username varchar(40), ip varchar(60), session varchar(128), time int DEFAULT 0)";
 $adopts->query($query106);
 
 $query107 = "CREATE TABLE {$prefix}owned_adoptables (aid int NOT NULL AUTO_INCREMENT PRIMARY KEY, adopt int DEFAULT 0, name varchar(40), owner int DEFAULT 0, currentlevel int DEFAULT 0, totalclicks int DEFAULT 0, code varchar(15), imageurl varchar(120), alternate varchar(10), tradestatus varchar(15), isfrozen varchar(10), gender varchar(10), offsprings int DEFAULT 0, lastbred int DEFAULT 0)";
@@ -543,7 +543,7 @@ $query158 = "INSERT INTO {$prefix}trade_settings (tsid, name, value) VALUES (12,
 $adopts->query($query158);
 
 
-$query159 = "CREATE TABLE {$prefix}users (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) UNIQUE, salt varchar(20), password varchar(200), session varchar(100), email varchar(60), ip varchar(60), usergroup int DEFAULT 0, birthday varchar(40), membersince varchar(20), money int DEFAULT 0, friends varchar(500))";
+$query159 = "CREATE TABLE {$prefix}users (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) UNIQUE, salt varchar(20), password varchar(200), session varchar(128), email varchar(60), ip varchar(60), usergroup int DEFAULT 0, birthday varchar(40), membersince varchar(20), money int DEFAULT 0, friends varchar(500))";
 $adopts->query($query159);
 
 $query160 = "CREATE TABLE {$prefix}users_contacts (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, website varchar(80), facebook varchar(80), twitter varchar(80),aim varchar(80), yahoo varchar(80), msn varchar(80), skype varchar(80))";
@@ -598,7 +598,7 @@ $adopts->query($query171);
     <body>
         <table border='0' cellpadding='0' cellspacing='0'>
             <tr>
-                <td width='750' height='57' valign='top' bgcolor='#FF3300'>
+                <td width='750' height='57' valign='top' bgcolor='#a0a0f9'>
                     <div align='left'>
                         <p>
                             <span class='style1'>

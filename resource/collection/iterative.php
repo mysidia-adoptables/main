@@ -29,7 +29,8 @@ interface Iterative extends Iterator{
      * The next method, returns the next object in the iteration.
      * @access public
      * @return Objective
-     */		
+     */
+    #[\ReturnTypeWillChange]
 	public function next();
 	
  	/**

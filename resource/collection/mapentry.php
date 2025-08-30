@@ -30,7 +30,8 @@ class MapEntry extends Entry{
      * @access public
      * @return void
      */	
-	public function __construct(Objective $key = NULL, Objective $value = NULL){
+	public function __construct(?Objective $key = NULL, ?Objective $value = NULL)
+	{
 	    parent::__construct($key, $value);
 	}
 	
@@ -40,7 +41,8 @@ class MapEntry extends Entry{
      * @access public
      * @return int
      */		
-	public function hashCode(){
+	public function hashCode(): int
+	{
 	    $keyHash = ($this->key == NULL) ? 0 : $this->key->hashCode();
 		$valueHash = ($this->value == NULL) ? 0 : $this->value->hashCode();
 		return ($keyHash ^ $valueHash);
@@ -52,7 +54,8 @@ class MapEntry extends Entry{
      * @access public
      * @return Boolean
      */			
-	public function initialize(Entry $entry){
+	public function initialize(Entry $entry): bool
+	{
 	    $this->key = $entry->getKey();
 		$this->value = $entry->getValue();
 	    return TRUE;

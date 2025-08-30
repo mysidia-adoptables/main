@@ -91,7 +91,8 @@ abstract class Collection extends MysObject implements Collective{
      * @access public
      * @return int
      */		
-	public function count(){
+	public function count(): int
+	{
         return $this->size();
     }
 
@@ -99,8 +100,10 @@ abstract class Collection extends MysObject implements Collective{
      * The getIterator method, alias to the iterator() method.
      * @access public
      * @return Iterator
-     */			
-    public function getIterator(){
+     */
+	#[\ReturnTypeWillChange]	
+    public function getIterator()
+	{
         return $this->iterator();
     }
 

@@ -48,6 +48,7 @@ class UsergroupController extends AppController{
     public function edit($gid = NULL){
         $mysidia = Registry::get("mysidia");
 	    if(!$gid) return $this->index();
+		if($gid == 1) throw new NoPermissionException("You do not have permission to change the Root Admin group.");
 		$usergroup = new Usergroup($gid);
 		if(!is_object($usergroup)) throw new InvalidIDException("global_id");				
 		$permissions = ["canadopt", "canpm", "cancp", "canmanageusers", "canmanageadopts", "canmanagecontent", "canmanagesettings", "canmanageads"];
@@ -63,6 +64,7 @@ class UsergroupController extends AppController{
     public function delete($gid = NULL){
 	    $mysidia = Registry::get("mysidia");
 	    if(!$gid) $this->index();
+		if($gid == 1) throw new NoPermissionException("You do not have permission to change the Root Admin group.");
 		else{
             $usergroup = new Usergroup($gid);
             $mysidia->db->delete("groups", "gid = '{$usergroup->getID()}'");

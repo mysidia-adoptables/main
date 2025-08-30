@@ -18,7 +18,7 @@ class UserContact extends Model{
     
     protected $user;
     
-    public function __construct($uid, $dto = NULL, User $user = NULL){
+    public function __construct($uid, $dto = NULL, User|NULL $user = NULL){
 		$mysidia = Registry::get("mysidia");
         if(!$dto){
             $prefix = constant("PREFIX");

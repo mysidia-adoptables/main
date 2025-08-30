@@ -42,7 +42,7 @@ abstract class Entry extends MysObject{
      * @access public
      * @return Void
      */	
-	public function __construct(Objective $key = NULL, Objective $value = NULL){
+	public function __construct(?Objective $key = NULL, ?Objective $value = NULL){
 	    $this->key = $key;
 		$this->value = $value;
 	}

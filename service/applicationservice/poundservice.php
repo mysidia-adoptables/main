@@ -28,11 +28,14 @@ class PoundService extends MysObject{
 		$stmt = $mysidia->db->join("owned_adoptables", "owned_adoptables.aid = pounds.aid")
                             ->join("adoptables", "adoptables.id = owned_adoptables.adopt")                           
                             ->select("pounds", [], "currentowner = 0");
-        $poundedAdopts = new ArrayList;
-        while($dto = $stmt->fetchObject()){ 
-            $poundedAdopts->add(new PoundAdoptable($dto->aid, $dto));
+        if(!is_object($stmt)) throw new InvalidActionException("There are no adoptables ready to adopt at this time.");
+        else{
+            $poundedAdopts = new ArrayList;
+            while($dto = $stmt->fetchObject()){ 
+                $poundedAdopts->add(new PoundAdoptable($dto->aid, $dto));
+                return $poundedAdopts;
+            }
         }
-        return $poundedAdopts;
     }
     
     public function isPoundedBefore($aid){

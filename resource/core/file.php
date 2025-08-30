@@ -54,7 +54,7 @@ class File extends SplFileInfo implements Objective, Initializable{
      * @return Boolean
      */		
 	protected function checkExtension(){
-	    $extensions = [".php", ".js", ".css", ".html", ".htm", ".xml", ".yaml", ".tpl", ".jpg", ".gif", ".png", ".txt", ".ttf", ".psd", ".db", ".htaccess"];
+	    $extensions = [".php", ".js", ".css", ".html", ".htm", ".xml", ".yaml", ".tpl", ".jpg", ".gif", ".png", ".txt", ".ttf", ".psd", ".db", ".htaccess", ".webp"];
 	    if(!in_array($this->extension, $extensions)) throw new Exception('Invalid file extension.');
 		else return TRUE;
 	}	
@@ -75,7 +75,9 @@ class File extends SplFileInfo implements Objective, Initializable{
      * @access public
      * @return void
      */	
-    public function getBasename($suffix = NULL){
+    #[\ReturnTypeWillChange]
+    public function getBasename($suffix = NULL)
+    {
         return $this->base;
     }	
 	

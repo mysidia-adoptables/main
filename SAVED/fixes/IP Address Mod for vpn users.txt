@@ -1,0 +1,34 @@
+class Request
+{
+    private static $instance = null;
+
+    private $serverData = [];
+
+    private function __construct(array $server)
+    {
+        $this->serverData = $server;
+    }
+
+    public static function instance()
+    {
+        if(static::$instance == null) {
+            static::$instance = new self($_SERVER);
+        }
+
+        return static::$instance;
+    }
+
+    public function ip()
+    {
+        if(array_key_exists('HTTP_CF_CONNECTING_IP', $this->serverData)) {
+            return $this->serverData['HTTP_CF_CONNECTING_IP'];
+        }
+
+        if(array_key_exists('HTTP_X_FORWARDED_FOR', $this->serverData)) {
+            return $this->serverData['HTTP_X_FORWARDED_FOR'];
+        }
+
+        return $_SERVER['REMOTE_ADDR'];
+    }
+
+}

@@ -44,5 +44,5 @@ abstract class User extends Model{
     abstract public function isAdmin();   
     abstract public function isBanned(); 
     abstract public function getTheme();
-    abstract public function getVotes(Date $time = NULL);
+    abstract public function getVotes(?Date $time = NULL);
 }

@@ -42,7 +42,7 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */	
-	public function __construct($hash = 0, Objective $key = NULL, Objective $value = NULL, MapEntry $entry = NULL){
+	public function __construct($hash = 0, ?Objective $key = NULL, ?Objective $value = NULL, ?MapEntry $entry = NULL){
 	    parent::__construct($hash, $key, $value, $entry);
 	}
 	
@@ -52,7 +52,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */		
-	public function addBefore(MapEntry $entry){
+	public function addBefore(MapEntry $entry): void
+	{
         $this->after = $entry;
         $this->before = $entry->getBefore();
         $this->before->setAfter($this);
@@ -82,7 +83,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */		
-	public function recordAccess(HashMap $map){
+	public function recordAccess(HashMap $map): void
+	{
 	    if(!($map instanceof LinkedHashMap)) throw new IllegalArgumentException;
 		if($map->getOrder()){
 		    $this->remove();
@@ -95,7 +97,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */		
-	public function recordRemoval(HashMap $map){
+	public function recordRemoval(HashMap $map): void
+	{
 	    $this->remove();
 	}	
 
@@ -105,7 +108,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */		
-	public function remove(){
+	public function remove(): void
+	{
         $this->before->setAfter($this->after);
         $this->after->setBefore($this->before);		
 	}
@@ -116,7 +120,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */			
-	public function setAfter(MapEntry $after = NULL){
+	public function setAfter(?MapEntry $after = NULL): void
+	{
 	    $this->after = $after;
 	}
 
@@ -126,7 +131,8 @@ class LinkedHashMapEntry extends HashMapEntry{
      * @access public
      * @return void
      */			
-	public function setBefore(MapEntry $before = NULL){
+	public function setBefore(?MapEntry $before = NULL): void
+	{
 	    $this->before = $before;
 	}		
 }

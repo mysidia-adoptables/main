@@ -103,7 +103,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */		
-	public function addEntry($hash = 0, Objective $key = NULL, Objective $value = NULL, $index = 0){
+	public function addEntry($hash = 0, ?Objective $key = NULL, ?Objective $value = NULL, $index = 0): void
+    {
 	    $entry = $this->entries[$index];
         $this->entries[$index] = new HashMapEntry($hash, $key, $value, $entry);
         if($this->size++ >= $this->threshold) $this->resize(2*$this->entries->length());		
@@ -114,7 +115,8 @@ class HashMap extends Map{
      * @access public
      * @return int
      */		
-	public function capacity(){
+	public function capacity(): int
+    {
 	    return $this->entries->length();
 	}	
 	
@@ -123,7 +125,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */			
-	public function clear(){
+	public function clear(): void
+    {
 	    $entries = $this->entries;
         for($i = 0; $i < $entries->length(); $i++){
             $entries[$i] = NULL;
@@ -137,7 +140,8 @@ class HashMap extends Map{
      * @access public
      * @return Boolean
      */		
-	public function containsKey(Objective $key = NULL){
+	public function containsKey(?Objective $key = NULL): bool
+    {
 	    return ($this->getEntry($key) != NULL);
 	}		
 
@@ -146,7 +150,8 @@ class HashMap extends Map{
      * @access private
      * @return Boolean
      */		
-	private function containsNull(){
+	private function containsNull(): bool
+    {
 		$entries = $this->entries;
 		for($i = 0; $i < $entries->length(); $i++){
 		    for($entry = $entries[$i]; $entry != NULL; $entry = $entry->getNext()){
@@ -162,7 +167,8 @@ class HashMap extends Map{
      * @access public
      * @return Boolean
      */		
-	public function containsValue(Objective $value = NULL){
+	public function containsValue(?Objective $value = NULL): bool
+    {
 	    if($value == NULL) return $this->containsNull();
 		$entries = $this->entries;
 		for($i = 0; $i < $entries->length(); $i++){
@@ -180,7 +186,8 @@ class HashMap extends Map{
      * @access private
      * @return void
      */		
-	private function create(Objective $key = NULL, Objective $value = NULL){
+	private function create(?Objective $key = NULL, ?Objective $value = NULL): void
+    {
  	    $hash = ($key == NULL) ? 0 : $this->hash($key->hashCode());
 		$index = $this->indexFor($hash, $this->entries->length());
 		for($entry = $this->entries[$index]; $entry != NULL; $entry = $entry->getNext()){
@@ -191,7 +198,7 @@ class HashMap extends Map{
             }			
 		}
 		$this->createEntry($hash, $key, $value, $index);
-		return NULL;       		
+		return;       		
 	}
 
 	/**
@@ -200,7 +207,8 @@ class HashMap extends Map{
      * @access private
      * @return void
      */		
-	private function createAll(Mappable $map){
+	private function createAll(Mappable $map): void
+    {
 	    $iterator = $map->iterator();
  	    while($iterator->hasNext()){
             $entry = $iterator->next();
@@ -218,7 +226,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */		
-	public function createEntry($hash = 0, Objective $key = NULL, Objective $value = NULL, $index = 0){
+	public function createEntry($hash = 0, ?Objective $key = NULL, ?Objective $value = NULL, $index = 0): void
+    {
 	    $entry = $this->entries[$index];
         $this->entries[$index] = new HashMapEntry($hash, $key, $value, $entry);
         $this->size++;	
@@ -268,7 +277,7 @@ class HashMap extends Map{
      * @return Entry
 	 * @final
      */		
-	public final function getEntry(Objective $key = NULL){
+	public final function getEntry(?Objective $key = NULL){
 	    $hash = ($key == NULL) ? 0 : $this->hash($key->hashCode());
 		$index = $this->indexFor($hash, $this->entries->length());
 		for($entry = $this->entries[$index]; $entry != NULL; $entry = $entry->getNext()){
@@ -306,8 +315,9 @@ class HashMap extends Map{
      * @access public
      * @return int
      */			
-    public function hash($hash){
-	    $hash = ($hash >> 20) ^ ($hash >> 12);
+    public function hash($hash): int
+    {
+	    $hash = ($hash >> 20) ^ intval($hash >> 12);
 		return ($hash ^ ($hash >> 7) ^ ($hash >> 4));
 	}
 
@@ -318,7 +328,8 @@ class HashMap extends Map{
      * @access public
      * @return int
      */			
-    public function indexFor($hash, $length = 1){
+    public function indexFor($hash, $length = 1): int
+    {
 	    return ($hash & ($length - 1)); 
 	}		
 	
@@ -359,7 +370,8 @@ class HashMap extends Map{
      * @access public
      * @return float
      */		
-	public function loadFactor(){
+	public function loadFactor(): float    
+    {
 	    return $this->loadFactor;
 	}	
 	
@@ -370,9 +382,10 @@ class HashMap extends Map{
      * @access public
      * @return Objective
      */		
-	public function put(Objective $key = NULL, Objective $value = NULL){
+	public function put(?Objective $key = NULL, ?Objective $value = NULL)
+    {
  	    if($key == NULL) return $this->putNull($value);  
- 	    $hash = $this->hash($key->hashCode());
+ 	    $hash = $this->hash(intval($key->hashCode()));
 		$index = $this->indexFor($hash, $this->entries->length());
 		for($entry = $this->entries[$index]; $entry != NULL; $entry = $entry->getNext()){
 		    $object = $entry->getKey();
@@ -393,7 +406,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */	
-    public function putAll(Mappable $map){
+    public function putAll(Mappable $map): void
+    {
 	    $size = $map->size();
         if($size == 0) return;
 
@@ -417,7 +431,7 @@ class HashMap extends Map{
      * @access private
      * @return Objective
      */	
-    private function putNull(Objective $value = NULL){
+    private function putNull(?Objective $value = NULL){
 	    for($entry = $this->entries[0]; $entry != NULL; $entry = $entry->getNext()){
             if($entry->getKey() == NULL){
 			    $oldValue = $entry->getValue();
@@ -436,7 +450,8 @@ class HashMap extends Map{
      * @access public
      * @return Objective
      */		
-	public function remove(Objective $key = NULL){
+	public function remove(?Objective $key = NULL): mixed
+    {
         $entry = $this->removeKey($key);
         return(($entry == NULL) ? NULL : $entry->getValue());		
 	}
@@ -449,7 +464,7 @@ class HashMap extends Map{
      * @return Entry
 	 * @final
      */		
-	public final function removeKey(Objective $key = NULL){
+	public final function removeKey(?Objective $key = NULL){
         $hash = ($key == NULL) ? 0 : $this->hash($key->hashCode());
 		$index = $this->indexFor($hash, $this->entries->length());	
         $prev = $this->entries[$index];
@@ -479,7 +494,7 @@ class HashMap extends Map{
      * @return Entry
 	 * @final
      */		
-	public final function removeMapping(Entry $object = NULL){
+	public final function removeMapping(?Entry $object = NULL){
 	    if($object == NULL) return NULL;
 		$key = $object->getKey();		
         $hash = ($key == NULL) ? 0 : $this->hash($key->hashCode());
@@ -508,7 +523,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */			
-	public function resize($newCapacity){    
+	public function resize($newCapacity): void
+    {    
         $newEntries = new MysArray($newCapacity);
         $this->transfer($newEntries);
         $this->entries = $newEntries;
@@ -520,7 +536,8 @@ class HashMap extends Map{
      * @access public
      * @return int
      */			
-	public function size(){
+	public function size(): int
+    {
 	    return $this->size;
 	}		
 
@@ -530,7 +547,8 @@ class HashMap extends Map{
      * @access public
      * @return void
      */			
-	public function transfer(MysArray $newEntries){
+	public function transfer(MysArray $newEntries): void
+    {
 	    $oldEntries = $this->entries;
 		$newCapacity = $newEntries->length();
 		for($i = 0; $i < $oldEntries->length(); $i++){

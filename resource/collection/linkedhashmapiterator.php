@@ -56,7 +56,8 @@ abstract class LinkedHashMapIterator extends CollectionIterator{
      * The current method, returns the current entry in the iterator.
      * @access public
      * @return Entry
-     */			
+     */		
+	#[\ReturnTypeWillChange]	
 	public function current(){
 	    return $this->last;
 	}	

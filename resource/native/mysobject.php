@@ -15,8 +15,9 @@ namespace Resource\Native;
  * @todo Restructure the namespace
  * @abstract
  *
- */ 
+ */
 
+#[\AllowDynamicProperties]
 abstract class MysObject implements Objective{
 
     /**

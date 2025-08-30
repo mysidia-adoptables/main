@@ -39,7 +39,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return void
      */			
-	public function clear(){
+	public function clear(): void
+	{
 	    $this->entrySet()->clear();
 	}
 	
@@ -50,7 +51,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Boolean
      */			
-	public function contains(Objective $object){
+	public function contains(Objective $object): bool
+	{
 	    return $this->containsValue($object);
 	}	
 
@@ -60,7 +62,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Boolean
      */		
-	public function containsKey(Objective $key = NULL){
+	public function containsKey(?Objective $key = NULL): bool
+	{
 	    $iterator = $this->entrySet()->iterator();
 		if($key == NULL){
 		    while($iterator->hasNext()){
@@ -83,7 +86,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Boolean
      */		
-	public function containsValue(Objective $value = NULL){
+	public function containsValue(?Objective $value = NULL): bool
+	{
 	    $iterator = $this->entrySet()->iterator();
 		if($value == NULL){
 		    while($iterator->hasNext()){
@@ -106,7 +110,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Boolean
      */
- 	public function equals(Objective $object){
+ 	public function equals(Objective $object): bool
+	{
         if($object == $this) return TRUE;
         if(!($object instanceof Mappable)) return FALSE;
         $map = $object;
@@ -191,7 +196,7 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Objective
      */		
-	public function put(Objective $key, Objective $value = NULL){
+	public function put(Objective $key, ?Objective $value = NULL){
         throw new UnsupportedOperationException;	
 	}
 
@@ -201,7 +206,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return void
      */		
-	public function putAll(Mappable $map){
+	public function putAll(Mappable $map): void
+	{
 	    $iterator = $map->entrySet()->iterator();
 		while($iterator->hasNext()){
 		    $entry = $iterator->next();
@@ -215,7 +221,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return Boolean
      */		
-	public function remove(Objective $key = NULL){
+	public function remove(?Objective $key = NULL): mixed
+	{
         $iterator = $this->entrySet()->iterator();
 		if($key == NULL){
             while($iterator->hasNext()) {
@@ -237,7 +244,8 @@ abstract class Map extends Collection implements Mappable{
      * @access public
      * @return int
      */			
-	public function size(){
+	public function size(): int
+	{
 	    return $this->entrySet()->size();
 	}
 

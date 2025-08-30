@@ -19,7 +19,7 @@ class ItemFunction extends Model{
 	    $mysidia = Registry::get("mysidia");
         if($functioninfo instanceof MysString) $functioninfo = $functioninfo->getValue();
         if(!$dto){
-	        $whereclause = is_numeric($functioninfo) ? "ifid = :functioninfo" : "function = :functioninfo";
+	        $whereclause = is_numeric($functioninfo) ? "ifid = :functioninfo" : "`function` = :functioninfo";
 	        $dto = $mysidia->db->select("items_functions", [], $whereclause, ["functioninfo" => $functioninfo])->fetchObject();
 	        if(!is_object($dto)) throw new ItemException("The item function specified is invalid...");
         }

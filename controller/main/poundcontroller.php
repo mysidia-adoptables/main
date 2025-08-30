@@ -35,6 +35,9 @@ class PoundController extends AppController{
 	public function index(){
 		$poundMap = new HashMap;
         $poundAdopts = $this->poundService->getPoundedAdopts();
+		if(empty($poundAdopts)){
+			throw new InvalidActionException("There are no adoptables at this time.");
+		}
 		$poundIterator = $poundAdopts->iterator();
         while($poundIterator->hasNext()){
 		    $poundAdopt = $poundIterator->next();

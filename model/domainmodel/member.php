@@ -131,6 +131,11 @@ class Member extends User{
         if($this->usergroup == 0 || $this->usergroup == 3 || $this->usergroup == 4 || $this->usergroup == 5) return FALSE;
         return ($this->getUsergroup(Model::MODEL)->getPermission("cancp") == "yes");
     }
+
+    public function isRootAdmin(){
+        if($this->usergroup == 1) return TRUE;
+        if($this->usergroup == 2 || $this->usergroup == 0 || $this->usergroup == 3 || $this->usergroup == 4 || $this->usergroup == 5) return FALSE;
+    }
     
     public function isBanned(){ 
         return ($this->usergroup == 5);
@@ -169,7 +174,7 @@ class Member extends User{
 	     return $theme;
     }
     
-    public function getVotes(Date $time = NULL) {
+    public function getVotes(Date|NULL $time = NULL) {
 	    $mysidia = Registry::get("mysidia");
         if(!$time) $time = new Date;
         $numVotes = $mysidia->db->select("vote_voters", ["void"], "userid = '{$this->uid}' and date = '{$time->format('Y-m-d')}'")->rowCount();
@@ -216,7 +221,7 @@ class Member extends User{
         return ($this->countFriends() == 0);
     }
     
-    public function isFriend(User $user = NULL){
+    public function isFriend(User|NULL $user = NULL){
         if(!$user || !$this->friends) return FALSE;
         $friends = explode(",", $this->friends);
         return in_array($user->getID(), $friends);

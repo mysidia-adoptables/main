@@ -48,7 +48,7 @@ class Node extends MysObject{
      * @access public
      * @return void
      */	
-	public function __construct(Objective $object = NULL, Node $next = NULL, Node $prev = NULL){
+	public function __construct(?Objective $object = NULL, ?Node $next = NULL, ?Node $prev = NULL){
 	    $this->object = $object;
 		$this->next = $next;
 		$this->prev = $prev;
@@ -87,7 +87,7 @@ class Node extends MysObject{
      * @access public
      * @return void
      */		
-	public function set(Objective $object = NULL){
+	public function set(?Objective $object = NULL){
 	    $this->object = $object;
 	}
 	
@@ -97,7 +97,7 @@ class Node extends MysObject{
      * @access public
      * @return void
      */			
-	public function setNext(Node $next = NULL){
+	public function setNext(?Node $next = NULL){
 	    $this->next = $next;
 	}
 	
@@ -107,7 +107,7 @@ class Node extends MysObject{
      * @access public
      * @return void
      */		
-	public function setPrev(Node $prev = NULL){
+	public function setPrev(?Node $prev = NULL){
 	    $this->prev = $prev;
 	}	
 }

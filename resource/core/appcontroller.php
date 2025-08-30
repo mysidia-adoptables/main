@@ -180,7 +180,7 @@ abstract class AppController extends Controller{
      * @access public
      * @return void
      */	
-	public function setField($key, Objective $value = NULL){
+	public function setField($key, ?Objective $value = NULL){
 		$this->fields->put(new MysString($key), $value);
 	}
 	

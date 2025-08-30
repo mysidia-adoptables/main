@@ -1,6 +1,7 @@
 <?php
 
 namespace Model\DomainModel;
+use HTMLPurifier;
 use Resource\Core\Registry;
 use Resource\Exception\InvalidActionException;
 use Resource\Utility\Date;
@@ -17,8 +18,9 @@ class PrivateMessage extends Message{
     protected $messagetitle;
     protected $messagetext;
 
-    public function __construct($mid = 0, $folder = "inbox", $dto = NULL, $notifier = FALSE){	 
-	    $mysidia = Registry::get("mysidia");	  
+    public function __construct($mid = 0, $folder = "inbox", $dto = NULL, $notifier = FALSE, $htmlPurifier = TRUE){
+        $mysidia = Registry::get("mysidia");
+        if($htmlPurifier) $this->htmlPurifier = new HTMLPurifier;	  
 	    if($mid == 0){
 	        //This is a new private message not yet exist in database
 		    $this->mid = $mid;
@@ -72,7 +74,7 @@ class PrivateMessage extends Message{
         if(empty($title) or empty($text)) throw new InvalidActionException("Cannot set an empty private message");
 	    else{
 	        $this->messagetitle = $title;
-		    $this->messagetext = $this->format($text);
+		    $this->messagetext = $text;
 	    }
     }
   
@@ -86,9 +88,15 @@ class PrivateMessage extends Message{
         $mysidia = Registry::get("mysidia");
 	    $date = new Date;
         if(!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-	    if(!$this->messagetext) $this->messagetext = $this->format($mysidia->input->rawPost("mtext")); 
-	    $mysidia->db->insert("messages", ["mid" => NULL, "fromuser" => $this->fromuser, "touser" => $this->touser, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext]);     
-	  
+	    if(!$this->messagetext) $this->messagetext = $mysidia->input->post("mtext");
+ 
+	    if($this->htmlPurifier){
+            $this->messagetext = $this->htmlPurifier->purify($this->format($mysidia->input->rawPost("mtext")));
+            $mysidia->db->insert("messages", ["mid" => NULL, "fromuser" => $this->fromuser, "touser" => $this->touser, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext]);
+        }else{
+            $this->messagetext = $this->htmlPurifier->purify($this->format($mysidia->input->post("mtext")));
+            $mysidia->db->insert("messages", ["mid" => NULL, "fromuser" => $this->fromuser, "touser" => $this->touser, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext]);
+        }
 	    if($mysidia->input->post("outbox") == "yes"){
 	        $mysidia->db->insert("folders_messages", ["mid" => NULL, "fromuser" => $this->fromuser, "touser" => $this->touser, "folder" => "outbox", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext]);
 	    }
@@ -104,7 +112,7 @@ class PrivateMessage extends Message{
         if(!is_numeric($recipient)) $recipient = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $recipient])->fetchColumn();
         $this->recipient = $recipient;
         if($title) $this->messagetitle = $title;
-	    if($content) $this->messagetext = $this->format($content); 
+	    if($content) $this->messagetext = $content; 
 	    $mysidia->db->insert("folders_messages", ["mid" => NULL, "fromuser" => $mysidia->user->getID(), "touser" => $this->recipient, "folder" => "draft", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->format($this->messagetext)]);     
 	    return TRUE;
     }
@@ -113,7 +121,7 @@ class PrivateMessage extends Message{
         $mysidia = Registry::get("mysidia");
 	    $date = new DateTime;
         if(!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-        if(!$this->messagetext) $this->messagetext = $this->format($mysidia->input->rawPost("mtext")); 
+        if(!$this->messagetext) $this->messagetext = $mysidia->input->post("mtext"); 
 	    $mysidia->db->update("folders_messages", ["fromuser" => $this->fromuser, "touser" => $this->touser, "folder" => "draft", "datesent" => $date->format("Y-m-d"), "messagetitle" => $this->messagetitle, "messagetext" => $this->messagetext], "fromuser='{$mysidia->user->getID()}' AND mid = :mid", ["mid" => $mysidia->input->post("id")]);
         return TRUE;
     }
@@ -131,13 +139,13 @@ class PrivateMessage extends Message{
 	    $date = new Date;
         $recipient = $mysidia->db->select("users", ["uid"], "username = :username", ["username" => $mysidia->settings->systemuser])->fetchColumn();
         if(!$this->messagetitle) $this->messagetitle = $mysidia->input->post("mtitle");
-	    if(!$this->messagetext) $this->messagetext = $this->format($mysidia->input->post("mtext"));
+	    if(!$this->messagetext) $this->messagetext = $mysidia->input->post("mtext");
         $mysidia->db->insert("messages", ["mid" => NULL, "fromuser" => $mysidia->user->getID(), "touser" => $recipient, "status" => "unread", "datesent" => $date->format("Y-m-d"), "messagetitle" => "A user has reported private message ID: {$this->mid}", "messagetext" => $this->messagetext]);     
 	    return TRUE; 	
     }
 
     public function format($text){
-        return preg_replace('`<((script)|(style))[^>]*>[^<]*</\1>`si', '', stripslashes(html_entity_decode($text)));
+        return preg_replace('`<((script)|(style))[^>]*>[^<]*</\1>`si', '', stripslashes(html_entity_decode(stripcslashes(strip_tags($text)))));
     }
   
 	protected function save($field, $value){

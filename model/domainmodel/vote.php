@@ -17,7 +17,7 @@ class Vote extends Model{
     
     protected $user;
     
-    public function __construct($adopt = NULL, $user = NULL, $ip = NULL, Date $date = NULL, $dto = NULL){ 
+    public function __construct($adopt = NULL, $user = NULL, $ip = NULL, Date|NULL $date = NULL, $dto = NULL){ 
 	    $mysidia = Registry::get("mysidia");
         if(!$dto){
             $whereClause = "1";

@@ -59,8 +59,10 @@ abstract class HashMapIterator extends CollectionIterator{
      * The current method, returns the current entry in the iterator.
      * @access public
      * @return Entry
-     */			
-	public function current(){
+     */	
+	#[\ReturnTypeWillChange]
+	public function current()
+	{
 	    return $this->current;
 	}	
 	

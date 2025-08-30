@@ -44,7 +44,7 @@ class IndexController extends MysObject{
                 return strpos($errstr, 'Declaration of') === 0;
             }, E_WARNING);
         }
-        error_reporting(E_ALL & ~E_STRICT);
+        error_reporting(E_ALL);
     }
     
     private function initLoader(){

@@ -61,8 +61,10 @@ class ListIterator extends CollectionIterator{
      * The current method, returns the object at the current index. 
      * @access public
      * @return Objective
-     */			
-	public function current(){
+     */	
+	#[\ReturnTypeWillChange]
+	public function current()
+	{
 	    return $this->list->get($this->cursor);
 	}
 

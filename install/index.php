@@ -11,7 +11,7 @@
 
 //Max Volume Installation Wizard
 define("SUBDIR", "Install");
-$step = (int)preg_replace("/[^a-zA-Z0-9s]/", "", filter_input(INPUT_GET, "step"));
+$step = (int) (filter_input(INPUT_GET, "step"));
 $domain = $_SERVER['HTTP_HOST'];
 $scriptPath = str_replace("/install/index.php", "", $_SERVER['SCRIPT_NAME']);
 
@@ -20,7 +20,7 @@ if($step == 3){
         
         <table border='0' cellpadding='0' cellspacing='0'>
             <tr>
-                <td height='60px' valign='top' bgcolor='#FF3300'>
+                <td height='60px' valign='top' bgcolor='#a0a0f9'>
                     <div align='left'>
                         <p>
                             <span class='style1'>Mysidia Adoptables v1.3.6 Installation Wizard <br>

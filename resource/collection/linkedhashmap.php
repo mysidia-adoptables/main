@@ -65,7 +65,8 @@ class LinkedHashMap extends HashMap{
      * @access public
      * @return void
      */		
-	public function addEntry($hash = 0, Objective $key = NULL, Objective $value = NULL, $index = 0){
+	public function addEntry($hash = 0, Objective|NULL $key = NULL, Objective|NULL $value = NULL, $index = 0): void
+    {
 	    $this->createEntry($hash, $key, $value, $index);
 	    $eldest = $this->header->getAfter();
         if($this->removeEldest($eldest)) $this->removeKey($eldest->getKey());
@@ -79,7 +80,8 @@ class LinkedHashMap extends HashMap{
      * @access public
      * @return void
      */			
-	public function clear(){
+	public function clear(): void
+    {
 	    parent::clear();
         $this->header->setBefore($this->header);
         $this->header->setAfter($this->header);	
@@ -91,7 +93,8 @@ class LinkedHashMap extends HashMap{
      * @access public
      * @return Boolean
      */		
-	public function containsValue(Objective $value = NULL){
+	public function containsValue(Objective|NULL $value = NULL): bool
+    {
 	    if($value == NULL){
 		    for($entry = $this->header->getAfter(); $entry !== $this->header; $entry = $entry->getAfter()){
                 if($entry->getValue() == NULL) return TRUE;
@@ -114,7 +117,8 @@ class LinkedHashMap extends HashMap{
      * @access public
      * @return void
      */		
-	public function createEntry($hash = 0, Objective $key = NULL, Objective $value = NULL, $index = 0){
+	public function createEntry($hash = 0, Objective|NULL $key = NULL, Objective|NULL $value = NULL, $index = 0): void
+    {
 	    $oldEntry = $this->entries[$index];
         $entry = new LinkedHashMapEntry($hash, $key, $value, $oldEntry);
         $this->entries[$index] = $entry;
@@ -177,7 +181,8 @@ class LinkedHashMap extends HashMap{
      * @access protected
      * @return Boolean
      */		
-	protected function removeEldest(Entry $eldest = NULL){
+	protected function removeEldest(Entry|NULL $eldest = NULL): bool
+    {
         return FALSE;	
 	}
 	
@@ -187,7 +192,8 @@ class LinkedHashMap extends HashMap{
      * @access public
      * @return Void
      */			
-	public function transfer(MysArray $newEntries){
+	public function transfer(MysArray $newEntries): void
+    {
 		$newCapacity = $newEntries->length();
 		for($entry = $this->header->getAfter(); $entry !== $this->header; $entry = $entry->getAfter()){
 		    $index = $this->indexFor($entry->getHash(), $newCapacity);

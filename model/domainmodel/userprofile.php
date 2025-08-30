@@ -19,7 +19,7 @@ class UserProfile extends Model{
     
     protected $user;
     
-    public function __construct($uid, $dto = NULL, User $user = NULL){
+    public function __construct($uid, $dto = NULL, User|NULL $user = NULL){
 		$mysidia = Registry::get("mysidia");
         if(!$dto){
             $prefix = constant("PREFIX");
@@ -65,7 +65,7 @@ class UserProfile extends Model{
     public function getGender(){
         return $this->gender;
     }
-    
+
     public function getNickname(){
         return $this->nickname;
     }
@@ -74,7 +74,7 @@ class UserProfile extends Model{
         return $this->user;
     }
     
-    public function isUser(User $user = NULL){
+    public function isUser(User|NULL $user = NULL){
         if(!$user || !($user instanceof Member)) return FALSE;
         return ($this->uid == $user->getID());
     }

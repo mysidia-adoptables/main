@@ -17,6 +17,7 @@ namespace Resource\Native;
  *
  */
  
+
 interface Objective{
 
     /**

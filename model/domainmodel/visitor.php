@@ -37,7 +37,7 @@ class Visitor extends User{
         return $mysidia->settings->theme;
     }
     
-    public function getVotes(Date $time = NULL){
+    public function getVotes(Date|NULL $time = NULL){
 	    $mysidia = Registry::get("mysidia");
         if(!$time) $time = new Date;
         $numVotes = $mysidia->db->select("vote_voters", ["void"], "ip = '{$this->ip}' and date = '{$time->format('Y-m-d')}'")->rowCount();
