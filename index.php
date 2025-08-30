@@ -7,6 +7,11 @@ use Resource\Core\Registry;
 use Resource\Native\MysObject;
 use Service\ApplicationService\OnlineService;
 
+if (!file_exists(__DIR__ . '/vendor/autoload.php')) {
+    die('It looks like you have not installed the dependencies yet.');
+}
+
+require_once './vendor/autoload.php';
 require(__DIR__ . "/resource/native/objective.php");
 require(__DIR__ . "/resource/native/mysobject.php");
 require(__DIR__ . "/resource/core/loader.php");
@@ -14,6 +19,13 @@ require(__DIR__ . "/resource/core/loader.php");
 class IndexController extends MysObject
 {
     private $frontController;
+
+    public static function main()
+    {
+        $application = new self();
+        $application->initialize();
+        $application->run();
+    }
 
     public function initialize()
     {
@@ -32,11 +44,6 @@ class IndexController extends MysObject
         $this->initMysidia($_SERVER['REQUEST_URI']);
     }
 
-    private function isAdminCP($uri)
-    {
-        return (str_contains((string) $uri, "/admincp"));
-    }
-
     private function redirectToInstall(): never
     {
         $protocol = isset($_SERVER["HTTPS"]) ? 'https://' : 'http://';
@@ -45,10 +52,15 @@ class IndexController extends MysObject
         exit;
     }
 
+    private function isAdminCP($uri)
+    {
+        return (str_contains((string)$uri, "/admincp"));
+    }
+
     private function initErrorHandler()
     {
         if (PHP_MAJOR_VERSION >= 7) {
-            set_error_handler(fn ($errno, $errstr) => str_starts_with((string) $errstr, 'Declaration of'), E_WARNING);
+            set_error_handler(fn($errno, $errstr) => str_starts_with((string)$errstr, 'Declaration of'), E_WARNING);
         }
         error_reporting(E_ALL);
     }
@@ -65,8 +77,8 @@ class IndexController extends MysObject
     private function initBundles()
     {
         $bundles = new Bundles();
-        $bundles->register("smarty", "bundles/smarty/", "Smarty.class.php");
-        $bundles->register("htmlpurifier", "bundles/htmlpurifier/", "HTMLPurifier.auto.php");
+        $bundles->register("smarty", __DIR__ . "/vendor/smarty/smarty/src/", "Smarty.php");
+        $bundles->register("htmlpurifier", __DIR__ . "/vendor/ezyang/htmlpurifier/library/", "HTMLPurifier.auto.php");
         $registry = Registry::getInstance();
         if ($registry) {
             Registry::set("bundles", $bundles, true, true);
@@ -93,13 +105,6 @@ class IndexController extends MysObject
         }
         $frontController->getView();
         $frontController->render();
-    }
-
-    public static function main()
-    {
-        $application = new self();
-        $application->initialize();
-        $application->run();
     }
 }
 

@@ -23,7 +23,6 @@ use Resource\GUI\Document\Paragraph;
  * @todo Not much at this point.
  *
  */
-
 class Footer extends WidgetViewModel
 {
     /**
@@ -48,22 +47,6 @@ class Footer extends WidgetViewModel
     public function __construct()
     {
         parent::__construct(new Widget("footer"));
-    }
-
-    /**
-     * The setDivision method, setter method for property $division.
-     * It is set internally upon object instantiation, cannot be accessed in client code.
-     * @param Component  $module
-     * @access protected
-     * @return void
-     */
-    protected function setDivision(Component $module)
-    {
-        if (!$this->division) {
-            $this->division = new Division();
-            $this->division->setClass("footer");
-        }
-        $this->division->add($module);
     }
 
     /**
@@ -92,11 +75,27 @@ class Footer extends WidgetViewModel
 
         if (is_object($dto)) {
             $ad = new Advertisement($dto->id, $dto);
-            $text = stripslashes((string) $ad->getText());
+            $text = stripslashes((string)$ad->getText());
             $ad->updateImpressions();
         }
         $this->ads->add(new Comment($text));
         $this->setDivision($this->ads);
+    }
+
+    /**
+     * The setDivision method, setter method for property $division.
+     * It is set internally upon object instantiation, cannot be accessed in client code.
+     * @param Component $module
+     * @access protected
+     * @return void
+     */
+    protected function setDivision(Component $module)
+    {
+        if (!$this->division) {
+            $this->division = new Division();
+            $this->division->setClass("footer");
+        }
+        $this->division->add($module);
     }
 
     /**
@@ -123,7 +122,7 @@ class Footer extends WidgetViewModel
         $creditsLink->setText("Mysidia Adoptables v" . Mysidia::version);
         $this->credits->add($creditsLink);
         $this->credits->add(new Comment("&#9733;"));
-        $this->credits->add(new Comment("Copyright &copy; 2011-2021 Mysidia RPG, Inc. All rights reserved."));
+        $this->credits->add(new Comment("Copyright &copy; 2011-" . date('Y') . " Mysidia RPG, Inc. All rights reserved."));
         $this->setDivision($this->credits);
     }
 }
