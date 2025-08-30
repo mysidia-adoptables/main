@@ -7,18 +7,6 @@
 class HTMLPurifier_AttrTransform_EnumToCSS extends HTMLPurifier_AttrTransform
 {
     /**
-     * Name of attribute to transform from.
-     * @type string
-     */
-    protected $attr;
-
-    /**
-     * Lookup array of attribute values to CSS.
-     * @type array
-     */
-    protected $enumToCSS = array();
-
-    /**
      * Case sensitivity of the matching.
      * @type bool
      * @warning Currently can only be guaranteed to work with ASCII
@@ -28,13 +16,11 @@ class HTMLPurifier_AttrTransform_EnumToCSS extends HTMLPurifier_AttrTransform
 
     /**
      * @param string $attr Attribute name to transform from
-     * @param array $enum_to_css Lookup array of attribute values to CSS
+     * @param array $enumToCSS Lookup array of attribute values to CSS
      * @param bool $case_sensitive Case sensitivity indicator, default false
      */
-    public function __construct($attr, $enum_to_css, $case_sensitive = false)
+    public function __construct(protected $attr, protected $enumToCSS, $case_sensitive = false)
     {
-        $this->attr = $attr;
-        $this->enumToCSS = $enum_to_css;
         $this->caseSensitive = (bool)$case_sensitive;
     }
 

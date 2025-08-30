@@ -7,9 +7,9 @@ $lang['default'] = "Here you can manage widget for your site, these can be used 
                     <br><br><b><a href='add'><img src='../../templates/icons/add.gif' border=0> Add a new Widget</a></b><p><b><u>Your Existing Widgets:</u></b></p>";
 $lang['add_title'] = "Create a New Widget for your site";
 $lang['add'] = "This page allows you to create a new widget that can be used in your template file(.tpl).
-                Use the form below to create a new widget.<br>";	
+                Use the form below to create a new widget.<br>";
 $lang['added_title'] = "Widget Added Successfully";
-$lang['added'] = "Your widget has been generated successfully.  <a href='edit'>Click Here</a> to return to the widget editor."; 
+$lang['added'] = "Your widget has been generated successfully.  <a href='edit'>Click Here</a> to return to the widget editor.";
 $lang['edit_title'] = "Editing a Widget";
 $lang['edit'] = "Here you can edit a widget that you have previously created.<br>";
 $lang['edited_title'] = "Widget Updated Successfully";

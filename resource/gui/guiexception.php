@@ -1,8 +1,9 @@
 <?php
 
 namespace Resource\GUI;
+
 use Exception;
 
-class GUIException extends Exception{
-
+class GUIException extends Exception
+{
 }

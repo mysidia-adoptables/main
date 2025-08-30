@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Function Call Handler
  *
@@ -56,8 +57,8 @@ class Smarty_Internal_Function_Call_Handler
                         $content = $cache->read($tplPtr);
                         if ($content) {
                             // check if we must update file dependency
-                            if (!preg_match("/'{$funcParam['uid']}'([\S\s]*?)'nocache_hash'/", $content, $match2)) {
-                                $content = preg_replace("/('file_dependency'([\S\s]*?)\()/", "\\1{$match1[0]}", $content);
+                            if (!preg_match("/'{$funcParam['uid']}'([\S\s]*?)'nocache_hash'/", (string) $content, $match2)) {
+                                $content = preg_replace("/('file_dependency'([\S\s]*?)\()/", "\\1{$match1[0]}", (string) $content);
                             }
                             $cache->write($tplPtr, $content . "<?php " . $match[0] . "?>\n");
                         }

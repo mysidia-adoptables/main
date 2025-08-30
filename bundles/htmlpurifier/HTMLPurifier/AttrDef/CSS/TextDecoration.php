@@ -7,7 +7,6 @@
  */
 class HTMLPurifier_AttrDef_CSS_TextDecoration extends HTMLPurifier_AttrDef
 {
-
     /**
      * @param string $string
      * @param HTMLPurifier_Config $config
@@ -16,13 +15,13 @@ class HTMLPurifier_AttrDef_CSS_TextDecoration extends HTMLPurifier_AttrDef
      */
     public function validate($string, $config, $context)
     {
-        static $allowed_values = array(
+        static $allowed_values = [
             'line-through' => true,
             'overline' => true,
             'underline' => true,
-        );
+        ];
 
-        $string = strtolower($this->parseCDATA($string));
+        $string = strtolower((string) $this->parseCDATA($string));
 
         if ($string === 'none') {
             return $string;

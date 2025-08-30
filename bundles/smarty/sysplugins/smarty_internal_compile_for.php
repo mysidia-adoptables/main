@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Compile For
  * Compiles the {for} {forelse} {/for} tags
@@ -18,7 +19,7 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
 {
     /**
      * Compiles code for the {for} tag
-     * Smarty 3 does implement two different syntax's:
+     * Smarty supports two different syntax's:
      * - {for $var in $array}
      * For looping over arrays or iterators
      * - {for $x=0; $x<$y; $x++}
@@ -26,28 +27,27 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
      * The parser is generating different sets of attribute by which this compiler can
      * determine which syntax is used.
      *
-     * @param  array  $args      array with attributes from parser
-     * @param  object $compiler  compiler object
-     * @param  array  $parameter array with compilation parameter
+     * @param array  $args      array with attributes from parser
+     * @param object $compiler  compiler object
+     * @param array  $parameter array with compilation parameter
      *
      * @return string compiled code
      */
     public function compile($args, $compiler, $parameter)
     {
-        $compiler->loopNesting ++;
-        if ($parameter == 0) {
-            $this->required_attributes = array('start', 'to');
-            $this->optional_attributes = array('max', 'step');
+        $compiler->loopNesting++;
+        if ($parameter === 0) {
+            $this->required_attributes = ['start', 'to'];
+            $this->optional_attributes = ['max', 'step'];
         } else {
-            $this->required_attributes = array('start', 'ifexp', 'var', 'step');
-            $this->optional_attributes = array();
+            $this->required_attributes = ['start', 'ifexp', 'var', 'step'];
+            $this->optional_attributes = [];
         }
-        $this->mapCache = array();
+        $this->mapCache = [];
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-
         $output = "<?php\n";
-        if ($parameter == 1) {
+        if ($parameter === 1) {
             foreach ($_attr[ 'start' ] as $_statement) {
                 if (is_array($_statement[ 'var' ])) {
                     $var = $_statement[ 'var' ][ 'var' ];
@@ -89,12 +89,11 @@ class Smarty_Internal_Compile_For extends Smarty_Internal_CompileBase
             }
             $output .= "if (\$_smarty_tpl->tpl_vars[$var]->total > 0) {\n";
             $output .= "for (\$_smarty_tpl->tpl_vars[$var]->value{$index} = $_statement[value], \$_smarty_tpl->tpl_vars[$var]->iteration = 1;\$_smarty_tpl->tpl_vars[$var]->iteration <= \$_smarty_tpl->tpl_vars[$var]->total;\$_smarty_tpl->tpl_vars[$var]->value{$index} += \$_smarty_tpl->tpl_vars[$var]->step, \$_smarty_tpl->tpl_vars[$var]->iteration++) {\n";
-            $output .= "\$_smarty_tpl->tpl_vars[$var]->first = \$_smarty_tpl->tpl_vars[$var]->iteration == 1;";
-            $output .= "\$_smarty_tpl->tpl_vars[$var]->last = \$_smarty_tpl->tpl_vars[$var]->iteration == \$_smarty_tpl->tpl_vars[$var]->total;";
+            $output .= "\$_smarty_tpl->tpl_vars[$var]->first = \$_smarty_tpl->tpl_vars[$var]->iteration === 1;";
+            $output .= "\$_smarty_tpl->tpl_vars[$var]->last = \$_smarty_tpl->tpl_vars[$var]->iteration === \$_smarty_tpl->tpl_vars[$var]->total;";
         }
-        $output .= "?>";
-
-        $this->openTag($compiler, 'for', array('for', $compiler->nocache));
+        $output .= '?>';
+        $this->openTag($compiler, 'for', ['for', $compiler->nocache]);
         // maybe nocache because of nocache variables
         $compiler->nocache = $compiler->nocache | $compiler->tag_nocache;
         // return compiled code
@@ -113,9 +112,9 @@ class Smarty_Internal_Compile_Forelse extends Smarty_Internal_CompileBase
     /**
      * Compiles code for the {forelse} tag
      *
-     * @param  array  $args      array with attributes from parser
-     * @param  object $compiler  compiler object
-     * @param  array  $parameter array with compilation parameter
+     * @param array  $args      array with attributes from parser
+     * @param object $compiler  compiler object
+     * @param array  $parameter array with compilation parameter
      *
      * @return string compiled code
      */
@@ -123,10 +122,8 @@ class Smarty_Internal_Compile_Forelse extends Smarty_Internal_CompileBase
     {
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
-
-        list($openTag, $nocache) = $this->closeTag($compiler, array('for'));
-        $this->openTag($compiler, 'forelse', array('forelse', $nocache));
-
+        [$openTag, $nocache] = $this->closeTag($compiler, ['for']);
+        $this->openTag($compiler, 'forelse', ['forelse', $nocache]);
         return "<?php }} else { ?>";
     }
 }
@@ -142,29 +139,27 @@ class Smarty_Internal_Compile_Forclose extends Smarty_Internal_CompileBase
     /**
      * Compiles code for the {/for} tag
      *
-     * @param  array  $args      array with attributes from parser
-     * @param  object $compiler  compiler object
-     * @param  array  $parameter array with compilation parameter
+     * @param array  $args      array with attributes from parser
+     * @param object $compiler  compiler object
+     * @param array  $parameter array with compilation parameter
      *
      * @return string compiled code
      */
     public function compile($args, $compiler, $parameter)
     {
-        $compiler->loopNesting --;
+        $compiler->loopNesting--;
         // check and get attributes
         $_attr = $this->getAttributes($compiler, $args);
         // must endblock be nocache?
         if ($compiler->nocache) {
             $compiler->tag_nocache = true;
         }
-
-        list($openTag, $compiler->nocache) = $this->closeTag($compiler, array('for', 'forelse'));
-
+        [$openTag, $compiler->nocache] = $this->closeTag($compiler, ['for', 'forelse']);
         $output = "<?php }\n";
-        if ($openTag != 'forelse') {
+        if ($openTag !== 'forelse') {
             $output .= "}\n";
         }
-        $output .= "?>\n";
+        $output .= "?>";
         return $output;
     }
 }

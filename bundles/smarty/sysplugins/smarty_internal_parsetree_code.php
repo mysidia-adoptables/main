@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Smarty Internal Plugin Templateparser Parse Tree
  * These are classes to build parse trees in the template parser
@@ -37,6 +38,6 @@ class Smarty_Internal_ParseTree_Code extends Smarty_Internal_ParseTree
      */
     public function to_smarty_php(Smarty_Internal_Templateparser $parser)
     {
-        return sprintf("(%s)", $this->data);
+        return sprintf('(%s)', $this->data);
     }
 }

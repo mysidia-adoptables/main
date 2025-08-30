@@ -5,18 +5,11 @@
  */
 class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
 {
-
-    /**
-     * @type int
-     */
-    protected $max;
-
     /**
      * @param int $max
      */
-    public function __construct($max = null)
+    public function __construct(protected $max = null)
     {
-        $this->max = $max;
     }
 
     /**
@@ -68,7 +61,7 @@ class HTMLPurifier_AttrDef_HTML_Pixels extends HTMLPurifier_AttrDef
         } else {
             $max = (int)$string;
         }
-        $class = get_class($this);
+        $class = static::class;
         return new $class($max);
     }
 }

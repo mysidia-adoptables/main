@@ -1,7 +1,9 @@
 <?php
 
 namespace Resource\Utility;
-use ArrayObject, Exception;
+
+use ArrayObject;
+use Exception;
 use Resource\Native\MysObject;
 
 /**
@@ -9,102 +11,121 @@ use Resource\Native\MysObject;
  * It implements PHP basic method/function manipulation functionalities, which can come in handy.
  * @category Resource
  * @package Utility
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.3
  * @todo Not sure, but will come in handy.
  */
 
-final class MetaMethod extends MysObject{
-
-	/**
-	 * The args property, it stores an array of arguments.
-	 * @access private
-	 * @var ArrayObject
+final class MetaMethod extends MysObject
+{
+    /**
+     * The args property, it stores an array of arguments.
+     * @access private
+     * @var ArrayObject
      */
     private $params;
-	
-	/**
-	 * The num property, it stores the number of arguments.
-	 * @access private
-	 * @var int
+
+    /**
+     * The num property, it stores the number of arguments.
+     * @access private
+     * @var int
      */
-    private $num;	
- 
+    private $num;
+
     /**
      * The getArg method, return an argument from the argument list.
-	 * @param int  $index
-	 * @access public
+     * @param int  $index
+     * @access public
      * @return String
-     */	
-    public function getParam($index = 0){
-	    if(!$this->params) $this->params = new ArrayObject(func_get_args());
+     */
+    public function getParam($index = 0)
+    {
+        if (!$this->params) {
+            $this->params = new ArrayObject(func_get_args());
+        }
         return $this->params[$index];
-    } 
- 
+    }
+
     /**
      * The getParams method, return an array of parameters.
-	 * @access public
+     * @access public
      * @return ArrayObject
-     */	
-    public function getParams(){
-	    if(!$this->params) $this->params = new ArrayObject(func_get_args());
+     */
+    public function getParams()
+    {
+        if (!$this->params) {
+            $this->params = new ArrayObject(func_get_args());
+        }
         return $this->params;
     }
-	
+
     /**
      * The numArgs method, return the number of arguments.
-	 * @access public
+     * @access public
      * @return int
-     */		
-	public function numArgs(){
-	    if(!$this->num) $this->num = func_num_args();
-		return $this->num;
-	}
-		
+     */
+    public function numArgs()
+    {
+        if (!$this->num) {
+            $this->num = func_num_args();
+        }
+        return $this->num;
+    }
+
     /**
      * The call method, it calls a callback from a class instance method.
-	 * @access public
+     * @access public
      * @return Method
-     */		
-	public function call(){
-		if($this->numArgs() < 2) throw new Exception("Invalid callback method specified.");
-		$params = $this->getParams()->getArrayCopy();
-		$class = array_shift($params);
-		$method = array_shift($params);
-		return call_user_func_array(array($class, $method), $params);	
-	}
-	
+     */
+    public function call()
+    {
+        if ($this->numArgs() < 2) {
+            throw new Exception("Invalid callback method specified.");
+        }
+        $params = $this->getParams()->getArrayCopy();
+        $class = array_shift($params);
+        $method = array_shift($params);
+        return call_user_func_array([$class, $method], $params);
+    }
+
     /**
      * The callStatic method, it calls a callback from a class static method.
-	 * @access public
+     * @access public
      * @return Method
-     */		
-	public function callStatic(){
-		if($this->numArgs() < 2) throw new Exception("Invalid callback method specified.");
-		$params = $this->getParams()->getArrayCopy();
-		$class = array_shift($param);
-		$method = array_shift($params);
-		return forward_static_call_array(array($class, $method), $params);
-	}
-	
+     */
+    public function callStatic()
+    {
+        if ($this->numArgs() < 2) {
+            throw new Exception("Invalid callback method specified.");
+        }
+        $params = $this->getParams()->getArrayCopy();
+        $class = array_shift($param);
+        $method = array_shift($params);
+        return forward_static_call_array([$class, $method], $params);
+    }
+
     /**
      * The anonymous method, creates a lambda method.
-	 * @access public
+     * @access public
      * @return Method
-     */	
-    public function anonymous($params, $code){
-        return create_function($params, $code);	
+     */
+    public function anonymous($params, $code)
+    {
+        return function ($params) use ($code) {
+            eval($code);
+        };
     }
-	
+
     /**
      * The reset method, reset the MetaMethod object so that it can be used for other methods.
-	 * @access public
+     * @access public
      * @return void
-     */		
-	public function reset(){
-	    $this->params = NULL;
-		$this->num = NULL;
-	}
+     */
+    public function reset()
+    {
+        $this->params = null;
+        $this->num = null;
+    }
 }

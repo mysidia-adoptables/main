@@ -16,34 +16,9 @@ class HTMLPurifier_URI
     public $scheme;
 
     /**
-     * @type string
-     */
-    public $userinfo;
-
-    /**
-     * @type string
-     */
-    public $host;
-
-    /**
      * @type int
      */
     public $port;
-
-    /**
-     * @type string
-     */
-    public $path;
-
-    /**
-     * @type string
-     */
-    public $query;
-
-    /**
-     * @type string
-     */
-    public $fragment;
 
     /**
      * @param string $scheme
@@ -55,15 +30,10 @@ class HTMLPurifier_URI
      * @param string $fragment
      * @note Automatically normalizes scheme and port
      */
-    public function __construct($scheme, $userinfo, $host, $port, $path, $query, $fragment)
+    public function __construct($scheme, public $userinfo, public $host, $port, public $path, public $query, public $fragment)
     {
         $this->scheme = is_null($scheme) || ctype_lower($scheme) ? $scheme : strtolower($scheme);
-        $this->userinfo = $userinfo;
-        $this->host = $host;
         $this->port = is_null($port) ? $port : (int)$port;
-        $this->path = $path;
-        $this->query = $query;
-        $this->fragment = $fragment;
     }
 
     /**
@@ -166,7 +136,7 @@ class HTMLPurifier_URI
                 // path-absolute (hier and relative)
                 // http:/my/path
                 // /my/path
-                if (strlen($this->path) >= 2 && $this->path[1] === '/') {
+                if (strlen((string) $this->path) >= 2 && $this->path[1] === '/') {
                     // This could happen if both the host gets stripped
                     // out
                     // http://my/path
@@ -185,11 +155,11 @@ class HTMLPurifier_URI
                 // my/path
                 // (once again, not checking nz)
                 $segment_nc_encoder = new HTMLPurifier_PercentEncoder($chars_sub_delims . '@');
-                $c = strpos($this->path, '/');
+                $c = strpos((string) $this->path, '/');
                 if ($c !== false) {
                     $this->path =
-                        $segment_nc_encoder->encode(substr($this->path, 0, $c)) .
-                        $segments_encoder->encode(substr($this->path, $c));
+                        $segment_nc_encoder->encode(substr((string) $this->path, 0, $c)) .
+                        $segments_encoder->encode(substr((string) $this->path, $c));
                 } else {
                     $this->path = $segment_nc_encoder->encode($this->path);
                 }

@@ -9,35 +9,28 @@
  */
 class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
 {
-
-    /**
-     * Whether or not negative values are allowed.
-     * @type bool
-     */
-    protected $negative = true;
-
-    /**
-     * Whether or not zero is allowed.
-     * @type bool
-     */
-    protected $zero = true;
-
-    /**
-     * Whether or not positive values are allowed.
-     * @type bool
-     */
-    protected $positive = true;
-
     /**
      * @param $negative Bool indicating whether or not negative values are allowed
      * @param $zero Bool indicating whether or not zero is allowed
      * @param $positive Bool indicating whether or not positive values are allowed
      */
-    public function __construct($negative = true, $zero = true, $positive = true)
-    {
-        $this->negative = $negative;
-        $this->zero = $zero;
-        $this->positive = $positive;
+    public function __construct(
+        /**
+         * Whether or not negative values are allowed.
+         * @type bool
+         */
+        protected $negative = true,
+        /**
+         * Whether or not zero is allowed.
+         * @type bool
+         */
+        protected $zero = true,
+        /**
+         * Whether or not positive values are allowed.
+         * @type bool
+         */
+        protected $positive = true
+    ) {
     }
 
     /**
@@ -58,18 +51,18 @@ class HTMLPurifier_AttrDef_Integer extends HTMLPurifier_AttrDef
 
         // clip leading sign
         if ($this->negative && $integer[0] === '-') {
-            $digits = substr($integer, 1);
+            $digits = substr((string) $integer, 1);
             if ($digits === '0') {
                 $integer = '0';
             } // rm minus sign for zero
         } elseif ($this->positive && $integer[0] === '+') {
-            $digits = $integer = substr($integer, 1); // rm unnecessary plus
+            $digits = $integer = substr((string) $integer, 1); // rm unnecessary plus
         } else {
             $digits = $integer;
         }
 
         // test if it's numeric
-        if (!ctype_digit($digits)) {
+        if (!ctype_digit((string) $digits)) {
             return false;
         }
 

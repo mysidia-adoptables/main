@@ -6,22 +6,11 @@
 class HTMLPurifier_AttrDef_CSS_DenyElementDecorator extends HTMLPurifier_AttrDef
 {
     /**
-     * @type HTMLPurifier_AttrDef
-     */
-    public $def;
-    /**
-     * @type string
-     */
-    public $element;
-
-    /**
      * @param HTMLPurifier_AttrDef $def Definition to wrap
      * @param string $element Element to deny
      */
-    public function __construct($def, $element)
+    public function __construct(public $def, public $element)
     {
-        $this->def = $def;
-        $this->element = $element;
     }
 
     /**

@@ -4,7 +4,7 @@
 
 define("SUBDIR", "Install");
 $post = filter_input_array(INPUT_POST);
-$dbhost = $post['dbhost']; 
+$dbhost = $post['dbhost'];
 $dbuser = $post['dbuser'];
 $dbpass = $post['dbpass'];
 $dbname = $post['dbname'];
@@ -17,11 +17,11 @@ $prefix = $post['prefix'];
 
 $filename = "../config.php";
 
-if(!is_writable($filename)) {
-   die("Your config.php file is not writable.  Cannot proceed!");
-} 
+if (!is_writable($filename)) {
+    die("Your config.php file is not writable.  Cannot proceed!");
+}
 
-if($dbuser == "" || $dbpass == "" || $dbname == "" || $domain == "" || $prefix == ""){
+if ($dbuser == "" || $dbpass == "" || $dbname == "" || $domain == "" || $prefix == "") {
     die("Something required was left blank. Please go back and try again.");
 }
 
@@ -43,15 +43,14 @@ define('PREFIX', '{$prefix}');
 
 $file = fopen('../config.php', 'w');
 fwrite($file, $configdata);
-fclose($file);				
+fclose($file);
 
 //Connect to the database and insert the default data.....
-try{
+try {
     $dsn = "mysql:host={$dbhost};dbname={$dbname}";
     $adopts = new PDO($dsn, $dbuser, $dbpass);
-}
-catch(PDOException $pe){
-    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");  
+} catch (PDOException $pe) {
+    die("Could not connect to database, the following error has occurred: <br><b>{$pe->getmessage()}</b>");
 }
 
 $query = "CREATE TABLE {$prefix}acp_hooks (id int NOT NULL AUTO_INCREMENT PRIMARY KEY, linktext varchar(150), linkurl varchar(200), pluginname varchar(50), pluginstatus int DEFAULT 0)";
@@ -110,7 +109,7 @@ $query18 = "INSERT INTO {$prefix}breeding_settings (bsid, name, value) VALUES (1
 $adopts->query($query18);
 
 
-$today = new DateTime;
+$today = new DateTime();
 $query19 = "CREATE TABLE {$prefix}content (cid int NOT NULL AUTO_INCREMENT PRIMARY KEY, page varchar(20), title varchar(75), date varchar(15), content varchar(15000), level varchar(50), code varchar(128), item int DEFAULT 0, time varchar(20), `group` int DEFAULT 0)";
 $adopts->query($query19);
 
@@ -380,7 +379,7 @@ $query105 = "INSERT INTO {$prefix}modules VALUES (6, 5, 'Credits', '', 'user', '
 $adopts->query($query105);
 
 
-$query106 = "CREATE TABLE {$prefix}online (username varchar(40), ip varchar(60), session char(100), time int DEFAULT 0)";
+$query106 = "CREATE TABLE {$prefix}online (username varchar(40), ip varchar(60), session varchar(128), time int DEFAULT 0)";
 $adopts->query($query106);
 
 $query107 = "CREATE TABLE {$prefix}owned_adoptables (aid int NOT NULL AUTO_INCREMENT PRIMARY KEY, adopt int DEFAULT 0, name varchar(40), owner int DEFAULT 0, currentlevel int DEFAULT 0, totalclicks int DEFAULT 0, code varchar(15), imageurl varchar(120), alternate varchar(10), tradestatus varchar(15), isfrozen varchar(10), gender varchar(10), offsprings int DEFAULT 0, lastbred int DEFAULT 0)";
@@ -543,7 +542,7 @@ $query158 = "INSERT INTO {$prefix}trade_settings (tsid, name, value) VALUES (12,
 $adopts->query($query158);
 
 
-$query159 = "CREATE TABLE {$prefix}users (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) UNIQUE, salt varchar(20), password varchar(200), session varchar(100), email varchar(60), ip varchar(60), usergroup int DEFAULT 0, birthday varchar(40), membersince varchar(20), money int DEFAULT 0, friends varchar(500))";
+$query159 = "CREATE TABLE {$prefix}users (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, username varchar(30) UNIQUE, salt varchar(20), password varchar(200), session varchar(128), email varchar(60), ip varchar(60), usergroup int DEFAULT 0, birthday varchar(40), membersince varchar(20), money int DEFAULT 0, friends varchar(500))";
 $adopts->query($query159);
 
 $query160 = "CREATE TABLE {$prefix}users_contacts (uid int NOT NULL AUTO_INCREMENT PRIMARY KEY, website varchar(80), facebook varchar(80), twitter varchar(80),aim varchar(80), yahoo varchar(80), msn varchar(80), skype varchar(80))";
@@ -568,7 +567,7 @@ $adopts->query($query165);
 $query166 = "CREATE TABLE {$prefix}widgets (wid int NOT NULL AUTO_INCREMENT PRIMARY KEY, name varchar(40), controller varchar(20), `order` int DEFAULT 0, status varchar(20))";
 $adopts->query($query166);
 
-$query167 = "INSERT INTO {$prefix}widgets VALUES (1, 'header', 'all', 0, 'enabled')"; 
+$query167 = "INSERT INTO {$prefix}widgets VALUES (1, 'header', 'all', 0, 'enabled')";
 $adopts->query($query167);
 
 $query168 = "INSERT INTO {$prefix}widgets VALUES (2, 'menu', 'main', 10, 'enabled')";
@@ -598,7 +597,7 @@ $adopts->query($query171);
     <body>
         <table border='0' cellpadding='0' cellspacing='0'>
             <tr>
-                <td width='750' height='57' valign='top' bgcolor='#FF3300'>
+                <td width='750' height='57' valign='top' bgcolor='#a0a0f9'>
                     <div align='left'>
                         <p>
                             <span class='style1'>

@@ -1,6 +1,7 @@
 <?php
 
 namespace Resource\Utility;
+
 use Resource\Native\Objective;
 
 /**
@@ -8,19 +9,19 @@ use Resource\Native\Objective;
  * It is a standard interface for objects that can be compared.
  * @category Resource
  * @package Utility
- * @author Hall of Famer 
+ * @author Hall of Famer
  * @copyright Mysidia Adoptables Script
  * @link http://www.mysidiaadoptables.com
  * @since 1.3.4
  * @todo Not much at this point.
  *
  */
- 
-interface Comparable{
 
-	/**
+interface Comparable
+{
+    /**
      * The compareTo method, compares this object with another.
-	 * @param Objective  $object
+     * @param Objective  $object
      * @access public
      * @return int
      */

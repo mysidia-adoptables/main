@@ -1,48 +1,60 @@
 <?php
 
 namespace Model\DomainModel;
+
 use Resource\Core\Model;
 use Resource\Utility\Date;
 
-abstract class User extends Model{
-    
-    const IDKEY = "uid";
+abstract class User extends Model
+{
+    public const IDKEY = "uid";
     protected $uid;
     protected $username;
     protected $ip;
     protected $usergroup;
     protected $lastActivity;
-    
-    public function getUsername(){
+
+    public function getUsername()
+    {
         return $this->username;
     }
-    
-    public function getIP(){
+
+    public function getIP()
+    {
         return $this->ip;
     }
-    
-    public function getUsergroup($fetchMode = ""){
-	    if($fetchMode == Model::MODEL) return new Usergroup($this->usergroup);
-        else return $this->usergroup;        
+
+    public function getUsergroup($fetchMode = "")
+    {
+        if ($fetchMode == Model::MODEL) {
+            return new Usergroup($this->usergroup);
+        } else {
+            return $this->usergroup;
+        }
     }
-    
-    public function getUsergroupName(){
-        if(!$this->usergroup) return NULL;
+
+    public function getUsergroupName()
+    {
+        if (!$this->usergroup) {
+            return null;
+        }
         return $this->getUsergroup(Model::MODEL)->getGroupname();
     }
-    
-    public function getLastActivity(){
+
+    public function getLastActivity()
+    {
         return $this->lastActivity;
     }
-    
-    public function __toString() {
-        return $this->username;
+
+    public function __toString(): string
+    {
+        return (string) $this->username;
     }
-    
+
     abstract public function isCurrentUser();
     abstract public function isLoggedIn();
-    abstract public function isAdmin();   
-    abstract public function isBanned(); 
+    abstract public function isAdmin();
+    abstract public function isBanned();
     abstract public function getTheme();
-    abstract public function getVotes(Date $time = NULL);
+    abstract public function getVotes(?Date $time = null);
 }

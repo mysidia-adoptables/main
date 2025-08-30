@@ -19,7 +19,7 @@ class HTMLPurifier_Injector_PurifierLinkify extends HTMLPurifier_Injector
     /**
      * @type array
      */
-    public $needed = array('a' => array('href'));
+    public $needed = ['a' => ['href']];
 
     /**
      * @param HTMLPurifier_Config $config
@@ -40,12 +40,12 @@ class HTMLPurifier_Injector_PurifierLinkify extends HTMLPurifier_Injector
         if (!$this->allowsElement('a')) {
             return;
         }
-        if (strpos($token->data, '%') === false) {
+        if (!str_contains((string) $token->data, '%')) {
             return;
         }
 
-        $bits = preg_split('#%([a-z0-9]+\.[a-z0-9]+)#Si', $token->data, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $token = array();
+        $bits = preg_split('#%([a-z0-9]+\.[a-z0-9]+)#Si', (string) $token->data, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $token = [];
 
         // $i = index
         // $c = count
@@ -59,7 +59,7 @@ class HTMLPurifier_Injector_PurifierLinkify extends HTMLPurifier_Injector
             } else {
                 $token[] = new HTMLPurifier_Token_Start(
                     'a',
-                    array('href' => str_replace('%s', $bits[$i], $this->docURL))
+                    ['href' => str_replace('%s', $bits[$i], $this->docURL)]
                 );
                 $token[] = new HTMLPurifier_Token_Text('%' . $bits[$i]);
                 $token[] = new HTMLPurifier_Token_End('a');

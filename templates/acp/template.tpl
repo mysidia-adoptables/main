@@ -5,7 +5,7 @@
             <tr>
                 <td colspan="2" class="banner">
                     <center>
-                        <img src="{$home}{$temp}{$theme}/media/acp-banner.png" alt="Mysidia PHP Adoptables" title="Mysidia Adoptables" />
+                                   <a href="{$home}"><img id="banner" src="{$home}{$temp}{$theme}/media/acp-banner.png" alt="Mysidia PHP Adoptables" title="Mysidia Adoptables" /></a>
                     </center>
                 </td>
             </tr>

@@ -5,7 +5,6 @@
  */
 class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
 {
-
     /**
      * IPv4 sub-validator.
      * @type HTMLPurifier_AttrDef_URI_IPv4
@@ -103,15 +102,15 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
                 $string = idn_to_ascii($string);
             }
 
-        // If we have Net_IDNA2 support, we can support IRIs by
-        // punycoding them. (This is the most portable thing to do,
-        // since otherwise we have to assume browsers support
+            // If we have Net_IDNA2 support, we can support IRIs by
+            // punycoding them. (This is the most portable thing to do,
+            // since otherwise we have to assume browsers support
         } elseif ($config->get('Core.EnableIDNA')) {
-            $idna = new Net_IDNA2(array('encoding' => 'utf8', 'overlong' => false, 'strict' => true));
+            $idna = new Net_IDNA2(['encoding' => 'utf8', 'overlong' => false, 'strict' => true]);
             // we need to encode each period separately
             $parts = explode('.', $string);
             try {
-                $new_parts = array();
+                $new_parts = [];
                 foreach ($parts as $part) {
                     $encodable = false;
                     for ($i = 0, $c = strlen($part); $i < $c; $i++) {
@@ -127,7 +126,7 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
                     }
                 }
                 $string = implode('.', $new_parts);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // XXX error reporting
             }
         }

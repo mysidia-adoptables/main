@@ -1,8 +1,9 @@
 <?php
 
 namespace Resource\Exception;
+
 use Exception;
 
-class BlankFieldException extends Exception{
-
+class BlankFieldException extends Exception
+{
 }

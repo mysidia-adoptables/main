@@ -1,0 +1,57 @@
+public function updateAlternate($assignMode = "")
+    {
+        $alternate = $this->generateAlternate();
+        if ($alternate) {
+            $this->imageurl = $alternate->getImage();
+            $this->alternate = $alternate->getALID();
+        } else {
+            $this->imageurl = NULL;
+            $this->alternate = 0;
+        }
+
+        if ($assignMode == Model::UPDATE) {
+            $this->save("imageurl", $this->imageurl);
+            $this->save("alternate", $this->alternate);
+        }
+    }
+[8:31 PM]
+I believe that this is the function you will need to modify
+[8:32 PM]
+maybe something like:
+public function updateAlternate($assignMode = "")
+{
+    $alternate = $this->generateAlternate();
+    if ($alternate) {
+        $this->imageurl = $alternate->getImage();
+        $this->alternate = $alternate->getALID();
+    } else {
+        $this->imageurl = NULL;
+        $this->alternate = $this->alternate ?? 0;
+    }
+
+    if ($assignMode == Model::UPDATE) {
+        $this->save("imageurl", $this->imageurl);
+        $this->save("alternate", $this->alternate);
+    }
+}
+[8:33 PM]
+though i think that would cause an issue since it relies on having an image in the imageurl property when it's an alternate
+[8:34 PM]
+if it should maintain the previous alternate, you could do
+[8:35 PM]
+public function updateAlternate($assignMode = "")
+{
+    $alternate = $this->generateAlternate();
+    if ($alternate) {
+        $this->imageurl = $alternate->getImage();
+        $this->alternate = $alternate->getALID();
+    } else if(!$this->alternate) {
+        $this->imageurl = NULL;
+        $this->alternate = 0;
+    }
+
+    if ($assignMode == Model::UPDATE) {
+        $this->save("imageurl", $this->imageurl);
+        $this->save("alternate", $this->alternate);
+    }
+}

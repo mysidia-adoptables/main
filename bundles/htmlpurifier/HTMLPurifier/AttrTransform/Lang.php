@@ -7,7 +7,6 @@
  */
 class HTMLPurifier_AttrTransform_Lang extends HTMLPurifier_AttrTransform
 {
-
     /**
      * @param array $attr
      * @param HTMLPurifier_Config $config
@@ -16,8 +15,8 @@ class HTMLPurifier_AttrTransform_Lang extends HTMLPurifier_AttrTransform
      */
     public function transform($attr, $config, $context)
     {
-        $lang = isset($attr['lang']) ? $attr['lang'] : false;
-        $xml_lang = isset($attr['xml:lang']) ? $attr['xml:lang'] : false;
+        $lang = $attr['lang'] ?? false;
+        $xml_lang = $attr['xml:lang'] ?? false;
 
         if ($lang !== false && $xml_lang === false) {
             $attr['xml:lang'] = $lang;

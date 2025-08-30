@@ -2,6 +2,6 @@
 
 namespace Resource\Exception;
 
-class PasswordException extends InvalidActionException{
-
+class PasswordException extends InvalidActionException
+{
 }

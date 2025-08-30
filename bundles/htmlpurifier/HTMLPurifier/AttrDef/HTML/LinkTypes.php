@@ -8,7 +8,6 @@
  */
 class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier_AttrDef
 {
-
     /**
      * Name config attribute to pull.
      * @type string
@@ -20,10 +19,10 @@ class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier_AttrDef
      */
     public function __construct($name)
     {
-        $configLookup = array(
+        $configLookup = [
             'rel' => 'AllowedRel',
             'rev' => 'AllowedRev'
-        );
+        ];
         if (!isset($configLookup[$name])) {
             trigger_error(
                 'Unrecognized attribute name for link ' .
@@ -49,10 +48,10 @@ class HTMLPurifier_AttrDef_HTML_LinkTypes extends HTMLPurifier_AttrDef
         }
 
         $string = $this->parseCDATA($string);
-        $parts = explode(' ', $string);
+        $parts = explode(' ', (string) $string);
 
         // lookup to prevent duplicates
-        $ret_lookup = array();
+        $ret_lookup = [];
         foreach ($parts as $part) {
             $part = strtolower(trim($part));
             if (!isset($allowed[$part])) {

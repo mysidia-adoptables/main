@@ -16,7 +16,6 @@
 
 abstract class HTMLPurifier_AttrTransform
 {
-
     /**
      * Abstract: makes changes to the attributes dependent on multiple values.
      *
@@ -36,7 +35,7 @@ abstract class HTMLPurifier_AttrTransform
      */
     public function prependCSS(&$attr, $css)
     {
-        $attr['style'] = isset($attr['style']) ? $attr['style'] : '';
+        $attr['style'] ??= '';
         $attr['style'] = $css . $attr['style'];
     }
 

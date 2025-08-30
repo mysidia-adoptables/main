@@ -24,7 +24,7 @@ class Smarty_Internal_Method_GetStreamVariable
      * @api Smarty::getStreamVariable()
      *
      * @param \Smarty_Internal_Data|\Smarty_Internal_Template|\Smarty $data
-     * @param  string                                                 $variable the stream of the variable
+     * @param string                                                  $variable the stream of the variable
      *
      * @return mixed
      * @throws \SmartyException
@@ -38,10 +38,9 @@ class Smarty_Internal_Method_GetStreamVariable
                 $_result .= $current_line;
             }
             fclose($fp);
-
             return $_result;
         }
-        $smarty = isset($data->smarty) ? $data->smarty : $data;
+        $smarty = $data->smarty ?? $data;
         if ($smarty->error_unassigned) {
             throw new SmartyException('Undefined stream variable "' . $variable . '"');
         } else {

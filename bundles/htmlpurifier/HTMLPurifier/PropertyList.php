@@ -9,13 +9,7 @@ class HTMLPurifier_PropertyList
      * Internal data-structure for properties.
      * @type array
      */
-    protected $data = array();
-
-    /**
-     * Parent plist.
-     * @type HTMLPurifier_PropertyList
-     */
-    protected $parent;
+    protected $data = [];
 
     /**
      * Cache.
@@ -26,9 +20,8 @@ class HTMLPurifier_PropertyList
     /**
      * @param HTMLPurifier_PropertyList $parent Parent plist
      */
-    public function __construct($parent = null)
+    public function __construct(protected $parent = null)
     {
-        $this->parent = $parent;
     }
 
     /**
@@ -76,7 +69,7 @@ class HTMLPurifier_PropertyList
     public function reset($name = null)
     {
         if ($name == null) {
-            $this->data = array();
+            $this->data = [];
         } else {
             unset($this->data[$name]);
         }

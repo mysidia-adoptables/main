@@ -9,8 +9,11 @@ class SmartyException extends Exception
 {
     public static $escape = false;
 
-    public function __toString()
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
-        return ' --> Smarty: ' . (self::$escape ? htmlentities($this->message) : $this->message) . ' <-- ';
+        return ' --> Smarty: ' . (self::$escape ? htmlentities((string) $this->message) : $this->message) . ' <-- ';
     }
 }
