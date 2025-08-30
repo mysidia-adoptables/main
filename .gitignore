@@ -29,3 +29,4 @@ bootstrap/ssr/*
 .vemto_settings
 /**/ziggy.js
 /templates/compile/*.tpl.php
+config.php
