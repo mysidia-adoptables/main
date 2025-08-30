@@ -1,11 +1,10 @@
 # Disable directory browsing
 Options -Indexes
 
-# Block direct access to sensitive directories/files
+# First line of defense (direct blocks)
 RedirectMatch 403 ^/vendor(/|$)
 RedirectMatch 403 ^/\.git(/|$)
 
-# Block direct access to specific sensitive files
 <FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$">
     Require all denied
 </FilesMatch>
@@ -14,14 +13,12 @@ RedirectMatch 403 ^/\.git(/|$)
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Block sensitive directories
+    # Defense in depth (rewrite-level blocks FIRST)
     RewriteRule ^vendor(/|$) - [F,L]
     RewriteRule ^\.git(/|$) - [F,L]
-
-    # Block sensitive files
     RewriteRule ^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$ - [F,L]
 
-    # If the request is not a real file or directory, send to index.php
+    # Then routing rules
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [L]
