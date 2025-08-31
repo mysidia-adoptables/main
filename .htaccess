@@ -4,8 +4,9 @@ Options -Indexes
 # First line of defense (direct blocks)
 RedirectMatch 403 ^/vendor(/|$)
 RedirectMatch 403 ^/\.git(/|$)
+RedirectMatch 403 ^/\.github(/|$)      # Block GitHub workflows folder
 
-<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$">
+<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php|\.github/workflows/.*\.yml)$">
     Require all denied
 </FilesMatch>
 
@@ -16,6 +17,7 @@ RedirectMatch 403 ^/\.git(/|$)
     # Defense in depth (rewrite-level blocks FIRST)
     RewriteRule ^vendor(/|$) - [F,L]
     RewriteRule ^\.git(/|$) - [F,L]
+    RewriteRule ^\.github(/|$) - [F,L]              # Block GitHub workflows folder
     RewriteRule ^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$ - [F,L]
 
     # Then routing rules
