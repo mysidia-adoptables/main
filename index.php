@@ -60,7 +60,7 @@ class IndexController extends MysObject
     private function initErrorHandler()
     {
         if (PHP_MAJOR_VERSION >= 7) {
-            set_error_handler(fn($errno, $errstr) => str_starts_with((string)$errstr, 'Declaration of'), E_WARNING);
+            set_error_handler(fn ($errno, $errstr) => str_starts_with((string)$errstr, 'Declaration of'), E_WARNING);
         }
         error_reporting(E_ALL);
     }

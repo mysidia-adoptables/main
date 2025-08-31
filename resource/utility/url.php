@@ -18,7 +18,7 @@ use Resource\Native\MysObject;
  * @todo Not sure, but will come in handy.
  */
 
-final class URL extends MysObject
+final class URL extends MysObject implements \Stringable
 {
     /**
      * REGEX constant, it is used to identify valid and invalid url.
@@ -155,13 +155,14 @@ final class URL extends MysObject
      * @return String
      */
     private function isValid($url) //could add additional php native url filtering function in here
-    {if (preg_match(self::REGEX, $url)) {
-        return true;
-    } elseif (file_exists($url)) {
-        return true;
-    } else {
-        return false;
-    }
+    {
+        if (preg_match(self::REGEX, $url)) {
+            return true;
+        } elseif (file_exists($url)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

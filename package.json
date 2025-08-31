@@ -1,0 +1,39 @@
+{
+  "name": "mysidia-adoptables",
+  "type": "module",
+  "description": "Adoptable pet framework",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky",
+    "lint": "prettier --check --write ."
+  },
+  "keywords": [
+    "mysidia",
+    "adoptable",
+    "php",
+    "pet"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@eslint/js": "^9.5.0",
+    "eslint": "^9.5.0",
+    "prettier": "3.3.2",
+    "husky": "^9.0.11"
+  },
+  "lint-staged": {
+    "resources/**/*.css": [
+      "prettier --write"
+    ],
+    "resources/**/*.js": [
+      "eslint --color",
+      "prettier --write"
+    ],
+    "**/*.php": [
+      "php ./vendor/bin/rector",
+      "php ./vendor/bin/php-cs-fixer --config=.php-cs-fixer.php fix"
+    ]
+  }
+}

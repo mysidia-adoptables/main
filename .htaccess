@@ -3,9 +3,13 @@ Options -Indexes
 
 # First line of defense (direct blocks)
 RedirectMatch 403 ^/vendor(/|$)
+RedirectMatch 403 ^/node_modules(/|$)
 RedirectMatch 403 ^/\.git(/|$)
+RedirectMatch 403 ^/\.github(/|$)      # Block GitHub workflows folder
+RedirectMatch 403 ^/\.husky(/|$)
 
-<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$">
+
+<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php|package\.json|package-lock\.json|\.github/workflows/.*\.yml)$">
     Require all denied
 </FilesMatch>
 
@@ -15,8 +19,11 @@ RedirectMatch 403 ^/\.git(/|$)
 
     # Defense in depth (rewrite-level blocks FIRST)
     RewriteRule ^vendor(/|$) - [F,L]
+    RewriteRule ^node_modules(/|$) - [F,L]
     RewriteRule ^\.git(/|$) - [F,L]
-    RewriteRule ^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php)$ - [F,L]
+    RewriteRule ^\.github(/|$) - [F,L]
+    RewriteRule ^\.husky(/|$) - [F,L]
+    RewriteRule ^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php|package\.json|package-lock\.json)$ - [F,L]
 
     # Then routing rules
     RewriteCond %{REQUEST_FILENAME} !-f
