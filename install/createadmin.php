@@ -53,115 +53,120 @@ VALUES ({$uid}, 'templates/icons/default_avatar.gif', '', '', '', '0', 'unknown'
 ?>
 
 <html>
-    <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
-        <title>Mysidia PHP Adoptables Installation Wizard</title>
-        <link rel='stylesheet' type='text/css' href='../css/install.css'>
-    </head>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
+    <title>Mysidia PHP Adoptables Installation Wizard</title>
+    <link rel='stylesheet' type='text/css' href='../css/install.css'>
+</head>
 
-    <body>
-        <table border='0' cellpadding='0' cellspacing='0'>
-            <tr>
-                <td height='60px' valign='top' bgcolor='#a0a0f9'>
-                    <div align='left'>
-                        <p>
+<body>
+<table border='0' cellpadding='0' cellspacing='0'>
+    <tr>
+        <td height='60px' valign='top' bgcolor='#a0a0f9'>
+            <div align='left'>
+                <p>
                             <span class='style1'>
                                 Mysidia Adoptables Installation Wizard <br>
-                                <span class='style2'>Step 5: Configure Site Settings </span>                                    
+                                <span class='style2'>Step 5: Configure Site Settings </span>
                             </span>
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td height='600px' valign='top' bgcolor='#FFFFFF'>
-                    <p align='left'>
-                        <br>
-                        <span class='style2'>This page allows you to configure basic site settings such as site name, slogan and default theme...</span>
-                    </p>
-                    <form name='form1' method='post' action='sitesetting.php'>
-                        <p class='style2'>
-                            Default Theme: 
-                            <select id='theme' name='theme'>
-                                <option value='main' selected>Main</option>
-                                <option value='green'>Green</option>
-                                <option value='elements'>Elements</option>
-                            </select>
-                        </p>
-                        <p class='style2'>
-                            The default theme can be changed anytime through the usage of admincp, you may also do this with Style switcher.
-                        </p>
-                        <p class='style2'>
-                            Browser Title: 
-                            <input name='browsertitle' type='text' id='browsertitle' maxlength='50' value='Mysidia Adoptables v1.3.6'>
-                        </p>
-                        <p>
-                            <span class='style2'>Now it is time to give your site a brand new name!</span>
-                        </p>
-                        <p>
+                </p>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td height='600px' valign='top' bgcolor='#FFFFFF'>
+            <p align='left'>
+                <br>
+                <span class='style2'>This page allows you to configure basic site settings such as site name, slogan and default theme...</span>
+            </p>
+            <form name='form1' method='post' action='sitesetting.php'>
+                <p class='style2'>
+                    Default Theme:
+                    <select id='theme' name='theme'>
+                        <option value='main' selected>Main</option>
+                        <option value='green'>Green</option>
+                        <option value='elements'>Elements</option>
+                    </select>
+                </p>
+                <p class='style2'>
+                    The default theme can be changed anytime through the usage of admincp, you may also do this with
+                    Style switcher.
+                </p>
+                <p class='style2'>
+                    Browser Title:
+                    <input name='browsertitle' type='text' id='browsertitle' maxlength='50'
+                           value='Mysidia Adoptables v1.3.6'>
+                </p>
+                <p>
+                    <span class='style2'>Now it is time to give your site a brand new name!</span>
+                </p>
+                <p>
                             <span class='style2'>
-                                Site Name: 
-                                <input name='sitename' type='text' id='sitename' maxlength='50' value='My Adoptables Site'>
+                                Site Name:
+                                <input name='sitename' type='text' id='sitename' maxlength='50'
+                                       value='My Adoptables Site'>
                             </span>
-                        </p>
-                        <p>                            
+                </p>
+                <p>
                             <span class='style2'>
-                                The Slogan of your site is: 
+                                The Slogan of your site is:
                                 <input name='slogan' type='text' id='slogan' maxlength='50' value='Your Site Slogan'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
                                 The Pepper Code of your site is:<br>
                                 <b>Note this feature is deprecated and will be removed in Mys v1.4.0!</b> <br>
-                                <input name='peppercode' type='text' id='peppercode' maxlength='50' value='6QoE5En82U8I91N'>
+                                <input name='peppercode' type='text' id='peppercode' maxlength='50'
+                                       value='6QoE5En82U8I91N'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                Security Question:(This can be used to stop bots from registering!) 
-                                <input name='securityquestion' type='text' id='securityquestion' maxlength='50' value='2+1=?'>
+                                Security Question:(This can be used to stop bots from registering!)
+                                <input name='securityquestion' type='text' id='securityquestion' maxlength='50'
+                                       value='2+1=?'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                The Answer of Security Question is: 
+                                The Answer of Security Question is:
                                 <input name='securityanswer' type='text' id='securityanswer' maxlength='50' value='3'>
                             </span>
-                        </p>
-                        <p>
-                            <input name='usealtbbcode' type='checkbox' id='usealtbbcode' value='yes' checked> 
-                            Enable Alternative bbcodes on your Site 
-                        </p>
-                        <p>
+                </p>
+                <p>
+                    <input name='usealtbbcode' type='checkbox' id='usealtbbcode' value='yes' checked>
+                    Enable Alternative bbcodes on your Site
+                </p>
+                <p>
                             <span class='style2'>
-                                The Cash Name of your site: 
+                                The Cash Name of your site:
                                 <input name='cost' type='text' id='cost' maxlength='50' value='Mysidian dollar'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                User's Starting Money: 
+                                User's Starting Money:
                                 <input name='startmoney' type='text' id='startmoney' maxlength='6' value='1000'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                # Rows for Pagination: 
+                                # Rows for Pagination:
                                 <input name='pagination' type='text' id='startmoney' maxlength='6' value='10'>
                             </span>
-                        </p>
-                        <input name='username' type='hidden' id='username' value='<?php echo $username; ?>'>
-                        <input name='pass1' type='hidden' id='pass1' value='<?php echo $pass1; ?>'>		
-                        <p>
-                            <input type='submit' name='Submit' value='Submit and Continue Installation'>
-                        </p>
-                        <p>&nbsp;</p>
-                    </form>      
-                    <p align='left'>&nbsp;</p>
-                    <p align='right'><br></p>
-                </td>
-            </tr>
-        </table>
-    </body>
+                </p>
+                <input name='username' type='hidden' id='username' value='<?php echo $username; ?>'>
+                <input name='pass1' type='hidden' id='pass1' value='<?php echo $pass1; ?>'>
+                <p>
+                    <input type='submit' name='Submit' value='Submit and Continue Installation'>
+                </p>
+                <p>&nbsp;</p>
+            </form>
+            <p align='left'>&nbsp;</p>
+            <p align='right'><br></p>
+        </td>
+    </tr>
+</table>
+</body>
 </html>

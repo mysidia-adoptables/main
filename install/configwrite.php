@@ -37,7 +37,9 @@ define('DBNAME', '{$dbname}');             //Your database name
 define('DOMAIN', '{$domain}');             //Your domain name (No http, www or . )
 define('SCRIPTPATH', '{$scriptpath}');     //The folder you installed this script in
 define('PREFIX', '{$prefix}');
-?>";
+
+define('MYS_INSTALLED', true);
+";
 
 //Write the config.php file...
 
@@ -588,78 +590,78 @@ $adopts->query($query171);
 ?>
 
 <html>
-    <head>
-        <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
-        <title>Mysidia Adoptables v1.3.6 Installation Wizard</title>
-        <link rel='stylesheet' type='text/css' href='../css/install.css'>
-    </head>
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'>
+    <title>Mysidia Adoptables v1.3.6 Installation Wizard</title>
+    <link rel='stylesheet' type='text/css' href='../css/install.css'>
+</head>
 
-    <body>
-        <table border='0' cellpadding='0' cellspacing='0'>
-            <tr>
-                <td width='750' height='57' valign='top' bgcolor='#a0a0f9'>
-                    <div align='left'>
-                        <p>
+<body>
+<table border='0' cellpadding='0' cellspacing='0'>
+    <tr>
+        <td width='750' height='57' valign='top' bgcolor='#a0a0f9'>
+            <div align='left'>
+                <p>
                             <span class='style1'>
                                 Mysidia Adoptables v1.3.6 Installation Wizard <br>
-                                <span class='style2'>Step 4: Create Admin User </span>                                    
+                                <span class='style2'>Step 4: Create Admin User </span>
                             </span>
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td height='643' valign='top' bgcolor='#FFFFFF'>
-                    <p align='left'>
-                        <br>
-                        <span class='style2'>
+                </p>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td height='643' valign='top' bgcolor='#FFFFFF'>
+            <p align='left'>
+                <br>
+                <span class='style2'>
                             This page allows you to set up an admin user account for your installation of Mysidia Adoptables. This account will allow you to administer your site in the built-in Admin CP.
                         </span>
-                    </p>
-                    <form name='form1' method='post' action='createadmin.php'>
-                        <p class='style2'>
-                            Admin Username: 
-                            <input name='username' type='text' id='username' maxlength='20'>
-                        </p>
-                        <p class='style2'>
-                            The username may contain letters, numbers and spaces ONLY and can be up to 20 characters long. 
-                        </p>
-                        <p class='style2'>
-                            Admin Password: 
-                            <input name='pass1' type='password' id='pass1'>
-                        </p>
-                        <p>
+            </p>
+            <form name='form1' method='post' action='createadmin.php'>
+                <p class='style2'>
+                    Admin Username:
+                    <input name='username' type='text' id='username' maxlength='20'>
+                </p>
+                <p class='style2'>
+                    The username may contain letters, numbers and spaces ONLY and can be up to 20 characters long.
+                </p>
+                <p class='style2'>
+                    Admin Password:
+                    <input name='pass1' type='password' id='pass1'>
+                </p>
+                <p>
                             <span class='style2'>
                                 The password may contain letters, numbers and special characters and can be up to 20 characters long.
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                Confirm Password: 
+                                Confirm Password:
                                 <input name='pass2' type='password' id='pass2'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
                                 Admin Birthday:(mm/dd/yyyy)
                                 <input name='birthday' type='date' id='birthday'>
                             </span>
-                        </p>
-                        <p>
+                </p>
+                <p>
                             <span class='style2'>
-                                Admin Email Address: 
+                                Admin Email Address:
                                 <input name='email' type='text' id='email'>
                             </span>
-                        </p>
-                        <p>
-                            <input type='submit' name='Submit' value='Submit and Continue Installation'>
-                        </p>
-                        <p>&nbsp;</p>
-                    </form>      
-                    <p align='left'>&nbsp;</p>
-                    <p align='right'><br></p>
-                </td>
-            </tr>
-        </table>
-    </body>
+                </p>
+                <p>
+                    <input type='submit' name='Submit' value='Submit and Continue Installation'>
+                </p>
+                <p>&nbsp;</p>
+            </form>
+            <p align='left'>&nbsp;</p>
+            <p align='right'><br></p>
+        </td>
+    </tr>
+</table>
+</body>
 </html>
