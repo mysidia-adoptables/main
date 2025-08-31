@@ -1,10 +1,11 @@
 {
   "name": "mysidia-adoptables",
+  "type": "module",
   "description": "Adoptable pet framework",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prepare": "husky"
+    "prepare": "husky",
+    "lint": "prettier --check --write ."
   },
   "keywords": [
     "mysidia",

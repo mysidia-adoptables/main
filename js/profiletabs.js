@@ -1,3 +1,3 @@
-$(document).ready(function(){
-    $("#profile").organicTabs();     
+$(document).ready(function () {
+  $("#profile").organicTabs();
 });
