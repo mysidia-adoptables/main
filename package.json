@@ -32,7 +32,8 @@
       "prettier --write"
     ],
     "**/*.php": [
-      "php ./vendor/bin/pint"
+      "php ./vendor/bin/rector",
+      "php ./vendor/bin/php-cs-fixer --config=.php-cs-fixer.php fix"
     ]
   }
 }
