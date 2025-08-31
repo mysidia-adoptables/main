@@ -5,11 +5,11 @@ Options -Indexes
 RedirectMatch 403 ^/vendor(/|$)
 RedirectMatch 403 ^/node_modules(/|$)
 RedirectMatch 403 ^/\.git(/|$)
-RedirectMatch 403 ^/\.github(/|$)      # Block GitHub workflows folder
+RedirectMatch 403 ^/\.github(/|$)
 RedirectMatch 403 ^/\.husky(/|$)
 
-
-<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php|package\.json|package-lock\.json|\.github/workflows/.*\.yml)$">
+# Block sensitive single files
+<FilesMatch "^(config\.php|composer\.json|composer\.lock|rector\.php|\.php-cs-fixer\.php|package\.json|package-lock\.json)$">
     Require all denied
 </FilesMatch>
 
