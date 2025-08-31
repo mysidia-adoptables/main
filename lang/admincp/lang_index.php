@@ -15,7 +15,7 @@ $lang['credits'] = "<br><b>Mysidia Adoptables Staff Team:</b>
 				    <br>Designers: Tequila
 				    <br><br><br><br><b>Special thanks and contributions from:</b>
 				    <br>Bloodrun, BMR, Kaeliah, Kyttias, Pachoofoosh, Pokemontrainergigi, Teshia 
-				    <br><br><br><br>Script Copyright 2011-2021 Mysidia Adoptables
+				    <br><br><br><br>Script Copyright 2011-" . date('Y') . " Mysidia Adoptables
 				    <br>Redistribution Prohibited
 				    <br><a href='https://mysidiaadoptables.com' target='_blank'>https://mysidiaadoptables.com</a>";
 $lang['login'] = "Please enter your username and password to log into admin control panel.<br><br>";
