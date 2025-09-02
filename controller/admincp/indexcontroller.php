@@ -10,11 +10,11 @@ use Service\ApplicationService\AuthenticationException;
 
 class IndexController extends FrontController
 {
-    public const DENIED = "You do not have permission to access Admin Control Panel.";
-    public const BLANK = "You have not entered all of your login information yet.";
-    public const INCORRECT = "Wrong information entered, please fill in login form again.";
-    public const ALREADY = "You are already logged into admin control panel...";
-    private $session;
+    public const string DENIED = "You do not have permission to access Admin Control Panel.";
+    public const string BLANK = "You have not entered all of your login information yet.";
+    public const string INCORRECT = "Wrong information entered, please fill in login form again.";
+    public const string ALREADY = "You are already logged into admin control panel...";
+    private readonly string $session;
     private $accountService;
 
     public function __construct()
@@ -65,8 +65,8 @@ class IndexController extends FrontController
     {
         $mysidia = Registry::get("mysidia");
         if (!$mysidia->user->isAdmin()) {
-            $this->setFlags("global_error", self::DENIED);
-            return false;
+            header('Location: /');
+            exit;
         }
         return $mysidia->user->isLoggedIn() ? parent::getRequest() : false;
     }
