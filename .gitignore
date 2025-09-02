@@ -30,3 +30,4 @@ bootstrap/ssr/*
 /**/ziggy.js
 /templates/compile/*.tpl.php
 config.php
+.php-cs-fixer.cache
