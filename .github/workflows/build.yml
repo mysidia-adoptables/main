@@ -80,6 +80,12 @@ jobs:
     needs: build
 
     steps:
+      - name: Delete existing release
+        run: |
+          gh release delete latest --yes || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Download artifacts
         uses: actions/download-artifact@v4
         with:
@@ -88,8 +94,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: main-${{ github.sha }}
-          name: 'Main Branch Build (${{ github.sha }})'
+          tag_name: latest
+          name: 'Latest Build'
           prerelease: true
           files: dist/*/*.zip
         env:
